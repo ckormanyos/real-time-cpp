@@ -74,7 +74,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1);
 
       const std::int_fast16_t total_weight = B0 + B1;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -128,7 +128,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -182,7 +182,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -236,7 +236,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -290,7 +290,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -344,7 +344,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -398,7 +398,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -452,7 +452,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -506,7 +506,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -560,7 +560,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -614,7 +614,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -668,7 +668,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -722,7 +722,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -776,7 +776,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -830,7 +830,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -884,7 +884,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -938,7 +938,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -992,7 +992,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1046,7 +1046,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1100,7 +1100,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1154,7 +1154,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1208,7 +1208,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1262,7 +1262,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1316,7 +1316,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1370,7 +1370,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1424,7 +1424,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1478,7 +1478,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1532,7 +1532,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1586,7 +1586,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1640,7 +1640,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1694,7 +1694,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1748,7 +1748,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1802,7 +1802,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1856,7 +1856,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1910,7 +1910,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -1964,7 +1964,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2018,7 +2018,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2072,7 +2072,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2126,7 +2126,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2180,7 +2180,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39 + B40;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2234,7 +2234,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39 + B40 + B41;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2288,7 +2288,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39 + B40 + B41 + B42;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2342,7 +2342,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39 + B40 + B41 + B42 + B43;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2396,7 +2396,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39 + B40 + B41 + B42 + B43 + B44;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2450,7 +2450,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44) + value_type(data[45U] * B45);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39 + B40 + B41 + B42 + B43 + B44 + B45;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2504,7 +2504,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44) + value_type(data[45U] * B45) + value_type(data[46U] * B46);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39 + B40 + B41 + B42 + B43 + B44 + B45 + B46;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2558,7 +2558,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44) + value_type(data[45U] * B45) + value_type(data[46U] * B46) + value_type(data[47U] * B47);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39 + B40 + B41 + B42 + B43 + B44 + B45 + B46 + B47;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
@@ -2612,7 +2612,7 @@
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44) + value_type(data[45U] * B45) + value_type(data[46U] * B46) + value_type(data[47U] * B47) + value_type(data[48U] * B48);
 
       const std::int_fast16_t total_weight = B0 + B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B9 + B10 + B11 + B12 + B13 + B14 + B15 + B16 + B17 + B18 + B19 + B20 + B21 + B22 + B23 + B24 + B25 + B26 + B27 + B28 + B29 + B30 + B31 + B32 + B33 + B34 + B35 + B36 + B37 + B38 + B39 + B40 + B41 + B42 + B43 + B44 + B45 + B46 + B47 + B48;
-      result = ((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
+      result = static_cast<result_type>((new_val >= value_type(0)) ? (new_val + (total_weight / 2)) / total_weight : (new_val - (total_weight / 2)) / total_weight);
     }
 
     result_type get_result() const
