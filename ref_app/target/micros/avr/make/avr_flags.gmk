@@ -24,20 +24,32 @@ TGT_ALLFLAGS  = -O2                                                             
                 -fsigned-char
 
 ifeq ($(TYP_OS),WIN)
+
 TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
                 -mdouble=64                                                       \
                 -mlong-double=64
+
+INC_PREFIX   := -isystem
+STD_C        := c23
+STD_CPP      := c++23
+
+else
+
+INC_PREFIX   := -I
+STD_C        := c99
+STD_CPP      := c++14
+
 endif
 
-TGT_CFLAGS    = -std=c99                                                          \
+TGT_CFLAGS    = -std=$(STD_C)                                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++14                                                        \
+TGT_CXXFLAGS  = -std=$(STD_CPP)                                                   \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = $(INC_PREFIX)$(PATH_APP)/util/STL
 
-#TGT_INCLUDES  = -IC:/ChrisGitRepos/avr-libstdcpp/include
+#TGT_INCLUDES  = $(INC_PREFIX)C:/ChrisGitRepos/avr-libstdcpp/include
 
 TGT_AFLAGS    =
 

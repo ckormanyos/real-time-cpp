@@ -55,8 +55,8 @@ auto app::benchmark::run_pi_spigot_single() -> bool
         app_benchmark_pi_spigot_digits10 < app_benchmark_pi_spigot_object.get_output_digit_count();
       ++app_benchmark_pi_spigot_digits10)
   {
-    const std::uint8_t by_calc = app_benchmark_pi_spigot_out_.at(app_benchmark_pi_spigot_digits10);
-    const std::uint8_t by_ctrl = app_benchmark_pi_spigot_ctrl.at(app_benchmark_pi_spigot_digits10);
+    const std::uint8_t by_calc = app_benchmark_pi_spigot_out_.at(static_cast<std::size_t>(app_benchmark_pi_spigot_digits10));
+    const std::uint8_t by_ctrl = app_benchmark_pi_spigot_ctrl.at(static_cast<std::size_t>(app_benchmark_pi_spigot_digits10));
 
     const bool next_digit_is_ok = (by_calc == by_ctrl);
 
