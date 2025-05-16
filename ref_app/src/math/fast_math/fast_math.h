@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2010 - 2024.
+//  Copyright Christopher Kormanyos 2010 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -144,7 +144,7 @@
           / ((fast_math_float32_t) 1.0F + (alpha * (alpha + (fast_math_float32_t) 4.0F)));
       }
 
-      return fast_math_float32_t(n * (fast_math_float32_t) 0.6931471806F) + log_alpha;
+      return fast_math_float32_t((fast_math_float32_t) n * (fast_math_float32_t) 0.6931471806F) + log_alpha;
     }
   }
 
@@ -156,7 +156,7 @@
     // Perform argument reduction.
     const int_fast8_t n = int_fast8_t(x * (fast_math_float32_t) 1.442695041F);
 
-    const fast_math_float32_t alpha = x - ((fast_math_float32_t) 0.6931471806F * n);
+    const fast_math_float32_t alpha = x - ((fast_math_float32_t) 0.6931471806F * (fast_math_float32_t) n);
 
     #if 0
     // Use a polynomial approximation.

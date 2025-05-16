@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -79,7 +79,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -133,7 +133,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -187,7 +187,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -241,7 +241,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -295,7 +295,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -349,7 +349,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -403,7 +403,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -457,7 +457,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -511,7 +511,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -565,7 +565,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -619,7 +619,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -673,7 +673,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -727,7 +727,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -781,7 +781,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -835,7 +835,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -889,7 +889,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -943,7 +943,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -997,7 +997,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1051,7 +1051,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1105,7 +1105,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1159,7 +1159,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1213,7 +1213,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1267,7 +1267,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1321,7 +1321,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1375,7 +1375,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1429,7 +1429,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1483,7 +1483,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1537,7 +1537,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1591,7 +1591,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1645,7 +1645,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1699,7 +1699,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1753,7 +1753,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1807,7 +1807,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1861,7 +1861,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1915,7 +1915,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1969,7 +1969,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2023,7 +2023,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2077,7 +2077,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2131,7 +2131,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2185,7 +2185,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2239,7 +2239,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2293,7 +2293,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2347,7 +2347,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2401,7 +2401,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2455,7 +2455,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2509,7 +2509,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2563,7 +2563,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2617,7 +2617,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
+      return static_cast<result_type>((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
