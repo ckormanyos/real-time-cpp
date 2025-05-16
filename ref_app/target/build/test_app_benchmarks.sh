@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-#  Copyright Christopher Kormanyos 2020 - 2024.
+#  Copyright Christopher Kormanyos 2020 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,7 +22,8 @@ mkdir -p bin
 
 rm -f ./bin/*.*
 
-echo run benchmarks with GCC=$GCC STD=$STD
+echo run benchmarks with $GCC and language standard $STD
+echo
 
 $GCC -std=$STD -Wall -Werror -O2 -m64 -I./src/mcal/host -I./src                                                             -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_COMPLEX                    -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_complex.cpp                    -o ./bin/app_benchmark_complex.exe
 $GCC -std=$STD -Wall -Werror -O2 -m64 -I./src/mcal/host -I./src                                                             -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC                        -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp                        -o ./bin/app_benchmark_crc.exe
@@ -48,6 +49,9 @@ $GCC -std=$STD -Wall -Werror -O2 -m64 -I./src/mcal/host -I./src                 
 fi
 $GCC -std=$STD -Wall         -O2 -m64 -I./src/mcal/host -I./src -I../../cppalliance-decimal-root/include -I../../boost-root -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_NON_STD_DECIMAL            -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_non_std_decimal.cpp            -o ./bin/app_benchmark_non_std_decimal.exe
 $GCC -std=$STD -Wall         -O2 -m64 -I./src/mcal/host -I./src -I../../cppalliance-crypt-root/include   -I../../boost-root -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_BOOST_CRYPT_HASHER         -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_boost_crypt_hasher.cpp         -o ./bin/app_benchmark_boost_crypt_hasher.exe
+
+echo check existences of exe-files
+echo
 
 ./bin/app_benchmark_complex.exe
 result_var_complex=$?
@@ -141,6 +145,9 @@ echo "result_var_ecc_generic_ecc          : "  "$result_var_ecc_generic_ecc"
 fi
 echo "result_var_non_std_decimal          : "  "$result_var_non_std_decimal"
 echo "result_var_boost_crypt_hasher       : "  "$result_var_boost_crypt_hasher"
+
+echo verify result_total
+echo
 
 if [[ "$GCC" == "g++" ]]; then
 result_total=$((result_var_complex+result_var_crc+result_var_fast_math+result_var_filter+result_var_fixed_point+result_var_float+result_var_hash+result_var_none+result_var_pi_agm+result_var_pi_spigot+result_var_pi_spigot_single+$result_var_soft_double_h2f1+result_var_trapezoid_integral+result_var_wide_decimal+result_var_wide_integer+result_var_boost_math_cbrt_tgamma+result_var_boost_math_cyl_bessel_j+result_var_boost_multiprecision_cbrt+result_var_hash_sha256+result_var_ecc_generic_ecc+result_var_non_std_decimal+result_ls_boost_crypt_hasher))
