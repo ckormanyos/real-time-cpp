@@ -725,6 +725,11 @@
     template<typename FloatType>
     inline bool isinf_impl(FloatType x)
     {
+      #if defined(__GNUC__)
+      #pragma GCC diagnostic push
+      #pragma GCC diagnostic ignored "-Wfloat-equal"
+      #endif
+
       using float_type = FloatType;
 
       return
@@ -732,6 +737,10 @@
            ( x == std::numeric_limits<float_type>::infinity())
         || (-x == std::numeric_limits<float_type>::infinity())
       );
+
+      #if defined(__GNUC__)
+      #pragma GCC diagnostic pop
+      #endif
     }
 
     } // namespace cmath_detail
