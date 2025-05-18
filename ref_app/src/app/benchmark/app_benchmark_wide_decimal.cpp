@@ -68,7 +68,7 @@ auto app::benchmark::run_wide_decimal() -> bool
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-auto main() -> int;
+ATTRIBUTE(used) auto main() -> int;
 
 auto main() -> int
 {

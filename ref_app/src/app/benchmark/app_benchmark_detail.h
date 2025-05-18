@@ -49,7 +49,7 @@
     {
       const numeric_type ratio { a / b };
 
-      const numeric_type closeness { fabs(numeric_type { 1 - ratio }) };
+      const numeric_type closeness { fabs(static_cast<numeric_type>(1 - ratio )) };
 
       result_is_ok = (closeness < tol);
     }

@@ -90,7 +90,7 @@ auto app::benchmark::run_boost_multiprecision_cbrt() -> bool
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-auto main() -> int;
+ATTRIBUTE(used) auto main() -> int;
 
 auto main() -> int
 {

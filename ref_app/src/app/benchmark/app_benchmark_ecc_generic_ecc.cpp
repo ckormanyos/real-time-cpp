@@ -212,7 +212,7 @@ auto my_hardware_random_device_generator() -> unsigned int
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-auto main() -> int;
+ATTRIBUTE(used) auto main() -> int;
 
 auto main() -> int
 {

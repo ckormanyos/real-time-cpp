@@ -67,7 +67,7 @@ extern "C"
   }
 }
 
-auto main() -> int;
+ATTRIBUTE(used) auto main() -> int;
 
 auto main() -> int
 {

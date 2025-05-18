@@ -687,6 +687,9 @@
     <None Include="target\build\test_app_benchmarks_rl78.sh">
       <Filter>build</Filter>
     </None>
+    <None Include="target\build\test_app_benchmarks_v850.sh">
+      <Filter>build</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">

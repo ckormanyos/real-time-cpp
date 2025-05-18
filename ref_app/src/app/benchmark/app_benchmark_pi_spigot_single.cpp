@@ -67,7 +67,7 @@ auto app::benchmark::run_pi_spigot_single() -> bool
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-auto main() -> int;
+ATTRIBUTE(used) auto main() -> int;
 
 auto main() -> int
 {

@@ -261,7 +261,7 @@ arithmetic_float_type xarg = static_cast<arithmetic_float_type>(1234) / 1000;
 arithmetic_float_type ctrl = static_cast<arithmetic_float_type>(UINT64_C(343494186080075997)) / UINT64_C(100000000000000000);
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-auto main() -> int;
+ATTRIBUTE(used) auto main() -> int;
 
 auto main() -> int
 {
