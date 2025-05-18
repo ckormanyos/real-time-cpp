@@ -146,7 +146,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          wget --no-check-certificate https://github.com/ckormanyos/gcc-rl78-unknown-elf/releases/tag/v15.1.0
+          wget --no-check-certificate https://github.com/ckormanyos/gcc-rl78-unknown-elf/releases/download/v15.1.0/gcc-15.1.0-rl78-unknown-elf.tar.gz
           tar -xzf gcc-15.1.0-rl78-unknown-elf.tar.gz -C ${{ runner.workspace }}
       - name: benchmark_builds-rl78
         run: |
