@@ -129,7 +129,7 @@ auto app::benchmark::run_boost_math_cbrt_cyl_bessel_j() -> bool
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-auto main() -> int;
+ATTRIBUTE(used) auto main() -> int;
 
 auto main() -> int
 {

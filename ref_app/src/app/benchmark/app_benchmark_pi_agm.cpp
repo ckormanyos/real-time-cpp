@@ -137,7 +137,7 @@ auto app::benchmark::run_pi_agm() -> bool
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-auto main() -> int;
+ATTRIBUTE(used) auto main() -> int;
 
 auto main() -> int
 {

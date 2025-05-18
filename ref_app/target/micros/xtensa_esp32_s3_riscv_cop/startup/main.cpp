@@ -29,7 +29,17 @@
 
 #include <array>
 
-auto main() -> int;
+#if defined(ATTRIBUTE)
+#undef ATTRIBUTE
+#endif
+
+#if defined(_MSC_VER)
+#define ATTRIBUTE(a)
+#else
+#define ATTRIBUTE(a) __attribute__((a))
+#endif
+
+ATTRIBUTE(used) auto main() -> int;
 
 namespace
 {
