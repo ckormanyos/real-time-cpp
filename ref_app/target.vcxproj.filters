@@ -684,6 +684,9 @@
     <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\IntVectTable.S">
       <Filter>micros\xtensa_esp32_s3_riscv_cop\startup</Filter>
     </None>
+    <None Include="target\build\test_app_benchmarks_rl78.sh">
+      <Filter>build</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">

@@ -36,4 +36,5 @@ TGT_LDFLAGS   = -nostartfiles                                  \
                 -nostdlib                                      \
                 -Wl,--gc-sections                              \
                 -Wl,-Map,$(APP).map                            \
+                --specs=nosys.specs                            \
                 -T $(LINKER_DEFINITION_FILE)
