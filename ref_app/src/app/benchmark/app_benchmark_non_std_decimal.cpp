@@ -261,6 +261,8 @@ arithmetic_float_type xarg = static_cast<arithmetic_float_type>(1234) / 1000;
 arithmetic_float_type ctrl = static_cast<arithmetic_float_type>(UINT64_C(343494186080075997)) / UINT64_C(100000000000000000);
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
+auto main() -> int;
+
 auto main() -> int
 {
   // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_NON_STD_DECIMAL -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_float.cpp -o ./ref_app/bin/app_benchmark_float.exe

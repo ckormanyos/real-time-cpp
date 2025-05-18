@@ -123,6 +123,8 @@ auto app::benchmark::run_trapezoid_integral() -> bool
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
+auto main() -> int;
+
 auto main() -> int
 {
   bool result_is_ok { true };

@@ -135,6 +135,8 @@ extern "C"
   }
 }
 
+auto main() -> int;
+
 auto main() -> int
 {
   auto result_is_ok = true;
