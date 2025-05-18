@@ -118,6 +118,8 @@ bool app::benchmark::run_float()
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
+auto main() -> int;
+
 auto main() -> int
 {
   // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_FLOAT -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_float.cpp -o ./ref_app/bin/app_benchmark_float.exe

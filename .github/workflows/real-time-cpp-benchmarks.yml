@@ -108,6 +108,60 @@ jobs:
           echo
           ./target/build/test_app_benchmarks_avr.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
+  benchmark_builds-riscv:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        standard: [ c++20 ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: |
+          wget --no-check-certificate https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v14.2.0-3/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz
+          tar -xzf xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C ${{ runner.workspace }}
+        working-directory: ./
+      - name: benchmark_builds-riscv
+        run: |
+          PATH="${{ runner.workspace }}/xpack-riscv-none-elf-gcc-14.2.0-3/bin:$PATH"
+          ./target/build/test_app_benchmarks_riscv.sh ${{ matrix.standard }}
+        working-directory: ./ref_app/
+  benchmark_builds-rl78:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        standard: [ c++23 ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: |
+          wget --no-check-certificate https://github.com/ckormanyos/gcc-rl78-unknown-elf/releases/download/v15.1.0/gcc-15.1.0-rl78-unknown-elf.tar.gz
+          tar -xzf gcc-15.1.0-rl78-unknown-elf.tar.gz -C ${{ runner.workspace }}
+      - name: benchmark_builds-rl78
+        run: |
+          echo
+          echo 'Add rl78-unknown-elf-g++ path'
+          echo
+          PATH="${{ runner.workspace }}/gcc-15.1.0-rl78-unknown-elf/bin:$PATH"
+          echo 'Query avr-g++ version'
+          echo
+          rl78-unknown-elf-g++ -v
+          echo
+          echo 'Build avr benchmarks'
+          echo
+          ./target/build/test_app_benchmarks_rl78.sh ${{ matrix.standard }}
+        working-directory: ./ref_app/
   benchmark_builds-stm32f446:
     runs-on: ubuntu-latest
     defaults:
@@ -143,29 +197,6 @@ jobs:
         working-directory: ./
       - name: benchmark_builds-stm32f446
         run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}
-        working-directory: ./ref_app/
-  benchmark_builds-riscv:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    strategy:
-      fail-fast: false
-      matrix:
-        standard: [ c++20 ]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: |
-          wget --no-check-certificate https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v14.2.0-3/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz
-          tar -xzf xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C ${{ runner.workspace }}
-        working-directory: ./
-      - name: benchmark_builds-riscv
-        run: |
-          PATH="${{ runner.workspace }}/xpack-riscv-none-elf-gcc-14.2.0-3/bin:$PATH"
-          ./target/build/test_app_benchmarks_riscv.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_single-stm32f446:
     runs-on: ubuntu-latest
