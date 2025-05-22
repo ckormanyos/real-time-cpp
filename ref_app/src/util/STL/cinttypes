@@ -8,7 +8,7 @@
 #ifndef CINTTYPES_2021_10_19_
   #define CINTTYPES_2021_10_19_
 
-  #if (defined(__GNUC__) && defined(__RL78__))
+  #if (defined(__GNUC__) && (defined(__RL78__) || defined(__v850__)))
   #include <stdint-gcc.h>
   #else
   #include <inttypes.h>
