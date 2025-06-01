@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2020.
+//  Copyright Christopher Kormanyos 2014 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,6 +7,8 @@
 
 #ifndef MCAL_CPU_DETAIL_SECURE_2014_06_12_H_
   #define MCAL_CPU_DETAIL_SECURE_2014_06_12_H_
+
+  #include <cstdint>
 
   namespace mcal
   {
@@ -18,7 +20,8 @@
 
         class secure final
         {
-          static constexpr std::uint32_t tlb_base_address = UINT32_C(0x4030C000);
+        private:
+          static constexpr std::uint32_t tlb_base_address { UINT32_C(0x4030C000) };
 
           static void invalidate_caches            ();
           static void clear_branch_prediction_array();
