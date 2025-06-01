@@ -1,4 +1,4 @@
-#  Copyright Christopher Kormanyos 2007 - 2024.
+#  Copyright Christopher Kormanyos 2007 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,7 +8,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 13.3.1
+GCC_VERSION   = 14.2.1
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
