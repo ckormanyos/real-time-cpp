@@ -47,9 +47,9 @@ TGT_CFLAGS    = -std=$(STD_C)                                                   
 TGT_CXXFLAGS  = -std=$(STD_CPP)                                                   \
                 $(TGT_ALLFLAGS)
 
-#TGT_INCLUDES  = $(INC_PREFIX)$(PATH_APP)/util/STL
+TGT_INCLUDES  = $(INC_PREFIX)$(PATH_APP)/util/STL
 
-TGT_INCLUDES  = $(INC_PREFIX)C:/ChrisGitRepos/avr-libstdcpp/include
+#TGT_INCLUDES  = $(INC_PREFIX)C:/ChrisGitRepos/avr-libstdcpp/include
 
 TGT_AFLAGS    =
 
