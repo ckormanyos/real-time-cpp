@@ -1,3 +1,6 @@
+LINUX-like Tools
+==================
+
 Update 2024-01-31
 
 - Simply use tools from "UnxUtils" including
@@ -22,5 +25,5 @@ Update 2024-01-31
   also been taken from mingw64/msys2.
 
 - The make.exe program GNUmake 4.2.1 built for Windows
-  with MSVC 14.2. See also the repository for this ar:
-  https://github.com/ckormanyos/real-time-cpp-toolchains
+  with MSVC 14.2. See also the repository for this at
+  [ckormanyos/make-4.2.1-msvc-build](https://github.com/ckormanyos/make-4.2.1-msvc-build).

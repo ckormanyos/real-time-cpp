@@ -1,0 +1,35 @@
+
+			  Open Source Tools for Renesas
+			      by CyberThor Studios
+			          Terms of use   
+	
+a) The Open Source Tools are based on the LLVM, Clang and GNU sources
+   & Newlib, Libcxx and Libcxxabi library sources. 
+   All of these are released under free software licenses.
+   (See https://llvm-gcc-renesas.com for full details).
+ 
+b) If you use Open Source Tools for Renesas by CyberThor Studios to develop your application,
+   you should *NOT* have to release the source code of your application.  
+   See https://llvm-gcc-renesas.com for full details.
+ 
+c) The GNU-RX/GNU-RL78/ARM-RZ/LLVM-RL78/LLVM-RISCV installers are distributed in the
+   hope that they will be useful, but WITHOUT ANY WARRANTY; without even 
+   the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+   PURPOSE. 
+
+d) The GNU-RX/GNU-RL78/ARM-RZ/LLVM-RL78/LLVM-RISCV installers, FAQs, IAR-GNU Migration 
+   Guide, Renesas-GNU Migration Guide are intellectual property of 
+   CyberThor Studios Ltd. You may download and use the tools and information 
+   available on this web site.
+
+e) All GNU or LLVM toolchains can be freely re-distributed by third parties 
+   provided that all end users are directed to https://llvm-gcc-renesas.com to register for
+   free prior to use. Windows installers enforce this by requesting an 
+   activation code during installation. Users automatically receive their 
+   individual activation code during free registration. Please help us continue
+   to provide this service by ensuring all users register at https://llvm-gcc-renesas.com.
+   Thank-you.   
+   
+  For any queries regarding 'Terms of Use', please log on and ask us at
+  https://llvm-gcc-renesas.com
+
