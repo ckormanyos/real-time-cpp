@@ -3412,12 +3412,23 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat" />
+    <None Include="tools\Util\msys64\usr\local\gcc-13.2.0-rx-elf\README.md" />
+    <None Include="tools\Util\msys64\usr\local\gcc-13.2.0-x86_64-w64-mingw32\README.md" />
+    <None Include="tools\Util\msys64\usr\local\gcc-14.2.0-riscv-none-elf\README.md" />
+    <None Include="tools\Util\msys64\usr\local\gcc-14.2.0-v850-unknown-elf\README.md" />
+    <None Include="tools\Util\msys64\usr\local\gcc-14.2.0-xtensa-esp32-elf\README.md" />
+    <None Include="tools\Util\msys64\usr\local\gcc-14.2.1-arm-none-eabi\README.md" />
+    <None Include="tools\Util\msys64\usr\local\gcc-15.1.0-avr\README.md" />
+    <None Include="tools\Util\msys64\usr\local\gcc-15.1.0-rl78-unknown-elf\README.md" />
+    <None Include="tools\Util\msys64\usr\local\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Text>
+    <Text Include="tools\Util\msys64\usr\bin\README.md" />
+    <Text Include="tools\Util\msys64\usr\local\gcc-13.2.0-x86_64-w64-mingw32\README_STL.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -233,6 +233,51 @@
     <Filter Include="src\mcal\xtensa_esp32_s3_riscv_cop">
       <UniqueIdentifier>{fb4f50c3-b34c-4150-ae05-342dc3721eed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{1195f9e0-4e79-4db4-9019-076b71410b60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util">
+      <UniqueIdentifier>{c7090ffa-3727-4507-8a47-44fc688f5f23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64">
+      <UniqueIdentifier>{1e5bbf21-5257-4c30-a8a7-1a5b98f6e6e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr">
+      <UniqueIdentifier>{9a1de089-5e35-40fb-ba03-be73c7e9dfb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local">
+      <UniqueIdentifier>{a0a9639a-5b17-4bd9-a775-78a92799aafa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local\gcc-13.2.0-rx-elf">
+      <UniqueIdentifier>{58763c0a-4751-4869-b12f-693d9cd10389}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local\gcc-13.2.0-x86_64-w64-mingw32">
+      <UniqueIdentifier>{f98149a8-ee09-455e-be85-891d56cb16d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local\gcc-14.2.0-riscv-none-elf">
+      <UniqueIdentifier>{e792fc4e-1a88-4197-8032-cbddd2378800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local\gcc-14.2.0-v850-unknown-elf">
+      <UniqueIdentifier>{183b8dc8-16fb-4845-a7a8-02308e39718a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local\gcc-14.2.0-xtensa-esp32-elf">
+      <UniqueIdentifier>{99056548-36bd-4d7b-baae-61043396a1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local\gcc-14.2.1-arm-none-eabi">
+      <UniqueIdentifier>{b02846d6-7ad3-439a-b632-d06f577a36c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local\gcc-15.1.0-avr">
+      <UniqueIdentifier>{069ecbae-cca7-4df7-a936-f47d9f105550}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local\gcc-15.1.0-rl78-unknown-elf">
+      <UniqueIdentifier>{16d3ad85-daf9-42d1-badb-1ac1bbe35db0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\local\llvm-17.0.2-riscv32">
+      <UniqueIdentifier>{e4d29a38-1fc3-40f3-a770-4e7d84f79dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\Util\msys64\usr\bin">
+      <UniqueIdentifier>{5bc6b64f-d4f9-43b5-87be-420c3017a4bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -3023,8 +3068,41 @@
     <None Include="cmake\rpi_pico2_rp2350.cmake">
       <Filter>src\cmake</Filter>
     </None>
+    <None Include="tools\Util\msys64\usr\local\gcc-13.2.0-rx-elf\README.md">
+      <Filter>tools\Util\msys64\usr\local\gcc-13.2.0-rx-elf</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\gcc-13.2.0-x86_64-w64-mingw32\README.md">
+      <Filter>tools\Util\msys64\usr\local\gcc-13.2.0-x86_64-w64-mingw32</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\gcc-14.2.0-riscv-none-elf\README.md">
+      <Filter>tools\Util\msys64\usr\local\gcc-14.2.0-riscv-none-elf</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\gcc-14.2.0-v850-unknown-elf\README.md">
+      <Filter>tools\Util\msys64\usr\local\gcc-14.2.0-v850-unknown-elf</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\gcc-14.2.0-xtensa-esp32-elf\README.md">
+      <Filter>tools\Util\msys64\usr\local\gcc-14.2.0-xtensa-esp32-elf</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\gcc-14.2.1-arm-none-eabi\README.md">
+      <Filter>tools\Util\msys64\usr\local\gcc-14.2.1-arm-none-eabi</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\gcc-15.1.0-avr\README.md">
+      <Filter>tools\Util\msys64\usr\local\gcc-15.1.0-avr</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\gcc-15.1.0-rl78-unknown-elf\README.md">
+      <Filter>tools\Util\msys64\usr\local\gcc-15.1.0-rl78-unknown-elf</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\README.md">
+      <Filter>tools\Util\msys64\usr\local</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+    <Text Include="tools\Util\msys64\usr\local\gcc-13.2.0-x86_64-w64-mingw32\README_STL.txt">
+      <Filter>tools\Util\msys64\usr\local\gcc-13.2.0-x86_64-w64-mingw32</Filter>
+    </Text>
+    <Text Include="tools\Util\msys64\usr\bin\README.md">
+      <Filter>tools\Util\msys64\usr\bin</Filter>
+    </Text>
   </ItemGroup>
 </Project>

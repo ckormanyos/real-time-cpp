@@ -1,10 +1,11 @@
 real-time-cpp-toolchains - Individual Toolchains
 ==================
 
-| GCC target             | location              |
+| compiler               | location              |
 | ---------------------- | --------------------- |
 | `arm-none-eabi`        | [ARM(R) GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)                  |
 | `avr`                  | [ckormanyos/avr-gcc-build](https://github.com/ckormanyos/avr-gcc-build)                                    |
+| `llvm-riscv32`         | TBD |
 | `riscv-none-elf`       | [xpack-dev-tools/riscv-none-elf-gcc-xpack](https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack)    |
 | `rl78-unknown-elf`     | [ckormanyos/gcc-rl78-unknown-elf](https://github.com/ckormanyos/gcc-rl78-unknown-elf)                      |
 | `rx-elf`               | [ckormanyos/gcc-rx-elf](https://github.com/ckormanyos/gcc-rx-elf)                                          |
