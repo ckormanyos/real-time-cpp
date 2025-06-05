@@ -2,4 +2,4 @@
 ==================
 
 See also
-[llvm-gcc-renesas.com]( https://llvm-gcc-renesas.com)
+[llvm-gcc-renesas.com](https://llvm-gcc-renesas.com)
