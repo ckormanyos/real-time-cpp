@@ -292,6 +292,15 @@
     <Filter Include="micros\xtensa_esp32_s3_riscv_cop\startup\Scripts">
       <UniqueIdentifier>{1a0b187b-0ef0-4365-b263-303097393b67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\am6254_soc">
+      <UniqueIdentifier>{05facdb9-99d0-45de-b06b-72c0d2117980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\make">
+      <UniqueIdentifier>{c4b047af-28fe-4065-bc51-b5491e13e039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\startup">
+      <UniqueIdentifier>{0fb41c05-2289-4721-980a-786b1026a315}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -1014,6 +1023,12 @@
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">
       <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
+    </Text>
+    <Text Include="target\micros\am6254_soc\startup\startup.txt">
+      <Filter>micros\am6254_soc\startup</Filter>
+    </Text>
+    <Text Include="target\micros\am6254_soc\make\make.txt">
+      <Filter>micros\am6254_soc\make</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

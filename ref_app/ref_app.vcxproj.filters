@@ -278,6 +278,9 @@
     <Filter Include="tools\Util\msys64\usr\bin">
       <UniqueIdentifier>{5bc6b64f-d4f9-43b5-87be-420c3017a4bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\am6254_soc">
+      <UniqueIdentifier>{74714130-9ba7-45a5-a860-74f8cb6eae22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -3112,6 +3115,9 @@
     </Text>
     <Text Include="tools\Util\msys64\usr\bin\README.md">
       <Filter>tools\Util\msys64\usr\bin</Filter>
+    </Text>
+    <Text Include="src\mcal\am6254_soc\am6254_soc.txt">
+      <Filter>src\mcal\am6254_soc</Filter>
     </Text>
   </ItemGroup>
 </Project>
