@@ -3095,6 +3095,15 @@
     <None Include="tools\Util\msys64\usr\local\README.md">
       <Filter>tools\Util\msys64\usr\local</Filter>
     </None>
+    <None Include="tools\Util\msys64\usr\local\llvm-17.0.2-riscv32\README.md">
+      <Filter>tools\Util\msys64\usr\local\llvm-17.0.2-riscv32</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\llvm-17.0.2-riscv32\about_free_support.html">
+      <Filter>tools\Util\msys64\usr\local\llvm-17.0.2-riscv32</Filter>
+    </None>
+    <None Include="tools\Util\msys64\usr\local\llvm-17.0.2-riscv32\COPYING">
+      <Filter>tools\Util\msys64\usr\local\llvm-17.0.2-riscv32</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />

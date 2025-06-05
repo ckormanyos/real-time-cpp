@@ -3420,6 +3420,9 @@
     <None Include="tools\Util\msys64\usr\local\gcc-14.2.1-arm-none-eabi\README.md" />
     <None Include="tools\Util\msys64\usr\local\gcc-15.1.0-avr\README.md" />
     <None Include="tools\Util\msys64\usr\local\gcc-15.1.0-rl78-unknown-elf\README.md" />
+    <None Include="tools\Util\msys64\usr\local\llvm-17.0.2-riscv32\about_free_support.html" />
+    <None Include="tools\Util\msys64\usr\local\llvm-17.0.2-riscv32\COPYING" />
+    <None Include="tools\Util\msys64\usr\local\llvm-17.0.2-riscv32\README.md" />
     <None Include="tools\Util\msys64\usr\local\README.md" />
   </ItemGroup>
   <ItemGroup>
