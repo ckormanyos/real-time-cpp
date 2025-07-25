@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2023 - 2024.
+//  Copyright Christopher Kormanyos 2023 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,7 +24,7 @@
 #include <app/benchmark/app_benchmark_detail.h>
 
 using builtin_float_type = double;
-using decimal_float_type = boost::decimal::decimal64;
+using decimal_float_type = boost::decimal::decimal64_t;
 
 //using arithmetic_float_type = builtin_float_type;
 using arithmetic_float_type = decimal_float_type;
@@ -52,12 +52,15 @@ target-specific flags
 -mno-unaligned-access
 -mno-long-calls
 
+// TBD: These are very old numbers. Today's decimal is expected
+// to be significantly speedier. Update these numbers sometime.
+
 
 | Type                           |  runtime [us] |  relative  |    code-size [kb] |
 |--------------------------------|---------------|------------|-------------------|
 | double (built-in, no FPU)      |  22           |   1.0      |       5.6         |
 | ::math::softfloat::float64_t   |  27           |   1.2      |       8.5         |
-| boost::decimal::decimal64      |  490          |    22      |       20          |
+| boost::decimal::decimal64_t    |  490          |    22      |       20          |
 #endif
 
 namespace local
