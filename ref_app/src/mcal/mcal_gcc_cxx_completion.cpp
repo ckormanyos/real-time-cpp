@@ -146,6 +146,9 @@ extern "C"
   #endif
 
   std::uint8_t __fdlib_version;
+
+  // Patched DSO label.
+  void* __dso_handle;
 }
 
 void mcal_gcc_cxx_dummy()
