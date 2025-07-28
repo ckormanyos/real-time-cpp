@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2023 - 2024.
+//  Copyright Christopher Kormanyos 2023 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,7 +24,7 @@
 #include <app/benchmark/app_benchmark_detail.h>
 
 using builtin_float_type = double;
-using decimal_float_type = boost::decimal::decimal64;
+using decimal_float_type = boost::decimal::decimal64_t;
 
 //using arithmetic_float_type = builtin_float_type;
 using arithmetic_float_type = decimal_float_type;
@@ -34,11 +34,10 @@ static_assert(std::numeric_limits<builtin_float_type>::digits == 53,
 
 
 #if 0
-GCC11, arm-none-eabi, float-abi=soft, -O2
+GCC14.2, arm-none-eabi, float-abi=soft, -O2
 
 Calculation exp() via Pade approximation approx. 15 decimal digits.
 Code-size includes about 2kb for startup, clock-init, skinny MCAL and cooperative time-scheduler.
-
 
 target-specific flags
 ---------------------
@@ -52,12 +51,14 @@ target-specific flags
 -mno-unaligned-access
 -mno-long-calls
 
+// These are the updated numbers from boost::decimal Git-hash 0b474bf05f339f21d87dd1902dc6294bb9914254.
 
-| Type                           |  runtime [us] |  relative  |    code-size [kb] |
-|--------------------------------|---------------|------------|-------------------|
-| double (built-in, no FPU)      |  22           |   1.0      |       5.6         |
-| ::math::softfloat::float64_t   |  27           |   1.2      |       8.5         |
-| boost::decimal::decimal64      |  490          |    22      |       20          |
+| Type                               |  runtime [us] |  relative  |    code-size [kb] |
+|------------------------------------|---------------|------------|-------------------|
+| `double` (built-in, no FPU)        |   $22$        |  $1.0$     |      $5.6$        |
+| `::math::softfloat::float64_t`     |   $27$        |  $1.2$     |      $8.5$        |
+| `boost::decimal::decimal_fast64_t` |  $170$        |  $7.7$     |      $18$         |
+| `boost::decimal::decimal64_t`      |  $200$        |  $9.1$     |      $20$         |
 #endif
 
 namespace local

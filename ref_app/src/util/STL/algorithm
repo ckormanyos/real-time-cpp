@@ -207,22 +207,20 @@
                                  input_iterator2 first2,
                                  input_iterator2 last2)
     {
-      while(first1 != last1)
+      for( ; (first1 != last1) && (first2 != last2); static_cast<void>(++first1), static_cast<void>(++first2))
       {
-        if((first2 == last2) || (*first2 < *first1))
-        {
-          return false;
-        }
-        else if(*first1 < *first2)
+        if(*first1 < *first2)
         {
           return true;
         }
 
-        ++first1;
-        ++first2;
+        if(*first2 < *first1)
+        {
+          return false;
+        }
       }
 
-      return (first2 != last2);
+      return ((first1 == last1) && (first2 != last2));
     }
 
     template<typename input_iterator,
