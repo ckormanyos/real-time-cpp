@@ -28,30 +28,31 @@ namespace
   }
 }
 
-#define LEGACY_BUFFER_LENGTH 64U
+#define LEGACY_BUF_LEN 64U
 
-std::uint8_t legacy_buffer[LEGACY_BUFFER_LENGTH];
+std::uint8_t legacy_buffer[LEGACY_BUF_LEN];
 
 void do_something()
 {
-  clear_buffer(legacy_buffer);
-}
-
-int main()
-{
-  std::span<std::uint8_t> buffer_span(legacy_buffer);
+  std::span<std::uint8_t> buf_span(legacy_buffer);
 
   // First off, fill the legacy buffer with a pattern.
-  std::fill(buffer_span.begin(), buffer_span.end(), UINT8_C(0x5A));
+  std::fill(buf_span.begin(), buf_span.end(), UINT8_C(0x5A));
 
   std::stringstream strm { };
 
   // Ensure that the buffer has the pattern.
-  strm << "filled:  " << std::hex << std::uppercase << std::setw(std::streamsize { 2 }) << std::setfill('0') << unsigned(buffer_span.back());
+  strm << "filled:  " << std::hex << std::uppercase << std::setw(std::streamsize { 2 }) << std::setfill('0') << unsigned(buf_span.back());
 
   // Now clear the buffer and the buffer has been cleared to 0.
-  do_something(buffer_span);
-  strm << "\ncleared: " << std::hex << std::uppercase << std::setw(std::streamsize { 2 }) << std::setfill('0') << unsigned(buffer_span.back());
+  clear_buffer(buf_span);
+
+  strm << "\ncleared: " << std::hex << std::uppercase << std::setw(std::streamsize { 2 }) << std::setfill('0') << unsigned(buf_span.back());
 
   std::cout << strm.str() << std::endl;
+}
+
+int main()
+{
+  do_something();
 }
