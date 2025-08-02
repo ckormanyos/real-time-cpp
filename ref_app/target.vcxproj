@@ -439,7 +439,7 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">target\build\build.bat stm32f429</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">target\build\build.bat am335x</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">target\build\build.bat bcm2835_raspi_b</NMakeBuildCommandLine>
-    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am6254_soc|x64'">target\build\build.bat bcm2835_raspi_b</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am6254_soc|x64'">target\build\build.bat am6254_soc</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rpi_pico_rp2040|x64'">target\build\build.bat rpi_pico_rp2040</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rpi_pico2_rp2350|x64'">target\build\build.bat rpi_pico2_rp2350</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
@@ -468,7 +468,7 @@
 </NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">target\build\build.bat am335x rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">target\build\build.bat bcm2835_raspi_b rebuild</NMakeReBuildCommandLine>
-    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am6254_soc|x64'">target\build\build.bat bcm2835_raspi_b rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am6254_soc|x64'">target\build\build.bat am6254_soc rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rpi_pico_rp2040|x64'">target\build\build.bat rpi_pico_rp2040 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rpi_pico2_rp2350|x64'">target\build\build.bat rpi_pico2_rp2350 rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">Target\Build\Build.bat avr clean_all</NMakeCleanCommandLine>
@@ -497,7 +497,7 @@
 </NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">target\build\build.bat am335x clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">target\build\build.bat bcm2835_raspi_b clean_all</NMakeCleanCommandLine>
-    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target am6254_soc|x64'">target\build\build.bat bcm2835_raspi_b clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target am6254_soc|x64'">target\build\build.bat am6254_soc clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rpi_pico_rp2040|x64'">target\build\build.bat rpi_pico_rp2040 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rpi_pico2_rp2350|x64'">target\build\build.bat rpi_pico2_rp2350 clean_all</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
@@ -956,6 +956,13 @@
     <None Include="target\micros\am335x\make\am335x.ld" />
     <None Include="target\micros\am335x\make\am335x_files.gmk" />
     <None Include="target\micros\am335x\make\am335x_flags.gmk" />
+    <None Include="target\micros\am6254_soc\Code\SBL\README.md" />
+    <None Include="target\micros\am6254_soc\Code\SBL\tiboot3.bin" />
+    <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\boot.s" />
+    <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\intvect.s" />
+    <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\Memory_Map.ld" />
+    <None Include="target\micros\am6254_soc\make\am6254_soc_files.gmk" />
+    <None Include="target\micros\am6254_soc\make\am6254_soc_flags.gmk" />
     <None Include="target\micros\atmega2560\make\atmega2560.ld" />
     <None Include="target\micros\atmega2560\make\atmega2560_files.gmk" />
     <None Include="target\micros\atmega2560\make\atmega2560_flags.gmk" />
@@ -1079,6 +1086,12 @@
     <ClCompile Include="target\micros\am335x\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\am335x\startup\crt1.cpp" />
     <ClCompile Include="target\micros\am335x\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main.c" />
+    <ClCompile Include="target\micros\am6254_soc\Code\Mcal\SysTickTimer\SysTickTimer.c" />
+    <ClCompile Include="target\micros\am6254_soc\Code\Mcal\Timer\timer.c" />
+    <ClCompile Include="target\micros\am6254_soc\Code\Mcal\VIM\vim.c" />
+    <ClCompile Include="target\micros\am6254_soc\Code\Startup\Core\a53\Startup.c" />
+    <ClCompile Include="target\micros\am6254_soc\Code\Std\StdLib.c" />
     <ClCompile Include="target\micros\atmega2560\startup\crt0.cpp" />
     <ClCompile Include="target\micros\atmega2560\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\atmega2560\startup\crt1.cpp" />
@@ -1183,11 +1196,16 @@
     <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="target\micros\am6254_soc\make\make.txt" />
-    <Text Include="target\micros\am6254_soc\startup\startup.txt" />
+    <Text Include="target\micros\am6254_soc\Code\SBL\config.txt" />
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="target\micros\am6254_soc\Code\Mcal\Gpio\led.h" />
+    <ClInclude Include="target\micros\am6254_soc\Code\Mcal\SysTickTimer\SysTickTimer.h" />
+    <ClInclude Include="target\micros\am6254_soc\Code\Mcal\Timer\timer.h" />
+    <ClInclude Include="target\micros\am6254_soc\Code\Mcal\VIM\vim.h" />
+    <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\core_macros.h" />
+    <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h" />
     <ClInclude Include="target\micros\xtensa_esp32_s3\startup\Std\core-isa.h" />
   </ItemGroup>
   <ItemGroup>

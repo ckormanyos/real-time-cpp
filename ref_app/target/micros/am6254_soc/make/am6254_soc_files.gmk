@@ -1,0 +1,26 @@
+#
+#  Copyright Christopher Kormanyos 2013 - 2021.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# File list of the AM335x ARM(R) A8 files in the project
+# ------------------------------------------------------------------------------
+
+FILES_CPP :=
+
+FILES_TGT  = $(PATH_TGT)/Code/Appli/Core/$(CORE_FAMILY)/main                     \
+             $(PATH_TGT)/Code/Mcal/Timer/timer                                   \
+             $(PATH_TGT)/Code/Mcal/VIM/vim                                       \
+             $(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)/Startup                \
+             $(PATH_TGT)/Code/Std/StdLib
+
+ifneq ($(CORE_FAMILY), m4f)
+FILES_TGT += $(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)/boot
+FILES_TGT += $(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)/intvect
+else
+FILES_TGT += $(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)/IntVect
+FILES_TGT += $(PATH_TGT)/Code/Mcal/SysTickTimer/SysTickTimer
+endif

@@ -1,0 +1,3 @@
+m4f_binary_file=
+r5f_binary_file=
+a53_binary_file=
