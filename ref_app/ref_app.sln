@@ -108,6 +108,8 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target xtensa_esp32_s3_riscv_cop|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target xtensa_esp32_s3|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target xtensa32|x64.ActiveCfg = Release|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Debug|x64.ActiveCfg = target xtensa32|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Release|x64.ActiveCfg = target xtensa32|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target am335x|x64.ActiveCfg = target am335x|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target am335x|x64.Build.0 = target am335x|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target am6254_soc|x64.ActiveCfg = target am6254_soc|x64
