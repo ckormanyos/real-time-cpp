@@ -159,7 +159,7 @@ jobs:
         with:
           fetch-depth: '0'
       - name: update-tools
-        run: sudo apt install gcc-aarch-none-elf
+        run: sudo apt install gcc-aarch64-none-elf
       - name: target-arm-${{ matrix.suite }}
         run: |
           ./target/build/build.sh ${{ matrix.suite }} rebuild
