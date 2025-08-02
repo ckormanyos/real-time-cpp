@@ -17,7 +17,7 @@
 #include <span>
 #include <sstream>
 
-namespace
+namespace local
 {
   void clear_buffer(std::span<std::uint8_t> buf)
   {
@@ -26,7 +26,7 @@ namespace
       next_byte = static_cast<std::uint8_t>(UINT8_C(0));
     }
   }
-}
+} // namespace local
 
 #define LEGACY_BUF_LEN 64U
 
@@ -36,7 +36,7 @@ void do_something()
 {
   std::span<std::uint8_t> buf_span(legacy_buffer);
 
-  // First off, fill the legacy buffer with a pattern.
+  // Fill the legacy buffer with a pattern.
   std::fill(buf_span.begin(), buf_span.end(), UINT8_C(0x5A));
 
   std::stringstream strm { };
@@ -45,7 +45,7 @@ void do_something()
   strm << "filled:  " << std::hex << std::uppercase << std::setw(std::streamsize { 2 }) << std::setfill('0') << unsigned(buf_span.back());
 
   // Now clear the buffer and the buffer has been cleared to 0.
-  clear_buffer(buf_span);
+  local::clear_buffer(buf_span);
 
   strm << "\ncleared: " << std::hex << std::uppercase << std::setw(std::streamsize { 2 }) << std::setfill('0') << unsigned(buf_span.back());
 

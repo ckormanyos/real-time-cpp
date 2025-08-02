@@ -10,7 +10,7 @@
 
 #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT))
 
-//#define APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT
+//#define APP_BENCHMARK_TYPE_BOOST_MP_CBRT_USE_BIN_FLOAT
 
 #if !defined(BOOST_MP_STANDALONE)
 #define BOOST_MP_STANDALONE
@@ -41,49 +41,54 @@
 #endif
 
 #include <boost/math/special_functions/cbrt.hpp>
-#if defined(APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT)
+#if defined(APP_BENCHMARK_TYPE_BOOST_MP_CBRT_USE_BIN_FLOAT)
 #include <boost/multiprecision/cpp_bin_float.hpp>
 #else
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #endif
 
-auto app::benchmark::run_boost_multiprecision_cbrt() -> bool
+namespace local
 {
-  using big_float_backend_type =
-  #if defined(APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT)
-    boost::multiprecision::cpp_bin_float<101, boost::multiprecision::backends::digit_base_10, void, std::int32_t>;
+  constexpr unsigned app_benchmark_backend_digits10 { 201U };
+
+  using app_benchmark_big_float_backend_type =
+  #if defined(APP_BENCHMARK_TYPE_BOOST_MP_CBRT_USE_BIN_FLOAT)
+    boost::multiprecision::cpp_bin_float<app_benchmark_backend_digits10, boost::multiprecision::backends::digit_base_10, void, std::int32_t>;
   #else
-    boost::multiprecision::cpp_dec_float<101, std::int32_t, void>;
+    boost::multiprecision::cpp_dec_float<app_benchmark_backend_digits10, std::int32_t, void>;
   #endif
 
-  using big_float_type =
-    boost::multiprecision::number<big_float_backend_type, boost::multiprecision::et_off>;
+  using app_benchmark_big_float_type =
+    boost::multiprecision::number<app_benchmark_big_float_backend_type, boost::multiprecision::et_off>;
 
-  static const big_float_type
-    big_float_arg
-    {
-      big_float_type(UINT32_C(123456)) / 100U
-    };
-
-  // N[(123456/100)^(1/3), 111]
+  // N[(123456/100)^(1/3), 211]
   // 10.7276369432283170454869317373527647801772956394047834686224956433128028534945259441672192774907629718402457465
-  static const big_float_type
-    big_float_ctrl
+  const app_benchmark_big_float_type
+    app_benchmark_big_float_ctrl
     {
-      "10.7276369432283170454869317373527647801772956394047834686224956433128028534945259441672192774907629718402457465"
+      "10.72763694322831704548693173735276478017729563940478346862249564331280285349452594416721927749076297184024574654480528769322221647332343140726593804683287639579165427122149453895093234587007864784138965614715829"
     };
 
+  const app_benchmark_big_float_type
+    app_benchmark_big_float_arg
+    {
+      app_benchmark_big_float_type(UINT32_C(123456)) / 100U
+    };
+} // namespace local
+
+auto app::benchmark::run_boost_multiprecision_cbrt() -> bool
+{
   using std::cbrt;
   using boost::math::cbrt;
 
   // Compute the cube root value.
-  const big_float_type big_float_result { cbrt(big_float_arg) };
+  const local::app_benchmark_big_float_type local_big_float_result { cbrt(local::app_benchmark_big_float_arg) };
 
   // Compare the calculated result with the known control value.
   const bool
     app_benchmark_result_is_ok
     {
-      detail::is_close_fraction(big_float_result, big_float_ctrl)
+      detail::is_close_fraction(local_big_float_result, local::app_benchmark_big_float_ctrl)
     };
 
   return app_benchmark_result_is_ok;
