@@ -14,7 +14,7 @@ FILES_CPP :=
 FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_gpt                                    \
              $(PATH_TGT)/Code/Appli/Core/$(CORE_FAMILY)/main                     \
-             $(PATH_TGT)/Code/Appli/Core/$(CORE_FAMILY)/main_core0               \
+             $(PATH_TGT)/Code/Appli/Core/$(CORE_FAMILY)/main_cores               \
              $(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)/Startup                \
              $(PATH_TGT)/Code/Std/StdLib
 

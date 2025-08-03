@@ -1085,7 +1085,7 @@
     <ClCompile Include="target\micros\am6254_soc\Code\Startup\Core\a53\Startup.c">
       <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main_core0.cpp">
+    <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main_cores.cpp">
       <Filter>micros\am6254_soc\Code\Appli\Core\a53</Filter>
     </ClCompile>
   </ItemGroup>

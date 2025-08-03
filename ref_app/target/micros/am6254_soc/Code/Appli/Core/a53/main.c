@@ -14,7 +14,11 @@
 void timer_isr(void);
 
 extern uint32_t GetActiveCoreId(void);
+
 extern void main_core0(void);
+extern void main_core1(void);
+extern void main_core2(void);
+extern void main_core3(void);
 
 #if defined(__GNUC__)
 __attribute__((used,noinline))
@@ -88,16 +92,10 @@ void main(void)
   // Move the core initialization functions into main_init().
   main_init(ActiveCore);
 
-  if(ActiveCore == UINT32_C(0))
-  {
-    // TBD: Run my cooperative scheduler, and replace the while-loop.
-    main_core0();
-    //while(1) { (void) mcal_gpt_get_time_elapsed(); }
-  }
-  else
-  {
-    while(1) { ; }
-  }
+  if     (ActiveCore == UINT32_C(0)) { main_core0(); } // TBD: Run the normal ref_app coop-scheduler in core0.
+  else if(ActiveCore == UINT32_C(1)) { main_core1(); }
+  else if(ActiveCore == UINT32_C(2)) { main_core2(); }
+  else if(ActiveCore == UINT32_C(3)) { main_core3(); }
 }
 
 //----------------------------------------------------------------------------------------
