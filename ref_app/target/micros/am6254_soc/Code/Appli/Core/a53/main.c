@@ -1,27 +1,25 @@
-#include "led.h"
-#include "core_macros.h"
-#include "gic-500.h"
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#include <core_macros.h>
+#include <gic-500.h>
 
 #include <stdbool.h>
 #include <stdint.h>
 
 void timer_isr(void);
 
-uint64_t mcal_gpt_get_time_elapsed(void);
-
 extern uint32_t GetActiveCoreId(void);
+extern void main_core0(void);
 
 #if defined(__GNUC__)
 __attribute__((used,noinline))
 #endif
 static void main_init(const uint32_t ActiveCore);
-
-#if defined(__GNUC__)
-__attribute__((used,noinline))
-#endif
-static void timer_isr_core(const uint32_t ActiveCore);
-
-extern volatile uint64_t mcal_gpt_system_tick;
 
 static void main_init(const uint32_t ActiveCore)
 {
@@ -70,7 +68,7 @@ static void main_init(const uint32_t ActiveCore)
   arch_enable_fiqs();
 
   /* start the timer */
-  ARM64_WRITE_SYSREG(CNTPS_TVAL_EL1, UINT32_C(0x0BEBC200));
+  ARM64_WRITE_SYSREG(CNTPS_TVAL_EL1, UINT64_C(0x0BEBC200));
   ARM64_WRITE_SYSREG(CNTPS_CTL_EL1, 1);
 }
 
@@ -93,49 +91,13 @@ void main(void)
   if(ActiveCore == UINT32_C(0))
   {
     // TBD: Run my cooperative scheduler, and replace the while-loop.
-    while(1) { ; }
+    main_core0();
+    //while(1) { (void) mcal_gpt_get_time_elapsed(); }
   }
   else
   {
     while(1) { ; }
   }
-}
-
-static void timer_isr_core(const uint32_t ActiveCore)
-{
-  static uint32_t cpt[4] = {0u};
-  static uint64_t intid[4] = {0u};
-
-  intid[ActiveCore] = ARM64_READ_SYSREG(ICC_IAR0_EL1);
-
-  const bool switch_on = (cpt[ActiveCore] % 2u == 0u);
-
-  if(switch_on)
-  {
-    switch(ActiveCore)
-    {
-       case 0: LED_1_ON(); break;
-       case 1: LED_2_ON(); break;
-       case 2: LED_3_ON(); break;
-       case 3: LED_4_ON(); break;
-       default: break;
-    }
-  }
-  else
-  {
-    switch(ActiveCore)
-    {
-       case 0: LED_1_OFF(); break;
-       case 1: LED_2_OFF(); break;
-       case 2: LED_3_OFF(); break;
-       case 3: LED_4_OFF(); break;
-       default: break;
-    }
-  }
-
-  ARM64_WRITE_SYSREG(CNTPS_TVAL_EL1, UINT32_C(0x0BEBC200));
-  cpt[ActiveCore]++;
-  ARM64_WRITE_SYSREG(ICC_EOIR0_EL1, intid[ActiveCore]);
 }
 
 //----------------------------------------------------------------------------------------
@@ -149,37 +111,14 @@ static void timer_isr_core(const uint32_t ActiveCore)
 //----------------------------------------------------------------------------------------
 void timer_isr(void)
 {
+  static uint32_t cpt[4] = {0u};
+  static uint64_t intid[4] = {0u};
+
   const uint32_t ActiveCore = GetActiveCoreId();
 
-  timer_isr_core(ActiveCore);
+  intid[ActiveCore] = ARM64_READ_SYSREG(ICC_IAR0_EL1);
 
-  if(ActiveCore == UINT32_C(0))
-  {
-    mcal_gpt_system_tick += UINT32_C(200000000);
-  }
-}
-
-uint64_t mcal_gpt_get_time_elapsed(void)
-{
-  // Return the system tick using a multiple read to ensure data consistency.
-
-  typedef uint64_t timer_register_type;
-  typedef uint64_t value_type;
-
-  // Do the first read of the timer counter and the system tick.
-  const timer_register_type timer_cnt_1 = ARM64_READ_SYSREG(CNTPCT_EL0);
-  const value_type sys_tick_1 = mcal_gpt_system_tick;
-
-  // Do the second read of the timer0 counter.
-  const timer_register_type timer_cnt_2 = ARM64_READ_SYSREG(CNTPCT_EL0);
-
-  // Perform the consistency check.
-  value_type consistent_microsecond_tick =
-    ((timer_cnt_2 >= timer_cnt_1) ? (value_type) (sys_tick_1           | timer_cnt_1)
-                                  : (value_type) (mcal_gpt_system_tick | timer_cnt_2));
-
-  // Convert the consistent tick to microseconds.
-  consistent_microsecond_tick = (value_type) ((value_type) (consistent_microsecond_tick + UINT64_C(100)) / UINT64_C(200));
-
-  return consistent_microsecond_tick;
+  ARM64_WRITE_SYSREG(CNTPS_TVAL_EL1, UINT64_C(0x0BEBC200));
+  cpt[ActiveCore]++;
+  ARM64_WRITE_SYSREG(ICC_EOIR0_EL1, intid[ActiveCore]);
 }

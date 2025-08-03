@@ -1,7 +1,6 @@
 #ifndef _CORE_MACROS_H
 #define _CORE_MACROS_H
 
-
 #if defined(__GNUC__)
 #pragma GCC system_header
 #endif

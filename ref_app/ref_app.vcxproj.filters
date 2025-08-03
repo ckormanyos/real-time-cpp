@@ -1270,6 +1270,9 @@
     <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_eep.cpp">
       <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\am6254_soc\mcal_gpt.cpp">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -2874,6 +2877,15 @@
     <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_eep.h">
       <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_gpt.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_wdg.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_cpu.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -3115,9 +3127,6 @@
     </Text>
     <Text Include="tools\Util\msys64\usr\bin\README.md">
       <Filter>tools\Util\msys64\usr\bin</Filter>
-    </Text>
-    <Text Include="src\mcal\am6254_soc\am6254_soc.txt">
-      <Filter>src\mcal\am6254_soc</Filter>
     </Text>
   </ItemGroup>
 </Project>

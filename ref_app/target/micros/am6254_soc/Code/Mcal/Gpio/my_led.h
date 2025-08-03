@@ -1,8 +1,10 @@
 
-#ifndef __LED_H__
-#define __LED_H__
+#ifndef MY_LED_2025_08_03_H
+#define MY_LED_2025_08_03_H
 
-#include <stdint.h>
+#include <mcal_led/mcal_led_boolean_state_base.h>
+
+#include <cstdint>
 
 #define PADCFG_CTRL0_CFG0_PADCONFIG3  UINT32_C(0x000F400C)
 #define PADCFG_CTRL0_CFG0_PADCONFIG4  UINT32_C(0x000F4010)
@@ -33,7 +35,6 @@
 #define LED_ON(x)      do{*(volatile uint32_t*)(GPIO_SET_DATA01) |= (1ul << x); *(volatile uint32_t*)(GPIO_OUT_DATA01) |= (1ul << x);}while(0)
 #define LED_OFF(x)     do{*(volatile uint32_t*)(GPIO_CLR_DATA01) |= (1ul << x); *(volatile uint32_t*)(GPIO_OUT_DATA01) &= (uint32_t)(~(uint32_t)(1ul << x));}while(0)
 
-
 #define LED_1_ON()   LED_ON(LED_1)
 #define LED_2_ON()   LED_ON(LED_2)
 #define LED_3_ON()   LED_ON(LED_3)
@@ -44,4 +45,35 @@
 #define LED_3_OFF()  LED_OFF(LED_3)
 #define LED_4_OFF()  LED_OFF(LED_4)
 
-#endif /*__LED_H__*/
+template<const int LED_ID>
+class my_led final : public mcal::led::led_boolean_state_base
+{
+public:
+    my_led() noexcept = default;
+
+    ~my_led() override = default;
+
+    auto toggle() -> void override
+    {
+      using base_class_type = led_boolean_state_base;
+
+      if(base_class_type::state_is_on())
+      {
+        LED_ON(LED_ID);
+      }
+      else
+      {
+        LED_OFF(LED_ID);
+      }
+
+      base_class_type::toggle();
+    }
+
+private:
+  static const bool is_init;
+};
+
+template<const int LED_ID>
+const bool my_led<LED_ID>::is_init = []() { LED_INIT(); return true; }();
+
+#endif // MY_LED_2025_08_03_H

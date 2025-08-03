@@ -38,11 +38,11 @@ TGT_INCLUDES  = -I$(PATH_TGT)/Code                                              
                 -I$(PATH_TGT)/Code/Mcal                                           \
                 -I$(PATH_TGT)/Code/Mcal/Gpio                                      \
                 -I$(PATH_TGT)/Code/Mcal/SysTickTimer                              \
-                -I$(PATH_TGT)/Code/Mcal/Timer                                     \
-                -I$(PATH_TGT)/Code/Mcal/VIM                                       \
                 -I$(PATH_TGT)/Code/Startup                                        \
                 -I$(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)                    \
-                -I$(PATH_TGT)/Code/Std
+                -I$(PATH_TGT)/Code/Std                                            \
+                -I$(PATH_APP)/mcal/$(TGT)                                         \
+                -I$(PATH_APP)
 
 TGT_AFLAGS    =
 
