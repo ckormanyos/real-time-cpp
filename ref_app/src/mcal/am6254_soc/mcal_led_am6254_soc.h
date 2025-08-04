@@ -16,7 +16,7 @@
   #include <util/utility/util_time.h>
 
   #include <cstdint>
-  #include <type_Traits>
+  #include <type_traits>
 
   namespace mcal
   {
