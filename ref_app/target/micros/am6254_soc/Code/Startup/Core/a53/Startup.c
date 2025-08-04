@@ -22,34 +22,32 @@
 
 #include <stdint.h>
 
-//=========================================================================================
-// types definition
-//=========================================================================================
-typedef struct {
+typedef struct
+{
+  unsigned long  sourceAddr;  /* Source Address (section in ROM memory) */
+  unsigned long  targetAddr;  /* Target Address (section in RAM memory) */
+  unsigned long  size;        /* length of section (bytes) */
+}
+runtimeCopyTable_t;
 
-    unsigned long  sourceAddr;  /* Source Address (section in ROM memory) */
-    unsigned long  targetAddr;  /* Target Address (section in RAM memory) */
-    unsigned long  size;        /* length of section (bytes) */
+typedef struct
+{
+  unsigned long  Addr;  /* source Address (section in RAM memory) */
+  unsigned long  size;  /* length of section (bytes) */
+}
+runtimeClearTable_t;
 
-} runtimeCopyTable_t;
-
-typedef struct {
-
-    unsigned long  Addr;  /* source Address (section in RAM memory) */
-    unsigned long  size;  /* length of section (bytes) */
-
-} runtimeClearTable_t;
-
-//=========================================================================================
 // linker variables
-//=========================================================================================
 extern const runtimeCopyTable_t __RUNTIME_COPY_TABLE[];
 extern const runtimeClearTable_t __RUNTIME_CLEAR_TABLE[];
 extern unsigned long __CTOR_LIST__[];
 
-//=========================================================================================
-// defines
-//=========================================================================================
+#if defined(__GNUC__)
+#define ATTRIBUTE_USED __attribute__((used,noinline))
+#else
+#define ATTRIBUTE_USED
+#endif
+
 #define __STARTUP_RUNTIME_COPYTABLE   (runtimeCopyTable_t*)(&__RUNTIME_COPY_TABLE[0])
 #define __STARTUP_RUNTIME_CLEARTABLE  (runtimeClearTable_t*)(&__RUNTIME_CLEAR_TABLE[0])
 #define __STARTUP_RUNTIME_CTORS       (unsigned long*)(&__CTOR_LIST__[0])
@@ -65,18 +63,8 @@ static void Startup_Unexpected_Exit(void);
 static void Startup_InitSystemClock(void);
 static void Startup_InitSystemPeripheral(void);
 
-//=========================================================================================
-// extern function prototype
-//=========================================================================================
-extern void main(void) __attribute__((weak));
+extern ATTRIBUTE_USED void main_x(void);
 
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_Init function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
 void Startup_Init(void)
 {
   /* Configure the system clock */
@@ -95,14 +83,6 @@ void Startup_Init(void)
   Startup_RunMulticoreApplication();
 }
 
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitRam function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
 static void Startup_InitRam(void)
 {
   unsigned long index = 0;
@@ -133,13 +113,6 @@ static void Startup_InitRam(void)
   }
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief Startup_InitCtors function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
 static void Startup_InitCtors(void)
 {
   for(unsigned long entry = 1; entry <= (__STARTUP_RUNTIME_CTORS)[0]; entry++)
@@ -148,56 +121,35 @@ static void Startup_InitCtors(void)
   }
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_RunApplication function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
 static void Startup_RunMulticoreApplication(void)
 {
   /* release the secondary cores */
   __asm volatile("sev");
 
   /* call the main function */
-  (void)main();
+  main_x();
 
   /* Catch unexpected exit from main or if main does not exist */
   Startup_Unexpected_Exit();
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_Unexpected_Exit function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
 static void Startup_Unexpected_Exit(void)
 {
-  for(;;);
+  for(;;)
+  {
+    #if defined(__GNUC__)
+    __asm volatile("nop")
+    #endif
+    ;
+  }
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitSystemClock function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
 static void Startup_InitSystemClock(void)
 {
-   /* clock initialized by the SBL */
+  // Clock is initialized by the SBL.
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitSystemPeripheral function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
 static void Startup_InitSystemPeripheral(void)
 {
+  // No peripheral initialization is needed.
 }

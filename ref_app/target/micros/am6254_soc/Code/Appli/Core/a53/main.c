@@ -11,7 +11,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-void timer_isr(void);
+#if defined(__GNUC__)
+#define ATTRIBUTE_USED __attribute__((used,noinline))
+#else
+#define ATTRIBUTE_USED
+#endif
 
 extern uint32_t GetActiveCoreId(void);
 
@@ -20,10 +24,23 @@ extern void main_core1(void);
 extern void main_core2(void);
 extern void main_core3(void);
 
-#if defined(__GNUC__)
-__attribute__((used,noinline))
-#endif
-static void main_init(const uint32_t ActiveCore);
+ATTRIBUTE_USED void timer_isr(void);
+ATTRIBUTE_USED void main_x(void);
+ATTRIBUTE_USED static void main_init(const uint32_t ActiveCore);
+
+void main_x(void)
+{
+  const uint32_t ActiveCore = GetActiveCoreId();
+
+  // Move the core initialization functions into main_init().
+  main_init(ActiveCore);
+
+  if     (ActiveCore == UINT32_C(0)) { main_core0(); } // TBD: Run the normal ref_app coop-scheduler in core0.
+  else if(ActiveCore == UINT32_C(1)) { main_core1(); }
+  else if(ActiveCore == UINT32_C(2)) { main_core2(); }
+  else if(ActiveCore == UINT32_C(3)) { main_core3(); }
+  else                               { for(;;) { __asm volatile("nop"); } }
+}
 
 static void main_init(const uint32_t ActiveCore)
 {
@@ -76,37 +93,6 @@ static void main_init(const uint32_t ActiveCore)
   ARM64_WRITE_SYSREG(CNTPS_CTL_EL1, 1);
 }
 
-//----------------------------------------------------------------------------------------
-/// \brief  
-///
-/// \descr 
-///
-/// \param  
-///
-/// \return 
-//----------------------------------------------------------------------------------------
-void main(void)
-{
-  const uint32_t ActiveCore = GetActiveCoreId();
-
-  // Move the core initialization functions into main_init().
-  main_init(ActiveCore);
-
-  if     (ActiveCore == UINT32_C(0)) { main_core0(); } // TBD: Run the normal ref_app coop-scheduler in core0.
-  else if(ActiveCore == UINT32_C(1)) { main_core1(); }
-  else if(ActiveCore == UINT32_C(2)) { main_core2(); }
-  else if(ActiveCore == UINT32_C(3)) { main_core3(); }
-}
-
-//----------------------------------------------------------------------------------------
-/// \brief  
-///
-/// \descr 
-///
-/// \param  
-///
-/// \return 
-//----------------------------------------------------------------------------------------
 void timer_isr(void)
 {
   static uint32_t cpt[4] = {0u};

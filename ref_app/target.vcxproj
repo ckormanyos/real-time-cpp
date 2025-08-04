@@ -1199,7 +1199,6 @@
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="target\micros\am6254_soc\Code\Mcal\Gpio\my_led.h" />
     <ClInclude Include="target\micros\am6254_soc\Code\Mcal\SysTickTimer\SysTickTimer.h" />
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\core_macros.h" />
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h" />

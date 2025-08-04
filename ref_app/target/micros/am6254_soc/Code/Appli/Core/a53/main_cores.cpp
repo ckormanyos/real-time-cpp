@@ -6,7 +6,7 @@
 //
 
 #include <core_macros.h>
-#include <my_led.h>
+#include <mcal_led_am6254_soc.h>
 
 #include <util/utility/util_time.h>
 
@@ -17,30 +17,7 @@ extern "C" void main_core1(void);
 extern "C" void main_core2(void);
 extern "C" void main_core3(void);
 
-template<const int LED_ID>
-void main_core_worker(void)
-{
-  using timer_type = util::timer<std::uint64_t>;
-
-  using led_type = my_led<LED_ID>;
-
-  led_type led;
-
-  timer_type led_timer(timer_type::seconds(1U));
-
-  led.toggle();
-
-  for(;;)
-  {
-    while(!led_timer.timeout()) { asm volatile("nop"); }
-
-    led.toggle();
-
-    led_timer.start_interval(timer_type::seconds(1U));
-  }
-}
-
-extern "C" void main_core0(void) { main_core_worker<LED_1>(); }
-extern "C" void main_core1(void) { main_core_worker<LED_2>(); }
-extern "C" void main_core2(void) { main_core_worker<LED_3>(); }
-extern "C" void main_core3(void) { main_core_worker<LED_4>(); }
+extern "C" void main_core0(void) { mcal::led::main_core_worker<LED_1>(); }
+extern "C" void main_core1(void) { mcal::led::main_core_worker<LED_2>(); }
+extern "C" void main_core2(void) { mcal::led::main_core_worker<LED_3>(); }
+extern "C" void main_core3(void) { mcal::led::main_core_worker<LED_4>(); }

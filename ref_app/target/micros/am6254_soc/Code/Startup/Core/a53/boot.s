@@ -36,6 +36,7 @@
 .align 2
 .extern vector_table
 .globl _start
+.globl main_x
 
 _start:
     /* clear all registers */
@@ -106,7 +107,6 @@ _start:
     /* init the thread id register */
     msr tpidr_el3, xzr
 
-
     /* check which core is executing this code */
     mrs  x6, mpidr_el1
     and  x6, x6, #3
@@ -171,9 +171,9 @@ _stack_ptrs_lut:
 .globl _entries_lut
 _entries_lut:
     .xword Startup_Init
-    .xword main
-    .xword main
-    .xword main
+    .xword main_x
+    .xword main_x
+    .xword main_x
 
 .size _entries_lut, .-_entries_lut
 
