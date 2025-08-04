@@ -292,6 +292,42 @@
     <Filter Include="micros\xtensa_esp32_s3_riscv_cop\startup\Scripts">
       <UniqueIdentifier>{1a0b187b-0ef0-4365-b263-303097393b67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\am6254_soc">
+      <UniqueIdentifier>{05facdb9-99d0-45de-b06b-72c0d2117980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\make">
+      <UniqueIdentifier>{c4b047af-28fe-4065-bc51-b5491e13e039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code">
+      <UniqueIdentifier>{09ea5d06-dc57-4ef6-bd92-eb13dff60333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code\Appli">
+      <UniqueIdentifier>{cf4696b9-385a-4605-865f-97849321f94c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code\Mcal">
+      <UniqueIdentifier>{3f405389-8f32-49e3-ab7e-07d4de5f0956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code\SBL">
+      <UniqueIdentifier>{2ee0ef48-0226-416d-a1be-7e266c81089a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code\Appli\Core">
+      <UniqueIdentifier>{8325e8a8-80f0-4597-a65b-4725c8bc3e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code\Appli\Core\a53">
+      <UniqueIdentifier>{1fdc07e4-455b-4051-b1d5-00f3432e8d1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code\Mcal\SysTickTimer">
+      <UniqueIdentifier>{75aa46d5-c890-44e1-bf1b-e294be531ee8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code\Startup">
+      <UniqueIdentifier>{0fb41c05-2289-4721-980a-786b1026a315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code\Startup\Core">
+      <UniqueIdentifier>{50e66e2a-c50d-47c5-b194-5c05edcbff53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am6254_soc\Code\Startup\Core\a53">
+      <UniqueIdentifier>{8cae57b6-0e1e-471c-acea-6e9f6ef3ece8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -690,6 +726,27 @@
     <None Include="target\build\test_app_benchmarks_v850.sh">
       <Filter>build</Filter>
     </None>
+    <None Include="target\micros\am6254_soc\Code\SBL\README.md">
+      <Filter>micros\am6254_soc\Code\SBL</Filter>
+    </None>
+    <None Include="target\micros\am6254_soc\Code\SBL\tiboot3.bin">
+      <Filter>micros\am6254_soc\Code\SBL</Filter>
+    </None>
+    <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\boot.s">
+      <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
+    </None>
+    <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\intvect.s">
+      <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
+    </None>
+    <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\Memory_Map.ld">
+      <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
+    </None>
+    <None Include="target\micros\am6254_soc\make\am6254_soc_files.gmk">
+      <Filter>micros\am6254_soc\make</Filter>
+    </None>
+    <None Include="target\micros\am6254_soc\make\am6254_soc_flags.gmk">
+      <Filter>micros\am6254_soc\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -1010,15 +1067,39 @@
     <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\crt0.cpp">
       <Filter>micros\xtensa_esp32_s3_riscv_cop\startup</Filter>
     </ClCompile>
+    <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main.c">
+      <Filter>micros\am6254_soc\Code\Appli\Core\a53</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am6254_soc\Code\Mcal\SysTickTimer\SysTickTimer.c">
+      <Filter>micros\am6254_soc\Code\Mcal\SysTickTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am6254_soc\Code\Startup\Core\a53\Startup.c">
+      <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main_cores.cpp">
+      <Filter>micros\am6254_soc\Code\Appli\Core\a53</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">
       <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
     </Text>
+    <Text Include="target\micros\am6254_soc\Code\SBL\config.txt">
+      <Filter>micros\am6254_soc\Code\SBL</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="target\micros\xtensa_esp32_s3\startup\Std\core-isa.h">
       <Filter>micros\xtensa_esp32_s3\startup\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\am6254_soc\Code\Mcal\SysTickTimer\SysTickTimer.h">
+      <Filter>micros\am6254_soc\Code\Mcal\SysTickTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\core_macros.h">
+      <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h">
+      <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

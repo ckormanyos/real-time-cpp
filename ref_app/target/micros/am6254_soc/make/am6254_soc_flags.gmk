@@ -1,0 +1,61 @@
+#
+#  Copyright Christopher Kormanyos 2025.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION  := 14.3.1
+GCC_TARGET   := aarch64-none-elf
+GCC_PREFIX   := aarch64-none-elf
+CORE_FAMILY  := a53
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -O2                                                               \
+                -finline-functions                                                \
+                -finline-limit=32                                                 \
+                -mcpu=cortex-a53                                                  \
+                -march=armv8-a                                                    \
+                -mabi=lp64
+
+TGT_CFLAGS    = -std=c11                                                          \
+                -Wunsuffixed-float-constants                                      \
+                -Wno-psabi                                                        \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++20                                                        \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -I$(PATH_TGT)/Code                                                \
+                -I$(PATH_TGT)/Code/Appli/                                         \
+                -I$(PATH_TGT)/Code/Appli/Core/$(CORE_FAMILY)                      \
+                -I$(PATH_TGT)/Code/Mcal                                           \
+                -I$(PATH_TGT)/Code/Mcal/SysTickTimer                              \
+                -I$(PATH_TGT)/Code/Startup                                        \
+                -I$(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)                    \
+                -I$(PATH_APP)/mcal/$(TGT)                                         \
+                -I$(PATH_APP)
+
+TGT_AFLAGS    =
+
+LINKER_DEFINITION_FILE  := $(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)/Memory_Map.ld
+
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
+                -T $(LINKER_DEFINITION_FILE)
+
+
+OBJCOPY      := $(PATH_TOOLS_CC)/$(GCC_PREFIX)-objcopy.exe
+
+ifeq ($(TYP_OS),WIN)
+OBJCOPY      := $(subst /,\,$(PATH_TOOLS_CC)/$(GCC_PREFIX)-objcopy.exe)
+endif
+
+RULE_SPECIAL_MAKE_IMAGE_FILE := $(ECHO) "+++ creating special image file $(PATH_BIN)/$(CORE_FAMILY)_baremetal_am6254_nosdk.bin" && $(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(PATH_BIN)/$(CORE_FAMILY)_baremetal_am6254_nosdk.bin

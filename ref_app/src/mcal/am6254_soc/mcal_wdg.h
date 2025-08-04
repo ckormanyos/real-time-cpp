@@ -8,8 +8,6 @@
 #ifndef MCAL_WDG_2010_04_10_H_
   #define MCAL_WDG_2010_04_10_H_
 
-  extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
-
   namespace util { template<typename unsigned_tick_type> class timer; }
 
   namespace sys { namespace idle { void task_func(); } }
@@ -20,17 +18,16 @@
     {
       using config_type = void;
 
-      auto init(const config_type*) -> void;
+      inline auto init(const config_type*) -> void { }
 
       class secure final
       {
-        static void trigger();
+        static void trigger() { }
 
         template<typename unsigned_tick_type>
         friend class util::timer;
 
         friend void ::sys::idle::task_func();
-        friend void ::__my_startup();
       };
     }
   }

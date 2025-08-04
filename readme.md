@@ -71,6 +71,7 @@ The reference application supports the following targets (in alpha-numeric order
 | Target name (as used in build command) | Target Description                                          | *(breadboard) |
 | -------------------------------------- | ----------------------------------------------------------- | ------------- |
 | `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |               |
+| `am6254_soc_`                          | PocketBeagle2 with multicore Texas Instruments(R) AM6254    |               |
 | `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560            |               |
 | `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809           | X             |
 | `avr` (as used in the book)            | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            | X             |
@@ -376,6 +377,18 @@ special boot header comprised of two 32-bit integers. The program is loaded
 from SD-card into RAM memory and subsequently executed. When switching on
 the BeagleBone black, the boot button (S2) must be pressed while powering
 up the board. The program toggles the first user LED (LED1 on `port1.21`).
+
+The 64-bit multi-core ARM(R) `target am6254_soc` runs on the PocketBeagle2.
+This exciting development launches the `ref_app` into the 64-bit microcontroller world.
+The inspiration for this project, again, comes from the unbelievably
+creative workspaces of
+[`github.com/Chalandi`](https://github.com/Chalandi)
+with the repo
+[`Chalandi/Baremetal_TI_AM6254_multicore_nosdk`](https://github.com/Chalandi/Baremetal_TI_AM6254_multicore_nosdk).
+In his work, he has modified the SBL and also undertaken and various non-trivial adaptions to the core startups in
+order to take this chip down the path of full bare-metal
+control - with no use of the SDK.
+TBD: Add the modified SBL and its links and copyright info.
 
 The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
 called `target atmega2560` runs
