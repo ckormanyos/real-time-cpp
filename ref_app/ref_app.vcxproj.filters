@@ -2895,6 +2895,30 @@
     <ClInclude Include="src\mcal\am6254_soc\mcal_led_am6254_soc.h">
       <Filter>src\mcal\am6254_soc</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_spi.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_eep.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_irq.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_port.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_pwm.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_ser.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_benchmark.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_memory_progmem.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

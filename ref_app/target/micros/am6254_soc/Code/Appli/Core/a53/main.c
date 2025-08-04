@@ -12,14 +12,16 @@
 #include <stdint.h>
 
 #if defined(__GNUC__)
-#define ATTRIBUTE_USED __attribute__((used,noinline))
+#define ATTRIBUTE_USED __attribute__((used))
 #else
 #define ATTRIBUTE_USED
 #endif
 
 extern uint32_t GetActiveCoreId(void);
 
-extern void main_core0(void);
+extern ATTRIBUTE_USED int main(void);
+
+//extern void main_core0(void);
 extern void main_core1(void);
 extern void main_core2(void);
 extern void main_core3(void);
@@ -35,7 +37,7 @@ void main_x(void)
   // Move the core initialization functions into main_init().
   main_init(ActiveCore);
 
-  if     (ActiveCore == UINT32_C(0)) { main_core0(); } // TBD: Run the normal ref_app coop-scheduler in core0.
+  if     (ActiveCore == UINT32_C(0)) { (void) main(); }
   else if(ActiveCore == UINT32_C(1)) { main_core1(); }
   else if(ActiveCore == UINT32_C(2)) { main_core2(); }
   else if(ActiveCore == UINT32_C(3)) { main_core3(); }

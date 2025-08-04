@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,19 +10,24 @@
 
   extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
 
+  namespace util { template<typename unsigned_tick_type> class timer; }
+
   namespace sys { namespace idle { void task_func(); } }
 
   namespace mcal
   {
     namespace wdg
     {
-      typedef void config_type;
+      using config_type = void;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
 
       class secure final
       {
         static void trigger();
+
+        template<typename unsigned_tick_type>
+        friend class util::timer;
 
         friend void ::sys::idle::task_func();
         friend void ::__my_startup();

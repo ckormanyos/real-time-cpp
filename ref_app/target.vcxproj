@@ -1090,7 +1090,6 @@
     <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main_cores.cpp" />
     <ClCompile Include="target\micros\am6254_soc\Code\Mcal\SysTickTimer\SysTickTimer.c" />
     <ClCompile Include="target\micros\am6254_soc\Code\Startup\Core\a53\Startup.c" />
-    <ClCompile Include="target\micros\am6254_soc\Code\Std\StdLib.c" />
     <ClCompile Include="target\micros\atmega2560\startup\crt0.cpp" />
     <ClCompile Include="target\micros\atmega2560\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\atmega2560\startup\crt1.cpp" />

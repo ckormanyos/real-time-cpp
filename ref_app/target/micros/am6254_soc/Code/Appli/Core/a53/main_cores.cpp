@@ -12,12 +12,10 @@
 
 #include <cstdint>
 
-extern "C" void main_core0(void);
 extern "C" void main_core1(void);
 extern "C" void main_core2(void);
 extern "C" void main_core3(void);
 
-extern "C" void main_core0(void) { mcal::led::main_core_worker<LED_1>(); }
-extern "C" void main_core1(void) { mcal::led::main_core_worker<LED_2>(); }
-extern "C" void main_core2(void) { mcal::led::main_core_worker<LED_3>(); }
-extern "C" void main_core3(void) { mcal::led::main_core_worker<LED_4>(); }
+extern "C" void main_core1(void) { using namespace mcal::led; led_am6254_soc<LED_2>::main_core_worker(); }
+extern "C" void main_core2(void) { using namespace mcal::led; led_am6254_soc<LED_3>::main_core_worker(); }
+extern "C" void main_core3(void) { using namespace mcal::led; led_am6254_soc<LED_4>::main_core_worker(); }

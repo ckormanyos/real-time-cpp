@@ -5,14 +5,17 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_led.h>
-#include <mcal_led_am6254_soc.h>
+#ifndef MCAL_SER_2011_10_20_H
+  #define MCAL_SER_2011_10_20_H
 
-auto mcal::led::led0() -> mcal::led::led_base&
-{
-  using led0_led_type = led_am6254_soc<LED_1>;
+  namespace mcal
+  {
+    namespace ser
+    {
+      using config_type = void;
 
-  static led0_led_type l0;
+      inline void init(const config_type*) { }
+    }
+  }
 
-  return l0;
-}
+#endif // MCAL_SER_2011_10_20_H

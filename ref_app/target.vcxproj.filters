@@ -310,9 +310,6 @@
     <Filter Include="micros\am6254_soc\Code\SBL">
       <UniqueIdentifier>{2ee0ef48-0226-416d-a1be-7e266c81089a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\am6254_soc\Code\Std">
-      <UniqueIdentifier>{03e470eb-4caf-4fc0-8a88-9eb3c96c0b18}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\am6254_soc\Code\Appli\Core">
       <UniqueIdentifier>{8325e8a8-80f0-4597-a65b-4725c8bc3e64}</UniqueIdentifier>
     </Filter>
@@ -1075,9 +1072,6 @@
     </ClCompile>
     <ClCompile Include="target\micros\am6254_soc\Code\Mcal\SysTickTimer\SysTickTimer.c">
       <Filter>micros\am6254_soc\Code\Mcal\SysTickTimer</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\am6254_soc\Code\Std\StdLib.c">
-      <Filter>micros\am6254_soc\Code\Std</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\am6254_soc\Code\Startup\Core\a53\Startup.c">
       <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
