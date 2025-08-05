@@ -385,10 +385,12 @@ creative workspaces of
 [`github.com/Chalandi`](https://github.com/Chalandi)
 with the repo
 [`Chalandi/Baremetal_TI_AM6254_multicore_nosdk`](https://github.com/Chalandi/Baremetal_TI_AM6254_multicore_nosdk).
-In his work, he has modified the SBL and also undertaken and various non-trivial adaptions to the core startups in
-order to take this chip down the path of full bare-metal
+In his work, he has modified the SBL and also undertaken several non-trivial adaptions to the core startups
+in order to take this chip down the path of full bare-metal
 control - with no use of the SDK.
-TBD: Add the modified SBL and its links and copyright info.
+The modified SBL and its links and copyright info can be found
+at the [`pocketbeagle2_baremetal_sbl`](https://github.com/Chalandi/pocketbeagle2_baremetal_sbl)
+repository.
 
 The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
 called `target atmega2560` runs
