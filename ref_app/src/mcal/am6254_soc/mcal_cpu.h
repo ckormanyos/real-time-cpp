@@ -10,6 +10,9 @@
 
   #include <cstdint>
 
+  extern "C" auto hw_acquire_spin_lock(volatile std::uint32_t*) noexcept -> void;
+  extern "C" auto hw_release_spin_lock(volatile std::uint32_t*) noexcept -> void;
+
   namespace mcal
   {
     namespace cpu
@@ -19,6 +22,9 @@
       inline auto post_init() -> void { }
 
       inline auto nop() noexcept -> void { asm volatile("nop"); }
+
+      inline auto acquire_spin_lock(volatile std::uint32_t* p_sync) noexcept -> void { hw_acquire_spin_lock(p_sync); }
+      inline auto release_spin_lock(volatile std::uint32_t* p_sync) noexcept -> void { hw_release_spin_lock(p_sync); }
     }
   }
 

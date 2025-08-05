@@ -10,7 +10,9 @@
 
 auto mcal::led::led0() -> mcal::led::led_base&
 {
-  using led0_led_type = led_am6254_soc<LED_1>;
+  using led0_port_type = mcal::port::port_pin<mcal::reg::gpio0, mcal::led::LED_1>;
+
+  using led0_led_type = led_am6254_soc<led0_port_type>;
 
   static led0_led_type l0;
 

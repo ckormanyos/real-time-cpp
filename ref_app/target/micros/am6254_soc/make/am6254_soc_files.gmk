@@ -33,6 +33,7 @@ FILES_CPP := $(PATH_APP)/app/benchmark/app_benchmark                            
              $(PATH_APP)/app/benchmark/app_benchmark_wide_decimal                    \
              $(PATH_APP)/app/benchmark/app_benchmark_wide_integer                    \
              $(PATH_APP)/app/led/app_led                                             \
+             $(PATH_APP)/mcal/$(TGT)/mcal_cpu_secure                                 \
              $(PATH_APP)/mcal/$(TGT)/mcal_gpt                                        \
              $(PATH_APP)/mcal/$(TGT)/mcal_led                                        \
              $(PATH_APP)/mcal/mcal                                                   \
