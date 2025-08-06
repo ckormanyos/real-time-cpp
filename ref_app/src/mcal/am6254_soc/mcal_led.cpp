@@ -10,46 +10,26 @@
 #include <mcal_port.h>
 #include <mcal_reg.h>
 
-auto mcal::led::led0() -> mcal::led::led_base&
+namespace local
 {
-  using local_led_port_type = mcal::port::port_pin<mcal::reg::gpio0, mcal::led::LED_ID_1>;
+  template<const unsigned LedId>
+  struct led_x
+  {
+    static auto get_led_ref() -> mcal::led::led_base&;
+  };
 
-  using local_led_type = led_port<local_led_port_type>;
+  template<const unsigned LedId>
+  auto led_x<LedId>::get_led_ref() -> mcal::led::led_base&
+  {
+    using local_led_port_type = mcal::port::port_pin<mcal::reg::gpio0, LedId>;
 
-  static local_led_type led_instance;
+    static mcal::led::led_port<local_led_port_type> led_instance;
 
-  return led_instance;
-}
+    return led_instance;
+  }
+} // namespace local
 
-auto mcal::led::led1() -> mcal::led::led_base&
-{
-  using local_led_port_type = mcal::port::port_pin<mcal::reg::gpio0, mcal::led::LED_ID_2>;
-
-  using local_led_type = led_port<local_led_port_type>;
-
-  static local_led_type led_instance;
-
-  return led_instance;
-}
-
-auto mcal::led::led2() -> mcal::led::led_base&
-{
-  using local_led_port_type = mcal::port::port_pin<mcal::reg::gpio0, mcal::led::LED_ID_3>;
-
-  using local_led_type = led_port<local_led_port_type>;
-
-  static local_led_type led_instance;
-
-  return led_instance;
-}
-
-auto mcal::led::led3() -> mcal::led::led_base&
-{
-  using local_led_port_type = mcal::port::port_pin<mcal::reg::gpio0, mcal::led::LED_ID_4>;
-
-  using local_led_type = led_port<local_led_port_type>;
-
-  static local_led_type led_instance;
-
-  return led_instance;
-}
+auto mcal::led::led0() -> mcal::led::led_base& { return local::led_x<mcal::led::LED_ID_1>::get_led_ref(); }
+auto mcal::led::led1() -> mcal::led::led_base& { return local::led_x<mcal::led::LED_ID_2>::get_led_ref(); }
+auto mcal::led::led2() -> mcal::led::led_base& { return local::led_x<mcal::led::LED_ID_3>::get_led_ref(); }
+auto mcal::led::led3() -> mcal::led::led_base& { return local::led_x<mcal::led::LED_ID_4>::get_led_ref(); }

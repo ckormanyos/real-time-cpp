@@ -1279,6 +1279,30 @@
     <ClCompile Include="src\mcal\am6254_soc\mcal_cpu_secure.s">
       <Filter>src\mcal\am6254_soc</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\am6254_soc\mcal_eep.cpp">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\am6254_soc\mcal_cpu.cpp">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\am6254_soc\mcal_irq.cpp">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\am6254_soc\mcal_pwm.cpp">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\am6254_soc\mcal_osc.cpp">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\am6254_soc\mcal_port.cpp">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\am6254_soc\mcal_wdg.cpp">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\am6254_soc\mcal_spi.cpp">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -2920,6 +2944,9 @@
       <Filter>src\mcal\am6254_soc</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\am6254_soc\mcal_reg.h">
+      <Filter>src\mcal\am6254_soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am6254_soc\mcal_osc.h">
       <Filter>src\mcal\am6254_soc</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,7 +16,7 @@ CORE_FAMILY  := a53
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O2                                                               \
+TGT_ALLFLAGS  = -Os                                                               \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -mcpu=cortex-a53                                                  \
@@ -43,12 +43,11 @@ TGT_INCLUDES  = -I$(PATH_TGT)/Code                                              
 
 TGT_AFLAGS    =
 
-LINKER_DEFINITION_FILE  := $(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)/Memory_Map.ld
-
 TGT_LDFLAGS   = -nostdlib                                                         \
                 -nostartfiles                                                     \
-                -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
+                -Wl,--gc-sections                                                 \
+                -Wl,--no-warn-rwx-segments                                        \
                 -T $(LINKER_DEFINITION_FILE)
 
 

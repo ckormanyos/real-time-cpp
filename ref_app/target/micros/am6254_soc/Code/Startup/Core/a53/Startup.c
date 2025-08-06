@@ -20,6 +20,8 @@
 // 
 // ***************************************************************************************
 
+#include <mcal_cpu.h>
+
 #include <stdint.h>
 
 typedef struct
@@ -137,10 +139,7 @@ static void Startup_Unexpected_Exit(void)
 {
   for(;;)
   {
-    #if defined(__GNUC__)
-    __asm volatile("nop")
-    #endif
-    ;
+    mcal_cpu_nop();
   }
 }
 

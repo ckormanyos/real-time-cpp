@@ -5,20 +5,17 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_IRQ_2010_04_10_H
-  #define MCAL_IRQ_2010_04_10_H
+#ifndef MCAL_OSC_2011_10_20_H
+  #define MCAL_OSC_2011_10_20_H
 
   namespace mcal
   {
-    namespace irq
+    namespace osc
     {
       using config_type = void;
 
-      void init(const config_type*);
-
-      inline void enable_all () { /* TBD enable/disable fiqs/irqs for this arch. */ }
-      inline void disable_all() { /* TBD enable/disable fiqs/irqs for this arch. */ }
+      auto init(const config_type*) -> void;
     }
   }
 
-#endif // MCAL_IRQ_2010_04_10_H
+#endif // MCAL_OSC_2011_10_20_H

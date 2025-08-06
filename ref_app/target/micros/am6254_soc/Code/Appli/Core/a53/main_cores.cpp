@@ -5,24 +5,27 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_cpu.h>
 #include <mcal_led.h>
-#include <mcal_led/mcal_led_port.h>
 
 #include <util/utility/util_time.h>
 
 #include <cstdint>
 
-static auto main_core_worker(mcal::led::led_base& my_led) -> void;
+namespace local
+{
+  static auto main_core_worker(mcal::led::led_base& my_led) -> void;
+}
 
 extern "C" auto main_core1(void) -> void;
 extern "C" auto main_core2(void) -> void;
 extern "C" auto main_core3(void) -> void;
 
-extern "C" auto main_core1(void) -> void { main_core_worker(mcal::led::led1()); }
-extern "C" auto main_core2(void) -> void { main_core_worker(mcal::led::led2()); }
-extern "C" auto main_core3(void) -> void { main_core_worker(mcal::led::led3()); }
+extern "C" auto main_core1(void) -> void { local::main_core_worker(mcal::led::led1()); }
+extern "C" auto main_core2(void) -> void { local::main_core_worker(mcal::led::led2()); }
+extern "C" auto main_core3(void) -> void { local::main_core_worker(mcal::led::led3()); }
 
-static auto main_core_worker(mcal::led::led_base& my_led) -> void
+static auto local::main_core_worker(mcal::led::led_base& my_led) -> void
 {
   using local_timer_type = util::timer<std::uint64_t>;
   using local_tick_type = typename local_timer_type::tick_type;
@@ -33,7 +36,7 @@ static auto main_core_worker(mcal::led::led_base& my_led) -> void
 
   for(;;)
   {
-    while(!led_timer.timeout()) { asm volatile("nop"); }
+    while(!led_timer.timeout()) { mcal::cpu::nop(); }
 
     my_led.toggle();
 

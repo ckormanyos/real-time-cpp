@@ -10,7 +10,7 @@
 
   namespace util { template<typename unsigned_tick_type> class timer; }
 
-  namespace sys { namespace idle { void task_func(); } }
+  namespace sys { namespace idle { auto task_func() -> void; } }
 
   namespace mcal
   {
@@ -18,16 +18,16 @@
     {
       using config_type = void;
 
-      inline auto init(const config_type*) -> void { }
+      auto init(const config_type*) -> void;
 
       class secure final
       {
-        static void trigger() { }
+        static auto trigger() -> void;
 
         template<typename unsigned_tick_type>
         friend class util::timer;
 
-        friend void ::sys::idle::task_func();
+        friend auto ::sys::idle::task_func() -> void;
       };
     }
   }

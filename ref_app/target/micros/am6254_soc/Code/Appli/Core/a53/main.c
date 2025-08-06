@@ -7,6 +7,7 @@
 
 #include <core_macros.h>
 #include <gic-500.h>
+#include <mcal_cpu.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -41,7 +42,7 @@ void main_x(void)
   else if(ActiveCore == UINT32_C(1)) { main_core1(); }
   else if(ActiveCore == UINT32_C(2)) { main_core2(); }
   else if(ActiveCore == UINT32_C(3)) { main_core3(); }
-  else                               { for(;;) { __asm volatile("nop"); } }
+  else                               { for(;;) { mcal_cpu_nop(); } }
 }
 
 static void main_init(const uint32_t ActiveCore)
