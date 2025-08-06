@@ -6,13 +6,50 @@
 //
 
 #include <mcal_led.h>
-#include <mcal_led_am6254_soc.h>
+#include <mcal_led/mcal_led_port.h>
+#include <mcal_port.h>
+#include <mcal_reg.h>
 
 auto mcal::led::led0() -> mcal::led::led_base&
 {
-  using led0_led_type = led_am6254_soc<LED_1>;
+  using local_led_port_type = mcal::port::port_pin<mcal::reg::gpio0, mcal::led::LED_ID_1>;
 
-  static led0_led_type l0;
+  using local_led_type = led_port<local_led_port_type>;
 
-  return l0;
+  static local_led_type led_instance;
+
+  return led_instance;
+}
+
+auto mcal::led::led1() -> mcal::led::led_base&
+{
+  using local_led_port_type = mcal::port::port_pin<mcal::reg::gpio0, mcal::led::LED_ID_2>;
+
+  using local_led_type = led_port<local_led_port_type>;
+
+  static local_led_type led_instance;
+
+  return led_instance;
+}
+
+auto mcal::led::led2() -> mcal::led::led_base&
+{
+  using local_led_port_type = mcal::port::port_pin<mcal::reg::gpio0, mcal::led::LED_ID_3>;
+
+  using local_led_type = led_port<local_led_port_type>;
+
+  static local_led_type led_instance;
+
+  return led_instance;
+}
+
+auto mcal::led::led3() -> mcal::led::led_base&
+{
+  using local_led_port_type = mcal::port::port_pin<mcal::reg::gpio0, mcal::led::LED_ID_4>;
+
+  using local_led_type = led_port<local_led_port_type>;
+
+  static local_led_type led_instance;
+
+  return led_instance;
 }

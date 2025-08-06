@@ -8,14 +8,16 @@
 #ifndef MCAL_BENCHMARK_2014_04_16_H
   #define MCAL_BENCHMARK_2014_04_16_H
 
-  #include <cstdint>
   #include <mcal_port.h>
+  #include <mcal_reg.h>
+
+  #include <cstdint>
 
   namespace mcal
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin<2U> benchmark_port_type;
+      typedef mcal::port::port_pin<mcal::reg::gpio0, 2U> benchmark_port_type;
     }
   }
 
