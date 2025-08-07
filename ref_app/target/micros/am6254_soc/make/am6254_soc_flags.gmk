@@ -16,7 +16,7 @@ CORE_FAMILY  := a53
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                                               \
+TGT_ALLFLAGS  = -O2                                                               \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -mcpu=cortex-a53                                                  \

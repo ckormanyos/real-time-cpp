@@ -92,8 +92,6 @@
             /* GPIO1 has no pad configuration */
           }
 
-          *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::uintptr_t>(instance_base + static_cast<std::uintptr_t>((pin/32U) * UINT32_C(0x28)) + static_cast<std::uintptr_t>(UINT32_C(0x0C)) /* GPIO_CLR_DATA */)) |= static_cast<std::uint32_t>(UINT32_C(1) << pin_mod32);
-          *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::uintptr_t>(instance_base + static_cast<std::uintptr_t>((pin/32U) * UINT32_C(0x28)) + static_cast<std::uintptr_t>(UINT32_C(0x04)) /* GPIO_OUT_DATA */)) &= static_cast<std::uint32_t>(~(static_cast<std::uint32_t>(UINT32_C(1) << pin_mod32)));
           *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::uintptr_t>(instance_base + static_cast<std::uintptr_t>((pin/32U) * UINT32_C(0x28)) + static_cast<std::uintptr_t>(UINT32_C(0x00)) /* GPIO_DIR      */)) &= static_cast<std::uint32_t>(~(static_cast<std::uint32_t>(UINT32_C(1) << pin_mod32)));
         }
 
