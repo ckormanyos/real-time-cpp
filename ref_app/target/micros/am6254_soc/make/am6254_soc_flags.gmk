@@ -18,7 +18,7 @@ TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -O2                                                               \
                 -finline-functions                                                \
-                -finline-limit=32                                                 \
+                -finline-limit=128                                                \
                 -mcpu=cortex-a53                                                  \
                 -march=armv8-a                                                    \
                 -mabi=lp64
@@ -31,15 +31,8 @@ TGT_CFLAGS    = -std=c11                                                        
 TGT_CXXFLAGS  = -std=c++20                                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_TGT)/Code                                                \
-                -I$(PATH_TGT)/Code/Appli/                                         \
-                -I$(PATH_TGT)/Code/Appli/Core/$(CORE_FAMILY)                      \
-                -I$(PATH_TGT)/Code/Mcal                                           \
-                -I$(PATH_TGT)/Code/Mcal/SysTickTimer                              \
-                -I$(PATH_TGT)/Code/Startup                                        \
-                -I$(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)                    \
-                -I$(PATH_APP)/mcal/$(TGT)                                         \
-                -I$(PATH_APP)
+TGT_INCLUDES  = -I$(PATH_TGT)/Code/Appli/Core/$(CORE_FAMILY)                      \
+                -I$(PATH_TGT)/Code/Startup/Core/$(CORE_FAMILY)
 
 TGT_AFLAGS    =
 
@@ -57,4 +50,7 @@ ifeq ($(TYP_OS),WIN)
 OBJCOPY      := $(subst /,\,$(PATH_TOOLS_CC)/$(GCC_PREFIX)-objcopy.exe)
 endif
 
-RULE_SPECIAL_MAKE_IMAGE_FILE := $(ECHO) "+++ creating special image file $(PATH_BIN)/$(CORE_FAMILY)_baremetal_am6254_nosdk.bin" && $(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(PATH_BIN)/$(CORE_FAMILY)_baremetal_am6254_nosdk.bin
+NAME_IMAGE_FILE := $(PATH_BIN)/$(CORE_FAMILY)_baremetal_am6254_nosdk
+
+RULE_SPECIAL_MAKE_IMAGE_FILE :=    $(ECHO) "+++ creating special image file $(NAME_IMAGE_FILE).bin" \
+                                && $(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(NAME_IMAGE_FILE).bin
