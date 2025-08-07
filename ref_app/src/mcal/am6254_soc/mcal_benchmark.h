@@ -17,7 +17,7 @@
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin<mcal::reg::gpio0, 2U> benchmark_port_type;
+      using benchmark_port_type = mcal::port::port_pin<mcal::reg::gpio0, 36U>;
     }
   }
 

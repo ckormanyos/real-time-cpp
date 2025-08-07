@@ -738,13 +738,13 @@
     <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\intvect.s">
       <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
     </None>
-    <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\Memory_Map.ld">
-      <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
-    </None>
     <None Include="target\micros\am6254_soc\make\am6254_soc_files.gmk">
       <Filter>micros\am6254_soc\make</Filter>
     </None>
     <None Include="target\micros\am6254_soc\make\am6254_soc_flags.gmk">
+      <Filter>micros\am6254_soc\make</Filter>
+    </None>
+    <None Include="target\micros\am6254_soc\make\am6254_soc.ld">
       <Filter>micros\am6254_soc\make</Filter>
     </None>
   </ItemGroup>

@@ -5,15 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_SPI_2012_05_24_H
-  #define MCAL_SPI_2012_05_24_H
+#include <mcal_spi.h>
 
-  namespace mcal { namespace spi {
-
-  using config_type = void;
-
-  auto init(const config_type*) -> void;
-
-  } }
-
-#endif // MCAL_SPI_2012_05_24_H
+void mcal::spi::init(const mcal::spi::config_type*)
+{
+}

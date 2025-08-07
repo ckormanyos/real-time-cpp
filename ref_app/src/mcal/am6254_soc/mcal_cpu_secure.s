@@ -23,11 +23,11 @@
 // ***************************************************************************************
 
 .section .text
-.type hw_acquire_spin_lock,@function
+.type mcal_cpu_secure_acquire_spin_lock,@function
 .align 3
-.globl hw_acquire_spin_lock
+.globl mcal_cpu_secure_acquire_spin_lock
 
-hw_acquire_spin_lock:
+mcal_cpu_secure_acquire_spin_lock:
   mov w1, #1
   .L_loop:
   ldaxr w2, [x0]
@@ -38,11 +38,11 @@ hw_acquire_spin_lock:
   ret
 
 .section .text
-.type hw_release_spin_lock,@function
+.type mcal_cpu_secure_release_spin_lock,@function
 .align 3
-.globl hw_release_spin_lock
+.globl mcal_cpu_secure_release_spin_lock
 
-hw_release_spin_lock:
+mcal_cpu_secure_release_spin_lock:
   dmb ish
   stlr wzr, [x0]
   ret

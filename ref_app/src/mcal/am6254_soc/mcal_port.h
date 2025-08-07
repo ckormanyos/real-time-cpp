@@ -20,7 +20,7 @@
     {
       using config_type = void;
 
-      inline void init(const config_type*) { }
+      void init(const config_type*);
 
       template<const std::uintptr_t InstanceBase, const unsigned PIN_ID>
       class port_pin
@@ -28,43 +28,44 @@
       private:
         static constexpr std::uintptr_t instance_base { InstanceBase };
         static constexpr unsigned pin { PIN_ID };
+        static constexpr unsigned pin_mod32 { static_cast<unsigned>(pin % UINT32_C(32)) };
 
       public:
-        static auto set_direction_output() -> void
+        static auto set_direction_output() noexcept -> void
         {
           mcal::cpu::acquire_spin_lock(&sync_object);
           GPIO_CONFIG_AS_OUTPUT();
           mcal::cpu::release_spin_lock(&sync_object);
         }
 
-        static auto set_direction_input() -> void
+        static auto set_direction_input() noexcept -> void
         {
           // Not yet implemented.
         }
 
-        static auto set_pin_high() -> void
+        static auto set_pin_high() noexcept -> void
         {
           mcal::cpu::acquire_spin_lock(&sync_object);
-          output_is_high = true;
           OUTPUT_HIGH();
+          output_is_high = true;
           mcal::cpu::release_spin_lock(&sync_object);
         }
 
-        static auto set_pin_low() -> void
+        static auto set_pin_low() noexcept -> void
         {
           mcal::cpu::acquire_spin_lock(&sync_object);
-          output_is_high = false;
           OUTPUT_LOW();
+          output_is_high = false;
           mcal::cpu::release_spin_lock(&sync_object);
         }
 
-        static auto read_input_value() -> bool
+        static auto read_input_value() noexcept -> bool
         {
           // Not yet implemented.
           return false;
         }
 
-        static auto toggle_pin() -> void
+        static auto toggle_pin() noexcept -> void
         {
           mcal::cpu::acquire_spin_lock(&sync_object);
           (output_is_high ? OUTPUT_LOW() : OUTPUT_HIGH());
@@ -76,28 +77,26 @@
         static volatile std::uint32_t sync_object;
         static bool output_is_high;
 
-        static auto GPIO_CONFIG_AS_OUTPUT() -> void
+        static auto GPIO_CONFIG_AS_OUTPUT() noexcept -> void
         {
           if(instance_base == mcal::reg::gpio0)
           {
-            *(volatile uint32_t*)(uintptr_t)(0x000F4000 + (pin * 4)) /* PADCFG_CTRL0_CFG0_PADCONFIG */ = 0x08014007ul;
+            *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::uintptr_t>(UINT32_C(0x000F4000) + (pin * 4U))) /* PADCFG_CTRL0_CFG0_PADCONFIG */ = UINT32_C(0x08014007);
           }
           else if(instance_base == mcal::reg::mcu_gpio0)
           {
-            *(volatile uint32_t*)(uintptr_t)(0x4084000 + (pin * 4)) /* MCU_PADCFG_CTRL0_CFG0_PADCONFIG */ = 0x08014007ul;
+            *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::uintptr_t>(UINT32_C(0x04084000) + (pin * 4U))) /* MCU_PADCFG_CTRL0_CFG0_PADCONFIG */ = UINT32_C(0x08014007);
           }
           else
           {
             /* GPIO1 has no pad configuration */
           }
 
-          *(volatile uint32_t*)(instance_base + (uintptr_t)((pin/32) * 0x28) + (uintptr_t)0x0C /* GPIO_CLR_DATA */) |= (1ul << (pin % 32));
-          *(volatile uint32_t*)(instance_base + (uintptr_t)((pin/32) * 0x28) + (uintptr_t)0x04 /* GPIO_OUT_DATA */) &= ~((uint32_t)(1ul << (pin % 32)));
-          *(volatile uint32_t*)(instance_base + (uintptr_t)((pin/32) * 0x28) + (uintptr_t)0x00 /* GPIO_DIR      */) &= ~((uint32_t)(1ul << (pin % 32)));
+          *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::uintptr_t>(instance_base + static_cast<std::uintptr_t>((pin/32U) * UINT32_C(0x28)) + static_cast<std::uintptr_t>(UINT32_C(0x00)) /* GPIO_DIR      */)) &= static_cast<std::uint32_t>(~(static_cast<std::uint32_t>(UINT32_C(1) << pin_mod32)));
         }
 
-        static auto OUTPUT_HIGH() -> void { *(volatile uint32_t*)(instance_base + (uintptr_t)((pin/32) * 0x28) + (uintptr_t)0x08 /* GPIO_SET_DATA */) = (1ul << (pin % 32)); }
-        static auto OUTPUT_LOW () -> void { *(volatile uint32_t*)(instance_base + (uintptr_t)((pin/32) * 0x28) + (uintptr_t)0x0C /* GPIO_CLR_DATA */) = (1ul << (pin % 32)); }
+        static auto OUTPUT_HIGH() noexcept -> void { *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::uintptr_t>(instance_base + static_cast<std::uintptr_t>((pin/32) * 0x28) + UINT32_C(0x08) /* GPIO_SET_DATA */)) = static_cast<std::uint32_t>(UINT32_C(1) << pin_mod32); }
+        static auto OUTPUT_LOW () noexcept -> void { *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::uintptr_t>(instance_base + static_cast<std::uintptr_t>((pin/32) * 0x28) + UINT32_C(0x0C) /* GPIO_CLR_DATA */)) = static_cast<std::uint32_t>(UINT32_C(1) << pin_mod32); }
 
         #if 0
         // Notes on gpio registers.

@@ -960,7 +960,7 @@
     <None Include="target\micros\am6254_soc\Code\SBL\tiboot3.bin" />
     <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\boot.s" />
     <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\intvect.s" />
-    <None Include="target\micros\am6254_soc\Code\Startup\Core\a53\Memory_Map.ld" />
+    <None Include="target\micros\am6254_soc\make\am6254_soc.ld" />
     <None Include="target\micros\am6254_soc\make\am6254_soc_files.gmk" />
     <None Include="target\micros\am6254_soc\make\am6254_soc_flags.gmk" />
     <None Include="target\micros\atmega2560\make\atmega2560.ld" />

@@ -7,6 +7,8 @@
 
 #include <core_macros.h>
 #include <gic-500.h>
+#include <mcal_cpu.h>
+#include <mcal_irq.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -25,6 +27,7 @@ extern ATTRIBUTE_USED int main(void);
 extern void main_core1(void);
 extern void main_core2(void);
 extern void main_core3(void);
+extern void main_core0_init(void);
 
 ATTRIBUTE_USED void timer_isr(void);
 ATTRIBUTE_USED void main_x(void);
@@ -37,11 +40,11 @@ void main_x(void)
   // Move the core initialization functions into main_init().
   main_init(ActiveCore);
 
-  if     (ActiveCore == UINT32_C(0)) { (void) main(); }
+  if     (ActiveCore == UINT32_C(0)) { main_core0_init(); (void) main(); }
   else if(ActiveCore == UINT32_C(1)) { main_core1(); }
   else if(ActiveCore == UINT32_C(2)) { main_core2(); }
   else if(ActiveCore == UINT32_C(3)) { main_core3(); }
-  else                               { for(;;) { __asm volatile("nop"); } }
+  else                               { for(;;) { mcal_cpu_nop(); } }
 }
 
 static void main_init(const uint32_t ActiveCore)
@@ -87,8 +90,7 @@ static void main_init(const uint32_t ActiveCore)
   pGICR->CORE[ActiveCore].SGI_PPI.ICFGR0 &= ~(uint32_t)(1 << ((29 - 16) * 2)); // clear bit to set level-triggered
 
   /* enable global interrupt */
-  arch_enable_ints();
-  arch_enable_fiqs();
+  mcal_irq_enable_all();
 
   /* start the timer */
   ARM64_WRITE_SYSREG(CNTPS_TVAL_EL1, UINT64_C(0x0BEBC200));

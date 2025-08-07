@@ -5,17 +5,13 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PWM_2010_09_14_H
-  #define MCAL_PWM_2010_09_14_H
+#include <mcal_reg.h>
+#include <mcal_wdg.h>
 
-  namespace mcal
-  {
-    namespace pwm
-    {
-      using config_type = void;
+void mcal::wdg::init(const config_type*)
+{
+}
 
-      void init(const config_type*);
-    }
-  }
-
-#endif // MCAL_PWM_2010_09_14_H
+void mcal::wdg::secure::trigger()
+{
+}
