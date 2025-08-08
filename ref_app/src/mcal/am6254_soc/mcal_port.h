@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PORT_2014_01_10_H_
-  #define MCAL_PORT_2014_01_10_H_
+#ifndef MCAL_PORT_2014_01_10_H
+  #define MCAL_PORT_2014_01_10_H
 
   #include <mcal_cpu.h>
   #include <mcal_reg.h>
@@ -33,9 +33,9 @@
       public:
         static auto set_direction_output() noexcept -> void
         {
-          mcal::cpu::acquire_spin_lock(&sync_object);
+          mcal::cpu::secure::acquire_spin_lock(&sync_object);
           GPIO_CONFIG_AS_OUTPUT();
-          mcal::cpu::release_spin_lock(&sync_object);
+          mcal::cpu::secure::release_spin_lock(&sync_object);
         }
 
         static auto set_direction_input() noexcept -> void
@@ -45,18 +45,18 @@
 
         static auto set_pin_high() noexcept -> void
         {
-          mcal::cpu::acquire_spin_lock(&sync_object);
+          mcal::cpu::secure::acquire_spin_lock(&sync_object);
           OUTPUT_HIGH();
           output_is_high = true;
-          mcal::cpu::release_spin_lock(&sync_object);
+          mcal::cpu::secure::release_spin_lock(&sync_object);
         }
 
         static auto set_pin_low() noexcept -> void
         {
-          mcal::cpu::acquire_spin_lock(&sync_object);
+          mcal::cpu::secure::acquire_spin_lock(&sync_object);
           OUTPUT_LOW();
           output_is_high = false;
-          mcal::cpu::release_spin_lock(&sync_object);
+          mcal::cpu::secure::release_spin_lock(&sync_object);
         }
 
         static auto read_input_value() noexcept -> bool
@@ -67,10 +67,10 @@
 
         static auto toggle_pin() noexcept -> void
         {
-          mcal::cpu::acquire_spin_lock(&sync_object);
+          mcal::cpu::secure::acquire_spin_lock(&sync_object);
           (output_is_high ? OUTPUT_LOW() : OUTPUT_HIGH());
           output_is_high = (!output_is_high);
-          mcal::cpu::release_spin_lock(&sync_object);
+          mcal::cpu::secure::release_spin_lock(&sync_object);
         }
 
       private:

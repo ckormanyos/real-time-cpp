@@ -1088,7 +1088,6 @@
     <ClCompile Include="target\micros\am335x\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main.c" />
     <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main_cores.cpp" />
-    <ClCompile Include="target\micros\am6254_soc\Code\Mcal\SysTickTimer\SysTickTimer.c" />
     <ClCompile Include="target\micros\am6254_soc\Code\Startup\Core\a53\Startup.c" />
     <ClCompile Include="target\micros\atmega2560\startup\crt0.cpp" />
     <ClCompile Include="target\micros\atmega2560\startup\crt0_init_ram.cpp" />
@@ -1198,7 +1197,6 @@
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="target\micros\am6254_soc\Code\Mcal\SysTickTimer\SysTickTimer.h" />
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\core_macros.h" />
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h" />
     <ClInclude Include="target\micros\xtensa_esp32_s3\startup\Std\core-isa.h" />

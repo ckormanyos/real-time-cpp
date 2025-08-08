@@ -39,8 +39,11 @@
 
       inline auto nop() noexcept -> void { asm volatile("nop"); }
 
-      inline auto acquire_spin_lock(volatile std::uint32_t* p_sync) noexcept -> void { mcal_cpu_secure_acquire_spin_lock(p_sync); }
-      inline auto release_spin_lock(volatile std::uint32_t* p_sync) noexcept -> void { mcal_cpu_secure_release_spin_lock(p_sync); }
+      struct secure
+      {
+        static auto acquire_spin_lock(volatile std::uint32_t* p_sync) noexcept -> void { mcal_cpu_secure_acquire_spin_lock(p_sync); }
+        static auto release_spin_lock(volatile std::uint32_t* p_sync) noexcept -> void { mcal_cpu_secure_release_spin_lock(p_sync); }
+      };
     }
   }
   #endif
