@@ -1,18 +1,21 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_cpu.h>
+
+#include <util/utility/util_attribute.h>
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <mcal_cpu.h>
 
-extern "C" void __my_startup       () __attribute__((section(".startup"), used, noinline));
-extern "C" void __vector_unused_irq() __attribute__((signal, used, externally_visible));
-extern "C" void __vector_16        () __attribute__((signal, used, externally_visible));
+extern "C" void __my_startup       () ATTRIBUTE(section(".startup"), used, noinline);
+extern "C" void __vector_unused_irq() ATTRIBUTE(signal, used, externally_visible);
+extern "C" void __vector_16        () ATTRIBUTE(signal, used, externally_visible);
 
 extern "C"
 void __vector_unused_irq()
@@ -39,7 +42,7 @@ namespace local
   using isr_vector_array_type = std::array<isr_type, count_of_isr_vector>;
 }
 
-const volatile local::isr_vector_array_type my_isr_vector __attribute__((section(".isr_vector"))) =
+const volatile local::isr_vector_array_type my_isr_vector ATTRIBUTE(section(".isr_vector")) =
 {{
                                                                                                                     // address   index   interrupt source
   { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __my_startup },         // 0x00      0       reset

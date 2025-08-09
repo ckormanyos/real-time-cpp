@@ -84,13 +84,13 @@ The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
 | Target             |  runtime $[ms]$ |  relative  |
 |--------------------|-----------------|------------|
 | `am6254_soc_`      |  0.37           |    1.0     |
-| `am335x`           |  1.5            |    4.0     |
+| `am335x`           |  1.5            |    4.1     |
 | `stm32f446`        |  5.1            |    14      |
 | `rpi_pico2_rp2350` |  6.3            |    17      |
 | `wch_ch32v307`     |  8.0            |    22      |
 | `xtensa_esp32_s3`  |  9.1            |    25      |
 | `rpi_pico_rp2040`  |  19             |    51      |
-| `avr`              |  420            |    760     |
+| `avr`              |  410            |   1100     |
 
 There are strikingly differing performance classes
 for the $8$-bit MICROCHIP(R) AVR controller of the ARDUINO

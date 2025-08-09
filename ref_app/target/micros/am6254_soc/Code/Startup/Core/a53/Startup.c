@@ -22,6 +22,8 @@
 
 #include <mcal_cpu.h>
 
+#include <util/utility/util_attribute.h>
+
 #include <stdint.h>
 
 typedef struct
@@ -44,12 +46,6 @@ extern const runtimeCopyTable_t __RUNTIME_COPY_TABLE[];
 extern const runtimeClearTable_t __RUNTIME_CLEAR_TABLE[];
 extern unsigned long __CTOR_LIST__[];
 
-#if defined(__GNUC__)
-#define ATTRIBUTE_USED __attribute__((used,noinline))
-#else
-#define ATTRIBUTE_USED
-#endif
-
 #define __STARTUP_RUNTIME_COPYTABLE   (runtimeCopyTable_t*)(&__RUNTIME_COPY_TABLE[0])
 #define __STARTUP_RUNTIME_CLEARTABLE  (runtimeClearTable_t*)(&__RUNTIME_CLEAR_TABLE[0])
 #define __STARTUP_RUNTIME_CTORS       (unsigned long*)(&__CTOR_LIST__[0])
@@ -65,7 +61,7 @@ static void Startup_Unexpected_Exit(void);
 static void Startup_InitSystemClock(void);
 static void Startup_InitSystemPeripheral(void);
 
-extern ATTRIBUTE_USED void main_x(void);
+extern void main_x(void) ATTRIBUTE(used);
 
 void Startup_Init(void)
 {

@@ -2949,6 +2949,9 @@
     <ClInclude Include="src\mcal\am6254_soc\mcal_osc.h">
       <Filter>src\mcal\am6254_soc</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\utility\util_attribute.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
