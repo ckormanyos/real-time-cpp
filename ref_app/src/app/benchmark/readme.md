@@ -83,7 +83,7 @@ The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
 
 | Target             |  runtime $[ms]$ |  relative  |
 |--------------------|-----------------|------------|
-| `am6254_soc_`      |  0.37           |    1.0     |
+| `am6254_soc`       |  0.37           |    1.0     |
 | `am335x`           |  1.5            |    4.1     |
 | `stm32f446`        |  5.1            |    14      |
 | `rpi_pico2_rp2350` |  6.3            |    17      |
@@ -97,31 +97,32 @@ for the $8$-bit MICROCHIP(R) AVR controller of the ARDUINO
 and the $32$-bit ARM(R) 8 controller
 of the BeagleBone Black Edition, Rev. C.
 The $\pi$ calculation requires approximately
-$420~\text{ms}$ and $1.5~\text{ms,}~$
+$410~{\text{ms}}$ and $1.5~{\text{ms,}}$
 respectively, on these two microcontroller systems.
 
-The $64$-bit ARM(R)v8-a (i.e., Cortex(R) A53) performs the
-calculation (running on one single A53 core of the PocketBeagle2 board)
-in $0.37~\text{ms.}$
+The $64$-bit ARM(R) v8-a (i.e., Cortex(R) A53) performs the
+calculation in $0.37~{\text{ms}}$. This benchmark runs
+on _one_ _single_ A53 core of the PocketBeagle2 board and there
+are $3$ additional identical A53 cores (and $2$ smaller ones)
+simply waiting in idle loops.
 
 The $32$-bit ARM(R) Cortex(R) M4F controller on
 the `stm32f446` board performs the calculation in
-the middle of the two extremes, with a result
-of $5.1~\text{ms}$.
+the middle of these extreme performance classes,
+with a result of $5.1~{\text{ms}}$.
 
 The $32$-bit RISC-V controller (having a novel _open-source_ core)
 on the `wch_ch32v307` board boasts a quite respectable
-time of $8.0~\text{ms.}$
+time of $8.0~{\text{ms}}$.
 
 Running on only one core (core0) of the $32$-bit
 controller of the `xtensa_esp32_s3` board results in
-a runtime of $9.1~\text{ms}$ for the calculation.
+a runtime of $9.1~{\text{ms}}$ for the calculation.
 
 Using only one core (core1) on the $32$-bit ARM(R) Cortex(R) M0+
 controller of the `rpi_pico_rp2040` board results in a calculation
-time of $19~\text{ms.}~$
+time of $19~{\text{ms}}$.
 The next generation `rpi_pico2_rp2350`
 with dual ARM(R) Cortex(R) M33 cores definitively improves on this
-(still using only core1) with a time of $6.3~\text{ms.}~$
-This is slightly more than $3~\text{ms}$ times faster
-than its predecessor.
+(still using only core1). It has a calculation time of $6.3~{\text{ms}}$,
+which is slightly more than $3$ times faster than its predecessor.
