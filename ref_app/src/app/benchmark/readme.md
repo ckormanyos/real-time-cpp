@@ -100,7 +100,7 @@ The $\pi$ calculation requires approximately
 $410~{\text{ms}}$ and $1.5~{\text{ms,}}$
 respectively, on these two microcontroller systems.
 
-The $64$-bit ARM(R)v8-a (i.e., Cortex(R) A53) performs the
+The $64$-bit ARM(R) v8-a (i.e., Cortex(R) A53) performs the
 calculation in $0.37~{\text{ms}}$. This benchmark runs
 on _one_ _single_ A53 core of the PocketBeagle2 board and there
 are $3$ additional identical A53 cores (and $2$ smaller ones)
@@ -108,8 +108,8 @@ simply waiting in idle loops.
 
 The $32$-bit ARM(R) Cortex(R) M4F controller on
 the `stm32f446` board performs the calculation in
-the middle of the two extremes, with a result
-of $5.1~{\text{ms}}$.
+the middle of these extreme performance classes,
+with a result of $5.1~{\text{ms}}$.
 
 The $32$-bit RISC-V controller (having a novel _open-source_ core)
 on the `wch_ch32v307` board boasts a quite respectable
