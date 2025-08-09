@@ -3233,6 +3233,7 @@
     </ClInclude>
     <ClInclude Include="src\util\STL_C++XX_stdfloat\stdfloat.h" />
     <ClInclude Include="src\util\utility\util_alignas.h" />
+    <ClInclude Include="src\util\utility\util_attribute.h" />
     <ClInclude Include="src\util\utility\util_baselexical_cast.h" />
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
     <ClInclude Include="src\util\utility\util_communication.h" />

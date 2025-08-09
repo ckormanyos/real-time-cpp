@@ -1,15 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_memory/mcal_memory_progmem_access.h>
+
+#include <util/utility/util_attribute.h>
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
-
-#include <mcal_memory/mcal_memory_progmem_access.h>
 
 extern "C"
 {
@@ -22,7 +24,7 @@ extern "C"
 
 namespace crt
 {
-  void init_ram() __attribute__((section(".startup"), used, noinline));
+  void init_ram() ATTRIBUTE(section(".startup"), used, noinline);
 }
 
 void crt::init_ram()

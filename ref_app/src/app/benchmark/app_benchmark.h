@@ -8,15 +8,7 @@
 #ifndef APP_BENCHMARK_2018_10_02_H
   #define APP_BENCHMARK_2018_10_02_H
 
-  #if defined(ATTRIBUTE)
-  #undef ATTRIBUTE
-  #endif
-
-  #if defined(_MSC_VER)
-  #define ATTRIBUTE(a)
-  #else
-  #define ATTRIBUTE(a) __attribute__((a))
-  #endif
+  #include <util/utility/util_attribute.h>
 
   #define APP_BENCHMARK_TYPE_NONE                                0
   #define APP_BENCHMARK_TYPE_COMPLEX                             1

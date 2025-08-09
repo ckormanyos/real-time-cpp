@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -92,11 +92,11 @@
     {                                                                                             \
       os::task_control_block(app::led::task_init,                                                 \
                              app::led::task_func,                                                 \
-                             os::timer_type::microseconds(UINT32_C(   4000)),                     \
+                             os::timer_type::microseconds(UINT32_C(   7000)),                     \
                              os::timer_type::microseconds(UINT32_C(      0))),                    \
       os::task_control_block(app::benchmark::task_init,                                           \
                              app::benchmark::task_func,                                           \
-                             os::timer_type::microseconds(UINT32_C( 750000)),                     \
+                             os::timer_type::microseconds(UINT32_C( 830000)),                     \
                              os::timer_type::microseconds(UINT32_C(    379))),                    \
       os::task_control_block(sys::mon::task_init,                                                 \
                              sys::mon::task_func,                                                 \

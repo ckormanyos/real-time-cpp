@@ -10,18 +10,14 @@
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 
+#include <util/utility/util_attribute.h>
+
 #include <stdbool.h>
 #include <stdint.h>
 
-#if defined(__GNUC__)
-#define ATTRIBUTE_USED __attribute__((used))
-#else
-#define ATTRIBUTE_USED
-#endif
-
 extern uint32_t GetActiveCoreId(void);
 
-extern ATTRIBUTE_USED int main(void);
+extern int main(void) ATTRIBUTE(used);
 
 //extern void main_core0(void);
 extern void main_core1(void);
@@ -29,9 +25,9 @@ extern void main_core2(void);
 extern void main_core3(void);
 extern void main_core0_init(void);
 
-ATTRIBUTE_USED void timer_isr(void);
-ATTRIBUTE_USED void main_x(void);
-ATTRIBUTE_USED static void main_init(const uint32_t ActiveCore);
+void timer_isr(void) ATTRIBUTE(used);
+void main_x(void) ATTRIBUTE(used);
+static void main_init(const uint32_t ActiveCore) ATTRIBUTE(used);
 
 void main_x(void)
 {
