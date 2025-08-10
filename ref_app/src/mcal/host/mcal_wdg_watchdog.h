@@ -115,7 +115,7 @@
           }
         }
 
-        friend class ::mcal::wdg::secure;
+        friend struct ::mcal::wdg::secure;
       };
 
       template<const typename watchdog_base::base_timer_type::tick_type MyPeriod>
