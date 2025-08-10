@@ -26,15 +26,10 @@ extern "C"
   extern auto _start() -> void;
 }
 
-extern volatile bool core1_toggle_flag;
-
 namespace local
 {
-  static auto main_core1_worker(mcal::led::led_base& my_led) -> void;
-} // namespace local
+  auto main_worker_core1(mcal::led::led_base& my_led) -> void;
 
-namespace util
-{
   template<typename unsigned_tick_type>
   struct timer_core1_backend
   {
@@ -45,7 +40,7 @@ namespace util
       return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core1());
     }
   };
-} // namespace util
+} // namespace local
 
 extern "C"
 auto Mcu_StartCore1() -> void
@@ -146,8 +141,8 @@ auto main_c1() -> void
   mcal::irq::init(nullptr);
 
   // Perpetually toggle the LED with a flag-based trigger
-  // in the for(ever)-loop of main_core1_worker().
-  local::main_core1_worker(mcal::led::led1());
+  // in the for(ever)-loop of main_worker_core1().
+  local::main_worker_core1(mcal::led::led1());
 }
 
 auto mcal::cpu::post_init() noexcept -> void
@@ -171,17 +166,13 @@ auto mcal::cpu::init() -> void
   mcal::osc::init(nullptr);
 }
 
-namespace local
-{
-}
-
-static auto local::main_core1_worker(mcal::led::led_base& my_led) -> void
+auto local::main_worker_core1(mcal::led::led_base& my_led) -> void
 {
   my_led.toggle();
 
   for(;;)
   {
-    using local_timer_type = util::timer<std::uint32_t, util::timer_core1_backend<std::uint32_t>>;
+    using local_timer_type = util::timer<std::uint32_t, local::timer_core1_backend<std::uint32_t>>;
     using local_tick_type = typename local_timer_type::tick_type;
 
     local_timer_type::blocking_delay(local_timer_type::seconds(local_tick_type { UINT8_C(1) }));

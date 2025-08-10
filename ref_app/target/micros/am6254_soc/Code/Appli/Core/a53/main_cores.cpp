@@ -17,7 +17,7 @@
 
 namespace local
 {
-  static auto main_core_worker(mcal::led::led_base& my_led) -> void;
+  auto main_worker_core_x(mcal::led::led_base& my_led) -> void;
 }
 
 extern "C" auto main_core1(void) -> void;
@@ -25,9 +25,9 @@ extern "C" auto main_core2(void) -> void;
 extern "C" auto main_core3(void) -> void;
 extern "C" auto main_core0_init(void) -> void;
 
-extern "C" auto main_core1(void) -> void { local::main_core_worker(mcal::led::led1()); }
-extern "C" auto main_core2(void) -> void { local::main_core_worker(mcal::led::led2()); }
-extern "C" auto main_core3(void) -> void { local::main_core_worker(mcal::led::led3()); }
+extern "C" auto main_core1(void) -> void { local::main_worker_core_x(mcal::led::led1()); }
+extern "C" auto main_core2(void) -> void { local::main_worker_core_x(mcal::led::led2()); }
+extern "C" auto main_core3(void) -> void { local::main_worker_core_x(mcal::led::led3()); }
 
 extern "C" auto main_core0_init(void) -> void
 {
@@ -36,7 +36,7 @@ extern "C" auto main_core0_init(void) -> void
   mcal::osc::init (nullptr);
 }
 
-static auto local::main_core_worker(mcal::led::led_base& my_led) -> void
+auto local::main_worker_core_x(mcal::led::led_base& my_led) -> void
 {
   my_led.toggle();
 
