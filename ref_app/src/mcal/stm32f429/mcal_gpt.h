@@ -1,24 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_GPT_2011_10_20_H_
-  #define MCAL_GPT_2011_10_20_H_
-
-  #include <chrono>
-  #include <cstdint>
+#ifndef MCAL_GPT_2011_10_20_H
+  #define MCAL_GPT_2011_10_20_H
 
   #include <mcal/mcal_gpt_arm_sys_tick.h>
 
-  // Forward declaration of the util::timer template class.
-  namespace util
-  {
-    template<typename unsigned_tick_type>
-    class timer;
-  }
+  #include <cstdint>
 
   namespace mcal
   {
@@ -38,7 +30,7 @@
         local_arm_sys_tick_type::init();
       }
 
-      class secure final
+      struct secure final
       {
         static auto get_time_elapsed() -> value_type
         {
@@ -46,13 +38,8 @@
 
           return static_cast<value_type>(local_arm_sys_tick_type::get_time_elapsed());
         }
-
-        friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() noexcept;
-
-        template<typename unsigned_tick_type>
-        friend class util::timer;
       };
     }
   }
 
-#endif // MCAL_GPT_2011_10_20_H_
+#endif // MCAL_GPT_2011_10_20_H

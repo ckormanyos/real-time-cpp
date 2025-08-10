@@ -8,15 +8,7 @@
 #ifndef MCAL_GPT_2025_02_22_H
   #define MCAL_GPT_2025_02_22_H
 
-  #include <chrono>
   #include <cstdint>
-
-  // Forward declaration of the util::timer template class.
-  namespace util
-  {
-    template<typename unsigned_tick_type>
-    class timer;
-  }
 
   namespace mcal
   {
@@ -30,18 +22,14 @@
 
       using config_type = void;
       using value_type  = std::uint64_t;
+      using value_type_core1 = value_type;
 
       auto init(const config_type*) -> void;
 
       struct secure final
       {
-      private:
         static auto get_time_elapsed() -> value_type;
-
-        friend auto std::chrono::high_resolution_clock::now() noexcept -> std::chrono::high_resolution_clock::time_point;
-
-        template<typename unsigned_tick_type>
-        friend class util::timer;
+        static auto get_time_elapsed_core1() -> value_type_core1;
       };
     }
   }

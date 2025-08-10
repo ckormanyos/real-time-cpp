@@ -9,6 +9,8 @@
 #include <mcal_led.h>
 #include <mcal_reg.h>
 
+#include <cstddef>
+
 extern "C"
 {
   extern auto get_core_id() -> uint32_t;
@@ -19,15 +21,18 @@ extern "C"
 
 namespace
 {
-  volatile mcal::gpt::value_type system_tick;
+  volatile mcal::gpt::value_type system_tick[std::size_t { UINT8_C(2) }];
 
+  template<const std::size_t CoreIndex>
   auto get_consistent_tick() -> mcal::gpt::value_type
   {
     using value_type = mcal::gpt::value_type;
 
+    constexpr std::size_t core_index = CoreIndex;
+
     // Do the first read of the timer1 counter and the system tick.
     const volatile std::uint32_t t1_cnt_1   = get_cpu_private_timer1();
-    const volatile std::uint64_t sys_tick_1 = system_tick;
+    const volatile std::uint64_t sys_tick_1 = system_tick[core_index];
 
     // Do the second read of the timer1 counter.
     const volatile std::uint32_t t1_cnt_2 = get_cpu_private_timer1();
@@ -37,7 +42,7 @@ namespace
       static_cast<value_type>
       (
         (t1_cnt_2 >= t1_cnt_1) ? static_cast<value_type>(sys_tick_1  + t1_cnt_1)
-                               : static_cast<value_type>(system_tick + t1_cnt_2)
+                               : static_cast<value_type>(system_tick[core_index] + t1_cnt_2)
       );
   }
 
@@ -56,12 +61,21 @@ extern "C" void __system_tick_handler()
   // Reload the private timer1 for the running core.
   set_cpu_private_timer1(mcal::gpt::detail::timer1_reload());
 
-  const bool is_not_core0 { (get_core_id() != std::uint32_t { UINT8_C(0) }) };
+  const bool is_core0 { (get_core_id() == std::uint32_t { UINT8_C(0) }) };
 
-  // Toggle the LED (on core1) or increment the 64-bit system tick (on core0).
+  // Increment the 64-bit system tick (on core0). Here, we
+  // service the system tick for core0 only. This is because
+  // there is only one tick but it is used in the timer
+  // facility by both cores.
 
-  if(is_not_core0) { mcal::led::led1().toggle(); }
-  else             { system_tick += mcal::gpt::detail::timer1_max(); }
+  if(is_core0)
+  {
+    system_tick[std::size_t { UINT8_C(0) }] += mcal::gpt::detail::timer1_max();
+  }
+  else
+  {
+    system_tick[std::size_t { UINT8_C(1) }] += mcal::gpt::detail::timer1_max();
+  }
 }
 
 auto mcal::gpt::init(const config_type*) -> void
@@ -75,14 +89,28 @@ auto mcal::gpt::init(const config_type*) -> void
 
 auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
 {
-  mcal::gpt::value_type result { };
+  // At the moment, mhz_value is equal to 80.
+  constexpr std::uint32_t mhz_value { (mcal::gpt::detail::timer1_max() / UINT32_C(1000000)) };
 
-  if(gpt_is_initialized())
-  {
-    constexpr std::uint32_t mhz_value { (mcal::gpt::detail::timer1_max() / UINT32_C(1000000)) };
+  return
+    (gpt_is_initialized()
+      ? static_cast<mcal::gpt::value_type>
+        (
+          static_cast<std::uint64_t>(get_consistent_tick<std::size_t { UINT8_C(0) }>() + mhz_value) / mhz_value
+        )
+      : mcal::gpt::value_type { });
+}
 
-    result = get_consistent_tick() / mhz_value;
-  }
+auto mcal::gpt::secure::get_time_elapsed_core1() -> mcal::gpt::value_type_core1
+{
+  // At the moment, mhz_value is equal to 80.
+  constexpr std::uint32_t mhz_value { (mcal::gpt::detail::timer1_max() / UINT32_C(1000000)) };
 
-  return result;
+  return
+    (gpt_is_initialized()
+      ? static_cast<mcal::gpt::value_type>
+        (
+          static_cast<std::uint64_t>(get_consistent_tick<std::size_t { UINT8_C(1) }>() + mhz_value) / mhz_value
+        )
+      : mcal::gpt::value_type { });
 }

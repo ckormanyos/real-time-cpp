@@ -14,6 +14,8 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
+#include <util/utility/util_time.h>
+
 extern "C"
 {
   auto main_c1() -> void;
@@ -24,12 +26,33 @@ extern "C"
   extern auto _start() -> void;
 }
 
+extern volatile bool core1_toggle_flag;
+
+namespace local
+{
+  static auto main_core1_worker(mcal::led::led_base& my_led) -> void;
+} // namespace local
+
+namespace util
+{
+  template<typename unsigned_tick_type>
+  struct timer_core1_backend
+  {
+    using tick_type = unsigned_tick_type;
+
+    constexpr static auto get_now() -> tick_type
+    {
+      return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core1());
+    }
+  };
+} // namespace util
+
 extern "C"
 auto Mcu_StartCore1() -> void
 {
   // Note: This subroutine is called from core0.
 
-  // Firstly we need to unstall core1.
+  // As a first step, we need to un-stall core1.
 
   // RTC_CNTL->OPTIONS0.bit.SW_STALL_APPCPU_C0            = 0;
   // RTC_CNTL->SW_CPU_STALL.bit.SW_STALL_APPCPU_C1        = 0;
@@ -122,10 +145,9 @@ auto main_c1() -> void
   // Enable all interrupts on core1.
   mcal::irq::init(nullptr);
 
-  // GPIO->OUT.reg |= CORE1_LED;
-  mcal::led::led1().toggle();
-
-  for(;;) { mcal::cpu::nop(); }
+  // Perpetually toggle the LED with a flag-based trigger
+  // in the for(ever)-loop of main_core1_worker().
+  local::main_core1_worker(mcal::led::led1());
 }
 
 auto mcal::cpu::post_init() noexcept -> void
@@ -147,4 +169,23 @@ auto mcal::cpu::init() -> void
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
+}
+
+namespace local
+{
+}
+
+static auto local::main_core1_worker(mcal::led::led_base& my_led) -> void
+{
+  my_led.toggle();
+
+  for(;;)
+  {
+    using local_timer_type = util::timer<std::uint32_t, util::timer_core1_backend<std::uint32_t>>;
+    using local_tick_type = typename local_timer_type::tick_type;
+
+    local_timer_type::blocking_delay(local_timer_type::seconds(local_tick_type { UINT8_C(1) }));
+
+    my_led.toggle();
+  }
 }

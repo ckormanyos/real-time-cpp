@@ -1,18 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_WDG_2010_04_10_H_
-  #define MCAL_WDG_2010_04_10_H_
-
-  extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
-
-  namespace sys { namespace idle { void task_func(); } }
-
-  namespace util { template<typename unsigned_tick_type> class timer; }
+#ifndef MCAL_WDG_2010_04_10_H
+  #define MCAL_WDG_2010_04_10_H
 
   namespace mcal
   {
@@ -24,16 +18,9 @@
 
       struct secure final
       {
-      private:
-        friend void ::sys::idle::task_func();
-        friend void ::__my_startup();
-
-        template<typename unsigned_tick_type>
-        friend class util::timer;
-
         static void trigger() { }
       };
     }
   }
 
-#endif // MCAL_WDG_2010_04_10_H_
+#endif // MCAL_WDG_2010_04_10_H

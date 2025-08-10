@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2019 - 2024.
+#  Copyright Christopher Kormanyos 2019 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,6 +12,16 @@
 GCC_VERSION   = 13.2.0
 GCC_TARGET    = x86_64-w64-mingw32
 GCC_PREFIX    =
+
+AR           := $(PATH_TOOLS_CC)\ar.exe
+AS           := $(PATH_TOOLS_CC)\g++.exe
+CC           := $(PATH_TOOLS_CC)\g++.exe
+CPPFILT      := $(PATH_TOOLS_CC)\c++filt.exe
+NM           := $(PATH_TOOLS_CC)\nm.exe
+OBJDUMP      := $(PATH_TOOLS_CC)\objdump.exe
+OBJCOPY      := $(PATH_TOOLS_CC)\objcopy.exe
+READELF      := $(PATH_TOOLS_CC)\readelf.exe
+SIZE         := $(PATH_TOOLS_CC)\size.exe
 
 TGT_SUFFIX    = exe
 

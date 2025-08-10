@@ -8,10 +8,6 @@
 #ifndef MCAL_WDG_2025_02_22_H
   #define MCAL_WDG_2025_02_22_H
 
-  extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
-
-  namespace sys { namespace idle { void task_func(); } }
-
   namespace mcal
   {
     namespace wdg
@@ -20,12 +16,9 @@
 
       void init(const config_type*);
 
-      class secure final
+      struct secure final
       {
         static void trigger();
-
-        friend void ::sys::idle::task_func();
-        friend void ::__my_startup();
       };
     }
   }

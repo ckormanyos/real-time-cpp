@@ -5,14 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_WDG_2010_04_10_H_
-  #define MCAL_WDG_2010_04_10_H_
-
-  extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
-
-  namespace util { template<typename unsigned_tick_type> class timer; }
-
-  namespace sys { namespace idle { void task_func(); } }
+#ifndef MCAL_WDG_2010_04_10_H
+  #define MCAL_WDG_2010_04_10_H
 
   namespace mcal
   {
@@ -22,17 +16,11 @@
 
       auto init(const config_type*) -> void;
 
-      class secure final
+      struct secure final
       {
         static void trigger();
-
-        template<typename unsigned_tick_type>
-        friend class util::timer;
-
-        friend void ::sys::idle::task_func();
-        friend void ::__my_startup();
       };
     }
   }
 
-#endif // MCAL_WDG_2010_04_10_H_
+#endif // MCAL_WDG_2010_04_10_H
