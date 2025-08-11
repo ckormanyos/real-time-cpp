@@ -24,6 +24,9 @@ namespace
   volatile mcal::gpt::value_type system_tick[std::size_t { UINT8_C(2) }];
 
   template<const std::size_t CoreIndex>
+  auto get_consistent_tick() -> mcal::gpt::value_type;
+
+  template<const std::size_t CoreIndex>
   auto get_consistent_tick() -> mcal::gpt::value_type
   {
     using value_type = mcal::gpt::value_type;
@@ -58,24 +61,17 @@ namespace
 
 extern "C" void __system_tick_handler()
 {
-  // Reload the private timer1 for the running core.
+  // Reload the private timer1 for the running core,
+  // which could be either core0 or core1.
   set_cpu_private_timer1(mcal::gpt::detail::timer1_reload());
 
-  const bool is_core0 { (get_core_id() == std::uint32_t { UINT8_C(0) }) };
+  const std::size_t core_id { static_cast<std::size_t>(get_core_id()) };
 
-  // Increment the 64-bit system tick (on core0). Here, we
-  // service the system tick for core0 only. This is because
-  // there is only one tick but it is used in the timer
-  // facility by both cores.
+  // Increment the 64-bit system tick (on the appropriate core).
+  // Here, we service the system tick for either core0 or core1,
+  // depending on the running core.
 
-  if(is_core0)
-  {
-    system_tick[std::size_t { UINT8_C(0) }] += mcal::gpt::detail::timer1_max();
-  }
-  else
-  {
-    system_tick[std::size_t { UINT8_C(1) }] += mcal::gpt::detail::timer1_max();
-  }
+  system_tick[core_id] += mcal::gpt::detail::timer1_max();
 }
 
 auto mcal::gpt::init(const config_type*) -> void
