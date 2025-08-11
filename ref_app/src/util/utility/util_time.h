@@ -16,17 +16,17 @@
 
   namespace util
   {
-    template<typename unsigned_tick_type>
+    template<typename UnsignedTickType>
     struct default_timer_backend;
 
-    template<typename unsigned_tick_type,
-             typename BackendType = default_timer_backend<unsigned_tick_type>>
+    template<typename UnsignedTickType,
+             typename BackendType = default_timer_backend<UnsignedTickType>>
     class timer;
 
-    template<typename unsigned_tick_type>
+    template<typename UnsignedTickType>
     struct default_timer_backend
     {
-      using tick_type = unsigned_tick_type;
+      using tick_type = UnsignedTickType;
 
       constexpr static auto get_now() -> tick_type
       {
@@ -34,22 +34,31 @@
       }
     };
 
-    template<typename unsigned_tick_type,
+    template<typename UnsignedTickType,
              typename BackendType>
     class timer
     {
     private:
-      static constexpr auto timer_mask =
-        static_cast<unsigned_tick_type>
-        (
-          (UINTMAX_C(1) << static_cast<unsigned>(std::numeric_limits<unsigned_tick_type>::digits - 1)) - UINTMAX_C(1)
-        );
-
       using backend_type = BackendType;
 
     public:
       using tick_type = typename backend_type::tick_type;
 
+    private:
+      static constexpr auto timer_mask =
+        static_cast<tick_type>
+        (
+          static_cast<std::uintmax_t>
+          (
+              static_cast<std::uintmax_t>
+              (
+                UINTMAX_C(1) << static_cast<unsigned>(std::numeric_limits<tick_type>::digits - 1)
+              )
+            - UINTMAX_C(1)
+          )
+        );
+
+    public:
       template<typename other_tick_type> static constexpr auto microseconds(other_tick_type value_microseconds) noexcept -> tick_type { return static_cast<tick_type>(value_microseconds); }
       template<typename other_tick_type> static constexpr auto milliseconds(other_tick_type value_milliseconds) noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(1000)) * microseconds(value_milliseconds); }
       template<typename other_tick_type> static constexpr auto seconds     (other_tick_type value_seconds)      noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(1000)) * milliseconds(value_seconds     ); }

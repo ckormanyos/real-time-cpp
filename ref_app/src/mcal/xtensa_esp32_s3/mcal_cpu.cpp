@@ -30,10 +30,10 @@ namespace local
 {
   auto main_worker_core1(mcal::led::led_base& my_led) -> void;
 
-  template<typename unsigned_tick_type>
+  template<typename UnsignedTickType>
   struct timer_core1_backend
   {
-    using tick_type = unsigned_tick_type;
+    using tick_type = UnsignedTickType;
 
     constexpr static auto get_now() -> tick_type
     {
@@ -170,13 +170,22 @@ auto local::main_worker_core1(mcal::led::led_base& my_led) -> void
 {
   my_led.toggle();
 
+  using local_timer_type = util::timer<std::uint32_t, local::timer_core1_backend<std::uint32_t>>;
+  using local_tick_type = typename local_timer_type::tick_type;
+
+  constexpr local_tick_type led_time_1sec { local_timer_type::seconds(local_tick_type { UINT8_C(1) }) };
+
+  local_timer_type led_timer { led_time_1sec };
+
   for(;;)
   {
-    using local_timer_type = util::timer<std::uint32_t, local::timer_core1_backend<std::uint32_t>>;
-    using local_tick_type = typename local_timer_type::tick_type;
-
-    local_timer_type::blocking_delay(local_timer_type::seconds(local_tick_type { UINT8_C(1) }));
+    while(!led_timer.timeout())
+    {
+      mcal::cpu::nop();
+    }
 
     my_led.toggle();
+
+    led_timer.start_interval(led_time_1sec);
   }
 }

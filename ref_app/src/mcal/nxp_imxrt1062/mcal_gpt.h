@@ -12,13 +12,6 @@
 
   #include <mcal/mcal_gpt_arm_sys_tick.h>
 
-  // Forward declaration of the util::timer template class.
-  namespace util
-  {
-    template<typename unsigned_tick_type>
-    class default_timer_backend;
-  }
-
   namespace mcal
   {
     namespace gpt
