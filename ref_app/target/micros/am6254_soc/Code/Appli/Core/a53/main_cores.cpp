@@ -20,12 +20,11 @@ namespace local
   template<typename UnsignedTickType, const unsigned CoreId>
   struct timer_core_x_backend
   {
+    static_assert(CoreId == 0U, "Error: This template is intended for CoreId 0 only");
+
     using tick_type = UnsignedTickType;
 
-    constexpr static auto get_now() -> tick_type
-    {
-      return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed());
-    }
+    static constexpr auto get_now() -> tick_type { return util::default_timer_backend<tick_type>::get_now(); }
   };
 
   template<typename UnsignedTickType>
@@ -33,10 +32,7 @@ namespace local
   {
     using tick_type = UnsignedTickType;
 
-    constexpr static auto get_now() -> tick_type
-    {
-      return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core1());
-    }
+    static constexpr auto get_now() -> tick_type { return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core1()); }
   };
 
   template<typename UnsignedTickType>
@@ -44,10 +40,7 @@ namespace local
   {
     using tick_type = UnsignedTickType;
 
-    constexpr static auto get_now() -> tick_type
-    {
-      return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core2());
-    }
+    static constexpr auto get_now() -> tick_type { return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core2()); }
   };
 
   template<typename UnsignedTickType>
@@ -55,10 +48,7 @@ namespace local
   {
     using tick_type = UnsignedTickType;
 
-    constexpr static auto get_now() -> tick_type
-    {
-      return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core3());
-    }
+    static constexpr auto get_now() -> tick_type { return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core3()); }
   };
 
   template<const unsigned CoreId>
