@@ -33,12 +33,13 @@ uint32_t Crc32_Mpeg2(const uint8_t* DataIn,
   /* Set the initial value. */
   uint32_t CrcResult = UINT32_C(0xFFFFFFFF);
 
+  /* Loop counter for iterating through input data */
   size_t LoopCnt;
 
   /* Loop through the input data stream */
   for(LoopCnt = 0U; LoopCnt < DataLength; ++LoopCnt)
   {
-    /* CRC32/MPEG2 Table based on nibbles. */
+    /* Lookup table for CRC32/MPEG-2 based on 4-bit nibbles */
     static const uint32_t Crc32_Mpeg2_Table[16U] =
     {
       UINT32_C(0x00000000), UINT32_C(0x04C11DB7),
@@ -50,28 +51,35 @@ uint32_t Crc32_Mpeg2(const uint8_t* DataIn,
       UINT32_C(0x350C9B64), UINT32_C(0x31CD86D3),
       UINT32_C(0x3C8EA00A), UINT32_C(0x384FBDBD)
     };
-
+    
+    /*current byte from the input */
     const uint8_t DataByte = DataIn[LoopCnt];
 
     /* Perform the CRC32/MPEG2 algorithm. */
+    
+    /* Index for first nibble lookup */
     uint_fast8_t DataIndex =
-        (  ((uint_fast8_t) (CrcResult >> 28U))
-         ^ ((uint_fast8_t) (DataByte  >>  4U)))
-      & UINT8_C(0x0F);
+            (  ((uint_fast8_t) (CrcResult >> 28U))
+             ^ ((uint_fast8_t) (DataByte  >>  4U)))
+          & UINT8_C(0x0F);
 
-    CrcResult =
+
+    
+ CrcResult =
         (uint32_t) (  (uint32_t) (CrcResult << 4U)
                     & UINT32_C(0xFFFFFFF0))
       ^ Crc32_Mpeg2_Table[DataIndex];
 
-    DataIndex =
+
+     DataIndex =
         (((uint_fast8_t) (CrcResult >> 28U))
       ^  ((uint_fast8_t) (DataByte))) & UINT8_C(0x0F);
 
-    CrcResult =
+     CrcResult =
         (uint32_t) (  (uint32_t) (CrcResult << 4U)
                     & UINT32_C(0xFFFFFFF0))
       ^ Crc32_Mpeg2_Table[DataIndex];
+  
   }
 
   return CrcResult;
@@ -79,15 +87,19 @@ uint32_t Crc32_Mpeg2(const uint8_t* DataIn,
 
 int main(void)
 {
+  /* Test data: ASCII values for characters '1' to '9' */
   static const uint8_t TestData[9U] =
   {
     0x31U, 0x32U, 0x33U, 0x34U, 0x35U, 0x36U, 0x37U, 0x38U, 0x39U
   };
 
+  /* Expected CRC32 result for the test data */
   static const uint32_t ControlValue = UINT32_C(0x0376E6E7);
 
+  /* Compute CRC32 result for the test data */
   const uint32_t TestResult = Crc32_Mpeg2(TestData, 9U);
 
+  /* Check if computed result matches expected value */
   const bool TestResultIsOk =
     (bool) ((TestResult == ControlValue) ? true : false);
 
@@ -100,5 +112,6 @@ int main(void)
     printf("CRC32 test result is: Not OK\n");
   }
 
+  /* Return 0 if test passed, -1 otherwise */
   return ((TestResultIsOk == true) ? 0 : -1);
 }
