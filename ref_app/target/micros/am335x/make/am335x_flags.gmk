@@ -43,8 +43,10 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)
 
+ifeq ($(TYP_OS),WIN)
 HEX_MANIP = $(PATH_TOOLS)\generic\hex_tools\HexManip.exe
 
 HEX_MANIP_SCRIPT_FILE = $(PATH_TGT_MAKE)/$(TGT)_hex_manip_script.hxm
 
 RULE_SPECIAL_MAKE_IMAGE_FILE := $(HEX_MANIP) outFile=$(APP)_flash.hex mloFile=$(PATH_BIN)/MLO binFile=$(APP)_flash.bin inFile=$(APP).hex elfFile=$(APP).elf $(HEX_MANIP_SCRIPT_FILE)
+endif
