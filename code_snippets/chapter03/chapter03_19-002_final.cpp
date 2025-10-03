@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,20 +12,20 @@ class base
 public:
   virtual ~base() { }
 
-  base& operator=(const base&) = default;
+  auto operator=(const base&) -> base& = default;
 
 protected:
-  base() { }
+  base() = default;
 };
 
 class derived final : public base
 {
 public:
-  derived() { }
+  derived() = default;
 
-  virtual ~derived() { }
+  ~derived() override = default;
 
-  derived& operator=(const derived&) = default;
+  auto operator=(const derived&) -> derived& = default;
 };
 
 /*
@@ -35,8 +35,8 @@ class derived_another : public derived
 };
 */
 
-derived d;
+derived d { };
 
-int main()
+auto main() -> int
 {
 }

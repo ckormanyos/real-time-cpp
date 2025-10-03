@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,15 +10,15 @@
 #include <iomanip>
 #include <iostream>
 
-bool valid() { return true; }
-bool login() { return true; }
+auto valid() -> bool { return true; }
+auto login() -> bool { return true; }
 
-void start_session() { }
+auto start_session() -> void { }
 
-void do_something()
+auto do_something() -> void
 {
   // This Boolean test yields true or false.
-  const bool session_is_ok = (valid() && login());
+  const bool session_is_ok { valid() && login() };
 
   // This tests if (session_is_ok == true).
   if(session_is_ok)
@@ -31,7 +31,7 @@ void do_something()
   }
 }
 
-int main()
+auto main() -> int
 {
   do_something();
 }

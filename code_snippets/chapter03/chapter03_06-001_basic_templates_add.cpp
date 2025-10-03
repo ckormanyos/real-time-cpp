@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2023.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,22 +12,22 @@
 #include <string>
 
 template<typename T>
-T add(const T& a, const T& b)
+constexpr auto add(const T& a, const T& b) -> T
 {
   return a + b;
 }
 
-const int   n = add(1, 2);
+constexpr int n { add(1, 2) };
 // n is 3.
 
-const float f = add(1.2F, 3.4F);
+constexpr float f { add(1.2F, 3.4F) };
 // f is 4.6.
 
-const std::string str = add(std::string("abc"),
-                            std::string("xyz"));
+const std::string str
+  { add(std::string("abc"), std::string("xyz")) };
 // str is "abcxyz".
 
-int main()
+auto main() -> int
 {
   std::cout << "int    addition result is " << n   << std::endl;
   std::cout << "float  addition result is " << f   << std::endl;

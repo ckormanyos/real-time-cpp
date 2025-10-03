@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,15 +12,15 @@
 // A nested namespace definition.
 namespace X::Y::Z
 {
-  int value;
+  int value { };
 }
 
-void do_something()
+auto do_something() -> void
 {
   X::Y::Z::value = 1;
 }
 
-int main()
+auto main() -> int
 {
   do_something();
 

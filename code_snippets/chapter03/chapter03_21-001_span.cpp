@@ -19,7 +19,7 @@
 
 namespace local
 {
-  void clear_buffer(std::span<std::uint8_t> buf)
+  auto clear_buffer(std::span<std::uint8_t> buf) -> void
   {
     for(auto& next_byte : buf)
     {
@@ -32,7 +32,7 @@ namespace local
 
 std::uint8_t legacy_buffer[LEGACY_BUF_LEN];
 
-void do_something()
+auto do_something() -> void
 {
   std::span<std::uint8_t> buf_span(legacy_buffer);
 
@@ -52,7 +52,7 @@ void do_something()
   std::cout << strm.str() << std::endl;
 }
 
-int main()
+auto main() -> int
 {
   do_something();
 }

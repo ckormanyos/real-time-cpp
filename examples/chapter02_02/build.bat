@@ -1,6 +1,6 @@
 
 @rem
-@rem Copyright Christopher Kormanyos 2014 - 2023.
+@rem Copyright Christopher Kormanyos 2014 - 2025.
 @rem Distributed under the Boost Software License,
 @rem Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,15 +13,15 @@
 
 @rem Usage example A,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02\tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin" avr
 
 @rem Usage example A1 (use a relative tool path),
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
-@rem build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
+@rem build.bat ".\tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin" avr
 
 @rem Usage example B,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
-@rem build.bat "C:\Program Files (x86)\gcc-11.2.0-avr\bin" avr
+@rem build.bat "C:\Program Files (x86)\gcc-15.1.0-avr\bin" avr
 
 
 @set TOOL_PATH=%1

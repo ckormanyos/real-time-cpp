@@ -10,21 +10,19 @@
 #include <cstdint>
 #include <iostream>
 
-constexpr std::uintmax_t pown(std::uintmax_t x,
-                              std::uintmax_t n)
+inline constexpr std::uintmax_t pown(std::uintmax_t x, std::uintmax_t n)
 {
-  return ((n == 0U)
-           ? UINTMAX_C(1) : pown(x, n - 1U) * x);
+  return ((n == 0U) ? UINTMAX_C(1) : pown(x, n - 1U) * x);
 }
 
 // 1000 is computed at compile time.
-constexpr std::uintmax_t t3 = pown(10U, 3U);
+constexpr std::uintmax_t t3 { pown(10U, 3U) };
 
 // OK because t3 is compile-time constant.
 static_assert(t3 == 1000U,
               "Error: Unexpected constexpr");
 
-int main()
+auto main() -> int
 {
   std::cout << "t3: " << t3 << std::endl;
 }

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,16 +14,16 @@
   {
     namespace reg
     {
-      constexpr std::uint8_t portb = 0x25U;
+      constexpr std::uint8_t portb { UINT8_C(0x25U) };
 
-      constexpr std::uint8_t bval0 = 0x01U;
-      constexpr std::uint8_t bval1 = 0x01U << 1U;
-      constexpr std::uint8_t bval2 = 0x01U << 2U;
-      constexpr std::uint8_t bval3 = 0x01U << 3U;
-      constexpr std::uint8_t bval4 = 0x01U << 4U;
-      constexpr std::uint8_t bval5 = 0x01U << 5U;
-      constexpr std::uint8_t bval6 = 0x01U << 6U;
-      constexpr std::uint8_t bval7 = 0x01U << 7U;
+      constexpr std::uint8_t bval0 { UINT8_C(0x01) };
+      constexpr std::uint8_t bval1 { UINT8_C(0x01) << 1U };
+      constexpr std::uint8_t bval2 { UINT8_C(0x01) << 2U };
+      constexpr std::uint8_t bval3 { UINT8_C(0x01) << 3U };
+      constexpr std::uint8_t bval4 { UINT8_C(0x01) << 4U };
+      constexpr std::uint8_t bval5 { UINT8_C(0x01) << 5U };
+      constexpr std::uint8_t bval6 { UINT8_C(0x01) << 6U };
+      constexpr std::uint8_t bval7 { UINT8_C(0x01) << 7U };
     }
   }
 

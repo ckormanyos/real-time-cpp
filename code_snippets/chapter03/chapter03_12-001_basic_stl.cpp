@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,7 +19,7 @@ namespace
   std::array<std::uint8_t, 4U> counters;
 }
 
-void do_something()
+auto do_something() -> void
 {
   // (Re-)Initialize the counters with std::fill().
   std::fill(counters.begin(),
@@ -35,7 +35,7 @@ void do_something()
                 });
 }
 
-int main()
+auto main() -> int
 {
   do_something();
 

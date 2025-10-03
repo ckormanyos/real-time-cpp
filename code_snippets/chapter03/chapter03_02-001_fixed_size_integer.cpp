@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,13 +12,13 @@
 #include <iostream>
 
 // This has *exactly* 16-bits signed.
-constexpr std::int16_t value16 = INT16_C(0x7FFF);
+constexpr std::int16_t value16 { INT16_C(0x7FFF) };
 
 // This has *at least* 32-bits unsigned.
-constexpr std::uint_least32_t value32 =
-  UINT32_C(4'294'967'295);
+constexpr std::uint_least32_t value32
+  { UINT32_C(4'294'967'295) };
 
-int main()
+auto main() -> int
 {
   std::cout << std::hex << std::showbase << value16 << std::endl;
 

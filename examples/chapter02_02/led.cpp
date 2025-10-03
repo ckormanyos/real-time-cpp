@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,9 +7,8 @@
 
 // The LED program.
 
-#include <cstdint>
-
 #include "mcal_reg.h"
+#include <cstdint>
 
 class led
 {
@@ -51,8 +50,7 @@ private:
 namespace
 {
   // Create led_b5 on portb.5.
-  auto led_b5 =
-    led
+  led led_b5
   {
     mcal::reg::portb,
     mcal::reg::bval5

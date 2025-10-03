@@ -1,6 +1,6 @@
 
 @rem
-@rem Copyright Christopher Kormanyos 2014 - 2021.
+@rem Copyright Christopher Kormanyos 2014 - 2025.
 @rem Distributed under the Boost Software License,
 @rem Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -60,7 +60,8 @@ if exist bin\led*.* del /Q bin\led*.*
 @echo.Extract  : demangled names     : from bin/led.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/led.elf | %TOOL_PATH%\%TOOL_PREFIX%-c++filt > bin\led_cppfilt.txt
 
-dir .\bin\led.elf .\bin\led.hex
+dir .\bin\led.elf
+dir .\bin\led.hex
 
 if not exist .\bin\led.elf exit 1
 if not exist .\bin\led.hex exit 1

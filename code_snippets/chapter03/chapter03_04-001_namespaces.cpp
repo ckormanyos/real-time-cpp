@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,34 +14,34 @@
 namespace mcal
 {
   // The mcal initialization.
-  void init();
+  auto init() -> void;
 
   // The general purpose timer stuff in the mcal.
   namespace gpt
   {
-    void init() { std::cout << "in gpt::init()" << std::endl; }
+    auto init() -> void { std::cout << "in gpt::init()" << std::endl; }
 
-    std::uint32_t get_time_elapsed() { return UINT32_C(0); }
+    auto get_time_elapsed() -> std::uint32_t { return UINT32_C(0); }
   }
 
   // The ADC stuff in the mcal.
   namespace adc
   {
-    void init() { std::cout << "in adc::init()" << std::endl; }
+    auto init() -> void { std::cout << "in adc::init()" << std::endl; }
 
-    std::uint16_t read_value(const unsigned) { return UINT16_C(0); }
+    auto read_value(const unsigned) -> std::uint16_t { return UINT16_C(0); }
   }
 }
 
 // Initialize the mcal.
 // Note the clean organization with namespaces.
-void mcal::init()
+auto mcal::init() -> void
 {
   mcal::gpt::init();
   mcal::adc::init();
 }
 
-int main()
+auto main() -> int
 {
   mcal::init();
 }

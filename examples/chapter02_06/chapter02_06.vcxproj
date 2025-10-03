@@ -45,10 +45,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='avr|Win32'">
-    <NMakeBuildCommandLine>build.bat $(SolutionDir)tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin avr</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>build.bat $(SolutionDir)tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin avr</NMakeBuildCommandLine>
     <NMakeOutput>$(OutDir)led.hex</NMakeOutput>
     <NMakeCleanCommandLine>del /Q bin\*.*</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>build.bat $(SolutionDir)tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin avr</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine>build.bat $(SolutionDir)tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin avr</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>
     </NMakePreprocessorDefinitions>
     <IntDir>$(SolutionDir)bin\</IntDir>
