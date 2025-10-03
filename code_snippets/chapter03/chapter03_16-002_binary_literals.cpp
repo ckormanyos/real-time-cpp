@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2023.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,10 +14,10 @@
 // The simulated portb register.
 static auto simulated_portb = std::uint8_t { };
 
-void do_something()
+auto do_something() -> void
 {
   // Switch portb.5 from low to high.
-  volatile auto pb = reinterpret_cast<volatile std::uint8_t*>(&simulated_portb);
+  volatile auto pb { reinterpret_cast<volatile std::uint8_t*>(&simulated_portb) };
 
   *pb =
     static_cast<std::uint8_t>
@@ -27,7 +27,7 @@ void do_something()
     );
 }
 
-int main()
+auto main() -> int
 {
   do_something();
 

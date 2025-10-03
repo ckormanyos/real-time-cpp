@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018 - 2023.
+//  Copyright Christopher Kormanyos 2018 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 #include <iostream>
 #include <random>
 
-void do_something()
+auto do_something() -> void
 {
   using local_result_type = typename std::random_device::result_type;
 
@@ -49,7 +49,7 @@ void do_something()
   std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[2U] << std::endl;
 }
 
-int main()
+auto main() -> int
 {
   // Generate 20 sequences of 3 pseudo-random numbers.
   for(std::uint_fast8_t i = 0U; i < 20U; ++i)

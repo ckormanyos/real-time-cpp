@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 #include <iterator>
 
 // A compile-time constant function of low complexity.
-constexpr int three() { return 3; }
+inline constexpr int three() { return 3; }
 
 // A constant array of integers.
 constexpr std::array<int, 3U> my_array
@@ -24,10 +24,10 @@ constexpr std::array<int, 3U> my_array
 struct version_information
 {
   // A compile-time constant member variable.
-  static constexpr unsigned version = 7U;
+  static constexpr unsigned version { 7U };
 };
 
-int main()
+auto main() -> int
 {
   std::cout << "three() is " << three() << std::endl;
 

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+//  Copyright Christopher Kormanyos 2020 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,11 +12,11 @@
 #include <random>
 
 template<typename RngType>
-typename RngType::result_type get_10000th_rnd_with_default_seed()
+auto get_10000th_rnd_with_default_seed() -> typename RngType::result_type
 {
   using rng_type = RngType;
 
-  rng_type eng;
+  rng_type eng { };
 
   eng.discard(9999U);
 
@@ -25,7 +25,7 @@ typename RngType::result_type get_10000th_rnd_with_default_seed()
   return rnd;
 }
 
-void do_something()
+auto do_something() -> void
 {
   using random_engine_type_0 = std::minstd_rand0;  //          1043618065
   using random_engine_type_1 = std::minstd_rand;   //           399268537
@@ -70,7 +70,7 @@ void do_something()
   std::cout << "result_is_ok: " << std::boolalpha << result_is_ok << std::endl;
 }
 
-int main()
+auto main() -> int
 {
   do_something();
 }

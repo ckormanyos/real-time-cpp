@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -18,7 +18,7 @@ static void simulated_tick_interrupt_handler();
 namespace
 {
   // The one (and only one) 32-bit system-tick.
-  volatile std::atomic<std::uint32_t> system_tick;
+  volatile std::atomic<std::uint32_t> system_tick { };
 }
 
 static void simulated_tick_interrupt_handler()
@@ -31,13 +31,13 @@ static void simulated_tick_interrupt_handler()
   }
 }
 
-std::uint32_t get_time_elapsed()
+auto get_time_elapsed() -> std::uint32_t
 {
   // Ensure 32-bit consistency on an 8-bit CPU.
   return std::atomic_load(&system_tick);
 }
 
-int main()
+auto main() -> int
 {
   std::thread simulated_system_tick_thread(simulated_tick_interrupt_handler);
 

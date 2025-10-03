@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,9 +22,9 @@ public:
        std::is_integral<short_type>::value
     && std::is_integral<long_type>::value,
        "the short and long types must be integral");
-  
-  short_type my_x;
-  short_type my_y;
+
+  short_type my_x { };
+  short_type my_y { };
 
   point(const short_type& x = short_type(),
         const short_type& y = short_type()) : my_x(x),
@@ -47,10 +47,10 @@ point<std::int16_t, std::int32_t> p
   INT16_C(+5471)
 };
 
-const std::int32_t d = p.squared_euclidean_distance();
+const std::int32_t d { p.squared_euclidean_distance() };
 // d is 34,464,482
 
-int main()
+auto main() -> int
 {
   std::cout << "d is " << d << std::endl;
 }
