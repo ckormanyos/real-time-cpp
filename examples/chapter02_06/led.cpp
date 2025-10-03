@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2021.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,8 +7,8 @@
 
 // The Led Program (with template LED class)
 
-#include <cstdint>
 #include "mcal_reg.h"
+#include <cstdint>
 
 template<typename port_type,
          typename bval_type,
@@ -19,16 +19,16 @@ class led_template
 public:
   led_template()
   {
-    // Set the port pin to low.
+    // Set the port pin value to low.
     *reinterpret_cast<volatile bval_type*>(port) &= static_cast<bval_type>(~bval);
 
-    // Set the port pin to output.
+    // Set the port pin direction to output.
     *reinterpret_cast<volatile bval_type*>(port - 1U) |= bval;
   }
 
-  void toggle(void) const
+  auto toggle() const -> void
   {
-    // Toggle the LED.
+    // Toggle the LED via direct memory access.
     *reinterpret_cast<volatile bval_type*>(port) ^= bval;
   }
 };
@@ -42,10 +42,10 @@ namespace
                      mcal::reg::bval5> led_b5;
 }
 
-int main()
+auto main() -> int
 {
-  // Toggle led_b5 forever.
-  for(;;)
+  // Toggle led_b5 in a loop forever.
+  for (;;)
   {
     led_b5.toggle();
   }

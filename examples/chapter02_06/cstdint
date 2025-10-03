@@ -1,48 +1,85 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2021.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CSTDINT_2010_02_23_H_
-  #define _CSTDINT_2010_02_23_H_
+#ifndef CSTDINT_2010_02_23
+  #define CSTDINT_2010_02_23
 
   #include <stdint.h>
 
-  // Implement some of <cstdint> for compilers that do not yet support it.
+  // Implement some C macros that belong in <stdint.h> if they are not present.
+
+  #if !defined(INT8_C)
+  #define INT8_C(x) ((int8_t) (x))
+  #endif
+  #if !defined(INT16_C)
+  #define INT16_C(x) ((int16_t) (x))
+  #endif
+  #if !defined(INT32_C)
+  #define INT32_C(x) ((int32_t) (x##L))
+  #endif
+  #if !defined(INT64_C)
+  #define INT64_C(x) ((int64_t) (x##LL))
+  #endif
+  #if !defined(INTMAX_C)
+  #define INTMAX_C(x) ((signed long long) (x##LL))
+  #endif
+
+  #if !defined(UINT8_C)
+  #define UINT8_C(x) ((uint8_t) (x##U))
+  #endif
+  #if !defined(UINT16_C)
+  #define UINT16_C(x) ((uint16_t) (x##U))
+  #endif
+  #if !defined(UINT32_C)
+  #define UINT32_C(x) ((uint32_t) (x##UL))
+  #endif
+  #if !defined(UINT64_C)
+  #define UINT64_C(x) ((uint64_t) (x##ULL))
+  #endif
+  #if !defined(UINTMAX_C)
+  #define UINTMAX_C(x) ((unsigned long long) (x##ULL))
+  #endif
+
+  // Implement the integer types having specified widths in <cstdint>
+  // for compilers that do not yet support <cstdint>.
 
   namespace std
   {
-    typedef  ::int8_t    int8_t;
-    typedef  ::int16_t   int16_t;
-    typedef  ::int32_t   int32_t;
-    typedef  ::int32_t   int32_t;
-    typedef ::uint8_t   uint8_t;
-    typedef ::uint16_t  uint16_t;
-    typedef ::uint32_t  uint32_t;
-    typedef ::uint64_t  uint64_t;
+    using ::int8_t;
+    using ::int16_t;
+    using ::int32_t;
+    using ::int64_t;
+    using ::uint8_t;
+    using ::uint16_t;
+    using ::uint32_t;
+    using ::uint64_t;
 
-    typedef  ::int_least8_t    int_least8_t;
-    typedef  ::int_least16_t   int_least16_t;
-    typedef  ::int_least32_t   int_least32_t;
-    typedef  ::int_least32_t   int_least32_t;
-    typedef ::uint_least8_t   uint_least8_t;
-    typedef ::uint_least16_t  uint_least16_t;
-    typedef ::uint_least32_t  uint_least32_t;
-    typedef ::uint_least64_t  uint_least64_t;
+    using ::int_least8_t;
+    using ::int_least16_t;
+    using ::int_least32_t;
+    using ::int_least64_t;
+    using ::uint_least8_t;
+    using ::uint_least16_t;
+    using ::uint_least32_t;
+    using ::uint_least64_t;
 
-    typedef  ::int_fast8_t    int_fast8_t;
-    typedef  ::int_fast16_t   int_fast16_t;
-    typedef  ::int_fast32_t   int_fast32_t;
-    typedef  ::int_fast32_t   int_fast32_t;
-    typedef ::uint_fast8_t   uint_fast8_t;
-    typedef ::uint_fast16_t  uint_fast16_t;
-    typedef ::uint_fast32_t  uint_fast32_t;
-    typedef ::uint_fast64_t  uint_fast64_t;
+    using ::int_fast8_t;
+    using ::int_fast16_t;
+    using ::int_fast32_t;
+    using ::int_fast64_t;
+    using ::uint_fast8_t;
+    using ::uint_fast16_t;
+    using ::uint_fast32_t;
+    using ::uint_fast64_t;
 
-    typedef  ::intmax_t   intmax_t;
-    typedef ::uintmax_t  uintmax_t;
+    using ::intmax_t;
+    using ::uintmax_t;
+    using ::intptr_t;
+    using ::uintptr_t;
   }
 
-#endif // _CSTDINT_2010_02_23_H_
+#endif // CSTDINT_2010_02_23
