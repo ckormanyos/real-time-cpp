@@ -19,7 +19,7 @@ namespace mcal
   // The general purpose timer stuff in the mcal.
   namespace gpt
   {
-    auto init() void { std::cout << "in gpt::init()" << std::endl; }
+    auto init() -> void { std::cout << "in gpt::init()" << std::endl; }
 
     auto get_time_elapsed() -> std::uint32_t { return UINT32_C(0); }
   }
