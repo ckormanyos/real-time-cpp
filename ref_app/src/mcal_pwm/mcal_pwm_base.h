@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2024.
+//  Copyright Christopher Kormanyos 2020 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,9 +8,9 @@
 #ifndef MCAL_PWM_BASE_2020_04_12_H
   #define MCAL_PWM_BASE_2020_04_12_H
 
-  #include <cstdint>
-
   #include <util/utility/util_noncopyable.h>
+
+  #include <cstdint>
 
   namespace mcal { namespace pwm {
 
@@ -23,7 +23,7 @@
 
     virtual auto init() noexcept -> bool = 0;
 
-    virtual auto set_duty(const duty_type duty_cycle) noexcept -> void { my_duty_cycle = duty_cycle; }
+    virtual auto set_duty(const duty_type duty_cycle) -> void { my_duty_cycle = duty_cycle; }
 
     auto get_duty() const noexcept -> duty_type { return my_duty_cycle; }
 

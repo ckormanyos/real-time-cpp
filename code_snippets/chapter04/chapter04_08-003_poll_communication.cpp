@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018.
+//  Copyright Christopher Kormanyos 2018 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,33 +9,32 @@
 
 #include <chrono>
 #include <cstdint>
+#include <format>
 #include <iomanip>
 #include <iostream>
 #include <thread>
-
-#define __attribute__(attr)
 
 namespace mcal
 {
   namespace reg
   {
     // Simulate the transmit and receive hardware buffers on the PC.
-    std::uint8_t dummy_register_tbuf;
-    std::uint8_t dummy_register_rbuf;
+    std::uint8_t dummy_register_tbuf { };
+    std::uint8_t dummy_register_rbuf { };
   }
 }
 
-void task_poll_communication();
+auto task_send_one_byte() -> void;
+auto task_poll_communication() -> void;
 
 class communication
 {
 public:
-  communication() : recv_buf(0U),
-                    has_recv(false) { }
+  communication() = default;
 
   ~communication() = default;
 
-  bool send_byte(const std::uint8_t by) const
+  auto send_byte(const std::uint8_t by) const -> bool
   {
     // Transmit the byte.
     *tbuf = by;
@@ -43,9 +42,9 @@ public:
     return true;
   }
 
-  bool recv_ready() const { return has_recv; }
+  auto recv_ready() const noexcept -> bool { return has_recv; }
 
-  std::uint8_t recv_byte()
+  auto recv_byte() noexcept -> std::uint8_t
   {
     if(has_recv)
     {
@@ -63,14 +62,14 @@ private:
   static std::uint8_t* tbuf;
   static std::uint8_t* rbuf;
 
-  std::uint8_t recv_buf;
-  bool has_recv;
+  std::uint8_t recv_buf { };
+  bool has_recv { };
 
   communication(const communication&) = delete;
 
-  const communication& operator=(const communication&) = delete;
+  auto operator=(const communication&) -> const communication& = delete;
 
-  friend void task_poll_communication();
+  friend auto task_poll_communication() -> void;
 };
 
 std::uint8_t* communication::tbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_tbuf);
@@ -78,7 +77,16 @@ std::uint8_t* communication::rbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::
 
 extern communication com;
 
-void task_poll_communication()
+auto task_send_one_byte() -> void
+{
+  constexpr std::uint8_t the_byte { UINT8_C(0x12) };
+
+  std::cout << std::format("send byte: {:#02x}", static_cast<unsigned>(the_byte)) << std::endl;
+
+  com.send_byte(the_byte);
+}
+
+auto task_poll_communication() -> void
 {
   for(;;)
   {
@@ -87,7 +95,7 @@ void task_poll_communication()
       const std::uint8_t the_byte = com.recv_byte();
 
       // Do something with the_byte.
-      std::cout << std::hex << std::showbase << "received byte: " << unsigned(the_byte) << std::endl;
+      std::cout << std::format("recv byte: {:#02x}", static_cast<unsigned>(the_byte)) << std::endl;
 
       break;
     }
@@ -95,18 +103,20 @@ void task_poll_communication()
     std::this_thread::sleep_for(std::chrono::milliseconds(10U));
 
     // Simulate receiving a byte.
-    *com.rbuf = 0x34U;
+    *com.rbuf = UINT8_C(0x34);
 
     com.has_recv = true;
   }
 }
 
 // Instantiate a non-constant communication instance.
-communication com;
+communication com { };
 
-int main()
+auto main() -> int
 {
-  com.send_byte(0x12U);
+  std::thread com_send_thread = std::thread(task_send_one_byte);
+
+  com_send_thread.join();
 
   std::thread com_recv_thread = std::thread(task_poll_communication);
 

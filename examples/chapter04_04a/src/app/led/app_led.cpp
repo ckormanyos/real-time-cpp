@@ -1,18 +1,18 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <app/led/app_led.h>
+#include <mcal/mcal.h>
+#include <util/utility/util_time.h>
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
-
-#include <app/led/app_led.h>
-#include <mcal/mcal.h>
-#include <util/utility/util_time.h>
 
 namespace app
 {

@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 #
-#  Copyright Christopher Kormanyos 2023.
+#  Copyright Christopher Kormanyos 2023 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+#  cd /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/code_snippets/chapter04
+#  ./chapter04.sh g++ c++20
 #
 
 if [[ "$1" != "" ]]; then
@@ -15,24 +18,24 @@ fi
 if [[ "$2" != "" ]]; then
     STD="$2"
 else
-    STD=c++14
+    STD=c++20
 fi
 
 mkdir -p bin
 
 rm -f ./bin/*.*
 
-echo build snippets with GCC=$GCC STD=$STD
+echo build snippets with GCC=${GCC} STD=${STD}
 
-$GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_01-001_led_hierarchy.cpp             -o ./bin/chapter04_01-001_led_hierarchy.exe
-$GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_04-001_dynamic_polymorphism.cpp      -o ./bin/chapter04_04-001_dynamic_polymorphism.exe
-$GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_04-002_dynamic_polymorphism_cast.cpp -o ./bin/chapter04_04-002_dynamic_polymorphism_cast.exe
-$GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_04-003_dynamic_polymorphism_ref.cpp  -o ./bin/chapter04_04-003_dynamic_polymorphism_ref.exe
-$GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_07-001_led_hierarchy_uses_pwm.cpp    -o ./bin/chapter04_07-001_led_hierarchy_uses_pwm.exe
-$GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_08-001_const_com_class.cpp           -o ./bin/chapter04_08-001_const_com_class.exe
-$GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_08-002_nonconst_com_class.cpp        -o ./bin/chapter04_08-002_nonconst_com_class.exe
-if [[ "$GCC" == "g++" ]]; then
-$GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_08-003_poll_communication.cpp        -o ./bin/chapter04_08-003_poll_communication.exe
+${GCC} -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_01-001_led_hierarchy.cpp             -o ./bin/chapter04_01-001_led_hierarchy.exe
+${GCC} -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_04-001_dynamic_polymorphism.cpp      -o ./bin/chapter04_04-001_dynamic_polymorphism.exe
+${GCC} -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_04-002_dynamic_polymorphism_cast.cpp -o ./bin/chapter04_04-002_dynamic_polymorphism_cast.exe
+${GCC} -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_04-003_dynamic_polymorphism_ref.cpp  -o ./bin/chapter04_04-003_dynamic_polymorphism_ref.exe
+${GCC} -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_07-001_led_hierarchy_uses_pwm.cpp    -o ./bin/chapter04_07-001_led_hierarchy_uses_pwm.exe
+${GCC} -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_08-001_const_com_class.cpp           -o ./bin/chapter04_08-001_const_com_class.exe
+${GCC} -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_08-002_nonconst_com_class.cpp        -o ./bin/chapter04_08-002_nonconst_com_class.exe
+if [[ "${GCC}" == "g++" ]]; then
+${GCC} -std=${STD} -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter04_08-003_poll_communication.cpp        -o ./bin/chapter04_08-003_poll_communication.exe
 fi
 
 
@@ -69,6 +72,6 @@ else
   echo Compile fail is OK
 fi
 
-echo "result_all: "  "$result_all"
+echo "result_all: "  "${result_all}"
 
-exit $result_all
+exit ${result_all}

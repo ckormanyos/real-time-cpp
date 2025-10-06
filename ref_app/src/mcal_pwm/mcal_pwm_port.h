@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,13 +10,14 @@
 
   #include <mcal_pwm/mcal_pwm_base.h>
 
+  #include <algorithm>
+
   namespace mcal { namespace pwm {
 
   // A software PWM template for a port-pin having the standard
   // port interface for ref_app. The default resolution is 100 ticks.
 
-  template<typename PortPinType,
-           const pwm_base::duty_type MyResolution = static_cast<pwm_base::duty_type>(UINT8_C(100))>
+  template<typename PortPinType>
   class pwm_port : public pwm_base
   {
   private:
@@ -41,9 +42,12 @@
       return true;
     }
 
-    auto set_duty(const duty_type duty_cycle) noexcept -> void override { my_duty_shadow = duty_cycle; }
+    static constexpr auto get_resolution() noexcept -> duty_type { return duty_type { UINT16_C(1000) }; }
 
-    static constexpr auto get_resolution() noexcept -> duty_type { return MyResolution; }
+    auto set_duty(const duty_type duty_cycle) noexcept -> void override
+    {
+      my_duty_shadow = (std::min)(duty_cycle, get_resolution());
+    }
 
     auto service() noexcept -> void
     {

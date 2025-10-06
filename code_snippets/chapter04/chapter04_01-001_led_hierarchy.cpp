@@ -1,63 +1,73 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018 - 2023.
+//  Copyright Christopher Kormanyos 2018 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 // chapter04_01-001_led_hierarchy.cpp
-// See also https://godbolt.org/z/7MzKGEevh
+// See also https://godbolt.org/z/b4e5E1M8q
 
 #include <algorithm>
 #include <cstdint>
-#include <iostream>
 
 class led_base
 {
 public:
-  virtual void toggle() = 0;     // Pure abstract.
-  virtual ~led_base() = default; // Virtual destructor.
+  // Virtual default destructor.
+  virtual ~led_base() = default;
+
+  // Pure virtual.
+  virtual auto toggle() noexcept -> void = 0;
 
   // Interface for querying the LED state.
-  constexpr auto state_is_on() const noexcept -> bool { return is_on; }
-
-  // Non-implemented (deleted) copy constructors.
-  led_base(const led_base&) = delete;
-  led_base(led_base&&) noexcept = delete;
-
-  // Non-implemented (deleted) assignment operators.
-  constexpr auto operator=(const led_base&) -> led_base& = delete;
-  constexpr auto operator=(led_base&&) noexcept -> led_base& = delete;
+  auto state_is_on() const noexcept
+    -> bool { return is_on; }
 
 protected:
+  // A protected default constructor.
+  led_base() = default;
+
+  auto set_is_on(const bool val) noexcept
+    -> void { is_on = val; }
+
+private:
   bool is_on { };
 
-  // A protected default constructor.
-  constexpr led_base() = default;
+  // Private non-implemented copy constructor.
+  led_base(const led_base&) = delete;
+
+  // Private non-implemented assignment operator.
+  auto operator=(const led_base&)
+    -> const led_base& = delete;
 };
 
 class led_port : public led_base
 {
 public:
-  using port_type = std::uint8_t;
-  using bval_type = std::uint8_t;
+  using port_type = std::uintptr_t;
+  using bval_type = std::uintptr_t;
 
-  explicit constexpr led_port(const port_type p,
-                              const bval_type b = static_cast<bval_type>(UINT8_C(0)))
-    : port(p),
-      bval(b) { static_cast<void>(bval); }
+  explicit led_port(const port_type p,
+                    const bval_type b) : port(p),
+                                         bval(b)
+  {
+    // ...
+  }
 
   ~led_port() override = default;
 
-  auto toggle() -> void override
+  auto toggle() noexcept -> void override
   {
+    // Toggle the LED.
+    *reinterpret_cast<volatile bval_type*>(port)
+      ^= bval;
+
     // Toggle the is_on indication flag.
-    is_on = (!is_on);
+    const bool val_on
+      { (!led_base::state_is_on()) };
 
-    // Show the PC simulated port LED.
-    std::cout << "LED port(" << std::showbase << std::hex << unsigned(port) << "): ";
-
-    std::cout << (is_on ? "is on" : "is off") << std::endl;
+    led_base::set_is_on(val_on);
   }
 
 private:
@@ -101,52 +111,53 @@ public:
 
   ~led_pwm() override = default;
 
-  auto toggle() -> void override
+  auto toggle() noexcept -> void override
   {
     // Toggle the duty cycle.
-    const auto duty =
-      static_cast<std::uint8_t>
-      (
-        (my_pwm->get_duty() > static_cast<std::uint8_t>(UINT8_C(0)))
-          ? static_cast<std::uint8_t>(UINT8_C(0))
-          : static_cast<std::uint8_t>(UINT8_C(100))
-      );
-
-    my_pwm->set_duty(duty);
+    const std::uint8_t duty =
+      (my_pwm->get_duty() > 0U) ? 0U : 100U;
 
     // Toggle the LED with the PWM signal.
-    is_on = (my_pwm->get_duty() > static_cast<std::uint8_t>(UINT8_C(0)));
+    my_pwm->set_duty(duty);
 
-    // Show the PC simulated pwm LED.
-    std::cout << "LED pwm(" << std::dec << static_cast<unsigned>(my_pwm->get_channel()) << "): ";
+    const bool val_on { (duty != 0U) };
 
-    std::cout << (is_on ? "is on" : "is off") << std::endl;
+    led_base::set_is_on(val_on);
   }
 
   // This LED class also supports dimming.
   auto dimming(const std::uint8_t duty) -> void
   {
     my_pwm->set_duty(duty);
-
-    is_on = (duty != static_cast<std::uint8_t>(UINT8_C(0)));
+    led_base::set_is_on(duty != 0U);
   }
 
 private:
-  pwm* my_pwm { nullptr };
+  pwm* my_pwm { };
 };
+
+namespace mcal
+{
+  namespace reg
+  {
+    // Simulate the transmit and receive hardware buffers on the PC.
+    std::uint8_t dummy_register_port0 { };
+    std::uint8_t dummy_register_port1 { };
+  }
+}
 
 namespace
 {
   // Two simulated port LEDs.
   led_port led0
   {
-    static_cast<led_port::port_type>(UINT8_C(0x12)),
+    reinterpret_cast<led_port::port_type>(&mcal::reg::dummy_register_port0),
     static_cast<led_port::bval_type>(UINT8_C(1))
   };
 
   led_port led1
   {
-    static_cast<led_port::port_type>(UINT8_C(0x34)),
+    reinterpret_cast<led_port::port_type>(&mcal::reg::dummy_register_port1),
     static_cast<led_port::bval_type>(UINT8_C(2))
   };
 
