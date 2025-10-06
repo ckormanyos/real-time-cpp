@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+//  Copyright Christopher Kormanyos 2020 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,12 +8,12 @@
 #ifndef MCAL_PORT_EXPANDER_MICROCHIP_MCP23S17_2020_04_21_H_
   #define MCAL_PORT_EXPANDER_MICROCHIP_MCP23S17_2020_04_21_H_
 
-  #include <algorithm>
-  #include <array>
-
   #include <util/utility/util_communication.h>
   #include <util/utility/util_noncopyable.h>
   #include <util/utility/util_two_part_data_manipulation.h>
+
+  #include <algorithm>
+  #include <array>
 
   namespace mcal { namespace port { namespace expander {
 

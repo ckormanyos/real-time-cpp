@@ -73,7 +73,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <OutputFile>$(SolutionDir)$(Configuration)\$(ProjectName).exe</OutputFile>
@@ -90,7 +90,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <OutputFile>$(SolutionDir)$(Configuration)\$(ProjectName).exe</OutputFile>
@@ -333,6 +333,7 @@
     <ClInclude Include="src\mcal_led\mcal_led_base.h" />
     <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h" />
     <ClInclude Include="src\mcal_led\mcal_led_console.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_dummy.h" />
     <ClInclude Include="src\mcal_led\mcal_led_port.h" />
     <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h" />
     <ClInclude Include="src\mcal_led\mcal_led_pwm.h" />

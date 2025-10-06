@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_2011_10_20_H_
-  #define MCAL_2011_10_20_H_
+#ifndef MCAL_2011_10_20_H
+  #define MCAL_2011_10_20_H
 
   #include <mcal_cpu.h>
   #include <mcal_eep.h>
@@ -29,4 +29,4 @@
     void init();
   }
 
-#endif // MCAL_2011_10_20_H_
+#endif // MCAL_2011_10_20_H

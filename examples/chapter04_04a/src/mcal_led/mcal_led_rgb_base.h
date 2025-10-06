@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2023.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,16 +8,18 @@
 #ifndef MCAL_LED_RGB_BASE_2023_07_12_H
   #define MCAL_LED_RGB_BASE_2023_07_12_H
 
-  #include <cstdint>
-
   #include <mcal_led/mcal_led_boolean_state_base.h>
+
+  #include <cstdint>
 
   namespace mcal { namespace led {
 
   class led_rgb_base : public mcal::led::led_boolean_state_base
   {
   public:
-    auto toggle() -> void override
+    ~led_rgb_base() override = default;
+
+    auto toggle() noexcept -> void override
     {
       using base_class_type = mcal::led::led_boolean_state_base;
 
@@ -94,6 +96,7 @@
     }
   };
 
-  } } // namespace mcal::led
+  } // namespace led
+  } // namespace mcal
 
 #endif // MCAL_LED_RGB_BASE_2023_07_12_H

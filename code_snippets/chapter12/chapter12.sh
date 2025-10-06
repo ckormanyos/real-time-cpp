@@ -15,7 +15,7 @@ fi
 if [[ "$2" != "" ]]; then
     STD="$2"
 else
-    STD=c++14
+    STD=c++20
 fi
 
 mkdir -p bin

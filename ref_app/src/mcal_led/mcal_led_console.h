@@ -39,15 +39,15 @@
            << " is "
            << (base_class_type::state_is_on() ? "on" : "off");
 
-      console_sync().test_and_set();
+      while(console_sync().test_and_set(std::memory_order_acquire)) { }
       std::cout << strm.str() << std::endl;
-      console_sync().clear();
+      console_sync().clear(std::memory_order_release);
     }
 
   private:
     const std::uint_fast8_t my_index { };
 
-    static auto console_sync() -> std::atomic_flag&
+    static auto console_sync() noexcept -> std::atomic_flag&
     {
       static std::atomic_flag console_lock { };
 

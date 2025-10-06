@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2022.
+//  Copyright Christopher Kormanyos 2020 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,15 +8,15 @@
 #ifndef MCAL_PWM_CONSOLE_2020_04_12_H
   #define MCAL_PWM_CONSOLE_2020_04_12_H
 
+  #include <mcal_pwm/mcal_pwm_base.h>
+
   #include <iomanip>
   #include <iostream>
   #include <sstream>
 
-  #include <mcal_pwm/mcal_pwm_base.h>
-
   namespace mcal { namespace pwm {
 
-  class pwm_console : public mcal::pwm::pwm_base
+  class pwm_console : public mcal::pwm::pwm_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   private:
     using base_class_type = mcal::pwm::pwm_base;
@@ -50,6 +50,7 @@
     ~pwm_console() override = default;
   };
 
-  } }
+  } // namespace pwm
+  } // namespace mcal
 
-#endif // MCAL_PWM_CONSOLE_2020_04_12_H_
+#endif // MCAL_PWM_CONSOLE_2020_04_12_H

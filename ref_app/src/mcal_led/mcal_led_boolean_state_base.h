@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2024.
+//  Copyright Christopher Kormanyos 2020 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,16 +17,18 @@
   public:
     ~led_boolean_state_base() override = default;
 
+    auto state_is_on() const noexcept -> bool override { return is_on; }
+
   protected:
     constexpr led_boolean_state_base() = default;
 
     auto toggle() -> void override
     {
       // Toggle the LED state.
-      is_on = (!is_on);
+      set_is_on(!is_on);
     }
 
-    auto state_is_on() const -> bool override { return is_on; }
+    auto set_is_on(const bool val) noexcept -> void { is_on = val; }
 
   private:
     bool is_on { };

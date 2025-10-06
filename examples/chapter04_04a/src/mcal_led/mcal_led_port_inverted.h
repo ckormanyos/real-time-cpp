@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2023.
+//  Copyright Christopher Kormanyos 2020 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,13 +17,15 @@
   class led_port_inverted : public mcal::led::led_boolean_state_base
   {
   public:
-    led_port_inverted()
+    led_port_inverted() noexcept
     {
       port_type::set_pin_high();
       port_type::set_direction_output();
     }
 
-    auto toggle() -> void override
+    ~led_port_inverted() override = default;
+
+    auto toggle() noexcept -> void override
     {
       using base_class_type = led_boolean_state_base;
 
