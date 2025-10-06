@@ -73,7 +73,7 @@ private:
 
   const communication& operator=(const communication&) = delete;
 
-  friend auto com_recv_isr() -> bool;
+  friend auto com_recv_isr() -> void;
 };
 
 std::uint8_t* communication::tbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_tbuf);
