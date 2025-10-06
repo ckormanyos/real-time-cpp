@@ -10,6 +10,8 @@
 
   #include <mcal_pwm/mcal_pwm_base.h>
 
+  #include <algorithm>
+
   namespace mcal { namespace pwm {
 
   // A software PWM template for a port-pin having the standard

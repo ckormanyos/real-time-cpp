@@ -37,7 +37,7 @@ namespace
 {
   using pwm_port_type = mcal::port::port_pin<UINT32_C(17)>;
 
-  using pwm_type = mcal::pwm::pwm_port<pwm_port_type, mcal::pwm::pwm_base::duty_type { UINT16_C(256) }>;
+  using pwm_type = mcal::pwm::pwm_port<pwm_port_type>;
 
   using duty_type = typename pwm_type::duty_type;
 
@@ -52,10 +52,10 @@ namespace
         9U,  10U,  11U,  12U,  13U,  14U,  15U,  16U,
        17U,  18U,  19U,  20U,  21U,  22U,  23U,  24U,
        25U,  26U,  27U,  28U,  29U,  30U,  31U,  32U,
-       33U,  34U,  36U,  38U,  40U,  42U,  44U,  46U,
-       48U,  50U,  52U,  54U,  56U,  58U,  60U,  62U,
-       64U,  68U,  72U,  76U,  80U,  84U,  88U,  96U,
-      112U, 128U, 144U, 160U, 176U, 192U, 224U, 256U
+       33U,  34U,  35U,  36U,  38U,  40U,  42U,  44U,
+       46U,  48U,  50U,  52U,  54U,  56U,  58U,  60U,
+       62U,  66U,  68U,  70U,  72U,  74U,  76U,  78U,
+       80U,  82U,  84U,  86U,  89U,  92U,  96U, 100U,
     };
 
   static_assert
