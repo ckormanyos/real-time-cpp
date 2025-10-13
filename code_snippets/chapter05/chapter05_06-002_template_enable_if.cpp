@@ -7,42 +7,30 @@
 
 #include <iostream>
 
-// chapter05_06-001_template_specialization.cpp
+// chapter05_06-002_template_enable_if.cpp
 
 // The original add template function.
 template<typename T>
-T add(const T& a, const T& b)
+auto add(T a, T b) noexcept
+  -> std::enable_if_t<!std::is_floating_point_v<T>, T>
 {
   return a + b;
 }
 
-// Make template specializations of add() with
-// easy-to-detect errors for float, double
+// Easy-to-detect errors for float, double
 // and long double.
 
-template<>
-float add<float>(const float&, const float&)
+template<typename T>
+auto add(T, T) noexcept
+  -> std::enable_if_t<std::is_floating_point_v<T>, T>
 {
   // Explicitly create an erroneous result!
-  return 0.0F;
+  return T { 0.0F };
 }
 
-template<>
-double add<double>(const double&, const double&)
-{
-  // Explicitly create an erroneous result!
-  return 0.0;
-}
+auto main() -> int;
 
-template<>
-long double add<long double>(const long double&,
-                             const long double&)
-{
-  // Explicitly create an erroneous result!
-  return 0.0L;
-}
-
-int main()
+auto main() -> int
 {
   // 3
   std::cout << add(1, 2) << std::endl;
