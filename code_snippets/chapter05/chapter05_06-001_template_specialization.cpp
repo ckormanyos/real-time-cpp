@@ -1,52 +1,34 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 #include <iostream>
+#include <string>
 
 // chapter05_06-001_template_specialization.cpp
 
-// The original add template function.
+// Generic add template function.
 template<typename T>
-T add(const T& a, const T& b)
+auto add(T a, T b) -> T
 {
   return a + b;
 }
 
-// Make template specializations of add() with
-// easy-to-detect errors for float, double
-// and long double.
-
+// Specialize add() for the type int.
 template<>
-float add<float>(const float&, const float&)
+auto add<int>(int a, int b) -> int
 {
-  // Explicitly create an erroneous result!
-  return 0.0F;
+  return a + b;
 }
 
-template<>
-double add<double>(const double&, const double&)
+auto main() -> int
 {
-  // Explicitly create an erroneous result!
-  return 0.0;
-}
+  // Add with generic template to get result "abcxyz".
+  std::cout << add(std::string("abc"), std::string("xyz")) << std::endl;
 
-template<>
-long double add<long double>(const long double&,
-                             const long double&)
-{
-  // Explicitly create an erroneous result!
-  return 0.0L;
-}
-
-int main()
-{
-  // 3
+  // Add with specialized template to get result 3.
   std::cout << add(1, 2) << std::endl;
-
-  // 0
-  std::cout << add(1.0F, 2.0F) << std::endl;
 }

@@ -70,6 +70,10 @@ ${GCC} -std=${STD} -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address 
 ${GCC} -std=${STD} -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_21-001_span.cpp                     -o ./bin/chapter03_21-001_span.exe
 ${GCC} -std=${STD} -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_22-001_mersenne_twister_19937.cpp   -o ./bin/chapter03_22-001_mersenne_twister_19937.exe
 ${GCC} -std=${STD} -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_22-002_test_random_engines.cpp      -o ./bin/chapter03_22-002_test_random_engines.exe
+if [[ "${GCC}" == "g++" ]]; then
+${GCC} -std=${STD} -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_23-001_expected_div_int.cpp         -o ./bin/chapter03_23-001_expected_div_int.exe
+${GCC} -std=${STD} -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_23-002_expected_div_integral.cpp    -o ./bin/chapter03_23-002_expected_div_integral.exe
+fi
 
 if [[ "${GCC}" == "g++" ]]; then
 ls -la \
@@ -112,7 +116,9 @@ ls -la \
 ./bin/chapter03_20-002_alias.exe                      \
 ./bin/chapter03_21-001_span.exe                       \
 ./bin/chapter03_22-001_mersenne_twister_19937.exe     \
-./bin/chapter03_22-002_test_random_engines.exe
+./bin/chapter03_22-002_test_random_engines.exe        \
+./bin/chapter03_23-001_expected_div_int.exe           \
+./bin/chapter03_23-002_expected_div_integral.exe
 else
 ls -la \
 ./bin/chapter03_01-001_declare_locals.exe             \
