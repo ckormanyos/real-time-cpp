@@ -6,6 +6,7 @@
 //
 
 #include <concepts>
+#include <iostream>
 #include <string>
 #include <type_traits>
 
@@ -30,9 +31,13 @@ auto do_something() -> void
   // 3U
   const unsigned c { add(1U, 2U) };
 
+  std::cout << c << std::endl;
+
   // abcxyz
   const std::string str
     { add(std::string("abc"), std::string("xyz")) };
+
+  std::cout << str << std::endl;
 }
 
 auto main() -> int

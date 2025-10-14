@@ -30,7 +30,7 @@ jobs:
       - name: host-snippets-all
         run: |
           cd ${{ matrix.chapter }}
-          ./${{ matrix.chapter }}.sh ${{ matrix.compiler }} c++20
+          ./${{ matrix.chapter }}.sh ${{ matrix.compiler }} c++23
         working-directory: ./code_snippets
   host-snippets-chapter06:
     runs-on: ubuntu-latest
