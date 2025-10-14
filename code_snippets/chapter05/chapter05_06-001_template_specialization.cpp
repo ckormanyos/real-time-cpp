@@ -19,7 +19,7 @@ auto add(T a, T b) -> T
 
 // Specialize add() for the type int.
 template<>
-auto add<int>(int a, int b) noexcept -> int
+auto add<int>(int a, int b) -> int
 {
   return a + b;
 }
