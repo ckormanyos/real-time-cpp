@@ -16,8 +16,7 @@ enum class div_error
   div_by_zero
 };
 
-template<typename T>
-auto safe_divide(int a, int b) noexcept -> int
+auto safe_divide(int a, int b) noexcept -> std::expected<int, div_error>
 {
   if (b == 0)
   {
