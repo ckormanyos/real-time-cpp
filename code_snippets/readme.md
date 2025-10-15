@@ -6,7 +6,7 @@ Real-Time-C++ - Code Snippets
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-snippets.yml/badge.svg" alt="Build Snippets"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
-    <a href="https://godbolt.org/z/qfafePavo" alt="godbolt">
+    <a href="https://godbolt.org/z/9MYejn7cT" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
@@ -37,39 +37,35 @@ Consider, for instance, the code snippet
 ```cpp
 // chapter03_11-001_array.cpp
 
-#include <algorithm>
 #include <array>
-#include <cstddef>
 #include <cstdint>
+#include <cstddef>
+#include <format>
 #include <iostream>
-#include <iomanip>
-#include <iterator>
+#include <string>
 
-using login_key_array_type = std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(3))>;
+using login_key_array_type = std::array<std::uint8_t, std::size_t { UINT8_C(3) }>;
 
 // A login key stored in an std::array.
 
-constexpr auto login_key =
-  login_key_array_type
+constexpr login_key_array_type
+  login_key
   {
-    static_cast<std::uint8_t>(UINT8_C(0x01)),
-    static_cast<std::uint8_t>(UINT8_C(0x02)),
-    static_cast<std::uint8_t>(UINT8_C(0x03))
+    UINT8_C(0x01),
+    UINT8_C(0x02),
+    UINT8_C(0x03)
   };
 
 auto main() -> int
 {
-  const auto flg = std::cout.flags();
+  std::string str_login_key { "login_key is: " };
 
-  std::cout.unsetf(std::ios::dec);
-  std::cout.setf(std::ios::hex);
-  std::cout.setf(std::ios::showbase);
+  for(const auto& value : login_key)
+  {
+    str_login_key += std::format("{:#x},", value);
+  }
 
-  std::cout << "login_key is ";
-  std::copy(login_key.cbegin(), login_key.cend(), std::ostream_iterator<unsigned int>(std::cout, ","));
-  std::cout << std::endl;
-
-  std::cout.flags(flg);
+  std::cout << str_login_key << std::endl;
 }
 ```
 
@@ -81,7 +77,7 @@ output console.
 The expected output message text is
 
 ```sh
-login_key is 0x1,0x2,0x3,
+login_key is: 0x1,0x2,0x3,
 ```
 
 ## Testing and CI
@@ -93,11 +89,11 @@ using (at the moment) build-only.
 ## Try it at _godbolt_
 
 <p align="center">
-    <a href="https://godbolt.org/z/qfafePavo" alt="godbolt">
+    <a href="https://godbolt.org/z/9MYejn7cT" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
-Use this [short link](https://godbolt.org/z/qfafePavo)
+Use this [short link]https://godbolt.org/z/9MYejn7cT)
 to [godbolt](https://godbolt.org) in order to further explore this program.
 
 In the afore-mentioned link, the file
