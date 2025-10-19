@@ -14,17 +14,18 @@
 #include <utility>
 
 template<typename array_type,
-         unsigned... I>
+         std::size_t... I>
 constexpr auto array_to_tuple_helper(
   const array_type& a,
   std::index_sequence<I...>)
     -> decltype(auto)
 {
-  return std::make_tuple(1.0F * a[I]...);
+  return
+    std::make_tuple(1.0F * static_cast<float>(a[I])...);
 }
 
 template<typename T,
-         const unsigned N,
+         const std::size_t N,
          typename indices =
            std::make_index_sequence<N>>
 constexpr auto
@@ -34,7 +35,7 @@ constexpr auto
   return array_to_tuple_helper(a, indices());
 }
 
-std::array<int, 4> a =
+std::array<int, std::size_t { UINT8_C(4) }> a =
 {{
   1, 2, 3, 4
 }};
@@ -42,8 +43,7 @@ std::array<int, 4> a =
 // Convert int array to float tuple.
 // Here, the type of tpl is
 // std::tuple<float, float, float, float>.
-std::tuple<float, float, float, float> tpl
-  { array_to_tuple(a) };
+auto tpl { array_to_tuple(a) };
 
 auto main() -> int;
 
