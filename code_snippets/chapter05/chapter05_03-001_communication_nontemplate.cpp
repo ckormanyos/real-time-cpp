@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,22 +10,23 @@
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 
 class communication
 {
 public:
-  communication() { }
+  communication() = default;
 
-  virtual ~communication() { }
+  ~communication() = default;
 
-  virtual bool send_byte(const std::uint8_t b) const
+  auto send_byte(const std::uint8_t b) const -> bool
   {
+    std::stringstream strm { };
+
     // Simulate sending a byte on the PC.
-    std::cout << "Sending: "
-              << std::hex
-              << std::showbase
-              << unsigned(b)
-              << std::endl;
+    strm << "Sending: " << std::hex << std::showbase << unsigned(b);
+
+    std::cout << strm.str() << std::endl;
 
     const std::ios::iostate cout_state = std::cout.rdstate();
 
@@ -34,23 +35,26 @@ public:
     return send_byte_is_ok;
   }
 
-  std::uint8_t recv_byte() const
+  auto recv_byte() const noexcept -> std::uint8_t
   {
     return recv_buffer;
   }
 
 private:
-  std::uint8_t recv_buffer;
+  std::uint8_t recv_buffer { };
 };
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
-  communication com;
+  communication com { };
 
-  const bool send_byte_is_ok = com.send_byte(0x55U);
+  const bool send_byte_is_ok { com.send_byte(0x55U) };
 
-  std::cout << "Result of send_byte: "
-            << std::boolalpha
-            << send_byte_is_ok
-            << std::endl;
+  std::stringstream strm { };
+
+  strm << "Result of send_byte: " << std::boolalpha << send_byte_is_ok;
+
+  std::cout << strm.str() << std::endl;
 }

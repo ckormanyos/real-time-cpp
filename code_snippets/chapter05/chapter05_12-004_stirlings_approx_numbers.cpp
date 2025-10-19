@@ -5,35 +5,26 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter05_12-003_stirlings_approx.cpp
+// chapter05_12-004_stirlings_approx_numbers.cpp
 
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <numbers>
 #include <sstream>
-
-template<typename T>
-constexpr T sqrt2 =
-  T(1.4142135623'7309504880'1688724209'6980785697L);
-
-template<typename T>
-constexpr T pi =
-  T(3.1415926535'8979323846'2643383279'5028841972L);
-
-template<typename T>
-constexpr T e =
-  T(2.7182818284'5904523536'0287471352'6624977572L);
 
 template<typename T>
 constexpr auto tgamma_order_2(T x) -> T
 {
+  using namespace std::numbers;
+
   using std::pow;
   using std::sqrt;
 
-  const T sqx { sqrt2<T> * sqrt(pi<T> / x) };
+  const T sqx { sqrt2_v<T> * sqrt(pi_v<T> / x) };
 
-  return pow(x / e<T>, x) * sqx * (1 + 1 / (12 * x));
+  return pow(x / e_v<T>, x) * sqx * (1 + 1 / (12 * x));
 }
 
 auto main() -> int;

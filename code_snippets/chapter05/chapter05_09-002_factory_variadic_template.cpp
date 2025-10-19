@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018.
+//  Copyright Christopher Kormanyos 2018 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -28,8 +28,8 @@ type_to_make* factory(void* mem,
 class something_else
 {
 public:
-  explicit something_else(const int M = static_cast<int>(INT8_C(0)),
-                          const int N = static_cast<int>(INT8_C(0)))
+  explicit something_else(const int M = 0,
+                          const int N = 0)
     : m(M),
       n(N)
   {
@@ -37,7 +37,7 @@ public:
     static_cast<void>(n);
   }
 
-  virtual ~something_else() = default;
+  ~something_else() = default;
 
   void do_something_else() const
   {
@@ -51,14 +51,16 @@ private:
 
 extern void* pool;
 
-something_else* p_else = factory<something_else>(pool, 12, 34);
+something_else* p_else { factory<something_else>(pool, 12, 34) };
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
   p_else->do_something_else();
 }
 
 // Consider the buffer and pool pointer to be in another file.
-std::uint8_t buffer[static_cast<std::size_t>(UINT16_C(256))];
+std::uint8_t buffer[std::size_t { UINT16_C(256) }];
 
-void* pool = reinterpret_cast<void*>(&buffer[static_cast<std::size_t>(UINT8_C(0))]);
+void* pool { reinterpret_cast<void*>(&buffer[std::size_t { UINT8_C(0) }]) };
