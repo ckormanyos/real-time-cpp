@@ -40,9 +40,10 @@ std::array<int, 4> a =
 }};
 
 // Convert int array to float tuple.
-// Here, the type of t is
+// Here, the type of tpl is
 // std::tuple<float, float, float, float>.
-auto t { array_to_tuple(a) };
+std::tuple<float, float, float, float> tpl
+  { array_to_tuple(a) };
 
 auto main() -> int;
 
@@ -50,10 +51,10 @@ auto main() -> int
 {
   std::stringstream strm { };
 
-  strm << std::fixed << std::get<0>(t) << '\n';
-  strm << std::fixed << std::get<1>(t) << '\n';
-  strm << std::fixed << std::get<2>(t) << '\n';
-  strm << std::fixed << std::get<3>(t) << '\n';
+  strm << std::fixed << std::get<0>(tpl) << '\n';
+  strm << std::fixed << std::get<1>(tpl) << '\n';
+  strm << std::fixed << std::get<2>(tpl) << '\n';
+  strm << std::fixed << std::get<3>(tpl) << '\n';
 
   std::cout << strm.str() << std::endl;
 }

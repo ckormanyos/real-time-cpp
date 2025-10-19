@@ -21,9 +21,7 @@ constexpr auto exp_series(
   const floating_point_type x)
     -> floating_point_type
 {
-  static_assert(
-    std::is_floating_point
-      <floating_point_type>::value);
+  static_assert(std::is_floating_point_v<floating_point_type>);
 
   floating_point_type term(1.0L);
   floating_point_type sum (0.0L);
@@ -33,7 +31,7 @@ constexpr auto exp_series(
     sum += term;
 
     term *= x;
-    term /= i;
+    term /= static_cast<floating_point_type>(i);
   }
 
   return sum;

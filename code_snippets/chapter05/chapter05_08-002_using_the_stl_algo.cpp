@@ -42,7 +42,7 @@ void do_something_with_the_stl()
                  v.begin(),
                  [](const char& c) -> char
                  {
-                   return char { c + '0' };
+                   return char { static_cast<char>(c + '0') };
                  });
 
   {

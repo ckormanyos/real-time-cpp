@@ -51,7 +51,8 @@ public:
 
     for( ; i < count; ++i)
     {
-      const std::uint8_t by(u >> (i * 8U));
+      const std::uint8_t by
+        {static_cast<std::uint8_t>(u >> (i * 8U)) };
 
       if(!send_byte(by))
       {

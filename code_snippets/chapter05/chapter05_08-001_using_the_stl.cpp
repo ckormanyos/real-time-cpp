@@ -41,7 +41,7 @@ auto do_something_with_the_stl() -> void
                 v.end(),
                 [](char& c)
                 {
-                  c = char { c + '0' };
+                  c = char { static_cast<char>(c + '0') };
                 });
 
   {
