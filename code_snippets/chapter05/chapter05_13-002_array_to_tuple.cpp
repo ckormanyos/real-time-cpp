@@ -8,6 +8,8 @@
 // chapter05_13-002_array_to_tuple.cpp
 
 #include <array>
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <sstream>
 #include <tuple>

@@ -37,10 +37,6 @@ constexpr auto exp_series(
   return sum;
 }
 
-constexpr
-std::integer_sequence
-  <unsigned, 1U, 2U, 3U, 4U> int_seq;
-
 // 1.10517...
 constexpr float exp_tenth
   {
