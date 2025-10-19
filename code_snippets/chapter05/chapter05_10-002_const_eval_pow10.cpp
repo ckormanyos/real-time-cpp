@@ -38,6 +38,8 @@ constexpr auto pow10(T p)
   }
 }
 
+auto main() -> int;
+
 auto main() -> int
 {
   constexpr std::uint32_t p { UINT64_C(6) };

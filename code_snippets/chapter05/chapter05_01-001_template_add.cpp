@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019- 2023.
+//  Copyright Christopher Kormanyos 2019- 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,17 +15,22 @@
 template<typename T>
 constexpr auto add(const T& a, const T& b) -> T
 {
-  return T(a + b);
+  return a + b;
 }
 
-const auto n = add(1, 2); // 3
+// 3
+const auto n { add(1, 2) };
 
-const auto s = add(std::string("abc"), std::string("xyz")); // "abcxyz".
+// "abcxyz".
+const auto str { add(std::string("abc"), std::string("xyz")) };
 
 auto main() -> int;
 
 auto main() -> int
 {
+  // 3
   std::cout << n << std::endl;
-  std::cout << s << std::endl;
+
+  // abcxyz
+  std::cout << str << std::endl;
 }

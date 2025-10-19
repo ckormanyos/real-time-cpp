@@ -1,16 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019- 2020.
+//  Copyright Christopher Kormanyos 2019- 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter05_02-001_make_large.cpp
+// chapter05_02-002_make_large.cpp
 
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <sstream>
 
 template<typename ularge_type,
          typename ushort_type>
@@ -33,24 +34,27 @@ ularge_type make_large(const ushort_type& lo,
   return static_cast<ularge_type>(uh | lo);
 }
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
-  std::uint8_t  lo8  = UINT8_C(0x34);
-  std::uint8_t  hi8  = UINT8_C(0x12);
-  std::uint16_t u16
-    = make_large<std::uint16_t>(lo8, hi8);
+  const std::uint8_t  lo8  { UINT8_C(0x34) };
+  const std::uint8_t  hi8  { UINT8_C(0x12) };
+  const std::uint16_t u16  { make_large<std::uint16_t>(lo8, hi8) };
 
-  std::uint16_t lo16 = UINT16_C(0x5678);
-  std::uint16_t hi16 = UINT16_C(0x1234);
-  std::uint32_t u32
-    = make_large<std::uint32_t>(lo16, hi16);
+  const std::uint16_t lo16 { UINT16_C(0x5678) };
+  const std::uint16_t hi16 { UINT16_C(0x1234) };
+  const std::uint32_t u32  { make_large<std::uint32_t>(lo16, hi16) };
 
-  std::uint32_t lo32 = UINT32_C(0x9ABC'DEF0);
-  std::uint32_t hi32 = UINT32_C(0x1234'5678);
-  std::uint64_t u64
-    = make_large<std::uint64_t>(lo32, hi32);
+  const std::uint32_t lo32 { UINT32_C(0x9ABC'DEF0) };
+  const std::uint32_t hi32 { UINT32_C(0x1234'5678) };
+  const std::uint64_t u64  { make_large<std::uint64_t>(lo32, hi32) };
 
-  std::cout << std::hex << std::showbase << std::uppercase << u16 << std::endl;
-  std::cout << std::hex << std::showbase << std::uppercase << u32 << std::endl;
-  std::cout << std::hex << std::showbase << std::uppercase << u64 << std::endl;
+  std::stringstream strm { };
+
+  strm << std::hex << std::showbase << std::uppercase << u16 << '\n';
+  strm << std::hex << std::showbase << std::uppercase << u32 << '\n';
+  strm << std::hex << std::showbase << std::uppercase << u64 << '\n';
+
+  std::cout << strm.str() << std::endl;
 }

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018.
+//  Copyright Christopher Kormanyos 2018 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,15 +10,16 @@
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 
 class pwm final // A placeholder pwm class used for exemplary purposes.
 {
 public:
-  pwm(const std::uint8_t c) : channel(c) { }
+  explicit pwm(const std::uint8_t c) : channel(c) { }
 
   ~pwm() = default;
 
-  std::uint8_t get_channel() const { return channel; }
+  auto get_channel() const noexcept -> std::uint8_t { return channel; }
 
 private:
   pwm(const pwm&) = delete;
@@ -30,24 +31,30 @@ private:
 class led_port // No base class.
 {
 public:
-  led_port(const std::uint8_t p, const std::uint8_t b)
-    : is_on(false),
-      port (p),
-      bval (b) { static_cast<void>(bval); }
+  explicit led_port(const std::uint8_t p, const std::uint8_t b)
+    : port { p },
+      bval { b }
+  {
+    static_cast<void>(bval);
+  }
 
-  void toggle() const // Not virtual.
+  auto toggle() const -> void // Not virtual.
   {
     // Toggle the LED port in the PC simulation.
     is_on = (!is_on);
 
-    // Show the PC simulated port LED.
-    std::cout << "LED port(" << std::showbase << std::hex << unsigned(port) << "): ";
+    std::stringstream strm { };
 
-    std::cout << (is_on ? "is on" : "is off") << std::endl;
+    // Show the PC simulated port LED.
+    strm << "LED port(" << std::showbase << std::hex << unsigned(port) << "): ";
+
+    strm << (is_on ? "is on" : "is off");
+
+    std::cout << strm.str() << std::endl;
   }
 
 private:
-  mutable bool is_on;
+  mutable bool is_on { };
 
   const std::uint8_t port;
   const std::uint8_t bval;
@@ -56,18 +63,22 @@ private:
 class led_pwm // No base class.
 {
 public:
-  led_pwm(const pwm* p) : is_on (false),
-                          my_pwm( p) { }
+  led_pwm(const pwm* p) : is_on { false },
+                          my_pwm{ p } { }
 
-  void toggle() const // Not virtual.
+  auto toggle() const -> void // Not virtual.
   {
     // Toggle the LED PWM in the PC simulation.
     is_on = (!is_on);
 
-    // Show the PC simulated pwm LED.
-    std::cout << "LED pwm(" << std::dec << unsigned(my_pwm->get_channel()) << "): ";
+    std::stringstream strm { };
 
-    std::cout << (is_on ? "is on" : "is off") << std::endl;
+    // Show the PC simulated pwm LED.
+    strm << "LED pwm(" << std::dec << unsigned(my_pwm->get_channel()) << "): ";
+
+    strm << (is_on ? "is on" : "is off");
+
+    std::cout << strm.str() << std::endl;
   }
 
 private:
@@ -76,7 +87,7 @@ private:
 };
 
 template<typename led_type>
-void led_toggler(led_type& led)
+auto led_toggler(const led_type& led) -> void
 {
   // Toggle with static polymorphism.
   led.toggle();

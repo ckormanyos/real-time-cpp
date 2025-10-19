@@ -50,7 +50,9 @@ point<std::uint8_t, std::uint16_t> pt08_16
   static_cast<std::uint16_t>(UINT16_C(5678))
 };
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
   std::cout << "pt08_16: "
             << "(" << unsigned(pt08_16.my_x) << "," << unsigned(pt08_16.my_y) << ")"

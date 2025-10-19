@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018.
+//  Copyright Christopher Kormanyos 2018 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,7 +16,7 @@ public:
   apple() = default;
   ~apple() = default;
 
-  void setup() const
+  auto setup() const -> void
   {
     std::cout << "In apple::setup()" << std::endl;
   }
@@ -28,7 +28,7 @@ public:
   car() = default;
   ~car() = default;
 
-  void setup() const
+  auto setup() const -> void
   {
     std::cout << "In car::setup()" << std::endl;
   }
@@ -40,13 +40,15 @@ public:
   tiger() = default;
   ~tiger() = default;
 
-  void setup() const
+  auto setup() const -> void
   {
     std::cout << "In tiger::setup()" << std::endl;
   }
 };
 
-void do_something()
+auto do_something() -> void;
+
+auto do_something() -> void
 {
   // Create the tuple of things.
   std::tuple<apple, car, tiger> things;
@@ -57,7 +59,9 @@ void do_something()
   std::get<2>(things).setup();
 }
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
   do_something();
 }

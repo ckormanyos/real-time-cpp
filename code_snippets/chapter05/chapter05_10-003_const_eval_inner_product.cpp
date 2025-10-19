@@ -34,6 +34,8 @@ constexpr unsigned w
 
 static_assert(w == 32U, "Error in inner_produce");
 
+auto main() -> int;
+
 auto main() -> int
 {
   std::cout << "Result of inner product is: " << w << std::endl;

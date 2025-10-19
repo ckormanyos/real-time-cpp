@@ -69,10 +69,12 @@ auto main() -> int
 }
 ```
 
-This code snippet portrays simple use of `std::array`.
+This code snippet portrays a straightforward use of `std::array`.
 An array named `login_key` is created and initialized
-with the data bytes `1,2,3`. The bytes are printed to the
-output console.
+with the data bytes `0x1,0x2,0x3`. The bytes are printed
+to the output console. The formatted output is collected
+in an standard library `std::string` object with help
+from `std::format`.
 
 The expected output message text is
 

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2023.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,30 +11,25 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <sstream>
 
 class communication
 {
 public:
-  virtual ~communication() = default;
+  ~communication() = default;
 
-  virtual auto send_byte(const std::uint8_t b) const -> bool
+  auto send_byte(const std::uint8_t b) const -> bool
   {
+    std::stringstream strm { };
+
     // Simulate sending a byte on the PC.
-    std::cout << "Sending: "
-              << std::hex
-              << std::showbase
-              << unsigned(b)
-              << std::endl;
+    strm << "Sending: " << std::hex << std::showbase << unsigned(b);
 
-    const auto cout_state = std::cout.rdstate();
+    std::cout << strm.str() << std::endl;
 
-    const auto failed_state =
-      static_cast<std::ios::iostate>
-      (
-        cout_state & static_cast<std::ios::iostate>(std::ios::badbit | std::ios::failbit)
-      );
+    const std::ios::iostate cout_state = std::cout.rdstate();
 
-    const auto send_byte_is_ok = (failed_state == static_cast<std::ios::iostate>(0));
+    const bool send_byte_is_ok = ((cout_state & (std::ios::badbit | std::ios::failbit)) == 0);
 
     return send_byte_is_ok;
   }
@@ -43,25 +38,23 @@ public:
   template<typename unsigned_type>
   auto send_uint(const unsigned_type& u) const -> bool
   {
-    constexpr auto type_is_signed = std::numeric_limits<unsigned_type>::is_signed;
+    constexpr auto type_is_signed { std::numeric_limits<unsigned_type>::is_signed };
 
     // Ensure that unsigned_type is unsigned.
     static_assert(type_is_signed == false,
                   "error: type must be unsigned");
 
-    constexpr std::size_t count =
-      static_cast<int>
-      (
-        std::numeric_limits<unsigned_type>::digits / static_cast<int>(INT8_C(8))
-      );
+    constexpr std::size_t count
+      { std::numeric_limits<unsigned_type>::digits/8 };
 
-    auto i = std::size_t { };
+    std::size_t i { };
 
-    for(i = static_cast<std::size_t>(UINT8_C(0)); i < count; ++i)
+    for( ; i < count; ++i)
     {
-      const auto by = static_cast<std::uint8_t>(u >> (i * static_cast<unsigned>(UINT8_C(8))));
+      const std::uint8_t by
+        {static_cast<std::uint8_t>(u >> (i * 8U)) };
 
-      if(send_byte(by) == false)
+      if(!send_byte(by))
       {
         break;
       }
@@ -70,7 +63,7 @@ public:
     return (i == count);
   }
 
-  auto recv_byte() const -> std::uint8_t
+  auto recv_byte() const noexcept -> std::uint8_t
   {
     return recv_buffer;
   }
@@ -79,12 +72,14 @@ private:
   std::uint8_t recv_buffer { };
 };
 
+auto start_session(const communication& com) -> bool;
+
 auto start_session(const communication& com) -> bool
 {
-  constexpr auto login_key = static_cast<std::uint32_t>(UINT32_C(0x12345678));
+  constexpr std::uint32_t login_key { UINT32_C(0x12345678) };
 
   // Send the 32-bit login key.
-  const auto start_session_is_ok = com.send_uint(login_key);
+  const bool start_session_is_ok { com.send_uint(login_key) };
 
   return start_session_is_ok;
 }
@@ -93,12 +88,13 @@ auto main() -> int;
 
 auto main() -> int
 {
-  communication com;
+  const communication com { };
 
-  const bool start_session_is_ok = start_session(com);
+  const bool start_session_is_ok { start_session(com) };
 
-  std::cout << "Result of start_session: "
-            << std::boolalpha
-            << start_session_is_ok
-            << std::endl;
+  std::stringstream strm { };
+
+  strm << "Result of start_session: " << std::boolalpha << start_session_is_ok;
+
+  std::cout << strm.str() << std::endl;
 }

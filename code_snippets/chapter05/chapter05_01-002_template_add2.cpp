@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019- 2020.
+//  Copyright Christopher Kormanyos 2019- 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,12 +11,14 @@
 
 template<typename T1,
          typename T2>
-auto add(const T1& a, const T2& b) -> T1
+constexpr
+auto add(const T1& a, const T2& b) noexcept -> T1
 {
   return a + T1(b);
 }
 
-const auto d = add(1.1, 2); // OK, 3.1, double
+// OK, 3.1, double
+const double d { add(1.1, 2) };
 
 auto main() -> int;
 

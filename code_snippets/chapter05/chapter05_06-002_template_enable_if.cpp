@@ -9,32 +9,57 @@
 
 // chapter05_06-002_template_enable_if.cpp
 
-// The original add template function.
+// Generic add template function.
 template<typename T>
-auto add(T a, T b) noexcept
-  -> std::enable_if_t<!std::is_floating_point_v<T>, T>
+auto add(const T& a, const T& b)
+  -> std::enable_if_t
+       <   (!std::is_integral_v<T>)
+        && (!std::is_floating_point_v<T>), T>
 {
   return a + b;
 }
 
-// Easy-to-detect errors for float, double
-// and long double.
-
+// Versions of add for integral types.
 template<typename T>
-auto add(T, T) noexcept
+auto add(const T& a, const T& b)
+  -> std::enable_if_t<std::is_integral_v<T>, T>
+{
+  return a + b;
+}
+
+// Versions of add for floating-point types.
+template<typename T>
+auto add(const T&, const T&)
   -> std::enable_if_t<std::is_floating_point_v<T>, T>
 {
-  // Explicitly create an erroneous result!
+  // A clear error for floating-point types.
+  static_assert(false, "Error not allowed");
+
   return T { 0.0F };
+}
+
+auto do_something() -> void;
+
+auto do_something() -> void
+{
+  // 3
+  const unsigned c { add(1U, 2U) };
+
+  std::cout << c << std::endl;
+
+  // abcxyz
+  const std::string str
+    { add(std::string("abc"), std::string("xyz")) };
+
+  std::cout << str << std::endl;
+
+  // Error for instantiation with float is not allowed.
+  //const float flt { add(1.0F, 2.0F) };
 }
 
 auto main() -> int;
 
 auto main() -> int
 {
-  // 3
-  std::cout << add(1, 2) << std::endl;
-
-  // 0
-  std::cout << add(1.0F, 2.0F) << std::endl;
+  do_something();
 }
