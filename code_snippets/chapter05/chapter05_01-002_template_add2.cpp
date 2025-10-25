@@ -12,7 +12,7 @@
 template<typename T1,
          typename T2>
 constexpr
-auto add(const T1& a, const T2& b) noexcept -> T1
+auto add(const T1& a, const T2& b) -> T1
 {
   return a + T1(b);
 }

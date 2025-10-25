@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2023.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -49,7 +49,7 @@ template<typename addr_type,
 class port_pin
 {
 public:
-  static void set_direction_output(const addr_type address)
+  static auto set_direction_output(const addr_type address) -> void
   {
     std::cout << "Set the port pin direction to output." << std::endl;
 
@@ -61,7 +61,7 @@ public:
     port_register_type::bit_set(pdir, bpos);
   }
 
-  static void set_direction_input(const addr_type address)
+  static auto set_direction_input(const addr_type address) -> void
   {
     std::cout << "Set the port pin direction to input." << std::endl;
 
@@ -73,7 +73,7 @@ public:
     port_register_type::bit_clr(pdir, bpos);
   }
 
-  static void set_pin_high(const addr_type address)
+  static auto set_pin_high(const addr_type address) -> void
   {
     std::cout << "Set the port pin output value to high." << std::endl;
 
@@ -83,7 +83,7 @@ public:
     port_register_type::bit_set(address, bpos);
   }
 
-  static void set_pin_low(const addr_type address)
+  static auto set_pin_low(const addr_type address) -> void
   {
     std::cout << "Set the port pin output value to low." << std::endl;
 
@@ -93,7 +93,7 @@ public:
     port_register_type::bit_clr(address, bpos);
   }
 
-  static bool read_input_value(const addr_type address)
+  static auto read_input_value(const addr_type address) -> bool
   {
     static_cast<void>(address);
 
@@ -106,7 +106,7 @@ public:
     return pin_input_value_is_high;
   }
 
-  static void toggle(const addr_type address)
+  static auto toggle(const addr_type address) -> void
   {
     std::cout << "Toggle the port pin output value." << std::endl;
 
@@ -124,20 +124,22 @@ private:
 template<typename addr_type,
          typename reg_type,
          const reg_type bpos>
-bool port_pin<addr_type, reg_type, bpos>::pin_is_output;
+bool port_pin<addr_type, reg_type, bpos>::pin_is_output { };
 
 template<typename addr_type,
          typename reg_type,
          const reg_type bpos>
-bool port_pin<addr_type, reg_type, bpos>::pin_is_high;
+bool port_pin<addr_type, reg_type, bpos>::pin_is_high { };
 
 // The simulated portd.
 std::uint8_t simulated_register_portd;
 
-const std::uintptr_t address =
-  reinterpret_cast<std::uintptr_t>(&simulated_register_portd);
+const std::uintptr_t address
+  { reinterpret_cast<std::uintptr_t>(&simulated_register_portd) };
 
-void do_something()
+auto do_something() -> void;
+
+auto do_something() -> void
 {
   // Toggle the simulated portd.0.
   using simulated_port_d0_type =
@@ -146,15 +148,17 @@ void do_something()
   simulated_port_d0_type::set_pin_high(address);
   simulated_port_d0_type::set_direction_output(address);
 
-  const bool pin_input_value_is_high =
-    simulated_port_d0_type::read_input_value(address);
+  const bool pin_input_value_is_high
+    { simulated_port_d0_type::read_input_value(address) };
 
   static_cast<void>(pin_input_value_is_high);
 
   simulated_port_d0_type::toggle(address);
 }
 
-int main() noexcept
+auto main() -> int;
+
+auto main() -> int
 {
   do_something();
 }

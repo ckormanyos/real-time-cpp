@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2023.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,7 +7,7 @@
 
 // chapter09_03-001_system_tick.cpp
 
-// See also https://godbolt.org/z/MTT31WGd4
+// See also https://godbolt.org/z/5d9frjMvo
 
 #include <atomic>
 #include <chrono>
@@ -24,9 +24,9 @@ namespace mcal { namespace gpt {
 
   std::atomic<bool> simulation_is_ended { };
 
-  struct secure
+  struct secure final
   {
-    static value_type get_time_elapsed();
+    static auto get_time_elapsed() -> value_type;
   };
 
 } } // simulated namespace mcal::gpt
@@ -34,8 +34,8 @@ namespace mcal { namespace gpt {
 namespace
 {
   // The one (and only one) system tick.
-  volatile auto mcal_gpt_system_tick           = mcal::gpt::value_type { };
-  volatile auto system_tick_simulated_register = std::uint8_t { };
+  volatile mcal::gpt::value_type mcal_gpt_system_tick { };
+  volatile std::uint8_t system_tick_simulated_register { };
 
   auto gpt_is_initialized() -> bool&;
 
@@ -47,7 +47,7 @@ namespace
   }
 }
 
-void mcal::gpt::init(const config_type*)
+auto mcal::gpt::init(const config_type*) -> void
 {
   if(!gpt_is_initialized())
   {
@@ -56,7 +56,7 @@ void mcal::gpt::init(const config_type*)
   }
 }
 
-mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
+auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
 {
   if(gpt_is_initialized())
   {
@@ -99,6 +99,8 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
   }
 }
 
+auto simulated_system_tick() -> void;
+
 auto simulated_system_tick() -> void
 {
   while(!std::atomic_load(&mcal::gpt::simulation_is_ended))
@@ -124,9 +126,15 @@ auto simulated_system_tick() -> void
   }
 }
 
+auto simulated_system_start() -> void;
+
 auto simulated_system_start() -> void
 {
-  for(auto prescaler = static_cast<std::uint16_t>(UINT8_C(0)); prescaler < static_cast<std::uint16_t>(UINT8_C(32)); ++prescaler)
+  // Run the simulated system for a second or two.
+
+  for(auto   prescaler = static_cast<std::uint16_t>(UINT8_C(0));
+             prescaler < static_cast<std::uint16_t>(UINT8_C(128));
+           ++prescaler)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<unsigned>(UINT8_C(7))));
 
@@ -136,6 +144,8 @@ auto simulated_system_start() -> void
   }
 
   std::atomic_store(&mcal::gpt::simulation_is_ended, true);
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<unsigned>(UINT8_C(10))));
 }
 
 auto main() -> int;
@@ -144,8 +154,8 @@ auto main() -> int
 {
   mcal::gpt::init(nullptr);
 
-  std::thread simulated_thread_system_tick (simulated_system_tick);
-  std::thread simulated_thread_system_start(simulated_system_start);
+  std::thread simulated_thread_system_tick { simulated_system_tick };
+  std::thread simulated_thread_system_start { simulated_system_start };
 
   simulated_thread_system_tick.join();
   simulated_thread_system_start.join();

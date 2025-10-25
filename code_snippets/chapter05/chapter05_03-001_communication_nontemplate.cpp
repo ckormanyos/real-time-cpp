@@ -35,7 +35,7 @@ public:
     return send_byte_is_ok;
   }
 
-  auto recv_byte() const noexcept -> std::uint8_t
+  auto recv_byte() const -> std::uint8_t
   {
     return recv_buffer;
   }

@@ -17,18 +17,16 @@ public:
   virtual ~led_base() = default;
 
   // Pure virtual.
-  virtual auto toggle() noexcept -> void = 0;
+  virtual auto toggle() -> void = 0;
 
   // Interface for querying the LED state.
-  auto state_is_on() const noexcept
-    -> bool { return is_on; }
+  auto state_is_on() const -> bool { return is_on; }
 
 protected:
   // A protected default constructor.
   led_base() = default;
 
-  auto set_is_on(const bool val) noexcept
-    -> void { is_on = val; }
+  auto set_is_on(const bool val) -> void { is_on = val; }
 
 private:
   bool is_on { };
@@ -56,7 +54,7 @@ public:
 
   ~led_port() override = default;
 
-  auto toggle() noexcept -> void override
+  auto toggle() -> void override
   {
     // Toggle the LED.
     *reinterpret_cast<volatile bval_type*>(port)
@@ -96,7 +94,7 @@ public:
     return duty_cycle;
   }
 
-  constexpr auto get_channel() const noexcept -> std::uint8_t { return channel; }
+  constexpr auto get_channel() const -> std::uint8_t { return channel; }
 
 private:
   std::uint8_t channel;
@@ -110,7 +108,7 @@ public:
 
   ~led_pwm() override = default;
 
-  auto toggle() noexcept -> void override
+  auto toggle() -> void override
   {
     // Toggle the duty cycle.
     const std::uint8_t duty =

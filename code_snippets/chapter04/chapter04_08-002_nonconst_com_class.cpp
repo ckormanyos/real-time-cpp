@@ -46,7 +46,7 @@ public:
     return true;
   }
 
-  auto recv_ready() const noexcept -> bool { return has_recv; }
+  auto recv_ready() const -> bool { return has_recv; }
 
   std::uint8_t recv_byte()
   {
