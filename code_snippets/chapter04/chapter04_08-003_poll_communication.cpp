@@ -42,9 +42,9 @@ public:
     return true;
   }
 
-  auto recv_ready() const noexcept -> bool { return has_recv; }
+  auto recv_ready() const -> bool { return has_recv; }
 
-  auto recv_byte() noexcept -> std::uint8_t
+  auto recv_byte() -> std::uint8_t
   {
     if(has_recv)
     {

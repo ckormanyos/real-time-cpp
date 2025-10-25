@@ -19,7 +19,7 @@ public:
 
   ~pwm() = default;
 
-  auto get_channel() const noexcept -> std::uint8_t { return channel; }
+  auto get_channel() const -> std::uint8_t { return channel; }
 
 private:
   pwm(const pwm&) = delete;

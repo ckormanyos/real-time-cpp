@@ -34,24 +34,24 @@ namespace os
   // Simulate an event functionality for the PC.
   event_type simulated_event;
 
-  auto get_event(const task_id_type id) noexcept -> event_type;
+  auto get_event(const task_id_type id) -> event_type;
 
-  auto set_event(const event_type evt) noexcept -> void;
-  auto clr_event(const event_type evt) noexcept -> void;
+  auto set_event(const event_type evt) -> void;
+  auto clr_event(const event_type evt) -> void;
 
-  auto set_event(const event_type evt) noexcept -> void
+  auto set_event(const event_type evt) -> void
   {
     simulated_event |= (1U << evt);
   }
 
-  auto clr_event(const event_type evt) noexcept -> void
+  auto clr_event(const event_type evt) -> void
   {
     simulated_event &= event_type(~event_type(1U << evt));
   }
 }
 
 // We will examine the mangled name of this subroutine.
-auto os::get_event(const os::task_id_type) noexcept -> os::event_type
+auto os::get_event(const os::task_id_type) -> os::event_type
 {
   // Simulate an event functionality for the PC.
   return os::simulated_event;

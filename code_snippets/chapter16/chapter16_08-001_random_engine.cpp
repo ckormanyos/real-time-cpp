@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018 - 2023.
+//  Copyright Christopher Kormanyos 2018 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,10 +7,11 @@
 
 // chapter16_08-001_random_engine.cpp
 
-// See also https://godbolt.org/z/7fW8jYKKx
+// See also https://godbolt.org/z/TcxxEG6sK
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cstddef>
 #include <cstdint>
 #include <ctime>
@@ -20,6 +21,7 @@
 #include <random>
 #include <sstream>
 #include <string>
+#include <thread>
 
 namespace mcal { namespace random {
 
@@ -33,17 +35,17 @@ public:
   ~random_engine() = default;
 
   random_engine(const random_engine&) = delete;
-  random_engine(random_engine&&) noexcept = delete;
+  random_engine(random_engine&&) = delete;
 
   auto operator=(const random_engine&) -> random_engine& = delete;
-  auto operator=(random_engine&&) noexcept -> random_engine& = delete;
+  auto operator=(random_engine&&) -> random_engine& = delete;
 
-  auto entropy() const noexcept -> std::uint_fast8_t
+  auto entropy() const -> std::uint_fast8_t
   {
     return 1U;
   }
 
-  result_type operator()()
+  auto operator()() -> result_type
   {
     const result_type basis_for_seed = seed_value<result_type>();
 
@@ -96,7 +98,7 @@ private:
     return static_cast<local_integral_type>(crc_crc64(buf_u8.data(), str_tm_len));
   }
 
-  static constexpr auto test() noexcept -> bool;
+  static constexpr auto test() -> bool;
 
   template<const std::size_t NumberOfBits,
             typename UnsignedIntegralType>
@@ -195,16 +197,16 @@ auto do_something() -> void
       static_cast<unsigned>(UINT16_C(1023))
     };
 
-  const auto flg = std::cout.flags();
+  std::stringstream strm { };
 
   // Print the seed.
-  std::cout << "Seed is: 0x"
-            << std::hex
-            << std::setw(static_cast<std::streamsize>(INT8_C(16)))
-            << std::setfill('0')
-            << std::uppercase
-            << seed
-            << ". ";
+  strm << "Seed is: 0x"
+       << std::hex
+       << std::setw(static_cast<std::streamsize>(INT8_C(16)))
+       << std::setfill('0')
+       << std::uppercase
+       << seed
+       << ". ";
 
   // Generate 9 pseudo-random numbers in [1, 1023].
   const std::array<unsigned, static_cast<std::size_t>(UINT8_C(3))> random_numbers =
@@ -214,12 +216,13 @@ auto do_something() -> void
     distribution(generator)
   };
 
-  std::cout << "Random numbers in [1, 1023]: ";
-  std::cout << std::dec << std::setw(static_cast<std::streamsize>(INT8_C(5))) << std::setfill(' ') << random_numbers[static_cast<std::size_t>(UINT8_C(0))] << ", ";
-  std::cout << std::dec << std::setw(static_cast<std::streamsize>(INT8_C(5))) << std::setfill(' ') << random_numbers[static_cast<std::size_t>(UINT8_C(1))] << ", ";
-  std::cout << std::dec << std::setw(static_cast<std::streamsize>(INT8_C(5))) << std::setfill(' ') << random_numbers[static_cast<std::size_t>(UINT8_C(2))] << std::endl;
+  strm << "Random numbers in [1, 1023]: ";
+  strm << std::dec << std::setw(static_cast<std::streamsize>(INT8_C(5))) << std::setfill(' ') << random_numbers[static_cast<std::size_t>(UINT8_C(0))] << ", ";
+  strm << std::dec << std::setw(static_cast<std::streamsize>(INT8_C(5))) << std::setfill(' ') << random_numbers[static_cast<std::size_t>(UINT8_C(1))] << ", ";
+  strm << std::dec << std::setw(static_cast<std::streamsize>(INT8_C(5))) << std::setfill(' ') << random_numbers[static_cast<std::size_t>(UINT8_C(2))];
 
-  std::cout.flags(flg);
+
+  std::cout << strm.str() << std::endl;
 }
 
 auto main() -> int;
@@ -230,5 +233,7 @@ auto main() -> int
   for(auto i = static_cast<std::uint_fast8_t>(UINT8_C(0)); i < static_cast<std::uint_fast8_t>(UINT8_C(20)); ++i)
   {
     do_something();
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(UINT8_C(7)));
   }
 }

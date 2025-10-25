@@ -12,8 +12,8 @@ namespace mcal
   namespace irq
   {
     // Interrupt enable/disable.
-    inline auto enable_all () noexcept -> void { /* Use target-specific assembly here. */ }
-    inline auto disable_all() noexcept -> void { /* Use target-specific assembly here. */ }
+    inline auto enable_all () -> void { /* Use target-specific assembly here. */ }
+    inline auto disable_all() -> void { /* Use target-specific assembly here. */ }
   }
 }
 
@@ -22,7 +22,7 @@ namespace mcal
   namespace cpu
   {
     // The no-operation.
-    inline auto nop() noexcept -> void { /* Use target-specific assembly here. */ }
+    inline auto nop() -> void { /* Use target-specific assembly here. */ }
   }
 }
 

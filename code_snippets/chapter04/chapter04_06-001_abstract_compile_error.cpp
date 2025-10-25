@@ -18,18 +18,16 @@ public:
   virtual ~led_base() = default;
 
   // Pure virtual.
-  virtual auto toggle() noexcept -> void = 0;
+  virtual auto toggle() -> void = 0;
 
   // Interface for querying the LED state.
-  auto state_is_on() const noexcept
-    -> bool { return is_on; }
+  auto state_is_on() const -> bool { return is_on; }
 
 protected:
   // A protected default constructor.
   led_base() = default;
 
-  auto set_is_on(const bool val) noexcept
-    -> void { is_on = val; }
+  auto set_is_on(const bool val) -> void { is_on = val; }
 
 private:
   bool is_on { };
@@ -55,7 +53,7 @@ public:
   // to remove the compile error.
 
   #if 0
-  auto toggle() noexcept -> void override
+  auto toggle() -> void override
   {
     // Toggle the is_on indication flag.
     set_is_on(!led_base::state_is_on());

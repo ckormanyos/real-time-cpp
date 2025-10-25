@@ -20,13 +20,13 @@ namespace mcal { namespace gpt {
   using value_type  = std::uint64_t;
   using config_type = void;
 
-  auto init(const config_type*) noexcept -> void;
+  auto init(const config_type*) -> void;
 
   std::atomic<bool> simulation_is_ended { };
 
   struct secure final
   {
-    static auto get_time_elapsed() noexcept -> value_type;
+    static auto get_time_elapsed() -> value_type;
   };
 
 } } // simulated namespace mcal::gpt
@@ -37,9 +37,9 @@ namespace
   volatile mcal::gpt::value_type mcal_gpt_system_tick { };
   volatile std::uint8_t system_tick_simulated_register { };
 
-  auto gpt_is_initialized() noexcept -> bool&;
+  auto gpt_is_initialized() -> bool&;
 
-  auto gpt_is_initialized() noexcept -> bool&
+  auto gpt_is_initialized() -> bool&
   {
     static auto is_init = bool { };
 
@@ -47,7 +47,7 @@ namespace
   }
 }
 
-auto mcal::gpt::init(const config_type*) noexcept -> void
+auto mcal::gpt::init(const config_type*) -> void
 {
   if(!gpt_is_initialized())
   {
@@ -56,7 +56,7 @@ auto mcal::gpt::init(const config_type*) noexcept -> void
   }
 }
 
-auto mcal::gpt::secure::get_time_elapsed() noexcept -> mcal::gpt::value_type
+auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
 {
   if(gpt_is_initialized())
   {

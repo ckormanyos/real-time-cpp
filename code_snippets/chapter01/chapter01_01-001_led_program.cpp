@@ -30,10 +30,10 @@ public:
   }
 
   constexpr led(const led&) = delete;
-  constexpr led(led&&) noexcept = delete;
+  constexpr led(led&&) = delete;
 
   constexpr auto operator=(const led&) -> led& = delete;
-  constexpr auto operator=(led&&) noexcept -> led& = delete;
+  constexpr auto operator=(led&&) -> led& = delete;
 
 private:
   // Private member variables of the class.
