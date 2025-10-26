@@ -1,15 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2023.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter06_09-002_typedef_led_template.cpp
+// chapter06_09-001_alias_reg_access.cpp
 
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 
 template<typename RegisterAddressType,
          typename RegisterValueType>
@@ -44,60 +45,39 @@ struct reg_access_dynamic final
   static auto bit_get(const register_address_type address, const register_value_type value) -> bool { return (static_cast<register_value_type>(reg_get(address) & static_cast<register_value_type>(1UL << value)) != static_cast<register_value_type>(0U)); }
 };
 
-template<typename port_type,
-         typename bval_type>
-class led_template
-{
-private:
-  using port_pin_type = reg_access_dynamic<std::uintptr_t, std::uint8_t>;
-
-public:
-  led_template(const port_type port,
-               const bval_type bval) : my_port(port),
-                                       my_bval(bval)
-  {
-    // Set the port pin value to low.
-    port_pin_type::bit_clr(my_port, my_bval);
-  }
-
-  auto toggle() -> void
-  {
-    // Toggle the LED.
-    port_pin_type::bit_not(my_port, my_bval);
-  }
-
-private:
-  const port_type my_port;
-  const bval_type my_bval;
-};
-
 // The simulated portb.
 auto simulated_register_portb = std::uint8_t { };
 
 const auto address = reinterpret_cast<std::uintptr_t>(&simulated_register_portb);
 
+auto do_something() -> void;
+
+auto do_something() -> void
+{
+  // Use a convenient alias to save tedious typing work.
+  using port_type = reg_access_dynamic<std::uintptr_t, std::uint8_t>;
+
+  // Toggle the simulated portb.5.
+  port_type::bit_not(address, static_cast<std::uint8_t>(UINT8_C(5)));
+}
+
 auto main() -> int;
 
 auto main() -> int
 {
-  using led_b5_type = led_template<std::uintptr_t, std::uint8_t>;
-
-  led_b5_type led_b5 { address, static_cast<std::uint8_t>(UINT8_C(5)) };
-
-  const auto flg = std::cout.flags();
-
   for(auto i = static_cast<unsigned>(UINT8_C(0)); i < static_cast<unsigned>(UINT8_C(4)); ++i)
   {
-    led_b5.toggle();
+    do_something();
 
-    std::cout << "simulated_register_portb: "
-              << std::hex
-              << "0x"
-              << std::setw(static_cast<std::streamsize>(INT8_C(2)))
-              << std::setfill('0')
-              << static_cast<unsigned>(simulated_register_portb)
-              << std::endl;
+    std::stringstream strm { };
+
+    strm << "simulated_register_portb: "
+         << std::hex
+         << "0x"
+         << std::setw(static_cast<std::streamsize>(INT8_C(2)))
+         << std::setfill('0')
+         << static_cast<unsigned>(simulated_register_portb);
+
+    std::cout << strm.str() << std::endl;
   }
-
-  std::cout.flags(flg);
 }

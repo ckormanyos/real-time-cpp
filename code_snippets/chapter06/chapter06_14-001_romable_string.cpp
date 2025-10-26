@@ -1,11 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter06_14-003_romable_initializer_list.cpp
+// chapter06_14-001_romable_string.cpp
 
 #include <initializer_list>
 #include <iostream>
@@ -19,7 +19,9 @@ namespace
   };
 }
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
   std::cout << "version_string: " << version_string.begin() << std::endl;
 }

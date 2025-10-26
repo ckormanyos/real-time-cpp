@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,15 +12,17 @@
 
 namespace
 {
-  std::uint_fast8_t prescaler;
+  std::uint_fast8_t prescaler { };
 
-  void do_something_at_01x_period() { std::cout << "prescaler: 1" << std::endl; }
-  void do_something_at_02x_period() { std::cout << "prescaler: 2" << std::endl; }
-  void do_something_at_04x_period() { std::cout << "prescaler: 4" << std::endl; }
-  void do_something_at_08x_period() { std::cout << "prescaler: 8" << std::endl; }
+  auto do_something_at_01x_period() -> void { std::cout << "prescaler: 1" << std::endl; }
+  auto do_something_at_02x_period() -> void { std::cout << "prescaler: 2" << std::endl; }
+  auto do_something_at_04x_period() -> void { std::cout << "prescaler: 4" << std::endl; }
+  auto do_something_at_08x_period() -> void { std::cout << "prescaler: 8" << std::endl; }
 }
 
-void do_something()
+auto do_something() -> void;
+
+auto do_something() -> void
 {
   ++prescaler;
 
@@ -42,10 +44,14 @@ void do_something()
   }
 }
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
-  for(;;)
+  for(unsigned index { UINT8_C(0) }; index < unsigned { UINT8_C(128) }; ++index)
   {
+    static_cast<void>(index);
+
     do_something();
   }
 }

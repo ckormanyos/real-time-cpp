@@ -30,9 +30,8 @@ $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion 
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_06-002_name_mangling_get_event.cpp    -o ./bin/chapter06_06-002_name_mangling_get_event.exe
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_07-001_assembly_sequences.cpp         -o ./bin/chapter06_07-001_assembly_sequences.exe
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_08-001_comments.cpp                   -o ./bin/chapter06_08-001_comments.exe
-$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_09-001_typedef_reg_access.cpp         -o ./bin/chapter06_09-001_typedef_reg_access.exe
-$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_09-002_typedef_led_template.cpp       -o ./bin/chapter06_09-002_typedef_led_template.exe
-$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_09-003_alias_reg_access.cpp           -o ./bin/chapter06_09-003_alias_reg_access.exe
+$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_09-001_alias_reg_access.cpp           -o ./bin/chapter06_09-001_alias_reg_access.exe
+$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_09-002_alias_led_template.cpp         -o ./bin/chapter06_09-002_alias_led_template.exe
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_10-001_checksum_uint8_t.cpp           -o ./bin/chapter06_10-001_checksum_uint8_t.exe
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_10-002_checksum_uint_fast8_t.cpp      -o ./bin/chapter06_10-002_checksum_uint_fast8_t.exe
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter06_11-001_scale_with_powers_of_two.cpp   -o ./bin/chapter06_11-001_scale_with_powers_of_two.exe
@@ -63,9 +62,8 @@ ls -la \
 ./bin/chapter06_06-002_name_mangling_get_event.exe    \
 ./bin/chapter06_07-001_assembly_sequences.exe         \
 ./bin/chapter06_08-001_comments.exe                   \
-./bin/chapter06_09-001_typedef_reg_access.exe         \
-./bin/chapter06_09-002_typedef_led_template.exe       \
-./bin/chapter06_09-003_alias_reg_access.exe           \
+./bin/chapter06_09-001_alias_reg_access.exe           \
+./bin/chapter06_09-002_alias_led_template.exe         \
 ./bin/chapter06_10-001_checksum_uint8_t.exe           \
 ./bin/chapter06_10-002_checksum_uint_fast8_t.exe      \
 ./bin/chapter06_11-001_scale_with_powers_of_two.exe   \
@@ -92,9 +90,8 @@ ls -la \
 ./bin/chapter06_06-002_name_mangling_get_event.exe    \
 ./bin/chapter06_07-001_assembly_sequences.exe         \
 ./bin/chapter06_08-001_comments.exe                   \
-./bin/chapter06_09-001_typedef_reg_access.exe         \
-./bin/chapter06_09-002_typedef_led_template.exe       \
-./bin/chapter06_09-003_alias_reg_access.exe           \
+./bin/chapter06_09-001_alias_reg_access.exe           \
+./bin/chapter06_09-002_alias_led_template.exe         \
 ./bin/chapter06_10-001_checksum_uint8_t.exe           \
 ./bin/chapter06_10-002_checksum_uint_fast8_t.exe      \
 ./bin/chapter06_11-001_scale_with_powers_of_two.exe   \
