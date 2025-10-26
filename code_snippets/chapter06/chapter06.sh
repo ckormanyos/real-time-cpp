@@ -62,8 +62,8 @@ ls -la \
 ./bin/chapter06_06-002_name_mangling_get_event.exe    \
 ./bin/chapter06_07-001_assembly_sequences.exe         \
 ./bin/chapter06_08-001_comments.exe                   \
-./bin/chapter06_09-001_aliasf_reg_access.exe          \
-./bin/chapter06_09-002_aliasf_led_template.exe        \
+./bin/chapter06_09-001_alias_reg_access.exe           \
+./bin/chapter06_09-002_alias_led_template.exe         \
 ./bin/chapter06_10-001_checksum_uint8_t.exe           \
 ./bin/chapter06_10-002_checksum_uint_fast8_t.exe      \
 ./bin/chapter06_11-001_scale_with_powers_of_two.exe   \
