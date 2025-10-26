@@ -8,6 +8,8 @@
 // chapter06_18-001_use_lambdas.cpp
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 
 using function_type = void(*)();
