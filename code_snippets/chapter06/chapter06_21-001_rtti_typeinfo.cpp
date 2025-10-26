@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2023.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -27,6 +27,7 @@ private:
 };
 
 auto verify_typeid(const char* pn) -> bool;
+
 auto do_something() -> void;
 
 auto do_something() -> void
@@ -36,7 +37,7 @@ auto do_something() -> void
 
   // Obtain a const ref to the typeid of a.
   const std::type_info& tia = typeid(a);
-  
+
   if(verify_typeid(tia.name()))
   {
     // tia.name() should be a constant

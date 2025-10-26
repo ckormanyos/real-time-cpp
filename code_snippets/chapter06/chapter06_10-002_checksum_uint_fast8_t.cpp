@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,30 +7,41 @@
 
 // chapter06_10-002_checksum_uint_fast8_t.cpp
 
+#include <array>
+#include <cstddef>
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
 
-std::uint8_t checksum(const std::uint8_t* p,
-                      const std::uint_fast8_t len)
-{
-  std::uint_fast8_t sum = UINT8_C(0);
+constexpr auto checksum(const std::uint8_t* p, const std::uint_fast8_t len) -> std::uint8_t;
 
-  for(std::uint_fast8_t i = UINT8_C(0); i < len; i++)
+constexpr auto checksum(const std::uint8_t* p, const std::uint_fast8_t len) -> std::uint8_t
+{
+  std::uint_fast8_t sum { UINT8_C(0) };
+
+  for(std::uint_fast8_t i = UINT8_C(0); i < len; ++i)
   {
     sum += *p;
+
     ++p;
   };
 
-  return sum;
+  return static_cast<std::uint8_t>(~sum + UINT8_C(1));
 }
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
-  const std::uint8_t data[3U] = { 1U, 2U, 3U };
+  const std::array<std::uint8_t, std::size_t { UINT8_C(3) }> data =
+  {{
+    UINT8_C(1),
+    UINT8_C(2),
+    UINT8_C(3)
+  }};
 
-  const std::uint8_t sum = checksum(data, 3U);
+  const std::uint8_t sum { checksum(data.data(), static_cast<std::uint8_t>(data.size())) };
 
-  // 6
-  std::cout << "sum: " << static_cast<std::uint32_t>(sum) << std::endl;
+  // 250
+  std::cout << "sum: " << static_cast<unsigned>(sum) << std::endl;
 }

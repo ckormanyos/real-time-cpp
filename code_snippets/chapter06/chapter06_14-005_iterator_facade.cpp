@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2023.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,7 +7,7 @@
 
 // chapter06_14-005_iterator_facade.cpp
 
-// See also https://godbolt.org/z/PndaEn9de
+// See also https://godbolt.org/z/8e7zPGErd
 
 #include <algorithm>
 #include <cstddef>
@@ -40,15 +40,20 @@ private:
   friend class boost::iterator_core_access;
 
 public:
-  explicit iterator(const typename base_class_type::value_type* p = nullptr)
+  using typename base_class_type::value_type;
+
+  explicit iterator(const value_type* p = nullptr)
     : current(p) { }
 
   iterator(const iterator& other)
     : current(other.current) { }
 
-  virtual ~iterator() = default;
+  iterator(iterator&& other)
+    : current(other.current) { }
 
-  iterator& operator=(const iterator& other)
+  ~iterator() = default;
+
+  auto operator=(const iterator& other) -> iterator&
   {
     if(this != &other)
     {
@@ -58,43 +63,49 @@ public:
     return *this;
   }
 
+  auto operator=(iterator&& other) -> iterator&
+  {
+    current = other.current;
+
+    return *this;
+  }
+
 private:
-  const typename base_class_type::value_type* current;
+  const value_type* current;
 
-  void increment() { ++current; }
+  auto increment() -> void { ++current; }
 
-  void decrement() { --current; }
+  auto decrement() -> void { --current; }
 
-  void advance(const typename base_class_type::difference_type n)
+  auto advance(const typename base_class_type::difference_type n) -> void
   {
     current += n;
   }
 
-  bool equal(const iterator& other) const
+  auto equal(const iterator& other) const -> bool
   {
     return (this->current == other.current);
   }
 
-  typename base_class_type::value_type dereference() const
+  auto dereference() const -> typename base_class_type::value_type
   {
-    const typename base_class_type::value_type x = *current;
+    const value_type x { *current };
 
     return x;
   }
 };
 
-template <typename container_type> inline auto cbegin (const container_type& c) -> decltype(c.cbegin())  { return c.cbegin(); }
-template <typename container_type> inline auto cend   (const container_type& c) -> decltype(c.cend())    { return c.cend(); }
+template <typename container_type> auto cbegin (const container_type& c) -> decltype(c.cbegin())  { return c.cbegin(); }
+template <typename container_type> auto cend   (const container_type& c) -> decltype(c.cend())    { return c.cend(); }
 
-template <typename container_type> inline auto crbegin(const container_type& c) -> decltype(c.crbegin()) { return c.crbegin(); }
-template <typename container_type> inline auto crend  (const container_type& c) -> decltype(c.crend())   { return c.crend(); }
+template <typename container_type> auto crbegin(const container_type& c) -> decltype(c.crbegin()) { return c.crbegin(); }
+template <typename container_type> auto crend  (const container_type& c) -> decltype(c.crend())   { return c.crend(); }
 
-template <typename value_type, std::size_t N> inline const mcal::cpu::progmem_boost::iterator<value_type> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem_boost::iterator<value_type>(&c_array[0U]); }
-template <typename value_type, std::size_t N> inline const mcal::cpu::progmem_boost::iterator<value_type> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem_boost::iterator<value_type>(&c_array[N]); }
+template <typename value_type, std::size_t N> auto cbegin (const value_type(&c_array)[N] MY_PROGMEM) -> const mcal::cpu::progmem_boost::iterator<value_type> { return mcal::cpu::progmem_boost::iterator<value_type>(&c_array[0U]); }
+template <typename value_type, std::size_t N> auto cend   (const value_type(&c_array)[N] MY_PROGMEM) -> const mcal::cpu::progmem_boost::iterator<value_type> { return mcal::cpu::progmem_boost::iterator<value_type>(&c_array[N]); }
 
-template <typename value_type, std::size_t N> inline const std::reverse_iterator<mcal::cpu::progmem_boost::iterator<value_type>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return std::reverse_iterator<mcal::cpu::progmem_boost::iterator<value_type>>(&c_array[N]); }
-template <typename value_type, std::size_t N> inline const std::reverse_iterator<mcal::cpu::progmem_boost::iterator<value_type>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return std::reverse_iterator<mcal::cpu::progmem_boost::iterator<value_type>>(&c_array[0U]); }
-
+template <typename value_type, std::size_t N> auto crbegin(const value_type(&c_array)[N] MY_PROGMEM) -> const std::reverse_iterator<mcal::cpu::progmem_boost::iterator<value_type>> { return std::reverse_iterator<mcal::cpu::progmem_boost::iterator<value_type>>(&c_array[N]); }
+template <typename value_type, std::size_t N> auto crend  (const value_type(&c_array)[N] MY_PROGMEM) -> const std::reverse_iterator<mcal::cpu::progmem_boost::iterator<value_type>> { return std::reverse_iterator<mcal::cpu::progmem_boost::iterator<value_type>>(&c_array[0U]); }
 
 } // namespace mcal::cpu::progmem_boost
 
@@ -109,9 +120,12 @@ auto main() -> int;
 
 auto main() -> int
 {
-  const auto sum = std::accumulate(mcal::cpu::progmem_boost::cbegin(a),
-                                   mcal::cpu::progmem_boost::cend  (a),
-                                   static_cast<std::uint8_t>(UINT8_C(0)));
+  const std::uint8_t sum
+    {
+      std::accumulate(mcal::cpu::progmem_boost::cbegin(a),
+                      mcal::cpu::progmem_boost::cend  (a),
+                      static_cast<std::uint8_t>(UINT8_C(0)))
+    };
 
   // 6
   std::cout << static_cast<unsigned>(sum) << std::endl;
