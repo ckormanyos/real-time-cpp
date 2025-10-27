@@ -8,6 +8,7 @@
 // The LED program.
 
 #include "mcal_reg.h"
+
 #include <cstdint>
 
 class led
@@ -56,6 +57,8 @@ namespace
     mcal::reg::bval5
   };
 }
+
+auto main() -> int;
 
 auto main() -> int
 {

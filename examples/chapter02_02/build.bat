@@ -12,15 +12,15 @@
 @rem build.bat directory_of_gcc_bin prefix_of_avr_gcc
 
 @rem Usage example A,
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02\tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin" avr
+@rem cd "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
+@rem build.bat "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02\tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin" avr
 
 @rem Usage example A1 (use a relative tool path),
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
+@rem cd "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
 @rem build.bat ".\tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin" avr
 
 @rem Usage example B,
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
+@rem cd "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
 @rem build.bat "C:\Program Files (x86)\gcc-15.1.0-avr\bin" avr
 
 
@@ -39,7 +39,7 @@ if exist bin\led*.* del /Q bin\led*.*
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -fsigned-char -x assembler crt0.s -c -o bin/crt0.o
 
 @echo.Compile  : led.cpp to bin/led.o
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -fsigned-char -O2 -std=c++0x -I. -c led.cpp -o bin/led.o
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -fsigned-char -O2 -std=c++11 -I. -c led.cpp -o bin/led.o
 
 @echo.Link     : objects to bin/led.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -nostartfiles -nostdlib -Wl,-Tavr.ld,-Map,bin/led.map bin/led.o bin/crt0.o -o bin/led.elf
