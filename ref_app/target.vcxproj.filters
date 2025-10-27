@@ -322,6 +322,15 @@
     <Filter Include="micros\am6254_soc\Code\Startup\Core\a53">
       <UniqueIdentifier>{8cae57b6-0e1e-471c-acea-6e9f6ef3ece8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\bl602_sifive_e24_riscv">
+      <UniqueIdentifier>{f04752e7-fb5c-409d-b8a1-45c616328d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\bl602_sifive_e24_riscv\make">
+      <UniqueIdentifier>{78ca94d0-a98f-4278-b355-cfa8a6979c42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\bl602_sifive_e24_riscv\startup">
+      <UniqueIdentifier>{d9d707dc-1ba0-4d0c-be67-fbb095f42986}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -1077,6 +1086,12 @@
     </Text>
     <Text Include="target\micros\am6254_soc\Code\SBL\config.txt">
       <Filter>micros\am6254_soc\Code\SBL</Filter>
+    </Text>
+    <Text Include="target\micros\bl602_sifive_e24_riscv\make\make.txt">
+      <Filter>micros\bl602_sifive_e24_riscv\make</Filter>
+    </Text>
+    <Text Include="target\micros\bl602_sifive_e24_riscv\startup\startup.txt">
+      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
