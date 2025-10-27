@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright Christopher Kormanyos 2014.
+# Copyright Christopher Kormanyos 2014 - 2025.
 # Distributed under the Boost Software License,
 # Version 1.0. (See accompanying file LICENSE_1_0.txt
 # or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,12 +22,12 @@
 # ./build.sh /usr/bin avr
 #
 # Usage example A (from *nix shell)
-# cd /usr/local/real-time-cpp/examples/chapter02_03
-# ./build.sh /usr/local/real-time-cpp/examples/chapter02_03/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+# cd /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_03
+# ./build.sh /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_03/tools/Util/MinGW/msys/1.0/local/gcc-15.1.0-avr/bin avr
 
 # Usage example B (from Win* shell such as in Git for Win*)
-# cd C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_03
-# ./build.sh C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_03/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+# cd C:/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_03
+# ./build.sh Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_03/tools/Util/MinGW/msys/1.0/local/gcc-15.1.0-avr/bin avr
 
 if [[ $# == 0 ]]; then                   ##  $# is the number of arguments
     if [[ -n "$(which avr-g++)" ]]; then ## -n tests if string is not empty
@@ -47,8 +47,8 @@ else
     TOOL_PREFIX="$2"
 fi
 
-CFLAGS="-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections"
-CPPFLAGS="-std=c++14 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs"
+CFLAGS="-Wall -Wextra -Wpedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections"
+CPPFLAGS="-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs"
 CINCLUDES="-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr"
 
 echo

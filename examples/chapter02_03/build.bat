@@ -1,6 +1,6 @@
 
 @rem
-@rem Copyright Christopher Kormanyos 2014 - 2020.
+@rem Copyright Christopher Kormanyos 2014 - 2025.
 @rem Distributed under the Boost Software License,
 @rem Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,23 +12,23 @@
 @rem build.bat directory_of_gcc_bin prefix_of_avr_gcc
 
 @rem Usage example A,
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
+@rem cd "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03"
+@rem build.bat "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
 
 @rem Usage example A1 (use a relative tool path),
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03"
-@rem build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
+@rem cd "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03"
+@rem build.bat ".\tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin" avr
 
 @rem Usage example B,
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03"
-@rem build.bat "C:\Program Files (x86)\gcc-11.2.0-avr\bin" avr
+@rem cd "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03"
+@rem build.bat "C:\Program Files (x86)\gcc-15.1.0-avr\bin" avr
 
 
 @set TOOL_PATH=%1
 @set TOOL_PREFIX=%2
 
-@set CFLAGS=-C -Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections
-@set CPPFLAGS= -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
+@set CFLAGS=-C -Wall -Wextra -Wpedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections
+@set CPPFLAGS= -std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
 @set CINCLUDES=-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr
 
 @echo.

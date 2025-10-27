@@ -1,37 +1,36 @@
-
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2015 - 2020.
+//  Copyright Christopher Kormanyos 2015 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <cstdint>
-
 #include <mcal/mcal.h>
 #include <mcal/mcal_display_seven_segment.h>
 #include <util/utility/util_time.h>
+
+#include <cstdint>
 
 namespace app
 {
   namespace display
   {
-    void task_init();
-    void task_func();
+    auto task_init() -> void;
+    auto task_func() -> void;
   }
 }
 
 namespace
 {
-  typedef util::timer<std::uint32_t> timer_type;
+  using timer_type = util::timer<std::uint32_t>;
 
   timer_type app_display_timer(timer_type::seconds(1U));
 
-  uint8_t app_display_index;
-  bool    app_display_dp_on = true;
+  uint8_t app_display_index { };
+  bool    app_display_dp_on { true };
 }
 
-void app::display::task_init()
+auto app::display::task_init() -> void
 {
   mcal::led::led0.toggle();
 
@@ -40,7 +39,7 @@ void app::display::task_init()
   mcal::display::display0().write(app_display_index);
 }
 
-void app::display::task_func()
+auto app::display::task_func() -> void
 {
   if(app_display_timer.timeout())
   {

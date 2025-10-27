@@ -12,6 +12,7 @@
     <None Include="bin\led.lss" />
     <None Include="bin\led.map" />
     <None Include="build.bat" />
+    <None Include="build.sh" />
     <None Include="crt0.s" />
     <None Include="cstdint" />
   </ItemGroup>

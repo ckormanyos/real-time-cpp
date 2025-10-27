@@ -22,12 +22,12 @@
 # ./build.sh /usr/bin avr
 #
 # Usage example A (from *nix shell)
-# cd /usr/local/real-time-cpp/examples/chapter02_06
-# ./build.sh /usr/local/real-time-cpp/examples/chapter02_06/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+# cd /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_06
+# ./build.sh /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_06/tools/Util/MinGW/msys/1.0/local/gcc-15.1.0-avr/bin avr
 
 # Usage example B (from Win* shell such as in Git for Win*)
-# cd C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_06
-# ./build.sh C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_06/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+# cd C:/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_06
+# ./build.sh Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_06/tools/Util/MinGW/msys/1.0/local/gcc-15.1.0-avr/bin avr
 
 if [[ $# == 0 ]]; then                   ##  $# is the number of arguments
     if [[ -n "$(which avr-g++)" ]]; then ## -n tests if string is not empty
@@ -61,7 +61,7 @@ echo "Assemble : crt0.s  to bin/crt0.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -mmcu=atmega328p -fsigned-char -x assembler crt0.s -c -o bin/crt0.o
 
 echo "Compile  : led.cpp to bin/led.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -mmcu=atmega328p -fsigned-char -O2 -std=c++0x -I. -c led.cpp -o bin/led.o
+$TOOL_PATH/$TOOL_PREFIX-g++ -mmcu=atmega328p -fsigned-char -O2 -std=c++11 -I. -c led.cpp -o bin/led.o
 
 echo "Link     : objects to bin/led.elf"
 $TOOL_PATH/$TOOL_PREFIX-g++ -mmcu=atmega328p -nostartfiles -nostdlib -Wl,-Tavr.ld,-Map,bin/led.map bin/led.o bin/crt0.o -o bin/led.elf
