@@ -40,13 +40,8 @@
 
 #include "riscv-csr.h"
 
+#include <stdbool.h>
 #include <stdint.h>
-
-//-----------------------------------------------------------------------------------------
-// Defines
-//-----------------------------------------------------------------------------------------
-#define TIMEOUT_500MS  (uint64_t)5000000
-#define TIMEOUT_1S  (uint64_t)10000000
 
 //-----------------------------------------------------------------------------------------
 // Macros
@@ -59,7 +54,11 @@
 //-----------------------------------------------------------------------------------------
 // Function Prototypes
 //-----------------------------------------------------------------------------------------
-void __attribute__((interrupt,used,noinline)) Isr_TIMER_Interrupt (void);
+
+extern void task_led();
+extern void mcal_gpt_init();
+
+void toggle_led();
 
 //-----------------------------------------------------------------------------------------
 /// \brief  
@@ -85,27 +84,21 @@ int main(void)
   /* enable timer interrupt in CLIC vectored mode */
   CLIC_INTIE[7] = 1u;
 
-  /* set the timeout to 500ms */
-  CLIC_MTIMECMP = (uint64_t)(CLIC_MTIME + TIMEOUT_500MS);
+  mcal_gpt_init();
+
+  toggle_led();
 
   /* endless loop */
-  while(1);
+  while(1)
+  {
+    task_led();
+  }
 
   return 0;
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief  
-///
-/// \param  
-///
-/// \return 
-//-----------------------------------------------------------------------------------------
-void Isr_TIMER_Interrupt (void)
+void toggle_led()
 {
-  /* toggle the IO3 pin */
+  // Toggle the IO3 pin.
   glb->GPIO_CFGCTL32.bit.reg_gpio_3_o ^= 1ul;
-
-  /* set the next timer timeout timeout */
-  CLIC_MTIMECMP = (uint64_t)(CLIC_MTIME + TIMEOUT_1S);
 }

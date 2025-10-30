@@ -2,11 +2,11 @@
 #ifndef BL602_H
 #define BL602_H
 
+#include "stdint.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "stdint.h"
 
 #ifdef __cplusplus
   #define   __I     volatile             /*!< Defines 'read only' permissions */

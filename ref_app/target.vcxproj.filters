@@ -340,9 +340,6 @@
     <Filter Include="micros\bl602_sifive_e24_riscv\Code\Mcal">
       <UniqueIdentifier>{75fda3d9-17eb-48a8-92e8-9c440411a545}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\bl602_sifive_e24_riscv\Code\Startup">
-      <UniqueIdentifier>{c701b4a4-37c5-4b88-94d1-2cee1a0a588c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -771,8 +768,8 @@
     <None Include="target\micros\bl602_sifive_e24_riscv\make\bl602_sifive_e24_riscv_files.gmk">
       <Filter>micros\bl602_sifive_e24_riscv\make</Filter>
     </None>
-    <None Include="target\micros\bl602_sifive_e24_riscv\Code\Startup\boot.s">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Startup</Filter>
+    <None Include="target\micros\bl602_sifive_e24_riscv\startup\boot.s">
+      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1103,13 +1100,19 @@
     <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main_cores.cpp">
       <Filter>micros\am6254_soc\Code\Appli\Core\a53</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Startup\intvect.c">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Startup\Startup.c">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Startup</Filter>
-    </ClCompile>
     <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\main.c">
+      <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\intvect.c">
+      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\Startup.c">
+      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\led.cpp">
+      <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\mcal_gpt.cpp">
       <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1119,9 +1122,6 @@
     </Text>
     <Text Include="target\micros\am6254_soc\Code\SBL\config.txt">
       <Filter>micros\am6254_soc\Code\SBL</Filter>
-    </Text>
-    <Text Include="target\micros\bl602_sifive_e24_riscv\startup\startup.txt">
-      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -1139,6 +1139,12 @@
     </ClInclude>
     <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Mcal\riscv-csr.h">
       <Filter>micros\bl602_sifive_e24_riscv\Code\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\mcal_gpt.h">
+      <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\mcal_wdg.h">
+      <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

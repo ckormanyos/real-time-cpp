@@ -11,7 +11,9 @@
 
 FILES_CPP :=
 
-FILES_TGT := $(PATH_TGT)/Code/Appli/main                   \
+FILES_TGT := $(PATH_TGT)/Code/Appli/led                    \
+             $(PATH_TGT)/Code/Appli/main                   \
+             $(PATH_TGT)/Code/Appli/mcal_gpt               \
              $(PATH_TGT)/Code/Startup/boot                 \
-             $(PATH_TGT)/Code/Startup/intvect              \
-             $(PATH_TGT)/Code/Startup/Startup
+             $(PATH_TGT)/startup/intvect                   \
+             $(PATH_TGT)/startup/Startup
