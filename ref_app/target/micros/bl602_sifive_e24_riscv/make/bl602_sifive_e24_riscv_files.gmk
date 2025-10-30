@@ -14,6 +14,4 @@ FILES_CPP :=
 FILES_TGT := $(PATH_TGT)/Code/Appli/main                   \
              $(PATH_TGT)/Code/Startup/boot                 \
              $(PATH_TGT)/Code/Startup/intvect              \
-             $(PATH_TGT)/Code/Startup/Startup              \
-             $(PATH_TGT)/Code/StdLib/printf/printf         \
-             $(PATH_TGT)/Code/StdLib/StdLib
+             $(PATH_TGT)/Code/Startup/Startup
