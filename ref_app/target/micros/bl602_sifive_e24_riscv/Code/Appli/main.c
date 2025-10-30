@@ -57,7 +57,7 @@
 //-----------------------------------------------------------------------------------------
 // Function Prototypes
 //-----------------------------------------------------------------------------------------
-void __attribute__((interrupt)) Isr_TIMER_Interrupt (void);
+void __attribute__((interrupt,used,noinline)) Isr_TIMER_Interrupt (void);
 
 //-----------------------------------------------------------------------------------------
 /// \brief  
@@ -66,6 +66,8 @@ void __attribute__((interrupt)) Isr_TIMER_Interrupt (void);
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
+int main(void) __attribute__((used,noinline));
+
 int main(void)
 {
   /* configure IO3 as output */

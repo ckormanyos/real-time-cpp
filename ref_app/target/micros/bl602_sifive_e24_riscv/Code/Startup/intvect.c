@@ -27,7 +27,7 @@ static void UndefinedHandler(void);
 static void UndefinedHandler(void){ for(;;); }
 
 void Isr_SW_Interrupt      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIMER_Interrupt   (void) __attribute__((weak, alias("UndefinedHandler")));
+void Isr_TIMER_Interrupt   (void) __attribute__((interrupt,used,noinline));
 void Isr_Ext_Interrupt     (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_CLIC_SW_Interrupt (void) __attribute__((weak, alias("UndefinedHandler")));
 void L1C_BMX_ERR           (void) __attribute__((weak, alias("UndefinedHandler")));
@@ -54,7 +54,7 @@ typedef void (*InterruptHandler)(void);
 //=====================================================================================================
 // Interrupt vector table
 //=====================================================================================================
-const InterruptHandler __attribute__((aligned(64))) InterruptVectorTable[] =
+const InterruptHandler __attribute__((aligned(64),section(".text.vivt"))) InterruptVectorTable[] =
 {
     (InterruptHandler)&UndefinedHandler,      /* IRQ 00  Reserved  */
     (InterruptHandler)&UndefinedHandler,      /* IRQ 01  Reserved  */

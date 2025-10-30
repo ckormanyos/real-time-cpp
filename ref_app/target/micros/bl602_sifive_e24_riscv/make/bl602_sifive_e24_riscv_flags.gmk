@@ -44,11 +44,11 @@ TGT_INCLUDES := -I$(PATH_TGT)/Code                             \
                 -I$(PATH_TGT)/Code/StdLib/printf               \
                 -I$(PATH_TGT)/Code/StdLib
 
-TGT_AFLAGS    = $(ARCH)
+TGT_AFLAGS    = $(TGT_ALLFLAGS)
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
-                -fno-lto                                       \
+                -Wl,--gc-sections                              \
                 -e _start                                      \
                 -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)

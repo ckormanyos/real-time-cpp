@@ -53,7 +53,7 @@ static void Startup_InitMcuSystem(void);
 //=========================================================================================
 // Extern function prototype
 //=========================================================================================
-int main(void) __attribute__((weak));
+int main(void) __attribute__((used,noinline));
 
 //-----------------------------------------------------------------------------------------
 /// \brief  Startup_Init function
@@ -62,6 +62,8 @@ int main(void) __attribute__((weak));
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
+void Startup_Init(void) __attribute__((used,noinline));
+
 void Startup_Init(void)
 {
   /* Initialize the MCU system */
