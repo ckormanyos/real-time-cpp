@@ -6,7 +6,7 @@
 #
 
 # ------------------------------------------------------------------------------
-# File list of the AM6254 SOC files in the project
+# File list of the target-specific SOC files in the project
 # ------------------------------------------------------------------------------
 
 FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                            \

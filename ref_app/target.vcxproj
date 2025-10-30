@@ -5,6 +5,10 @@
       <Configuration>target am6254_soc</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="target bl602_sifive_e24_riscv|x64">
+      <Configuration>target bl602_sifive_e24_riscv</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="target rpi_pico2_rp2350|x64">
       <Configuration>target rpi_pico2_rp2350</Configuration>
       <Platform>x64</Platform>
@@ -165,6 +169,12 @@
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -354,6 +364,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -423,6 +436,7 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">target\build\build.bat stm32f100</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">target\build\build.bat riscvfe310</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">target\build\build.bat wch_ch32v307</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'">target\build\build.bat bl602_sifive_e24_riscv</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">target\build\build.bat wch_ch32v307_llvm</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">target\build\build.bat stm32l100c</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">target\build\build.bat lpc11c24</NMakeBuildCommandLine>
@@ -451,6 +465,7 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">target\build\build.bat stm32f100 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">target\build\build.bat riscvfe310 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">target\build\build.bat wch_ch32v307 rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'">target\build\build.bat bl602_sifive_e24_riscv rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">target\build\build.bat wch_ch32v307_llvm rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">target\build\build.bat stm32l100c rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">target\build\build.bat lpc11c24 rebuild</NMakeReBuildCommandLine>
@@ -480,6 +495,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">target\build\build.bat stm32f100 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">target\build\build.bat riscvfe310 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">target\build\build.bat wch_ch32v307 clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'">target\build\build.bat bl602_sifive_e24_riscv clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">target\build\build.bat wch_ch32v307_llvm clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">target\build\build.bat stm32l100c clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">target\build\build.bat lpc11c24 clean_all</NMakeCleanCommandLine>
@@ -509,6 +525,7 @@
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
@@ -537,6 +554,7 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" />
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
@@ -566,6 +584,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f100</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/riscvfe310</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">$(SolutionDir)/src/mcal/wch_ch32v307/Mcal; $(SolutionDir)/src/util/STL; $(SolutionDir)/src; $(SolutionDir)/src/mcal/wch_ch32v307;</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'">$(SolutionDir)/src/mcal/bl602_sifive_e24_riscv/Mcal;$(SolutionDir)/src/util/STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/bl602_sifive_e24_riscv</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">$(SolutionDir)/src/mcal/wch_ch32v307_llvm/Mcal;$(SolutionDir)/src</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f100</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)src;$(SolutionDir)src\mcal\lpc11c24</NMakeIncludeSearchPath>
@@ -594,6 +613,7 @@
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" />
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
@@ -622,6 +642,7 @@
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" />
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
@@ -650,6 +671,7 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" />
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
@@ -835,6 +857,11 @@
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target bl602_sifive_e24_riscv|x64'">
+    <BuildLog>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">
     <BuildLog>
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
@@ -983,6 +1010,10 @@
     <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\bootcode.bin" />
     <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\kernel.img" />
     <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\start.elf" />
+    <None Include="target\micros\bl602_sifive_e24_riscv\Code\Startup\boot.s" />
+    <None Include="target\micros\bl602_sifive_e24_riscv\make\bl602_sifive_e24_riscv.ld" />
+    <None Include="target\micros\bl602_sifive_e24_riscv\make\bl602_sifive_e24_riscv_files.gmk" />
+    <None Include="target\micros\bl602_sifive_e24_riscv\make\bl602_sifive_e24_riscv_flags.gmk" />
     <None Include="target\micros\lpc11c24\make\lpc11c24.ld" />
     <None Include="target\micros\lpc11c24\make\lpc11c24_files.gmk" />
     <None Include="target\micros\lpc11c24\make\lpc11c24_flags.gmk" />
@@ -1101,6 +1132,11 @@
     <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt1.cpp" />
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\main.c" />
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Startup\intvect.c" />
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Startup\Startup.c" />
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\StdLib\printf\printf.c" />
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\StdLib\StdLib.c" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt0.cpp" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt1.cpp" />
@@ -1195,12 +1231,15 @@
   <ItemGroup>
     <Text Include="target\micros\am6254_soc\Code\SBL\config.txt" />
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
-    <Text Include="target\micros\bl602_sifive_e24_riscv\make\make.txt" />
     <Text Include="target\micros\bl602_sifive_e24_riscv\startup\startup.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\core_macros.h" />
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h" />
+    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Mcal\BL602.h" />
+    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Mcal\riscv-csr.h" />
+    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\StdLib\printf\printf.h" />
+    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\StdLib\printf\printf_config.h" />
     <ClInclude Include="target\micros\xtensa_esp32_s3\startup\Std\core-isa.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,12 @@
 #
-#  Copyright Christopher Kormanyos 2013 - 2021.
+#  Copyright Christopher Kormanyos 2013 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
 
 # ------------------------------------------------------------------------------
-# File list of the RaspberryPi(R) ARM(R) A11 files in the project
+# File list of the target-specific files in the project
 # ------------------------------------------------------------------------------
 
 FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
