@@ -1,3 +1,9 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
 
 #include "BL602.h"
 
@@ -37,10 +43,16 @@ extern "C" auto mcal_gpt_init() -> void;
 
 extern "C" auto mcal_gpt_init() -> void
 {
-  mcal::gpt::init(nullptr);
+  /* enabled selective hardware vectoring */
+  CLIC_CFG |= 1ul;
+
+  /* enable timer interrupt in CLIC vectored mode */
+  CLIC_INTIE[7] = 1u;
 }
 
-auto mcal::gpt::init(const config_type*) -> void
+auto mcal::gpt::init(const config_type*) -> void { }
+
+auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
 {
   if(!gpt_is_initialized())
   {
@@ -50,27 +62,17 @@ auto mcal::gpt::init(const config_type*) -> void
     // Set the is-initialized indication flag.
     gpt_is_initialized() = true;
   }
-}
 
-auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
-{
-  if(gpt_is_initialized())
-  {
-    // Return the system tick using a multiple read to ensure data consistency.
+  // Return the system tick using a multiple read to ensure data consistency.
 
-    const volatile uint64_t time_first  = CLIC_MTIME;
-    const volatile uint64_t time_second = CLIC_MTIME;
+  const volatile uint64_t time_first  = CLIC_MTIME;
+  const volatile uint64_t time_second = CLIC_MTIME;
 
-    const volatile bool is_steady = (((uint32_t) time_second > (uint32_t) time_first) ? true : false);
+  const volatile bool is_steady = (((uint32_t) time_second > (uint32_t) time_first) ? true : false);
 
-    value_type consistent_microsecond_tick = (is_steady ? time_first : CLIC_MTIME);
+  value_type consistent_microsecond_tick = (is_steady ? time_first : CLIC_MTIME);
 
-    consistent_microsecond_tick /= 10U;
+  consistent_microsecond_tick /= 10U;
 
-    return consistent_microsecond_tick;
-  }
-  else
-  {
-    return value_type { UINT8_C(0) };
-  }
+  return consistent_microsecond_tick;
 }

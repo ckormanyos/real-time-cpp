@@ -1,3 +1,11 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
 /******************************************************************************************
   Filename    : main.c
   
@@ -77,12 +85,6 @@ int main(void)
   glb->GPIO_CFGCTL1.bit.reg_gpio_3_drv      = 0ul;
   glb->GPIO_CFGCTL1.bit.reg_gpio_3_smt      = 0ul;
   glb->GPIO_CFGCTL34.bit.reg_gpio_3_oe      = 1ul;
-
-  /* enabled selective hardware vectoring */
-  CLIC_CFG |= 1ul;
-
-  /* enable timer interrupt in CLIC vectored mode */
-  CLIC_INTIE[7] = 1u;
 
   mcal_gpt_init();
 
