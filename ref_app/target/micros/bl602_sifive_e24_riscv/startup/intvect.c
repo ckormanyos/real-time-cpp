@@ -35,7 +35,7 @@ static void UndefinedHandler(void);
 static void UndefinedHandler(void){ for(;;); }
 
 void Isr_SW_Interrupt      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIMER_Interrupt   (void) __attribute__((interrupt,used,noinline));
+void Isr_TIMER_Interrupt   (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_Ext_Interrupt     (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_CLIC_SW_Interrupt (void) __attribute__((weak, alias("UndefinedHandler")));
 void L1C_BMX_ERR           (void) __attribute__((weak, alias("UndefinedHandler")));
