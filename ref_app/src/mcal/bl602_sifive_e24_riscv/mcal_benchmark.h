@@ -17,7 +17,7 @@
   {
     namespace benchmark
     {
-      using benchmark_port_type = mcal::port::port_pin;
+      using benchmark_port_type = mcal::port::port_pin<unsigned { UINT8_C(4) }>;
     }
   }
 
