@@ -14,10 +14,12 @@
   {
     namespace reg
     {
-      // Port (gpio) registers.
-      constexpr std::uintptr_t gpio0       { UINT32_C(0x00600010) };
-      constexpr std::uintptr_t gpio1       { UINT32_C(0x00601010) };
-      constexpr std::uintptr_t mcu_gpio0   { UINT32_C(0x04201010) };
+      // CLIC (timer) registers.
+      constexpr std::uintptr_t clic_ctrl_addr { UINT32_C(0x02000000) };
+      constexpr std::uintptr_t clic_msip      { clic_ctrl_addr + UINT32_C(0x00000000) };
+      constexpr std::uintptr_t clic_mtimecmp  { clic_ctrl_addr + UINT32_C(0x00004000) };
+      constexpr std::uintptr_t clic_mtime     { clic_ctrl_addr + UINT32_C(0x0000BFF8) };
+      constexpr std::uintptr_t clic_clk_gate  { clic_ctrl_addr + UINT32_C(0x007FF000) };
     }
   }
 

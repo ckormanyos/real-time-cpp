@@ -331,12 +331,6 @@
     <Filter Include="micros\bl602_sifive_e24_riscv\startup">
       <UniqueIdentifier>{d9d707dc-1ba0-4d0c-be67-fbb095f42986}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\bl602_sifive_e24_riscv\Code">
-      <UniqueIdentifier>{8c965230-fbcc-427e-8292-9231493dc299}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\bl602_sifive_e24_riscv\Code\Mcal">
-      <UniqueIdentifier>{75fda3d9-17eb-48a8-92e8-9c440411a545}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -1121,12 +1115,6 @@
     </ClInclude>
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h">
       <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
-    </ClInclude>
-    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Mcal\BL602.h">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Mcal\riscv-csr.h">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Mcal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

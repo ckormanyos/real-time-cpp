@@ -6,10 +6,9 @@
 //
 
 #include <mcal_gpt.h>
+#include <mcal_reg.h>
 
 #include <util/utility/util_noncopyable.h>
-
-#include "BL602.h"
 
 namespace
 {
@@ -20,12 +19,12 @@ namespace
 
     ~mcal_gpt_system_tick() = delete;
 
-    static void init()
+    static auto init() -> void
     {
       initial_count = get_consistent_microsecond_tick();
     }
 
-    static std::uint64_t get_tick()
+    static auto get_tick() -> std::uint64_t
     {
       const std::uint64_t elapsed = get_consistent_microsecond_tick() - initial_count;
 
@@ -35,7 +34,12 @@ namespace
   private:
     static std::uint64_t initial_count;
 
-    static std::uint64_t get_consistent_microsecond_tick()
+    static auto read_clic_timer64() -> std::uint64_t
+    {
+      return mcal::reg::reg_access_static<std::uintptr_t, std::uint64_t, mcal::reg::clic_mtime>::reg_get();
+    }
+
+    static auto get_consistent_microsecond_tick() -> std::uint64_t
     {
       // Return the (elapsed) system tick using a multiple read
       // to ensure data consistency. The system tick representing
@@ -47,8 +51,8 @@ namespace
 
       // Return the system tick using a multiple read to ensure data consistency.
 
-      const volatile std::uint64_t time_first  { CLIC_MTIME };
-      const volatile std::uint64_t time_second { CLIC_MTIME };
+      const volatile std::uint64_t time_first  { read_clic_timer64() };
+      const volatile std::uint64_t time_second { read_clic_timer64() };
 
       const bool
         is_steady
@@ -61,7 +65,7 @@ namespace
         {
           static_cast<std::uint64_t>
           (
-            is_steady ? time_first : CLIC_MTIME
+            is_steady ? time_first : read_clic_timer64()
           )
         };
 
@@ -76,9 +80,9 @@ namespace
 
   std::uint64_t mcal_gpt_system_tick::initial_count;
 
-  bool& gpt_is_initialized() __attribute__((used, noinline));
+  auto gpt_is_initialized() -> bool& __attribute__((used, noinline));
 
-  bool& gpt_is_initialized()
+  auto gpt_is_initialized() -> bool&
   {
     static bool is_init = bool();
 
