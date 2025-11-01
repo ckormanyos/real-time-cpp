@@ -7,6 +7,7 @@
 
 #include <mcal_led.h>
 #include <mcal_led/mcal_led_boolean_state_base.h>
+#include <mcal_reg.h>
 #include <util/utility/util_time.h>
 
 #include "BL602.h"
@@ -33,7 +34,8 @@ public:
     using base_class_type = led_boolean_state_base;
 
     // Toggle the IO3 pin.
-    glb->GPIO_CFGCTL32.bit.reg_gpio_3_o ^= 1ul;
+    mcal::reg::reg_access_static<std::uintptr_t, std::uint32_t, mcal::reg::gpio_cfgctl32, UINT32_C(3)>::bit_not();
+    //glb->GPIO_CFGCTL32.bit.reg_gpio_3_o ^= 1ul;
 
     base_class_type::toggle();
   }

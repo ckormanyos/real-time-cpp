@@ -26,7 +26,7 @@ namespace
 
     static auto get_tick() -> std::uint64_t
     {
-      const std::uint64_t elapsed = get_consistent_microsecond_tick() - initial_count;
+      const std::uint64_t elapsed { get_consistent_microsecond_tick() - initial_count };
 
       return elapsed;
     }
@@ -78,7 +78,7 @@ namespace
     }
   };
 
-  std::uint64_t mcal_gpt_system_tick::initial_count;
+  std::uint64_t mcal_gpt_system_tick::initial_count { };
 
   auto gpt_is_initialized() -> bool& __attribute__((used, noinline));
 
