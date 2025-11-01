@@ -334,9 +334,6 @@
     <Filter Include="micros\bl602_sifive_e24_riscv\Code">
       <UniqueIdentifier>{8c965230-fbcc-427e-8292-9231493dc299}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\bl602_sifive_e24_riscv\Code\Appli">
-      <UniqueIdentifier>{ffcd7fac-843b-4dac-938e-cfcec4d84b4b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\bl602_sifive_e24_riscv\Code\Mcal">
       <UniqueIdentifier>{75fda3d9-17eb-48a8-92e8-9c440411a545}</UniqueIdentifier>
     </Filter>
@@ -1100,20 +1097,11 @@
     <ClCompile Include="target\micros\am6254_soc\Code\Appli\Core\a53\main_cores.cpp">
       <Filter>micros\am6254_soc\Code\Appli\Core\a53</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\main.c">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
-    </ClCompile>
     <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\intvect.c">
       <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\Startup.c">
       <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\led.cpp">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\mcal_gpt.cpp">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1139,12 +1127,6 @@
     </ClInclude>
     <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Mcal\riscv-csr.h">
       <Filter>micros\bl602_sifive_e24_riscv\Code\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\mcal_gpt.h">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
-    </ClInclude>
-    <ClInclude Include="target\micros\bl602_sifive_e24_riscv\Code\Appli\mcal_wdg.h">
-      <Filter>micros\bl602_sifive_e24_riscv\Code\Appli</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,26 +1,24 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2025.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_WDG_2025_10_30_H
-  #define MCAL_WDG_2025_10_30_H
+#ifndef MCAL_IRQ_2010_04_10_H
+  #define MCAL_IRQ_2010_04_10_H
 
   namespace mcal
   {
-    namespace wdg
+    namespace irq
     {
       using config_type = void;
 
-      inline auto init(const config_type*) -> void { }
+      void init(const config_type*);
 
-      struct secure final
-      {
-        static auto trigger() -> void { }
-      };
+      inline void enable_all() { }
+      inline void disable_all() { }
     }
   }
 
-#endif // MCAL_WDG_2025_10_30_H
+#endif // MCAL_IRQ_2010_04_10_H
