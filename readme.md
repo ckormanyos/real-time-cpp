@@ -71,7 +71,7 @@ The reference application supports the following targets (in alpha-numeric order
 | Target name (as used in build command) | Target Description                                          | *(breadboard) |
 | -------------------------------------- | ----------------------------------------------------------- | ------------- |
 | `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |               |
-| `am6254_soc_`                          | PocketBeagle2 with multicore Texas Instruments(R) AM6254    |               |
+| `am6254_soc`                           | PocketBeagle2 with multicore Texas Instruments(R) AM6254    |               |
 | `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560            |               |
 | `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809           | X             |
 | `avr` (as used in the book)            | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            | X             |
