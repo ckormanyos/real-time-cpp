@@ -11,11 +11,19 @@
 
 auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
 {
-  // Get the system tick from the system counter register.
-  const value_type consistent_microsecond_tick = static_cast<value_type>(ARM64_READ_SYSREG(CNTPCT_EL0));
+  // Get the consistent system tick from the system counter register.
+  const value_type
+    consistent_microsecond_tick
+    {
+      static_cast<value_type>(ARM64_READ_SYSREG(CNTPCT_EL0))
+    };
 
   // Convert the consistent tick to microseconds.
-  return static_cast<value_type>(static_cast<value_type>(consistent_microsecond_tick + UINT64_C(100)) / UINT64_C(200));
+  return
+    static_cast<value_type>
+    (
+      static_cast<value_type>(consistent_microsecond_tick + UINT64_C(100)) / UINT64_C(200)
+    );
 }
 
 auto mcal::gpt::secure::get_time_elapsed_core1() -> mcal::gpt::value_type_core1

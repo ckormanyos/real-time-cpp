@@ -71,11 +71,12 @@ The reference application supports the following targets (in alpha-numeric order
 | Target name (as used in build command) | Target Description                                          | *(breadboard) |
 | -------------------------------------- | ----------------------------------------------------------- | ------------- |
 | `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |               |
-| `am6254_soc_`                          | PocketBeagle2 with multicore Texas Instruments(R) AM6254    |               |
+| `am6254_soc`                           | PocketBeagle2 with multicore Texas Instruments(R) AM6254    |               |
 | `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560            |               |
 | `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809           | X             |
 | `avr` (as used in the book)            | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            | X             |
 | `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   | X             |
+| `bl602_sifive_e24_riscv`               | BL602 single-core RISC-V (SiFive E24)                       | X             |
 | `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |               |
 | `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |               |
 | `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+          |               |
@@ -414,6 +415,13 @@ The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
 called `target avr` (as used in the book) runs
 on a classic ARDUINO(R) compatible board.
 The program toggles the yellow LED on `portb.5`.
+
+Target `bl602_sifive_e24_riscv` contains a fully manually-written bare-metal project
+for the BL602 single-core RISC-V (SiFive E24), making no use of any SDK.
+The boot code and bare-metal register interactions are based
+on the creative work in
+[`Chalandi/Baremetal_BL602_SiFive_E24_RISC-V`](https://github.com/Chalandi/Baremetal_BL602_SiFive_E24_RISC-V).
+This configuration toggles pin `IO3` and requires a self-fitted LED.
 
 The ARM(R) 1176-JZF-S configuration (called `target bcm2835_raspi_b`) runs on the
 RaspberryPi(R) Zero (PiZero) single core controller.

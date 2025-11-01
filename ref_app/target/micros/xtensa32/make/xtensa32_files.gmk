@@ -6,7 +6,7 @@
 #
 
 # ------------------------------------------------------------------------------
-# File list of the xtensa32 esspressif ESP32 files in the project
+# File list of the target-specific files in the project
 # ------------------------------------------------------------------------------
 
 FILES_TGT       = $(PATH_APP)/mcal/$(TGT)/from_sdk/esp32-hal-gpio                                      \
