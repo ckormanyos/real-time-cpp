@@ -2,6 +2,7 @@
 #ifndef BL602_H
 #define BL602_H
 
+#if 0
 #include "stdint.h"
 
 #ifdef __cplusplus
@@ -1148,6 +1149,8 @@ typedef struct {                                /*!< glb Structure              
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
 
 #endif /* BL602_H */
