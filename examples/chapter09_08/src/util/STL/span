@@ -1,11 +1,12 @@
-// This is significant simplification of an existing work:
+// This is a significant simplification of an existing work:
+// Comments from the original work follow.
 
 // This is an implementation of std::span from P0122R7
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0122r7.pdf
 
 ///////////////////////////////////////////////////////////////////////////////
 // Copyright Tristan Brindle 2018.
-// Copyright Christopher Kormanyos 2019.
+// Copyright Christopher Kormanyos 2019 - 2024.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file ../../LICENSE_1_0.txt or copy at
 // https://www.boost.org/LICENSE_1_0.txt)
@@ -26,7 +27,7 @@
   using byte = unsigned char;
 
   STL_LOCAL_CONSTEXPR std::size_t dynamic_extent =
-    (std::numeric_limits<std::size_t>::max)();
+    static_cast<std::size_t>((std::numeric_limits<std::ptrdiff_t>::max)());
 
   template<typename ElementType,
            std::ptrdiff_t Extent = dynamic_extent>

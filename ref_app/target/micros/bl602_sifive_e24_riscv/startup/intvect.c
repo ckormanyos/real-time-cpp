@@ -62,7 +62,7 @@ typedef void (*InterruptHandler)(void);
 //=====================================================================================================
 // Interrupt vector table
 //=====================================================================================================
-const InterruptHandler __attribute__((aligned(64))) InterruptVectorTable[] =
+const InterruptHandler __attribute__((section(".isr_vector"), aligned(64))) InterruptVectorTable[] =
 {
     (InterruptHandler)&UndefinedHandler,      /* IRQ 00  Reserved  */
     (InterruptHandler)&UndefinedHandler,      /* IRQ 01  Reserved  */

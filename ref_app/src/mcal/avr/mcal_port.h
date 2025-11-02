@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -44,7 +44,7 @@
         static constexpr address_uintptr_type sfr_offset   = address_uintptr_type(0x20U);
 
       public:
-        static auto set_direction_output() noexcept -> void
+        static auto set_direction_output() -> void
         {
           // Set the port pin's direction to output.
           // C++:
@@ -55,7 +55,7 @@
           asm volatile("sbi %[myport],%[mybit]" : : [myport]"I"(pdir_address - sfr_offset), [mybit]"I"(bpos_value));
         }
 
-        static auto set_direction_input() noexcept -> void
+        static auto set_direction_input() -> void
         {
           // Set the port pin's direction to input.
           // C++:
@@ -66,7 +66,7 @@
           asm volatile("cbi %[myport],%[mybit]" : : [myport]"I"(pdir_address - sfr_offset), [mybit]"I"(bpos_value));
         }
 
-        static auto set_pin_high() noexcept -> void
+        static auto set_pin_high() -> void
         {
           // Set the port output value to high.
           // C++:
@@ -77,7 +77,7 @@
           asm volatile("sbi %[myport],%[mybit]" : : [myport]"I"(port_address - sfr_offset), [mybit]"I"(bpos_value));
         }
 
-        static auto set_pin_low() noexcept -> void
+        static auto set_pin_low() -> void
         {
           // Set the port output value to low.
           // C++:
@@ -88,7 +88,7 @@
           asm volatile("cbi %[myport],%[mybit]" : : [myport]"I"(port_address - sfr_offset), [mybit]"I"(bpos_value));
         }
 
-        static auto read_input_value() noexcept -> bool
+        static auto read_input_value() -> bool
         {
           // Read the port input value.
           return mcal::reg::reg_access_static<address_uintptr_type,
@@ -97,7 +97,7 @@
                                               bpos_value>::bit_get();
         }
 
-        static auto toggle_pin() noexcept -> void
+        static auto toggle_pin() -> void
         {
           // Toggle the port output value.
           mcal::reg::reg_access_static<address_uintptr_type,

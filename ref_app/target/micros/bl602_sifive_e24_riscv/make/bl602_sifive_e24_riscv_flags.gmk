@@ -15,7 +15,7 @@ GCC_VERSION  := 15.2.0
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O2                                            \
+TGT_ALLFLAGS  = -O3                                            \
                 -ffast-math                                    \
                 -mcpu=sifive-e24                               \
                 -mabi=ilp32                                    \

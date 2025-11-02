@@ -16,7 +16,7 @@
   {
     static void my_sys_start();
 
-    static std::atomic<bool>& my_exit_pc_api_flag();
+    static auto my_exit_pc_api_flag() -> std::atomic<bool>&;
   };
 
   } } // namespace mcal::led

@@ -17,8 +17,8 @@
 
   // Implement some of <random> for compilers that do not yet support it.
 
-  extern "C" unsigned int  my_hardware_random_device_generator(void);
-  extern "C" unsigned char my_hardware_random_device_entropy  (void);
+  extern "C" unsigned int  my_hardware_random_device_generator();
+  extern "C" unsigned char my_hardware_random_device_entropy  ();
 
   namespace std {
 
@@ -1379,7 +1379,7 @@ template<typename UnsignedIntegralType,
                                ParamT,
                                ParamC,
                                ParamL,
-                               rnd__value_f>::rnd__m_gen_rand(void)
+                               rnd__value_f>::rnd__m_gen_rand()
   {
     const UnsignedIntegralType __upper_mask = (~UnsignedIntegralType()) << rnd__long_lag_r;
     const UnsignedIntegralType __lower_mask = ~__upper_mask;
