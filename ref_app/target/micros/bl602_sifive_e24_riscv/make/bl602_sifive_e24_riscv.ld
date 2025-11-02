@@ -42,7 +42,8 @@ __ROM_START_ADDRESS = 0x23000000;
 MEMORY
 {
   BOOT(rx)    : ORIGIN = 0x23000000,                 LENGTH = 0x100
-  START(rx)   : ORIGIN = 0x23000100,                 LENGTH = 0x300
+  VEC(rx)     : ORIGIN = 0x23000100,                 LENGTH = 0x200
+  START(rx)   : ORIGIN = 0x23000300,                 LENGTH = 0x100
   ROM(rx)     : ORIGIN = 0x23000400,                 LENGTH = 256K - 0x400
   SRAM(rwx)   : ORIGIN = __RAM_START_ADDRESS,        LENGTH = 32K
   RAM(rwx)    : ORIGIN = __RAM_START_ADDRESS + 32K,  LENGTH = __RAM_SIZE - 32K
@@ -71,6 +72,14 @@ SECTIONS
     *(.startup*)
     . = ALIGN(0x10);
   } > START = 0x5555
+
+  .isr_vector : ALIGN(0x100)
+  {
+    *(.isr_vector)
+    . = ALIGN(0x100);
+    *(.isr_vector*)
+    . = ALIGN(0x100);
+  } > VEC = 0xAAAA
 
   /* Program code (text) */
   .text : ALIGN(0x100)

@@ -161,7 +161,8 @@ LDFLAGS     = $(GCCFLAGS)                       \
               $(TGT_LDFLAGS)                    \
               -x none                           \
               -Wl,--gc-sections                 \
-              -Wl,-Map,$(APP).map
+              -Wl,-Map,$(APP).map               \
+              -Wl,--print-memory-usage
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)

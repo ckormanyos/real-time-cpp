@@ -1,15 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PWM_BOARD_2017_10_13_H_
-  #define MCAL_PWM_BOARD_2017_10_13_H_
-
-  #include <algorithm>
-  #include <cstdint>
+#ifndef MCAL_PWM_BOARD_2017_10_13_H
+  #define MCAL_PWM_BOARD_2017_10_13_H
 
   #include <mcal/mcal_pwm_base.h>
   #include <mcal_irq.h>
@@ -28,15 +25,16 @@
       class pwm_board : public pwm_base
       {
       public:
-        pwm_board(const duty_type resol,
-                  const duty_type duty = 0U) : pwm_base(resol, duty)
+        explicit pwm_board(const duty_type resol,
+                           const duty_type duty = duty_type { UINT8_C(0) })
+          : pwm_base(resol, duty)
         {
           // Set the port pin to output with logic level low.
           port_pin_type::set_pin_low();
           port_pin_type::set_direction_output();
         }
 
-        virtual void service()
+        auto service() -> void override
         {
           // Increment the counter.
           ++counter;
@@ -58,11 +56,11 @@
             duty_cycle = shadow;
 
             // Reset the counter for a new PWM period.
-            counter = 0U;
+            counter = duty_type { UINT8_C(0) };
           }
         }
       };
     }
   }
 
-#endif // MCAL_PWM_BOARD_2017_10_13_H_
+#endif // MCAL_PWM_BOARD_2017_10_13_H

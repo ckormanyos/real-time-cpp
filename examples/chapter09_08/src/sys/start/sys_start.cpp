@@ -24,7 +24,9 @@ void mcal::led::sys_start_interface::my_sys_start()
 }
 
 #if !defined(_MSC_VER)
-extern "C" int main()
+auto main() -> int;
+
+auto main() -> int
 {
   mcal::led::sys_start_interface::my_sys_start();
 }

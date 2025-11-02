@@ -10,9 +10,9 @@
 #include <mcal_reg.h>
 #include <mcal_led_rgb_board.h>
 
-util::device::led_rgb& mcal::led::led_rgb0()
+auto mcal::led::led_rgb0() -> util::device::led_rgb&
 {
-  static mcal::led::led_rgb_board the_rgb_led;
+  static mcal::led::led_rgb_board the_rgb_led { };
 
   return the_rgb_led;
 }

@@ -1,17 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_LED_MONOCHROME_BOARD_2017_09_14_H_
-  #define MCAL_LED_MONOCHROME_BOARD_2017_09_14_H_
-
-  #include <cstdint>
+#ifndef MCAL_LED_MONOCHROME_BOARD_2017_09_14_H
+  #define MCAL_LED_MONOCHROME_BOARD_2017_09_14_H
 
   #include <mcal_port.h>
   #include <util/device/util_device_led_monochrome.h>
+
+  #include <cstdint>
 
   namespace mcal
   {
@@ -31,14 +31,14 @@
           port_pin_type::set_direction_output();
         }
 
-        virtual ~led_momochrome_board() { }
+        ~led_momochrome_board() override = default;
 
-        virtual void my_on()
+        auto my_on() -> void override
         {
           port_pin_type::set_pin_high();
         }
 
-        virtual void my_off()
+        auto my_off()-> void override
         {
           port_pin_type::set_pin_low();
         }
@@ -53,4 +53,4 @@
     }
   }
 
-#endif // MCAL_LED_MONOCHROME_BOARD_2017_09_14_H_
+#endif // MCAL_LED_MONOCHROME_BOARD_2017_09_14_H
