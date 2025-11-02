@@ -81,16 +81,17 @@ template class.
 A very wide range of microcontroller performance classes is shown in the following table.
 The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
 
-| Target             |  runtime $[ms]$ |  relative  |
-|--------------------|-----------------|------------|
-| `am6254_soc`       |  0.37           |    1.0     |
-| `am335x`           |  1.5            |    4.1     |
-| `stm32f446`        |  5.1            |    14      |
-| `rpi_pico2_rp2350` |  6.3            |    17      |
-| `wch_ch32v307`     |  8.0            |    22      |
-| `xtensa_esp32_s3`  |  9.1            |    25      |
-| `rpi_pico_rp2040`  |  19             |    51      |
-| `avr`              |  410            |   1100     |
+| Target                    |  runtime $[ms]$ |  relative  |
+|---------------------------|-----------------|------------|
+| `am6254_soc`              |  0.37           |    1.0     |
+| `am335x`                  |  1.5            |    4.1     |
+| `stm32f446`               |  5.1            |    14      |
+| `rpi_pico2_rp2350`        |  6.3            |    17      |
+| `wch_ch32v307`            |  8.0            |    22      |
+| `xtensa_esp32_s3`         |  9.1            |    25      |
+| `bl602_sifive_e24_riscv`  |  11             |    30      |
+| `rpi_pico_rp2040`         |  19             |    51      |
+| `avr`                     |  410            |   1100     |
 
 There are strikingly differing performance classes
 for the $8$-bit MICROCHIP(R) AVR controller of the ARDUINO
@@ -113,7 +114,9 @@ with a result of $5.1~{\text{ms}}$.
 
 The $32$-bit RISC-V controller (having a novel _open-source_ core)
 on the `wch_ch32v307` board boasts a quite respectable
-time of $8.0~{\text{ms}}$.
+time of $8.0~{\text{ms}}$. A different $32$-bit RISC-V controller
+on target `bl602_sifive_e24_riscv` has similar performance,
+running the benchmark in about $11~{\text{ms}}$.
 
 Running on only one core (core0) of the $32$-bit
 controller of the `xtensa_esp32_s3` board results in

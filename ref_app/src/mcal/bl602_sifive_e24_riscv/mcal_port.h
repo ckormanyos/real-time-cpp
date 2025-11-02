@@ -73,12 +73,12 @@
 
         static auto set_pin_high() noexcept -> void
         {
-          // Not yet implemented.
+          mcal::reg::reg_access_static<std::uintptr_t, std::uint32_t, mcal::reg::gpio_cfgctl32, port_index>::bit_set();
         }
 
         static auto set_pin_low() noexcept -> void
         {
-          // Not yet implemented.
+          mcal::reg::reg_access_static<std::uintptr_t, std::uint32_t, mcal::reg::gpio_cfgctl32, port_index>::bit_clr();
         }
 
         static auto read_input_value() noexcept -> bool

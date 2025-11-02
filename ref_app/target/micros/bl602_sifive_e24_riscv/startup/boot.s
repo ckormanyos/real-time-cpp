@@ -16,6 +16,8 @@
 ******************************************************************************************/
 
 .extern InterruptVectorTable
+.extern __my_startup
+.extern __initial_stack_pointer
 
 /*******************************************************************************************
   \brief  
@@ -47,10 +49,10 @@ _start:
         csrsi mstatus, (1ul << 3u)
 
         /* setup the stack pointer */
-        la sp, __STACK_TOP
+        la sp, __initial_stack_pointer
 
         /* setup the C/C++ runtime environment */
-        j Startup_Init
+        j __my_startup
 
 
 .size _start, .-_start
