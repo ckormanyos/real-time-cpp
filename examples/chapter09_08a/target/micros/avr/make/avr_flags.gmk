@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2023.
+#  Copyright Christopher Kormanyos 2007 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,30 +10,31 @@
 # ------------------------------------------------------------------------------
 
 ifneq ($(MAKE),make)
-GCC_VERSION   = 14.2.0
+GCC_VERSION   = 15.1.0
 endif
+
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                                               \
+TGT_ALLFLAGS  = -O2                                                               \
                 -mmcu=atmega328p                                                  \
                 -mrelax                                                           \
                 -finline-functions                                                \
-                -finline-limit=128                                                \
+                -finline-limit=32                                                 \
                 -fsigned-char
 
-ifeq ($(GCC_VERSION),11.2.0)
+ifeq ($(GCC_VERSION),15.1.0)
 TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
                 -mdouble=32                                                       \
                 -mlong-double=64
 endif
 
-TGT_CFLAGS    = -std=c99                                                          \
+TGT_CFLAGS    = -std=c11                                                          \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++14                                                        \
+TGT_CXXFLAGS  = -std=c++20                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL

@@ -164,9 +164,6 @@
     <ClInclude Include="src\mcal\mcal.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_access_template.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\os\os.h">
       <Filter>src\os</Filter>
     </ClInclude>
@@ -175,9 +172,6 @@
     </ClInclude>
     <ClInclude Include="src\os\os_task_control_block.h">
       <Filter>src\os</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
-      <Filter>src\mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\util\STL_C++XX_stdfloat\stdfloat.h">
       <Filter>src\util\STL_C++XX_stdfloat</Filter>
@@ -367,6 +361,12 @@
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_led_rgb.h">
       <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_static.h">
+      <Filter>src\mcal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

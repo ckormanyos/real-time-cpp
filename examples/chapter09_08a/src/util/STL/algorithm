@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -207,22 +207,20 @@
                                  input_iterator2 first2,
                                  input_iterator2 last2)
     {
-      while(first1 != last1)
+      for( ; (first1 != last1) && (first2 != last2); static_cast<void>(++first1), static_cast<void>(++first2))
       {
-        if((first2 == last2) || (*first2 < *first1))
-        {
-          return false;
-        }
-        else if(*first1 < *first2)
+        if(*first1 < *first2)
         {
           return true;
         }
 
-        ++first1;
-        ++first2;
+        if(*first2 < *first1)
+        {
+          return false;
+        }
       }
 
-      return (first2 != last2);
+      return ((first1 == last1) && (first2 != last2));
     }
 
     template<typename input_iterator,
@@ -233,7 +231,9 @@
     {
       for( ; first != last; ++result, ++first)
       {
-        *result = *first;
+        using result_value_type = typename std::iterator_traits<output_iterator>::value_type;
+
+        *result = result_value_type(*first);
       }
 
       return result;
@@ -247,10 +247,12 @@
     {
       while (first1 != last1)
       {
+        using out2_value_type = typename std::iterator_traits<bidirectional_output_iterator2>::value_type;
+
         --last1;
         --last2;
 
-        *last2 = *last1;
+        *last2 = out2_value_type(*last1);
       }
 
       return last2;
@@ -264,12 +266,12 @@
                             output_iterator     result,
                             unary_function_type unary_function)
     {
-      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
-
       while(first != last)
       {
         if(unary_function(*first))
         {
+          using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+
           *result = output_value_type(*first);
 
           ++result;
@@ -287,10 +289,10 @@
                                              forward_iterator  last,
                                              const value_type& value)
     {
-      using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
-
       for( ; first != last; ++first)
       {
+        using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
+
         *first = forward_value_type(value);
       }
     }
@@ -315,10 +317,10 @@
                   forward_iterator last,
                   generator_type   generator)
     {
-      using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
-
       while(first != last)
       {
+        using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
+
         *first = forward_value_type(generator());
 
         ++first;
@@ -332,10 +334,10 @@
                                size_type       count,
                                generator_type  generator)
     {
-      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
-
       for(size_type i = size_type(0); i < count; ++i)
       {
+        using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+
         *first = output_value_type(generator());
 
         ++first;
@@ -361,10 +363,10 @@
                               output_iterator     result,
                               unary_function_type unary_function)
     {
-      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
-
       for( ; first != last; ++first, ++result)
       {
+        using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+
         *result = output_value_type(unary_function(*first));
       }
 
@@ -381,10 +383,10 @@
                               output_iterator      result,
                               binary_function_type binary_function)
     {
-      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
-
       for( ; first1 != last1; ++first1, ++first2, ++result)
       {
+        using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+
         *result = output_value_type(binary_function(*first1, *first2));
       }
 
@@ -421,7 +423,7 @@
     {
       while(first1 != last1)
       {
-        if(binary_function(*first1, *first2) == false)
+        if(!binary_function(*first1, *first2))
         {
           break;
         }
@@ -453,7 +455,7 @@
                 iterator_type       last,
                 unary_function_type unary_function)
     {
-      while((first != last) && (unary_function(*first) == false))
+      while((first != last) && (!unary_function(*first)))
       {
         ++first;
       }
@@ -467,7 +469,7 @@
                  iterator_type       last,
                  unary_function_type unary_function)
     {
-      while((first != last) && (unary_function(*first) == false))
+      while((first != last) && (!unary_function(*first)))
       {
         ++first;
       }
@@ -765,8 +767,8 @@
     }
 
     template<typename swap_type>
-    void swap(swap_type& left,
-              swap_type& right)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(swap_type& left,
+                                             swap_type& right)
     {
       if(&left != &right)
       {
@@ -775,6 +777,16 @@
         left  = right;
         right = tmp;
       }
+    }
+
+    template<typename swap_type>
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(swap_type&& left,
+                                             swap_type&& right)
+    {
+      const swap_type tmp(left);
+
+      left  = right;
+      right = tmp;
     }
 
     template<typename input_iterator1,
@@ -793,9 +805,9 @@
 
     template<typename input_iterator1,
              typename input_iterator2>
-    input_iterator2 swap_ranges(input_iterator1 first1,
-                                input_iterator1 last1,
-                                input_iterator2 first2)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS input_iterator2 swap_ranges(input_iterator1 first1,
+                                                               input_iterator1 last1,
+                                                               input_iterator2 first2)
     {
       while(first1 != last1)
       {
@@ -810,8 +822,8 @@
 
     template<typename value_type,
              std::size_t N>
-    void swap(value_type(&left) [N],
-              value_type(&right)[N])
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(value_type(&left) [N],
+                                             value_type(&right)[N])
     {
       swap_ranges(&left[0U], &left[N], &right[0U]);
     }
@@ -824,7 +836,7 @@
     {
       for( ; ; ++first)
       {
-        for( ; (first != last) && (unary_function(*first) == true); ++first)
+        for( ; (first != last) && unary_function(*first); ++first)
         {
           ;
         }
@@ -834,7 +846,7 @@
           break;
         }
 
-        for( ; (first != --last) && (unary_function(*last) == false); )
+        for( ; (first != --last) && (!unary_function(*last)); )
         {
           ;
         }

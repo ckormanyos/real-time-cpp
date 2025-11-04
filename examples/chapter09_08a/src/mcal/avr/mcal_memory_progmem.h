@@ -1,16 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2023.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_MEMORY_PROGMEM_2019_08_17_H_
-  #define MCAL_MEMORY_PROGMEM_2019_08_17_H_
-
-  #include <stddef.h>
+#ifndef MCAL_MEMORY_PROGMEM_2019_08_17_H
+  #define MCAL_MEMORY_PROGMEM_2019_08_17_H
 
   #include <avr/pgmspace.h>
+
+  #include <stddef.h>
 
   #define MY_PROGMEM PROGMEM
 
@@ -59,4 +59,4 @@
   }
   #endif
 
-#endif // MCAL_MEMORY_PROGMEM_2019_08_17_H_
+#endif // MCAL_MEMORY_PROGMEM_2019_08_17_H

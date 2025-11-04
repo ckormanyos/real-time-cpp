@@ -1,14 +1,20 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <chrono>
-#include <cstddef>
 #include <mcal_cpu.h>
 #include <mcal_gpt.h>
+
+#include <chrono>
+#include <cstddef>
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
+#endif
 
 // Implement std::chrono::high_resolution_clock::now()
 // for the standard library's high-resolution clock.
@@ -16,7 +22,7 @@ namespace std
 {
   namespace chrono
   {
-    high_resolution_clock::time_point high_resolution_clock::now() UTIL_NOEXCEPT
+    high_resolution_clock::time_point high_resolution_clock::now() noexcept
     {
        // The source of the high-resolution clock is microseconds.
        using microsecond_time_point_type =
@@ -37,12 +43,7 @@ namespace std
   }
 }
 
-void  operator delete(void*)        UTIL_NOEXCEPT;
-void  operator delete(void*, void*) UTIL_NOEXCEPT;
-
-void* operator new(std::size_t size) UTIL_NOEXCEPT;
-
-void* operator new(std::size_t size) UTIL_NOEXCEPT
+void* operator new(std::size_t size)
 {
   // This is a naive and not completely functional
   // implementation of operator new(). In particular, there is
@@ -51,10 +52,10 @@ void* operator new(std::size_t size) UTIL_NOEXCEPT
   volatile static std::uint8_t* get_ptr = buffer;
 
   // Get the newly allocated pointer.
-  volatile std::uint8_t* p = get_ptr;
+  volatile std::uint8_t* p { get_ptr };
 
   // Does this allocation overflow the top of the buffer?
-  const bool is_overflow = ((get_ptr + size) >= (buffer + sizeof(buffer)));
+  const bool is_overflow { ((get_ptr + size) >= (buffer + sizeof(buffer))) };
 
   // Increment the pointer for next time.
   // But only do this if the buffer does *not* overflow.
@@ -70,10 +71,13 @@ void* operator new(std::size_t size) UTIL_NOEXCEPT
   return static_cast<void*>(const_cast<std::uint8_t*>(p));
 }
 
-void operator delete(void*)              UTIL_NOEXCEPT { }
-void operator delete(void*, void*)       UTIL_NOEXCEPT { }
+void operator delete(void*)              noexcept { }
+#if (defined(__GNUC__) && (__GNUC__ >= 12))
+#else
+void operator delete(void*, void*)       noexcept { }
+#endif
 #if(__cplusplus >= 201400L)
-void operator delete(void*, std::size_t) UTIL_NOEXCEPT { }
+void operator delete(void*, std::size_t) noexcept { }
 #endif
 
 extern "C"
@@ -84,15 +88,13 @@ extern "C"
   // Also provide stubbed copies of certain empirically found library functions
   // and objects.
 
-  typedef struct struct_unwind_exception_type { unsigned dummy; } _Unwind_Exception;
-
-  void        abort               ()           UTIL_NOEXCEPT __attribute__((noreturn));
-  int         atexit              (void (*)()) UTIL_NOEXCEPT;
-  int         at_quick_exit       (void (*)()) UTIL_NOEXCEPT;
-  void        _Exit               (int)        UTIL_NOEXCEPT __attribute__((noreturn));
-  void        exit                (int)                      __attribute__((noreturn));
-  void        quick_exit          (int)                      __attribute__((noreturn));
-  int         _exit               (int);
+  void        abort               ()                        __attribute__((noreturn));
+  int         atexit              (void (*)());
+  int         at_quick_exit       (void (*)());
+  void        _Exit               (int)                     __attribute__((noreturn));
+  void        exit                (int)                     __attribute__((noreturn));
+  void        quick_exit          (int)                     __attribute__((noreturn));
+  void        _exit               (int)                     __attribute__((noreturn));
   int         _isatty             (int);
   int         _lseek              (int, int, int);
   int         _open               (const char*, int, int);
@@ -105,17 +107,16 @@ extern "C"
   int         _kill               (int, int);
   void        __cxa_pure_virtual  ();
   char*       __cxa_demangle      (const char*, char*, size_t*, int*);
-  void        __cxa_call_terminate(_Unwind_Exception*);
 
   // Implementations of patched functions.
 
-  void        abort               ()           UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
-  int         atexit              (void (*)()) UTIL_NOEXCEPT          { return 0; }
-  int         at_quick_exit       (void (*)()) UTIL_NOEXCEPT          { return 0; }
-  void        _Exit               (int)        UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
+  void        abort               ()                                  { for(;;) { mcal::cpu::nop(); } }
+  int         atexit              (void (*)())                        { return 0; }
+  int         at_quick_exit       (void (*)())                        { return 0; }
+  void        _Exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        quick_exit          (int)                               { _Exit(0); }
-  int         _exit               (int)                               { return -1; }
+  void        _exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
   int         _isatty             (int)                               { return  1; }
   int         _lseek              (int, int, int)                     { return  0; }
   int         _open               (const char*, int, int)             { return -1; }
@@ -128,22 +129,40 @@ extern "C"
   int         _kill               (int, int)                          { return -1; }
   void        __cxa_pure_virtual  ()                                  { }
   char*       __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
-  void        __cxa_call_terminate(_Unwind_Exception*)                { }
+
+  #if defined(environ)
+  #undef environ
+  #endif
 
   // Provide some patched data values.
-  const char*  const __env[1U]       = { nullptr };
-  const char** const environ         = { nullptr };
+  const char*  const __env[1U] = { nullptr };
 
-  int          __errno         = 0;
-  std::uint8_t __fdlib_version = UINT8_C(0);
+  char** environ { nullptr };
+
+  #if (defined(__GNUC__) && defined(__v850__))
+  #else
+  extern int* __errno();
+  int* __errno() { return nullptr; }
+  #endif
+
+  std::uint8_t __fdlib_version;
+
+  // Patched DSO label.
+  void* __dso_handle;
 }
 
-// Provide some stubs for specific GCC error handling mechanisms.
+void mcal_gcc_cxx_dummy()
+{
+  static_cast<void>(__env);
+  static_cast<void>(environ);
+}
+
 namespace std
 {
-  void __throw_length_error(char const*);
-  void __throw_logic_error (char const*);
+  [[noreturn]]
+  void __throw_out_of_range_fmt(char const*, ...)  { for(;;) { ; } }
 }
 
-void std::__throw_length_error(char const*) { }
-void std::__throw_logic_error (char const*) { }
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

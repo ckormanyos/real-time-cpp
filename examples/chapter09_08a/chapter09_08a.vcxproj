@@ -232,8 +232,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\mcal\mcal.h" />
-    <ClInclude Include="src\mcal\mcal_reg_access_template.h" />
-    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h" />
+    <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h" />
+    <ClInclude Include="src\mcal\mcal_reg_access_static.h" />
     <ClInclude Include="src\mcal\win32\mcal_cpu.h" />
     <ClInclude Include="src\mcal\win32\mcal_gpt.h" />
     <ClInclude Include="src\mcal\win32\mcal_irq.h" />
