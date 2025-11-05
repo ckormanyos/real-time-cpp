@@ -13,15 +13,15 @@ set HEX=../../../../bin/ref_app.hex
 
 rem Erase the chip.
 echo "Erase the chip."
-%AVRDUDE% -c avrisp2 -p m328p -P usb -e
+%AVRDUDE% -c arduino -p m328p -P COM5 -b 115200 -e
 echo.
 
 rem Flash the HEX-file.
 echo "Flash the HEX-file."
-%AVRDUDE% -c avrisp2 -p m328p -P usb -U flash:w:%HEX%:i
+%AVRDUDE% -c arduino -p m328p -P COM5 -b 115200 -U flash:w:%HEX%:i
 echo.
 
 rem Verify the flash.
 echo "Verify the flash."
-%AVRDUDE% -c avrisp2 -p m328p -P usb -U flash:v:%HEX%:i
+%AVRDUDE% -c arduino -p m328p -P COM5 -b 115200 -U flash:v:%HEX%:i
 echo.
