@@ -164,9 +164,6 @@
     <ClInclude Include="src\mcal\mcal.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_access_template.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\os\os.h">
       <Filter>src\os</Filter>
     </ClInclude>
@@ -175,9 +172,6 @@
     </ClInclude>
     <ClInclude Include="src\os\os_task_control_block.h">
       <Filter>src\os</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
-      <Filter>src\mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\util\STL_C++XX_stdfloat\stdfloat.h">
       <Filter>src\util\STL_C++XX_stdfloat</Filter>
@@ -256,9 +250,6 @@
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\avr\avr_atomic.h">
       <Filter>src\util\STL\impl\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL\time.h">
-      <Filter>src\util\STL</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_linear_interpolate.h">
       <Filter>src\util\utility</Filter>
@@ -368,10 +359,34 @@
     <ClInclude Include="src\mcal\win32\mcal_led_rgb.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_static.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\time.h">
+      <Filter>src\util\STL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">
       <Filter>src\util\STL_C++XX_stdfloat</Filter>
+    </None>
+    <None Include="readme.md">
+      <Filter>_doc</Filter>
+    </None>
+    <None Include="src\util\STL\initializer_list">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\iterator">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\limits">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\memory">
+      <Filter>src\util\STL</Filter>
     </None>
     <None Include="src\util\STL\numeric">
       <Filter>src\util\STL</Filter>
@@ -388,6 +403,9 @@
     <None Include="src\util\STL\stdexcept">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="src\util\STL\stdfloat">
+      <Filter>src\util\STL</Filter>
+    </None>
     <None Include="src\util\STL\string">
       <Filter>src\util\STL</Filter>
     </None>
@@ -401,6 +419,9 @@
       <Filter>src\util\STL</Filter>
     </None>
     <None Include="src\util\STL\vector">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\version">
       <Filter>src\util\STL</Filter>
     </None>
     <None Include="src\util\STL\algorithm">
@@ -439,6 +460,9 @@
     <None Include="src\util\STL\cinttypes">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="src\util\STL\ciso646">
+      <Filter>src\util\STL</Filter>
+    </None>
     <None Include="src\util\STL\climits">
       <Filter>src\util\STL</Filter>
     </None>
@@ -468,21 +492,6 @@
     </None>
     <None Include="src\util\STL\functional">
       <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\initializer_list">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\iterator">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\limits">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\memory">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="readme.md">
-      <Filter>_doc</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,7 +8,7 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
-void mcal::wdg::init(const config_type*)
+auto mcal::wdg::init(const config_type*) -> void
 {
   // Read the MCU status register.
   volatile const std::uint8_t mcu_status_register =
@@ -29,22 +29,31 @@ void mcal::wdg::init(const config_type*)
   // Reset the watchdog timer.
   asm volatile("wdr");
 
-  // Set the watchdog timer period and activate the watchdog timer.
+  // Start timed sequence in order to set the watchdog
+  // timer period and activate the watchdog timer.
   mcal::reg::reg_access_static<std::uint8_t,
                                std::uint8_t,
                                mcal::reg::wdtcsr,
                                std::uint8_t(0x18U)>::reg_set();
 
-  // See Chapter 11.9.2, Table 11-2: Watchdog Timer Prescale Select.
-  // Select WDP3:WDP0 in WDTCSR to binary 0b0111, resulting
-  // in a watchdog period of approximately 2s.
+  // In "Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf",
+  // see Chapter 10.9.2, Table 10-3: Watchdog Timer Prescale Select.
+  // Set WDP3 (bit 5) and clear WDP2:WDP0 (bits 0, 1 and 2) in WDTCSR
+  // (i.e., set to hex 0x20). This results in a watchdog period
+  // of approximately 4s.
   mcal::reg::reg_access_static<std::uint8_t,
                                std::uint8_t,
                                mcal::reg::wdtcsr,
-                               std::uint8_t(0x08U) | std::uint8_t(0x07U)>::reg_set();
+                               std::uint8_t(0x20U)>::reg_set();
+
+  // Set WDRF in the MCU status register.
+  mcal::reg::reg_access_static<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::mcusr,
+                               std::uint8_t(3U)>::bit_set();
 }
 
-void mcal::wdg::secure::trigger()
+auto mcal::wdg::secure::trigger() -> void
 {
   asm volatile("wdr");
 }

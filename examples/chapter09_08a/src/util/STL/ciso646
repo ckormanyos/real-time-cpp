@@ -1,13 +1,15 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_irq.h>
+#ifndef CISO646_2023_08_15
+  #define CISO646_2023_08_15
 
-auto mcal::irq::init(const config_type*) -> void
-{
-  mcal::irq::enable_all();
-}
+  // Implement some of <ciso646> for compilers that do not yet support it.
+
+  #include <iso646.h>
+
+#endif // CISO646_2023_08_15

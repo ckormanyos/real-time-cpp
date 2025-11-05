@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,12 +26,12 @@ namespace
   using app_led_monochrome_timer_type = util::timer<std::uint32_t>;
   using app_led_rgb_timer_type        = util::timer<std::uint16_t>;
 
-  auto app_led_monochrome_timer = static_cast<app_led_monochrome_timer_type>(app_led_monochrome_timer_type::seconds(1U));
-  auto app_led_rgb_timer        = static_cast<app_led_rgb_timer_type>(app_led_rgb_timer_type::milliseconds(30U));
+  auto app_led_monochrome_timer = static_cast<app_led_monochrome_timer_type>(app_led_monochrome_timer_type::seconds(UINT8_C(1)));
+  auto app_led_rgb_timer        = static_cast<app_led_rgb_timer_type>(app_led_rgb_timer_type::milliseconds(UINT8_C(30)));
 
-  auto app_led_hue_r = static_cast<std::uint_fast8_t>(UINT8_C(255));
-  auto app_led_hue_g = static_cast<std::uint_fast8_t>(UINT8_C(0));
-  auto app_led_hue_b = static_cast<std::uint_fast8_t>(UINT8_C(0));
+  std::uint_fast8_t app_led_hue_r { UINT8_C(255) };
+  std::uint_fast8_t app_led_hue_g { UINT8_C(0) };
+  std::uint_fast8_t app_led_hue_b { UINT8_C(0) };
 }
 
 auto app::led::task_init() -> void

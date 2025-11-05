@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2023.
+#  Copyright Christopher Kormanyos 2007 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,7 +26,21 @@
 # punctuation
 # ------------------------------------------------------------------------------
 
-DQUOTE = \"
+DQUOTE       := \"
+$(DQUOTE)    := \"
+
+SEMICOLON    := ;
+$(SEMICOLON) := ;
+
+DOLLAR       := $$
+$(DOLLAR)    := $$
+
+# ------------------------------------------------------------------------------
+# null device
+# ------------------------------------------------------------------------------
+
+NULL_DEVICE     := NUL
+$(NULL_DEVICE)  := NUL
 
 # ------------------------------------------------------------------------------
 # paths
@@ -141,23 +155,7 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
 ifeq ($(WARN_FLAGS),)
 WARN_FLAGS =  -Wall                             \
               -Wextra                           \
-              -Wpedantic                        \
-              -Wmain                            \
-              -Wundef                           \
-              -Wconversion                      \
-              -Wsign-conversion                 \
-              -Wunused-parameter                \
-              -Wuninitialized                   \
-              -Wmissing-declarations            \
-              -Wshadow                          \
-              -Wunreachable-code                \
-              -Wswitch-default                  \
-              -Wswitch-enum                     \
-              -Wcast-align                      \
-              -Wmissing-include-dirs            \
-              -Winit-self                       \
-              -Wfloat-equal                     \
-              -Wdouble-promotion
+              -Wpedantic
 endif
 
 GCCFLAGS    = -g                                \
@@ -217,7 +215,7 @@ clean_prj:
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
 	@-$(MKDIR) -p $(PATH_LST)
-	@-$(RM) -r $(PATH_BIN) 2>NUL
+	@-$(RM) -r $(PATH_BIN) 2>$(NULL_DEVICE)
 	@-$(MKDIR) -p $(PATH_BIN)
 
 
@@ -231,10 +229,10 @@ clean_all:
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
 	@-$(MKDIR) -p $(PATH_LST)
-	@-$(RM) -r $(PATH_OBJ) 2>NUL
-	@-$(RM) -r $(PATH_ERR) 2>NUL
-	@-$(RM) -r $(PATH_LST) 2>NUL
-	@-$(RM) -r $(PATH_BIN) 2>NUL
+	@-$(RM) -r $(PATH_OBJ) 2>$(NULL_DEVICE)
+	@-$(RM) -r $(PATH_ERR) 2>$(NULL_DEVICE)
+	@-$(RM) -r $(PATH_LST) 2>$(NULL_DEVICE)
+	@-$(RM) -r $(PATH_BIN) 2>$(NULL_DEVICE)
 	@-$(MKDIR) -p $(PATH_BIN)
 
 
@@ -244,6 +242,7 @@ clean_all:
 .PHONY: version
 version:
   # Print the GNU make version and the compiler version
+	@$(ECHO)
 	@$(ECHO) +++ Print GNUmake version
 	@$(MAKE) --version
 	@$(ECHO)
@@ -254,10 +253,13 @@ version:
 	@$(ECHO) $(C_INCLUDES)
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler include paths (for VisualStudio(R) browsing)
-	@$(ECHO) $(addsuffix ;,$(subst -I,$$\(ProjectDir\)/, $(C_INCLUDES)))
+	@$(ECHO) $(addsuffix $(SEMICOLON),$(subst -I,$$\(ProjectDir\)/, $(C_INCLUDES)))
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler definitions
 	@$(ECHO) $(C_DEFINES)
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler CXXFLAGS flags
+	@$(ECHO) $(CXXFLAGS)
 	@$(ECHO)
 
 
@@ -267,8 +269,6 @@ version:
 $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
 	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
-	@-$(ECHO) +++ generating assembly list file: $(APP).lss
-	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
 
 
 # ------------------------------------------------------------------------------
@@ -280,7 +280,11 @@ $(APP)_nm.txt : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ demangling symbols with c++filt to generate: $(APP)_cppfilt.txt
 	@-$(NM) --numeric-sort --print-size $(APP).$(TGT_SUFFIX) | $(CPPFILT) > $(APP)_cppfilt.txt
 	@-$(ECHO) +++ parsing symbols with readelf to generate: $(APP)_readelf.txt
+ifeq ($(TGT_SUFFIX),elf)
 	@-$(READELF) --syms $(APP).$(TGT_SUFFIX) > $(APP)_readelf.txt
+else
+	@-$(ECHO) +++ not available for: $(APP).$(TGT_SUFFIX).
+endif
 	@-$(ECHO) +++ creating size summary table with size to generate: $(APP)_size.txt
 	@-$(SIZE) -A -t $(APP).$(TGT_SUFFIX) > $(APP)_size.txt
 
@@ -289,10 +293,29 @@ $(APP)_nm.txt : $(APP).$(TGT_SUFFIX)
 # create hex mask
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
+	@-$(ECHO) +++ creating hex module: $(APP).$(TGT_SUFFIX)
+ifeq ($(TGT_SUFFIX),elf)
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
 	@-$(ECHO) +++ creating srec module: $(APP).s19
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O srec --srec-forceS3 --srec-len=16 $(APP).s19
+else
+	@-$(ECHO) +++ creating hex module disabled for non-ELF absolute objet file.
+endif
+ifeq ($(RULE_SPECIAL_MAKE_IMAGE_FILE),)
+	@-$(ECHO) +++ creating special image file
+	@-$(ECHO) +++ disabled because there is no special image file
+else
+	@-$(ECHO) +++ creating special image file
+	@-$(RULE_SPECIAL_MAKE_IMAGE_FILE)
+endif
+ifeq ($(RULE_SPECIAL_MAKE_FLASH_BATCH),)
+	@-$(ECHO) +++ creating special flash batch file
+	@-$(ECHO) +++ disabled because there is no special flash batch file
+else
+	@-$(ECHO) +++ creating special flash batch file
+	@-$(RULE_SPECIAL_MAKE_FLASH_BATCH)
+endif
 
 # ------------------------------------------------------------------------------
 # Dependencyfile include (build)

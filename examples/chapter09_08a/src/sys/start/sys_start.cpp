@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,7 +24,9 @@ void mcal::led::sys_start_interface::my_sys_start()
 }
 
 #if !defined(_MSC_VER)
-extern "C" int main()
+auto main() -> int;
+
+auto main() -> int
 {
   mcal::led::sys_start_interface::my_sys_start();
 }

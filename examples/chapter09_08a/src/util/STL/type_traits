@@ -9,6 +9,7 @@
   #define TYPE_TRAITS_2013_09_01_
 
   #include <cstddef>
+  #include <cstdint>
 
   // Implement some of <type_traits> for compilers that do not yet support it.
 
@@ -172,22 +173,28 @@
   namespace std
   {
     template<typename T>
-    struct make_unsigned { };
-
-    template<> struct make_unsigned<signed char>      { using type = unsigned char; };
-    template<> struct make_unsigned<signed short>     { using type = unsigned short; };
-    template<> struct make_unsigned<signed int>       { using type = unsigned int; };
-    template<> struct make_unsigned<signed long>      { using type = unsigned long; };
-    template<> struct make_unsigned<signed long long> { using type = unsigned long long; };
+    struct make_unsigned
+    {
+      using type = typename std::conditional<(sizeof(T) > 4U), std::uint64_t,
+                   typename std::conditional<(sizeof(T) > 2U), std::uint32_t,
+                   typename std::conditional<(sizeof(T) > 1U), std::uint16_t,
+                                                               std::uint8_t>::type>::type>::type;
+    };
 
     template<typename T>
-    struct make_signed { };
+    struct make_signed
+    {
+      using type = typename std::conditional<(sizeof(T) > 4U), std::int64_t,
+                   typename std::conditional<(sizeof(T) > 2U), std::int32_t,
+                   typename std::conditional<(sizeof(T) > 1U), std::int16_t,
+                                                               std::int8_t>::type>::type>::type;
+    };
 
-    template<> struct make_signed<unsigned char>      { using type = signed char; };
-    template<> struct make_signed<unsigned short>     { using type = signed short; };
-    template<> struct make_signed<unsigned int>       { using type = signed int; };
-    template<> struct make_signed<unsigned long>      { using type = signed long; };
-    template<> struct make_signed<unsigned long long> { using type = signed long long; };
+    template<typename T>
+    using make_unsigned_t = typename std::make_unsigned<T>::type;
+
+    template<typename T>
+    using make_signed_t = typename std::make_signed<T>::type;
   }
 
   namespace traits_helper
