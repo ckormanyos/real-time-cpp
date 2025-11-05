@@ -6,9 +6,7 @@ Consider the flash file `ref_app.hex` which, after
 building the reference application `ref_app`, will be found in the `bin` directory.
 These instructions are for modern `Win*`.
 
-The programming device being used is the AVRISP mkII, which is an older USB-based
-programmer. Drivers can be installed along with with ATMEL(R) Studio.
-Also alternative open source USB driver-options are available.
+Programming uses an ARDUIONO board out of the box with its USB/serial interface.
 
 ## Getting Started
 
@@ -21,6 +19,39 @@ Using commands or command files, we can program the ARDUINO UNO with the ATMEGA3
 or the ARDUINO MEGA 2560 with the ATMEGA2560 chip.
 
 ### Programming the ARDUINO UNO with ATMEGA328P Chip
+
+See also the batch file [328p_arduino.bat](./328p_arduino.bat).
+When using this batch file, please note that the `COM` serial port may differ
+from `COM5` which is shown below as an example.
+
+```cmd
+echo off
+
+set AVRDUDE=.\avrdude.exe
+
+set HEX=../../../../bin/ref_app.hex
+
+rem Erase the chip.
+echo "Erase the chip."
+%AVRDUDE% -c arduino -p m328p -P COM5 -b 115200 -e
+echo.
+
+rem Flash the HEX-file.
+echo "Flash the HEX-file."
+%AVRDUDE% -c arduino -p m328p -P COM5 -b 115200 -U flash:w:%HEX%:i
+echo.
+
+rem Verify the flash.
+echo "Verify the flash."
+%AVRDUDE% -c arduino -p m328p -P COM5 -b 115200 -U flash:v:%HEX%:i
+echo.
+```
+
+### Programming the ARDUINO UNO with ATMEGA328P Chip over AVR-ISP2
+
+The programming device being used is the AVRISP mkII, which is an older USB-based
+programmer. Drivers can be installed along with with ATMEL(R) Studio.
+Also alternative open source USB driver-options are available.
 
 See also the batch file [328p.bat](./328p.bat).
 
