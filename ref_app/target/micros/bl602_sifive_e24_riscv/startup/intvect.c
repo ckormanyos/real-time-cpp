@@ -32,7 +32,7 @@
 // Functions prototype
 //=====================================================================================================
 static void UndefinedHandler(void);
-static void UndefinedHandler(void){ for(;;); }
+static void UndefinedHandler(void) { for(;;) { ; } }
 
 void Isr_SW_Interrupt      (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_TIMER_Interrupt   (void) __attribute__((weak, alias("UndefinedHandler")));

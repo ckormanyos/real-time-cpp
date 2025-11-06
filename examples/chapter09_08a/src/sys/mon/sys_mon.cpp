@@ -10,15 +10,15 @@ namespace sys
 {
   namespace mon
   {
-    void task_init();
-    void task_func();
+    auto task_init() -> void;
+    auto task_func() -> void;
   }
 }
 
-void sys::mon::task_init()
+auto sys::mon::task_init() -> void
 {
 }
 
-void sys::mon::task_func()
+auto sys::mon::task_func() -> void
 {
 }

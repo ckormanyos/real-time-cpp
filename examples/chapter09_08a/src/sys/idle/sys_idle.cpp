@@ -11,14 +11,14 @@ namespace sys
 {
   namespace idle
   {
-    void task_init();
-    void task_func();
+    auto task_init() -> void;
+    auto task_func() -> void;
   }
 }
 
-void sys::idle::task_init() { }
+auto sys::idle::task_init() -> void { }
 
-void sys::idle::task_func()
+auto sys::idle::task_func() -> void
 {
   // Service the watchdog.
   mcal::wdg::secure::trigger();

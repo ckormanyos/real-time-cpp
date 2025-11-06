@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2016.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef OS_CFG_2011_10_20_H_
-  #define OS_CFG_2011_10_20_H_
+#ifndef OS_CFG_2011_10_20_H
+  #define OS_CFG_2011_10_20_H
 
   #include <cstddef>
   #include <cstdint>
@@ -15,15 +15,15 @@
   #include <util/utility/util_time.h>
 
   // Declare the task initialization and the task function of the idle process.
-  namespace sys { namespace idle { void task_init(); void task_func(); } }
+  namespace sys { namespace idle { auto task_init() -> void; auto task_func() -> void; } }
 
   // Define symbols for the task initialization and the task function of the idle process.
   #define OS_IDLE_TASK_INIT() sys::idle::task_init()
   #define OS_IDLE_TASK_FUNC() sys::idle::task_func()
 
   // Declare all of the task initializations and the task functions.
-  namespace app { namespace led              { void task_init(); void task_func(); } }
-  namespace sys { namespace mon              { void task_init(); void task_func(); } }
+  namespace app { namespace led { auto task_init() -> void; auto task_func() -> void; } }
+  namespace sys { namespace mon { auto task_init() -> void; auto task_func() -> void; } }
 
   namespace os
   {
@@ -38,11 +38,11 @@
     task_id_type;
 
     // Configure the operating system types.
-    typedef void(*function_type)();
+    using function_type = void(*)();
 
-    typedef util::timer<std::uint_fast32_t> timer_type;
-    typedef timer_type::tick_type           tick_type;
-    typedef std::uint_fast16_t              event_type;
+    using timer_type = util::timer<std::uint_fast32_t>;
+    using tick_type  = timer_type::tick_type;
+    using event_type = std::uint_fast16_t;
 
     static_assert(std::numeric_limits<os::tick_type>::digits >= 32,
                   "The operating system timer_type must be at least 32-bits wide.");
@@ -83,4 +83,4 @@
 
   static_assert(OS_TASK_COUNT > std::size_t(0U), "the task count must exceed zero");
 
-#endif // OS_CFG_2011_10_20_H_
+#endif // OS_CFG_2011_10_20_H
