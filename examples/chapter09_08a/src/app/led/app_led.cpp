@@ -5,12 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <cstdint>
-#include <cstdlib>
-
 #include <mcal_led.h>
 #include <mcal_led_rgb.h>
 #include <util/utility/util_time.h>
+
+#include <cstdint>
+#include <cstdlib>
 
 namespace app
 {
@@ -94,7 +94,7 @@ auto app::led::task_func() -> void
       || ((app_led_hue_b > static_cast<std::uint_fast8_t>(UINT8_C(250))) && rgb_hue_sum_is_in_bump_range)
     );
 
-    auto color_persist_time = static_cast<unsigned>(UINT8_C(30));
+    unsigned color_persist_time { UINT8_C(30) };
 
     if(rgb_hue_is_near_bump_point)
     {

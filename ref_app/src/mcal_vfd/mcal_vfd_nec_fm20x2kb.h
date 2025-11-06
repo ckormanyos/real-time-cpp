@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2023 - 2024.
+//  Copyright Christopher Kormanyos 2023 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -39,7 +39,7 @@
     {
       const auto clr = [this]() { return this->clear_line(static_cast<unsigned>(UINT8_C(0))); };
 
-      auto result_init_is_ok = clr();
+      bool result_init_is_ok { clr() };
 
       blocking_delay(timer_type::microseconds(static_cast<unsigned>(UINT8_C(500))));
 

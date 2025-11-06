@@ -1,32 +1,33 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <algorithm>
-#include <array>
-#include <iterator>
 #include <mcal_irq.h>
 #include <mcal_led_sys_start_interface.h>
 #include <os/os.h>
 #include <os/os_task_control_block.h>
 
+#include <algorithm>
+#include <array>
+#include <iterator>
+
 namespace
 {
-  typedef std::array<os::task_control_block, OS_TASK_COUNT> task_list_type;
+  using task_list_type = std::array<os::task_control_block, OS_TASK_COUNT>;
 
-  typedef std::uint_fast8_t task_index_type;
+  using task_index_type = std::uint_fast8_t;
 
   // The one (and only one) operating system task list.
   task_list_type os_task_list(OS_TASK_LIST);
 
   // The index of the running task.
-  task_index_type os_task_index;
+  task_index_type os_task_index { };
 }
 
-void os::start_os()
+auto os::start_os() -> void
 {
   // Initialize each task once (and only once) before the task scheduling begins.
   auto const it_init_func = std::for_each(os_task_list.cbegin(),
@@ -50,7 +51,7 @@ void os::start_os()
     // In this way, each task in the loop will be checked for being
     // ready using the same time-point.
 
-    const os::tick_type timepoint_of_ckeck_ready = os::timer_type::get_mark();
+    const os::tick_type timepoint_of_ckeck_ready { os::timer_type::get_mark() };
 
     os_task_index = static_cast<task_index_type>(0U);
 
@@ -74,7 +75,7 @@ void os::start_os()
   }
 }
 
-bool os::set_event(const task_id_type task_id, const event_type& event_to_set)
+auto os::set_event(const task_id_type task_id, const event_type& event_to_set) -> bool
 {
   if(task_id < task_id_end)
   {
@@ -98,7 +99,7 @@ bool os::set_event(const task_id_type task_id, const event_type& event_to_set)
   }
 }
 
-void os::get_event(event_type& event_to_get)
+auto os::get_event(event_type& event_to_get) -> void
 {
   // Get the iterator of the control block of the running task.
   const auto it_running_task = (os_task_list.cbegin() + os_task_index);
@@ -108,7 +109,7 @@ void os::get_event(event_type& event_to_get)
     // Get the event of the running task.
     mcal::irq::disable_all();
 
-    const volatile event_type the_event = it_running_task->my_event;
+    const volatile event_type the_event { it_running_task->my_event };
 
     mcal::irq::enable_all();
 
@@ -120,14 +121,14 @@ void os::get_event(event_type& event_to_get)
   }
 }
 
-void os::clear_event(const event_type& event_to_clear)
+auto os::clear_event(const event_type& event_to_clear) -> void
 {
   // Get the iterator of the control block of the running task.
   const auto it_running_task = (os_task_list.begin() + os_task_index);
 
   if(it_running_task != os_task_list.end())
   {
-    const volatile event_type event_clear_mask(~event_to_clear);
+    const volatile event_type event_clear_mask { static_cast<event_type>(~event_to_clear) };
 
     // Clear the event of the running task.
     mcal::irq::disable_all();

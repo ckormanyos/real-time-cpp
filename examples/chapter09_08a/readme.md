@@ -2,7 +2,7 @@
 ## Controlling an RGB LED of type ws2812
 
 Example chapter09_08a utilizes object oriented programming techniques
-to control a sequential chain of eight industry-standard RGB LEDs of type ws2812
+to control an industry-standard RGB LED of type ws2812
 
 This example controls an RGB LED using programming techniques similar to those used in the previous example.
 There are, however, several differences such as the refactored, modernized LED-class hierarchy.
@@ -55,8 +55,7 @@ The third template parameter `LedCount` provides the ability
 to link multiple ws2812 devices seqentially and control them
 in an LED chain, as is common for this particular device.
 
-In example chapter09_08a, a chain of $8$ sequential ws2812 LED devices
-is used.
+In example chapter09_08a, a ws2812 LED device is used.
 
 ### Enhanced RGB-Color-Light-Show
 
@@ -82,12 +81,12 @@ application is shown in action in the image below.
 ## Hardware Setup
 
 In this particular example, we have simply used a commercially-available
-Arduino-Nano placed on a breadboard. The wiring is straightforward.
-The ws2812 port control uses port pin `portd.3`.
+ARDUINO(R) placed on a breadboard with soldered-on pins.
+The wiring is straightforward. The ws2812 port control uses port pin `portd.3`.
 
-The hardware setup with the RGB LED chain in action is pictured
+The hardware setup with the RGB LED in action is pictured
 in the images below. The pictures show colorful RGB hues eminating
-from the sequential chain of bright RGB LEDs of type ws2812.
+from the bright RGB LED of type ws2812.
 
 ![](./images/board09_08a_01r.jpg)
 ![](./images/board09_08a_02g.jpg)

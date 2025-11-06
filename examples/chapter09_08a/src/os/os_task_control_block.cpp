@@ -7,7 +7,7 @@
 
 #include <os/os_task_control_block.h>
 
-bool os::task_control_block::execute(const os::tick_type& timepoint_of_ckeck_ready)
+auto os::task_control_block::execute(const os::tick_type& timepoint_of_ckeck_ready) -> bool
 {
   // Check for a task event.
   const bool task_does_have_event = (my_event != event_type(0U));
@@ -33,4 +33,3 @@ bool os::task_control_block::execute(const os::tick_type& timepoint_of_ckeck_rea
 
   return (task_does_have_event || task_does_have_timeout);
 }
-

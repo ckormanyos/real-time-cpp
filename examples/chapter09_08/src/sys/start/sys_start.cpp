@@ -14,7 +14,7 @@
 // support for the PC application (because the PC
 // program uses WinMain() instead of main().
 
-void mcal::led::sys_start_interface::my_sys_start()
+auto mcal::led::sys_start_interface::my_sys_start() -> void
 {
   // Initialize the microcontroller abstraction layer.
   mcal::init();
