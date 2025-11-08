@@ -20,7 +20,7 @@
   namespace std
   {
     template<typename T,
-             typename alloc = std::allocator<T> >
+             typename alloc = std::allocator<T>>
     class vector
     {
     public:
@@ -37,9 +37,9 @@
       typedef std::reverse_iterator<iterator>          reverse_iterator;
       typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
 
-      vector() : my_first(iterator(0U)),
-                 my_last (iterator(0U)),
-                 my_end  (iterator(0U)) { }
+      vector() : my_first(nullptr),
+                 my_last (nullptr),
+                 my_end  (nullptr) { }
 
       explicit vector(size_type count) : my_first(allocator_type().allocate(count)),
                                          my_last (my_first + count),
@@ -222,7 +222,8 @@
         if(capacity() <= the_size)
         {
           const size_type count = the_size * 2U;
-          reserve((std::max)(count, 4U));
+
+          reserve((std::max)(count, size_type(4U)));
         }
 
         *my_last = value;
@@ -240,8 +241,6 @@
       iterator my_first; // begin()
       iterator my_last;  // end()
       iterator my_end;   // capacity()
-
-      static allocator_type get_allocator() { return allocator_type(); }
     };
   }
 

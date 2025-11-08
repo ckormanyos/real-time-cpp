@@ -26,7 +26,7 @@
 # ./build.sh /usr/local/real-time-cpp/examples/chapter09_08a/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
 
 # Usage example B (from Win* shell such as in Git for Win*)
-# cd C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08a
+# cd C:/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08a
 # ./build.sh C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08a/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
 
 if [[ $# == 0 ]]; then                   ##  $# is the number of arguments

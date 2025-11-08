@@ -1,12 +1,12 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2024.
+#  Copyright Christopher Kormanyos 2007 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
 
 # ------------------------------------------------------------------------------
-# 
+#
 # Makefile
 #
 # Build file for the reference application using the GNU tools
@@ -15,24 +15,57 @@
 #
 # 07-April-2010
 #
+# See also a definitive list of GCC command line options
+# (for numerous target systems) here:
+#   https://man7.org/linux/man-pages/man1/gcc.1.html
+#
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
-# compiler location, build from GCC version and GCC target
+# operating system
 # ------------------------------------------------------------------------------
-COMPILER_DIRECTORY = gcc-$(GCC_VERSION)-$(GCC_TARGET)
+
+ifeq ($(TYP_OS),)
+
+ifeq ($(OS),Windows_NT)
+TYP_OS       := WIN
+else
+TYP_OS       := NIX
+endif
+
+endif
+
+
+# ------------------------------------------------------------------------------
+# punctuation
+# ------------------------------------------------------------------------------
+
+DQUOTE       := \"
+$(DQUOTE)    := \"
+
+SEMICOLON    := ;
+$(SEMICOLON) := ;
+
+DOLLAR       := $$
+$(DOLLAR)    := $$
+
+# ------------------------------------------------------------------------------
+# null device
+# ------------------------------------------------------------------------------
+
+ifeq ($(TYP_OS),WIN)
+NULL_DEVICE     := NUL
+$(NULL_DEVICE)  := NUL
+else
+NULL_DEVICE     := /dev/null
+$(NULL_DEVICE)  := /dev/null
+endif
 
 
 # ------------------------------------------------------------------------------
 # paths
 # ------------------------------------------------------------------------------
-PATH_TOOLS           = tools
-PATH_TOOLS_UTIL      = $(PATH_TOOLS)\Util
-PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\msys64\usr
-PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\bin
-PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\gcc-$(GCC_VERSION)-$(GCC_TARGET)\bin
-
 PATH_APP             = src
 PATH_TGT             = target/micros/$(TGT)
 PATH_APP_MAKE        = target/app/make
@@ -40,16 +73,41 @@ PATH_TGT_MAKE        = $(PATH_TGT)/make
 PATH_BIN             = bin
 PATH_TMP             = tmp
 PATH_OBJ             = $(PATH_TMP)/obj
-PATH_SRC             = $(PATH_TMP)/src
+PATH_LST             = $(PATH_TMP)/lst
 PATH_ERR             = $(PATH_TMP)/err
 
 
 # ------------------------------------------------------------------------------
-# include files
+# standard shell tools
 # ------------------------------------------------------------------------------
-include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
-include $(PATH_TGT_MAKE)/$(TGT)_files.gmk   # Target filelist
-include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
+
+ifeq ($(TYP_OS),WIN)
+
+PATH_TOOLS           = tools
+PATH_TOOLS_UTIL      = $(PATH_TOOLS)\Util
+PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\msys64\usr
+PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\bin
+PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\gcc-$(GCC_VERSION)-$(GCC_TARGET)\bin
+
+ECHO                 = $(PATH_TOOLS_MINGW_BIN)\echo.exe
+MAKE                 = $(PATH_TOOLS_MINGW_BIN)\make.exe
+MKDIR                = $(PATH_TOOLS_MINGW_BIN)\mkdir.exe
+RM                   = $(PATH_TOOLS_MINGW_BIN)\rm.exe
+SED                  = $(PATH_TOOLS_MINGW_BIN)\sed.exe
+
+else
+
+ECHO      = echo
+MAKE      = make
+MKDIR     = mkdir
+RM        = rm
+SED       = sed
+
+ifneq ($(MY_GMAKE),)
+MAKE     := $(MY_GMAKE)
+endif
+
+endif
 
 
 # ------------------------------------------------------------------------------
@@ -57,17 +115,32 @@ include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 # ------------------------------------------------------------------------------
 APP = $(PATH_BIN)/chapter12_04
 
+IMAGE_FILE = $(APP).bin
+
+RULE_SPECIAL_MAKE_IMAGE_FILE  =
+RULE_SPECIAL_MAKE_FLASH_BATCH =
+
+WARN_FLAGS :=
+
+# ------------------------------------------------------------------------------
+# linker definition file
+# ------------------------------------------------------------------------------
+LINKER_DEFINITION_FILE   := $(PATH_TGT_MAKE)/$(TGT).ld
+
+
+# ------------------------------------------------------------------------------
+# include the target-specific make files
+# ------------------------------------------------------------------------------
+include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
+include $(PATH_TGT_MAKE)/$(TGT)_files.gmk   # Target filelist
+include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
+
+
 # ------------------------------------------------------------------------------
 # object files
 # ------------------------------------------------------------------------------
 FILES_TMP   = $(FILES_CPP) $(FILES_TGT)
 FILES_O     = $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(FILES_TMP))))
-
-
-# ------------------------------------------------------------------------------
-# linker definition file
-# ------------------------------------------------------------------------------
-LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
 
 
 # ------------------------------------------------------------------------------
@@ -85,21 +158,76 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # ------------------------------------------------------------------------------
 # Development tools
 # ------------------------------------------------------------------------------
-AR        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-ar.exe
-AS        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
-CC        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
-CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-c++filt.exe
-NM        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-nm.exe
-OBJDUMP   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-objdump.exe
-OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-objcopy.exe
-READELF   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-readelf.exe
-SIZE      = $(PATH_TOOLS_CC)\$(GCC_TARGET)-size.exe
+ifeq ($(TYP_OS),WIN)
 
-ECHO      = $(PATH_TOOLS_MINGW_BIN)\echo.exe
-MAKE      = $(PATH_TOOLS_MINGW_BIN)\make.exe
-MKDIR     = $(PATH_TOOLS_MINGW_BIN)\mkdir.exe
-RM        = $(PATH_TOOLS_MINGW_BIN)\rm.exe
-SED       = $(PATH_TOOLS_MINGW_BIN)\sed.exe
+ifeq ($(GCC_PREFIX),)
+
+ifeq ($(AR),)
+AR        := $(PATH_TOOLS_CC)\ar.exe
+endif
+ifeq ($(AS),)
+AS        := $(PATH_TOOLS_CC)\g++.exe
+endif
+ifeq ($(CC),)
+CC        := $(PATH_TOOLS_CC)\g++.exe
+endif
+ifeq ($(CPPFILT),)
+CPPFILT   := $(PATH_TOOLS_CC)\c++filt.exe
+endif
+ifeq ($(NM),)
+NM        := $(PATH_TOOLS_CC)\nm.exe
+endif
+ifeq ($(OBJDUMP),)
+OBJDUMP   := $(PATH_TOOLS_CC)\objdump.exe
+endif
+ifeq ($(OBJCOPY),)
+OBJCOPY   := $(PATH_TOOLS_CC)\objcopy.exe
+endif
+ifeq ($(READELF),)
+READELF   := $(PATH_TOOLS_CC)\readelf.exe
+endif
+ifeq ($(SIZE),)
+SIZE      := $(PATH_TOOLS_CC)\size.exe
+endif
+
+else
+
+AR        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-ar.exe
+AS        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
+CC        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
+CPPFILT   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-c++filt.exe
+NM        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-nm.exe
+OBJDUMP   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objdump.exe
+OBJCOPY   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+READELF   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-readelf.exe
+SIZE      := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-size.exe
+endif
+
+else
+
+ifeq ($(GCC_PREFIX),)
+AR        := ar
+AS        := g++
+CC        := g++
+CPPFILT   := c++filt
+NM        := nm
+OBJDUMP   := objdump
+OBJCOPY   := objcopy
+READELF   := readelf
+SIZE      := size
+else
+AR        := $(GCC_PREFIX)-ar
+AS        := $(GCC_PREFIX)-g++
+CC        := $(GCC_PREFIX)-g++
+CPPFILT   := $(GCC_PREFIX)-c++filt
+NM        := $(GCC_PREFIX)-nm
+OBJDUMP   := $(GCC_PREFIX)-objdump
+OBJCOPY   := $(GCC_PREFIX)-objcopy
+READELF   := $(GCC_PREFIX)-readelf
+SIZE      := $(GCC_PREFIX)-size
+endif
+
+endif
 
 
 # ------------------------------------------------------------------------------
@@ -109,13 +237,14 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
              -I$(PATH_APP)                      \
              -I$(PATH_APP)/mcal/$(TGT)
 
-GCCFLAGS    = $(TGT_CFLAGS)                     \
-              -g                                \
-              -Wall                             \
+ifeq ($(WARN_FLAGS),)
+
+WARN_FLAGS =  -Wall                             \
               -Wextra                           \
-              -pedantic                         \
+              -Wpedantic                        \
               -Wmain                            \
               -Wundef                           \
+              -Wconversion                      \
               -Wsign-conversion                 \
               -Wunused-parameter                \
               -Wuninitialized                   \
@@ -128,40 +257,40 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -Wmissing-include-dirs            \
               -Winit-self                       \
               -Wfloat-equal                     \
-              -Wdouble-promotion                \
+              -Wdouble-promotion
+
+endif
+
+GCCFLAGS    = -g                                \
+              $(WARN_FLAGS)                     \
+              -Wno-comment                      \
               -gdwarf-2                         \
               -fno-exceptions                   \
-              -ffunction-sections               \
-              -fdata-sections
+              -fdata-sections                   \
+              -ffunction-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
-              -Wunsuffixed-float-constants      \
-              -x c                              \
-              -std=c99
+              $(TGT_CFLAGS)                     \
+              -x c
 
-CPPFLAGS    = $(GCCFLAGS)                       \
-              $(TGT_CPPFLAGS)                   \
+CXXFLAGS    = $(GCCFLAGS)                       \
+              $(TGT_CXXFLAGS)                   \
               -x c++                            \
               -fno-rtti                         \
-              -fstrict-enums                    \
               -fno-use-cxa-atexit               \
-              -fno-use-cxa-get-exception-ptr    \
-              -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
-              -fno-enforce-eh-specs             \
-              -ftemplate-depth=32               \
+              -ftemplate-depth=128              \
               -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
-              $(TGT_CFLAGS)                     \
+              $(TGT_CXXFLAGS)                   \
               $(TGT_AFLAGS)                     \
               -x assembler
 
-LDFLAGS     = $(GCCFLAGS)                       \
+LDFLAGS     = $(CXXFLAGS)                       \
               $(TGT_LDFLAGS)                    \
               -x none                           \
-              -Wl,--gc-sections                 \
-              -Wl,-Map,$(APP).map
+              -Wl,--print-memory-usage
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
@@ -186,8 +315,8 @@ clean_prj:
 	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
-	@-$(MKDIR) -p $(PATH_SRC)
-	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
+	@-$(MKDIR) -p $(PATH_LST)
+	@-$(RM) -r $(PATH_BIN) 2>$(NULL_DEVICE)
 	@-$(MKDIR) -p $(PATH_BIN)
 
 
@@ -200,11 +329,11 @@ clean_all:
 	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
-	@-$(MKDIR) -p $(PATH_SRC)
-	@-$(RM) -r $(PATH_OBJ)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_ERR)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_SRC)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
+	@-$(MKDIR) -p $(PATH_LST)
+	@-$(RM) -r $(PATH_OBJ) 2>$(NULL_DEVICE)
+	@-$(RM) -r $(PATH_ERR) 2>$(NULL_DEVICE)
+	@-$(RM) -r $(PATH_LST) 2>$(NULL_DEVICE)
+	@-$(RM) -r $(PATH_BIN) 2>$(NULL_DEVICE)
 	@-$(MKDIR) -p $(PATH_BIN)
 
 
@@ -214,20 +343,26 @@ clean_all:
 .PHONY: version
 version:
   # Print the GNU make version and the compiler version
+	@$(ECHO)
 	@$(ECHO) +++ Print GNUmake version
 	@$(MAKE) --version
 	@$(ECHO)
-	@$(ECHO) +++ Print GCC version
+	@$(ECHO) +++ Print compiler version
 	@$(CC) -v
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler include paths
 	@$(ECHO) $(C_INCLUDES)
 	@$(ECHO)
+ifeq ($(TYP_OS),WIN)
 	@$(ECHO) +++ Print compiler include paths (for VisualStudio(R) browsing)
-	@$(ECHO) $(subst /,\, $(subst -I,$$\(SolutionDir\), $(C_INCLUDES)))
+	@$(ECHO) $(addsuffix $(SEMICOLON),$(subst -I,$$\(ProjectDir\)/, $(C_INCLUDES)))
 	@$(ECHO)
+endif
 	@$(ECHO) +++ Print compiler definitions
 	@$(ECHO) $(C_DEFINES)
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler CXXFLAGS flags
+	@$(ECHO) $(CXXFLAGS)
 	@$(ECHO)
 
 
@@ -237,8 +372,6 @@ version:
 $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
 	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
-	@-$(ECHO) +++ generating assembly list file: $(APP).lss
-	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
 
 
 # ------------------------------------------------------------------------------
@@ -250,7 +383,11 @@ $(APP)_nm.txt : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ demangling symbols with c++filt to generate: $(APP)_cppfilt.txt
 	@-$(NM) --numeric-sort --print-size $(APP).$(TGT_SUFFIX) | $(CPPFILT) > $(APP)_cppfilt.txt
 	@-$(ECHO) +++ parsing symbols with readelf to generate: $(APP)_readelf.txt
+ifeq ($(TGT_SUFFIX),elf)
 	@-$(READELF) --syms $(APP).$(TGT_SUFFIX) > $(APP)_readelf.txt
+else
+	@-$(ECHO) +++ not available for: $(APP).$(TGT_SUFFIX).
+endif
 	@-$(ECHO) +++ creating size summary table with size to generate: $(APP)_size.txt
 	@-$(SIZE) -A -t $(APP).$(TGT_SUFFIX) > $(APP)_size.txt
 
@@ -259,9 +396,31 @@ $(APP)_nm.txt : $(APP).$(TGT_SUFFIX)
 # create hex mask
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
-	@-$(ECHO) +++ creating hex module: $(APP).hex.
-	@-$(OBJCOPY) -O ihex $(APP).$(TGT_SUFFIX) $(APP).hex
-	@-$(OBJCOPY) -S -O binary $(APP).$(TGT_SUFFIX) $(APP).bin
+	@-$(ECHO) +++ creating hex module: $(APP).$(TGT_SUFFIX)
+ifeq ($(TGT_SUFFIX),elf)
+	@-$(ECHO) +++ creating hex module: $(APP).hex
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
+	@-$(ECHO) +++ creating srec module: $(APP).s19
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O srec $(APP).s19
+	@-$(ECHO) +++ creating disassembly listing: $(APP)_disassembly.txt
+	@-$(OBJDUMP) -D $(APP).$(TGT_SUFFIX) > $(APP)_disassembly.txt
+else
+	@-$(ECHO) +++ creating hex module disabled for non-ELF absolute objet file.
+endif
+ifeq ($(RULE_SPECIAL_MAKE_IMAGE_FILE),)
+	@-$(ECHO) +++ creating special image file
+	@-$(ECHO) +++ disabled because there is no special image file
+else
+	@-$(ECHO) +++ creating special image file
+	@-$(RULE_SPECIAL_MAKE_IMAGE_FILE)
+endif
+ifeq ($(RULE_SPECIAL_MAKE_FLASH_BATCH),)
+	@-$(ECHO) +++ creating special flash batch file
+	@-$(ECHO) +++ disabled because there is no special flash batch file
+else
+	@-$(ECHO) +++ creating special flash batch file
+	@-$(RULE_SPECIAL_MAKE_FLASH_BATCH)
+endif
 
 # ------------------------------------------------------------------------------
 # Dependencyfile include (build)
@@ -270,7 +429,7 @@ $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 # If the files do not exist then the includes will be ignored.
 # ------------------------------------------------------------------------------
 ifneq ($(MAKECMDGOALS),rebuild)
--include $(subst .o,.d,$(FILES_O))       # for example tmp/obj/sys_start.d, tmp/obj/mcal_cpu.d, etc
+-include $(subst .o,.d,$(FILES_O))
 endif
 
 

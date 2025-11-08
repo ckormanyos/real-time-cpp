@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,7 +7,7 @@
 
 #include <mcal/mcal.h>
 
-void mcal::init()
+auto mcal::init() -> void
 {
   // Initialize the microcontroller abstraction layer.
 
@@ -20,6 +20,10 @@ void mcal::init()
   mcal::irq::init(nullptr);
 
   mcal::gpt::init(nullptr);
+  mcal::ser::init(nullptr);
+  mcal::spi::init(nullptr);
+  mcal::pwm::init(nullptr);
+  mcal::eep::init(nullptr);
 
   mcal::cpu::post_init();
 }

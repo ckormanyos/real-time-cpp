@@ -1,16 +1,14 @@
-
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2018.
+//  Copyright Christopher Kormanyos 2014 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MATH_FUNCTIONS_BESSEL_2014_04_30_H_
-  #define MATH_FUNCTIONS_BESSEL_2014_04_30_H_
+#ifndef MATH_FUNCTIONS_BESSEL_2014_04_30_H
+  #define MATH_FUNCTIONS_BESSEL_2014_04_30_H
 
   #include <cmath>
-  #include <cstdfloat>
 
   #include <math/functions/math_functions_hypergeometric.h>
 
@@ -38,4 +36,4 @@
     }
   } // namespace math::functions
 
-#endif // MATH_FUNCTIONS_BESSEL_2014_04_30_H_
+#endif // MATH_FUNCTIONS_BESSEL_2014_04_30_H

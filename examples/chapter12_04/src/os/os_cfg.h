@@ -1,73 +1,91 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2016.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef OS_CFG_2011_10_20_H_
-  #define OS_CFG_2011_10_20_H_
+#ifndef OS_CFG_2011_10_20_H
+  #define OS_CFG_2011_10_20_H
+
+  #include <util/utility/util_time.h>
 
   #include <cstddef>
   #include <cstdint>
   #include <limits>
 
-  #include <util/utility/util_time.h>
-
   // Declare the task initialization and the task function of the idle process.
-  namespace sys { namespace idle { void task_init(); void task_func(); } }
+  namespace sys { namespace idle {
+
+  auto task_init() noexcept -> void; auto task_func() -> void;
+
+  } // namespace idle
+  } // namespace sys
 
   // Define symbols for the task initialization and the task function of the idle process.
   #define OS_IDLE_TASK_INIT() sys::idle::task_init()
   #define OS_IDLE_TASK_FUNC() sys::idle::task_func()
 
   // Declare all of the task initializations and the task functions.
-  namespace app { namespace led       { void task_init(); void task_func(); } }
-  namespace app { namespace benchmark { void task_init(); void task_func(); } }
-  namespace sys { namespace mon       { void task_init(); void task_func(); } }
+  namespace app { namespace led {
+
+  auto task_init() -> void; auto task_func() -> void;
+
+  } // namespace led
+  } // namespace app
+
+  namespace app { namespace benchmark {
+
+  auto task_init() -> void; auto task_func() -> void;
+
+  } // namespace benchmark
+  } // namespace app
+
+  namespace sys { namespace mon {
+
+  auto task_init() -> void; auto task_func() -> void;
+
+  } // namespace mon
+  } // namespace sys
 
   namespace os
   {
     // Enumerate the task IDs. Note that the order in this list must
     // be identical with the order of the tasks in the task list below.
-    typedef enum enum_task_id
+
+    enum class task_id_type // NOLINT(performance-enum-size)
     {
       task_id_app_led,
       task_id_app_benchmark,
       task_id_sys_mon,
       task_id_end
-    }
-    task_id_type;
+    };
 
     // Configure the operating system types.
-    typedef void(*function_type)();
+    using function_type = void(*)();
 
-    typedef util::timer<std::uint_fast32_t> timer_type;
-    typedef timer_type::tick_type           tick_type;
-    typedef std::uint_fast16_t              event_type;
+    using timer_type = util::timer<std::uint_fast32_t>;
+    using tick_type  = timer_type::tick_type;
+    using event_type = std::uint_fast16_t;
 
-    static_assert(std::numeric_limits<os::tick_type>::digits >= 32,
+    static_assert(std::numeric_limits<os::tick_type>::digits >= static_cast<int>(INT8_C(32)),
                   "The operating system timer_type must be at least 32-bits wide.");
 
-    static_assert(std::numeric_limits<os::event_type>::digits >= 16,
+    static_assert(std::numeric_limits<os::event_type>::digits >= static_cast<int>(INT8_C(16)),
                   "The operating system event_type must be at least 16-bits wide.");
-  }
+  } // namespace os
 
   // Configure the operating system tasks.
 
   // Use small prime numbers (representing microseconds) for task offsets.
-  // Use Wolfram's Alpha or Mathematica(R): Table[Prime[n], {n, 50, 4000, 50}]
+  // Use Wolfram's Alpha or Mathematica(R): Table[Prime[n], {n, 25, 1000, 25}]
   // to obtain:
-  //   229,   541,   863,  1223,  1583,  1987,  2357,  2741,  3181,  3571,
-  //  3989,  4409,  4831,  5279,  5693,  6133,  6571,  6997,  7499,  7919,
-  //  8387,  8831,  9283,  9733, 10177, 10657, 11149, 11657, 12109, 12553,
-  // 13007, 13499, 13967, 14519, 14947, 15401, 15881, 16381, 16903, 17389,
-  // 17891, 18313, 18899, 19423, 19891, 20357, 20897, 21383, 21841, 22307,
-  // 22817, 23321, 23827, 24281, 24877, 25391, 25913, 26399, 26891, 27449,
-  // 27947, 28499, 28933, 29443, 30059, 30559, 31091, 31601, 32159, 32609,
-  // 33113, 33613, 34157, 34649, 35159, 35759, 36277, 36781, 37309, 37813
+  //    97,  229,  379,  541,  691,  863, 1039, 1223, 1427, 1583, 1777,
+  //  1987, 2153, 2357, 2557, 2741, 2953, 3181, 3371, 3571, 3769, 3989,
+  //  4201, 4409, 4637, 4831, 5039, 5279, 5483, 5693, 5881, 6133, 6337,
+  //  6571, 6793, 6997, 7237, 7499, 7687, 7919
 
-  #define OS_TASK_COUNT static_cast<std::size_t>(os::task_id_end)
+  constexpr auto OS_TASK_COUNT = static_cast<std::size_t>(os::task_id_type::task_id_end);
 
   #define OS_TASK_LIST                                                                           \
   {                                                                                              \
@@ -87,6 +105,6 @@
     }                                                                                            \
   }
 
-  static_assert(OS_TASK_COUNT > std::size_t(0U), "the task count must exceed zero");
+  static_assert(OS_TASK_COUNT > static_cast<std::size_t>(UINT8_C(0)), "the task count must exceed zero");
 
-#endif // OS_CFG_2011_10_20_H_
+#endif // OS_CFG_2011_10_20_H
