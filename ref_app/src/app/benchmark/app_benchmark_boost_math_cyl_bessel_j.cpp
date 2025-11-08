@@ -34,9 +34,12 @@ extern "C"
 
 #endif
 
-#include <app/benchmark/app_benchmark_detail.h>
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
 
-//#define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA_EXCLUDES_TGAMMA
+#include <app/benchmark/app_benchmark_detail.h>
 
 #if !defined(BOOST_MATH_STANDALONE)
 #define BOOST_MATH_STANDALONE
@@ -78,22 +81,44 @@ auto app::benchmark::run_boost_math_cbrt_cyl_bessel_j() -> bool
   static_assert(std::numeric_limits<my_float_type>::digits >= 53,
                 "Error: Incorrect float64_t type definition");
 
-  // Table[N[BesselJ[123/100, n/10], 36], {n, 1, 10, 1}]
+  // Table[N[BesselJ[123/100, (n  10)/19], 36], {n, 1, 32, 1}]
 
-  using my_float_control_array_type = std::array<my_float_type, 10U>;
+  using my_float_control_array_type = std::array<my_float_type, 32U>;
 
   constexpr my_float_control_array_type app_benchmark_control =
   {{
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.022384094800424078635130529844793803)),
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.052329252391407531307435184345226877)),
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.085683437351809687785091267647371436)),
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.121101214488587461397609703216026929)),
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.157737296526501682321434739413437594)),
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.194945869633552745026958864087027370)),
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.232184726291181620217067657303383795)),
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.268975614426188781953361485754411729)),
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.304885613485023234627936201325996814)),
-    static_cast<my_float_type>(BOOST_FLOATMAX_C(0.339517879133361150735582864456735830)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.16749705997695039892041951050855636100)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.35710740083806272542105607089508589400)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.49804272683900925535495179621405189800)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.55269427130008739173359941898456317700)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.50736882925442381044306016075796287700)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.37270506120363465536365448047361348800)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.17991421594532067166829074911167982300)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.02732268466910398234915055580536922130)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.20355333869740785258588767330048038400)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.31231785746207651594878814046777720400)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.33442266110093192548209516325036567000)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.27180702818049180454828715801497009200)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.14619416570067810150835157222391312700)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.00698957084440496695515622520760417157)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.14779614527700722889361979468526226600)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.24168749892306713766242591787726515200)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.26774720743963560509939373558473043500)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.22319965160563081437669317948493411000)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.12324149662259129066397816497048393000)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.00360882479417362699778956160990062725)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.12332065041898874167333491049355101300)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.20524276728094273722865880706491480400)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.22979160472713542770517941683187081800)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.19302622216531291569449709862299505600)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.10705088708803264917682291894326102900)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.00371733923617317074481324120705288138)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.10932200791636712906371794202524645900)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.18224048020083557887438483395729275200)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.20446172600795092668267903508382583000)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.17186563897417333196546998482446953200)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(+0.09485010237289362629039558971667533210)),
+    static_cast<my_float_type>(BOOST_FLOATMAX_C(-0.00484616509794550010420980629673446980)),
   }};
 
   static unsigned app_benchmark_n_index      = 0U;
@@ -102,7 +127,8 @@ auto app::benchmark::run_boost_math_cbrt_cyl_bessel_j() -> bool
   const auto x =
     static_cast<my_float_type>
     (
-      static_cast<my_float_type>(xn) / static_cast<my_float_type>(BOOST_FLOATMAX_C(10))
+        static_cast<my_float_type>(static_cast<my_float_type>(xn) * static_cast<my_float_type>(BOOST_FLOATMAX_C(10)))
+      / static_cast<my_float_type>(BOOST_FLOATMAX_C(19))
     );
 
   cyj = boost::math::cyl_bessel_j(v, x);
@@ -111,7 +137,7 @@ auto app::benchmark::run_boost_math_cbrt_cyl_bessel_j() -> bool
 
   app_benchmark_result_is_ok =
     (
-         detail::is_close_fraction(cyj, cyj_ctrl)
+         detail::is_close_fraction(cyj, cyj_ctrl, std::numeric_limits<my_float_type>::epsilon() * 512)
       && app_benchmark_result_is_ok
     );
 
@@ -150,5 +176,9 @@ auto main() -> int
 my_float_type cyj;
 unsigned      xn = static_cast<unsigned>(UINT8_C(1));
 my_float_type v  = static_cast<my_float_type>(BOOST_FLOATMAX_C(1.23));
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J

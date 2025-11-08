@@ -1,18 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2023.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter12_07-002_derivative.cpp
-
-// See also https://godbolt.org/z/cra4qo4ab
+// chapter12_07-002_deriv_quadratic.cpp
 
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <sstream>
 
 template<typename ValueType,
          typename FunctionType>
@@ -43,39 +42,51 @@ auto derivative(const ValueType x,
 }
 
 template<typename T>
-constexpr T pi = static_cast<T>(3.1415926535'8979323846'2643383279L);
+class quadratic
+{
+public:
+  const T a;
+  const T b;
+  const T c;
 
-const auto x = static_cast<float>(pi<float> / static_cast<float>(3.0L));
+  quadratic(const T& a_,
+            const T& b_,
+            const T& c_) : a(a_),
+                           b(b_),
+                           c(c_) { }
 
-// Should be very near 0.5.
-const auto y =
+  auto operator()(const T& x) const -> T
+  {
+    return ((a * x + b) * x) + c;
+  }
+};
+
+const float x { 0.5F };
+
+// Should be very near 4.6.
+const float y =
   derivative(x,
-             static_cast<float>(0.01L),
-             [](const float& x) -> float
-             {
-               return std::sin(x);
-             });
+             0.01F,
+             quadratic<float>(1.2F, 3.4F, 5.6F));
 
 auto main() -> int;
 
 auto main() -> int
 {
-  const auto flg = std::cout.flags();
+  std::stringstream strm { };
 
-  // 0.500003
-  std::cout << std::setprecision(std::numeric_limits<float>::digits10)
-            << y
-            << std::endl;
+  // 4.6
+  strm << std::setprecision(std::numeric_limits<float>::digits10) << y << '\n';
 
   using std::fabs;
 
-  const auto delta = fabs(static_cast<float>(1.0L) - static_cast<float>(y / static_cast<float>(0.5L)));
+  const auto delta = fabs(static_cast<float>(1.0L) - static_cast<float>(y / static_cast<float>(4.6L)));
 
   const auto result_close_fraction_is_ok = (delta < static_cast<float>(std::numeric_limits<float>::epsilon() * 128));
 
-  std::cout << "result_close_fraction_is_ok: " << std::boolalpha << result_close_fraction_is_ok << std::endl;
+  strm << "result_close_fraction_is_ok: " << std::boolalpha << result_close_fraction_is_ok << '\n';
 
-  std::cout.flags(flg);
+  std::cout << strm.str() << std::endl;
 
   return (result_close_fraction_is_ok ? 0 : -1);
 }

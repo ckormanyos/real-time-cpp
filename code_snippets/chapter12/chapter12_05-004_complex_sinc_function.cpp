@@ -1,24 +1,25 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter12_05-002_complex_sinc_function.cpp
+// chapter12_05-003_complex_sinc_function.cpp
 
 #include <cmath>
 #include <complex>
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <sstream>
 
 namespace
 {
   using local_complex_type = std::complex<float>;
 }
 
-local_complex_type sinc(const local_complex_type& z)
+auto sinc(const local_complex_type& z) -> local_complex_type
 {
   if(std::abs(z) <
      std::numeric_limits<float>::epsilon())
@@ -27,7 +28,7 @@ local_complex_type sinc(const local_complex_type& z)
   }
   else if(std::abs(z) < 0.03F)
   {
-    const local_complex_type z2 = z * z;
+    const local_complex_type z2 { z * z };
 
     const local_complex_type sum
       = ((     - 1.984126984E-04F
@@ -43,10 +44,14 @@ local_complex_type sinc(const local_complex_type& z)
   }
 }
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
+  std::stringstream strm { };
+
   // (2.70868,-3.15559)
-  std::cout << std::setprecision(std::numeric_limits<float>::digits10)
-            << sinc(local_complex_type(1.2F, 3.4F))
-            << std::endl;
+  strm << "sinc(local_complex_type(1.2F, 3.4F)): " << std::setprecision(std::numeric_limits<float>::digits10) << sinc(local_complex_type(1.2F, 3.4F)) << '\n';
+
+  std::cout << strm.str() << std::endl;
 }

@@ -35,12 +35,15 @@ TGT_INCLUDES :=
 
 TGT_AFLAGS    = $(TGT_ALLFLAGS)
 
-TGT_LDFLAGS   = -nostdlib                                      \
+TGT_LDFLAGS   = $(TGT_ALLFLAGS)                                \
+                -nostdlib                                      \
                 -nostartfiles                                  \
                 -Wl,--gc-sections                              \
                 -e _start                                      \
                 -Wl,-Map,$(APP).map                            \
-                -T $(LINKER_DEFINITION_FILE)
+                -T $(LINKER_DEFINITION_FILE)                   \
+                --specs=nano.specs                             \
+                --specs=nosys.specs
 
 
 OBJCOPY      := $(PATH_TOOLS_CC)/$(GCC_PREFIX)-objcopy.exe

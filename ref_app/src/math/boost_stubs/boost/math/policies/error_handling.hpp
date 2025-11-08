@@ -1,5 +1,6 @@
 //  Copyright John Maddock 2007.
 //  Copyright Paul A. Bristow 2007.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 
 //  Use, modification and distribution are subject to the
 //  Boost Software License, Version 1.0. (See accompanying file
@@ -9,20 +10,23 @@
 #define BOOST_MATH_POLICY_ERROR_HANDLING_HPP
 
 #include <boost/math/tools/config.hpp>
-#include <string>
-#include <cstring>
-#ifndef BOOST_MATH_NO_RTTI
-#include <typeinfo>
-#endif
-#include <cerrno>
-#include <complex>
-#include <cmath>
-#include <cstdint>
 #include <boost/math/policies/policy.hpp>
 #include <boost/math/tools/precision.hpp>
 #ifndef BOOST_MATH_NO_EXCEPTIONS
-#include <stdexcept>
 #include <boost/math/tools/throw_exception.hpp>
+#endif
+
+#include <cerrno>
+#include <cmath>
+#include <complex>
+#include <cstdint>
+#include <cstring>
+#ifndef BOOST_MATH_NO_EXCEPTIONS
+#include <stdexcept>
+#endif
+#include <string>
+#ifndef BOOST_MATH_NO_RTTI
+#include <typeinfo>
 #endif
 
 #ifdef _MSC_VER

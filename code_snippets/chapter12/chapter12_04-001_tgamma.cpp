@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,11 +8,15 @@
 // chapter12_04-001_tgamma.cpp
 
 #include <cmath>
+#include <concepts>
 #include <cstdint>
+#include <limits>
 #include <iomanip>
 #include <iostream>
+#include <numbers>
+#include <sstream>
 
-float gamma1(const float& x)
+auto gamma1(const float& x) -> float
 {
   // Compute Gamma(x) for 0 < x < 1 (float).
   if(x < 0.1F)
@@ -51,14 +55,10 @@ float gamma1(const float& x)
 
 namespace math
 {
-  float tgamma(float x);
+  auto tgamma(float x) -> float;
 }
 
-template<typename T>
-constexpr T pi =
-  T(3.1415926535'8979323846'2643383279L);
-
-float math::tgamma(float x)
+auto math::tgamma(float x) -> float
 {
   // Is the argument a subnormal?
   if(!std::isfinite(x))
@@ -87,18 +87,18 @@ float math::tgamma(float x)
   }
 
   // Use a positive argument for the Gamma calculation.
-  const bool b_neg = (x < 0.0F);
+  const bool b_neg { (x < 0.0F) };
 
   x = std::fabs(x);
 
   // Get any integer recursion and scale the argument.
-  const std::uint_fast8_t nx =
-    static_cast<std::uint_fast8_t>(std::floor(x));
+  const std::uint_fast8_t nx
+    { static_cast<std::uint_fast8_t>(std::floor(x)) };
 
   x -= static_cast<float>(nx);
 
   // Calculate gamma of the scaled argument.
-  float g = gamma1(x);
+  float g { gamma1(x) };
 
   // Do the recursion if necessary.
   for(std::uint_fast8_t i = UINT8_C(0); i < nx; ++i)
@@ -115,32 +115,24 @@ float math::tgamma(float x)
   }
   else
   {
-    const float sin_pi_x = std::sin(pi<float> * x);
+    const float sin_pi_x
+      { std::sin(std::numbers::pi_v<float> * x) };
 
-    return -pi<float> / ((x * g) * sin_pi_x);
+    return   -std::numbers::pi_v<float>
+           / ((x * g) * sin_pi_x);
   }
 }
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
-  const float g0 = math::tgamma( 0.5F);    //     1.77245
-  const float g1 = math::tgamma( 8.76F);   // 24203.8
-  const float g2 = math::tgamma( 0.02F);   //    49.4422
-  const float g3 = math::tgamma(-3.45F);  //      0.293028
+  std::stringstream strm { };
 
-  std::cout << std::setprecision(std::numeric_limits<float>::digits10)
-            << g0
-            << std::endl;
+  strm << "math::tgamma(+0.5F) : " << std::fixed << std::setprecision(std::numeric_limits<float>::digits10)  << math::tgamma(+0.50F) << '\n';
+  strm << "math::tgamma(+8.76F): " << std::fixed << std::setprecision(std::numeric_limits<float>::digits10)  << math::tgamma(+8.76F) << '\n';
+  strm << "math::tgamma(+0.02F): " << std::fixed << std::setprecision(std::numeric_limits<float>::digits10)  << math::tgamma(+0.02F) << '\n';
+  strm << "math::tgamma(-3.45F): " << std::fixed << std::setprecision(std::numeric_limits<float>::digits10)  << math::tgamma(-3.45F) << '\n';
 
-  std::cout << std::setprecision(std::numeric_limits<float>::digits10)
-            << g1
-            << std::endl;
-
-  std::cout << std::setprecision(std::numeric_limits<float>::digits10)
-            << g2
-            << std::endl;
-
-  std::cout << std::setprecision(std::numeric_limits<float>::digits10)
-            << g3
-            << std::endl;
+  std::cout << strm.str() << std::endl;
 }
