@@ -10,6 +10,6 @@ This folder contains the code snippets for Chapter 12.
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
-Try the [`chapter12_07-002_derivative.cpp`](./chapter12_07-002_derivative.cpp)
+Try the [`chapter12_07-001_derivative.cpp`](./chapter12_07-001_derivative.cpp)
 program at this
 [short link](https://godbolt.org/z/cra4qo4ab) to [godbolt](https://godbolt.org/).

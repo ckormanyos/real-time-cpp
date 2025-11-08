@@ -1,11 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2023.
+//  Copyright Christopher Kormanyos 2017 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter12_07-002_derivative.cpp
+// chapter12_07-001_derivative.cpp
 
 // See also https://godbolt.org/z/cra4qo4ab
 
@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <sstream>
 
 template<typename ValueType,
          typename FunctionType>
@@ -60,12 +61,10 @@ auto main() -> int;
 
 auto main() -> int
 {
-  const auto flg = std::cout.flags();
+  std::stringstream strm { };
 
   // 0.500003
-  std::cout << std::setprecision(std::numeric_limits<float>::digits10)
-            << y
-            << std::endl;
+  strm << std::setprecision(std::numeric_limits<float>::digits10) << y << '\n';
 
   using std::fabs;
 
@@ -73,9 +72,9 @@ auto main() -> int
 
   const auto result_close_fraction_is_ok = (delta < static_cast<float>(std::numeric_limits<float>::epsilon() * 128));
 
-  std::cout << "result_close_fraction_is_ok: " << std::boolalpha << result_close_fraction_is_ok << std::endl;
+  strm << "result_close_fraction_is_ok: " << std::boolalpha << result_close_fraction_is_ok << '\n';
 
-  std::cout.flags(flg);
+  std::cout << strm.str() << std::endl;
 
   return (result_close_fraction_is_ok ? 0 : -1);
 }

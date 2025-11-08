@@ -161,9 +161,9 @@ is used to test floating-point closeness as a ratio.
 
 ```cpp
 template<typename float_type>
-bool is_close_fraction(const float_type& left,
+auto is_close_fraction(const float_type& left,
                        const float_type& right,
-                       const float_type& tolerance)
+                       const float_type& tolerance) -> bool
 {
   const float_type ratio = left / right;
 
