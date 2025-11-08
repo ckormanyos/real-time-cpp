@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2012 - 2018.
+//  Copyright Christopher Kormanyos 2012 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef CONSTANTS_2012_01_09_H_
-  #define CONSTANTS_2012_01_09_H_
+#ifndef CONSTANTS_2012_01_09_H
+  #define CONSTANTS_2012_01_09_H
 
   namespace math
   {
@@ -80,4 +80,4 @@
     }
   }
 
-#endif // CONSTANTS_2012_01_09_H_
+#endif // CONSTANTS_2012_01_09_H

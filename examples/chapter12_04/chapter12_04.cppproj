@@ -42,15 +42,15 @@
     <BootSegment>2</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.39.0" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.39.0" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
     <ResetRule>0</ResetRule>
     <EraseKey />
@@ -199,6 +199,12 @@
     <Compile Include="src\mcal\avr\mcal_cpu.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_eep.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_eep.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_gpt.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -232,7 +238,37 @@
     <Compile Include="src\mcal\avr\mcal_port.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_expander_microchip_mcp23s17.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_pin_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_word.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm_lcd.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm_timer1.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_reg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_ser.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_spi.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_spi.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_wdg.cpp">
@@ -286,9 +322,6 @@
     <Compile Include="src\os\os_cfg.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\os\os_task_control_block.cpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\os\os_task_control_block.h">
       <SubType>compile</SubType>
     </Compile>
@@ -319,13 +352,16 @@
     <Compile Include="src\util\STL\impl\allocator_impl.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\STL\impl\alloc_traits.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\STL\impl\avr\avr_atomic.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
+    <Compile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
+    <Compile Include="src\util\STL\impl\ptr_traits.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\stl_local_constexpr.h">
@@ -417,10 +453,28 @@
     <None Include="src\util\STL\basic_string">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\bitset">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cassert">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cerrno">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\cfloat">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\charconv">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\chrono">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cinttypes">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\ciso646">
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\climits">
@@ -444,6 +498,9 @@
     <None Include="src\util\STL\cstdlib">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\cstring">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\ctime">
       <SubType>compile</SubType>
     </None>
@@ -465,7 +522,19 @@
     <None Include="src\util\STL\numeric">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\random">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\ratio">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\span">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\stdexcept">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\stdfloat">
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\string">
@@ -481,6 +550,9 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\vector">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\version">
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">

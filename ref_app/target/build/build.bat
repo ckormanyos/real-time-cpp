@@ -1,5 +1,5 @@
 @rem
-@rem  Copyright Christopher Kormanyos 2007 - 2024.
+@rem  Copyright Christopher Kormanyos 2007 - 2025.
 @rem  Distributed under the Boost Software License,
 @rem  Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem  or copy at http://www.boost.org/LICENSE_1_0.txt)
