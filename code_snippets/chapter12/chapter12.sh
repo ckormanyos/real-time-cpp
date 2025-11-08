@@ -55,7 +55,6 @@ ls -la \
 ./bin/chapter12_05-002_complex.exe                  \
 ./bin/chapter12_05-003_complex_sinc_function.exe    \
 ./bin/chapter12_06-001_constexpr_sine.exe           \
-./bin/chapter12_06-002_constexpr_exp.exe            \
 ./bin/chapter12_07-001_derivative.exe
 
 result_ls=$?
