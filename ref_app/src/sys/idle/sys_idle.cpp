@@ -15,7 +15,7 @@ auto task_func() -> void;
 } // namespace idle
 } // namespace sys
 
-auto sys::idle::task_init() noexcept -> void { }
+auto sys::idle::task_init() -> void { }
 
 auto sys::idle::task_func() -> void
 {
