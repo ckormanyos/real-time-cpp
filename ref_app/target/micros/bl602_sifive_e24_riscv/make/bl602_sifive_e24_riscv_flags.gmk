@@ -15,7 +15,7 @@ GCC_VERSION  := 15.2.0
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O3                                            \
+TGT_ALLFLAGS  = -O2                                            \
                 -ffast-math                                    \
                 -mcpu=sifive-e24                               \
                 -mabi=ilp32                                    \
@@ -32,6 +32,9 @@ TGT_CXXFLAGS  = -std=c++23                                     \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES :=
+
+#TGT_INCLUDES := -I$(PATH_APP)/math/boost_stubs                 \
+#                -IC:/boost/boost_1_89_0
 
 TGT_AFLAGS    = $(TGT_ALLFLAGS)
 

@@ -10,8 +10,8 @@
 
 namespace app { namespace led {
 
-void task_init();
-void task_func();
+auto task_init() -> void;
+auto task_func() -> void;
 
 } // namespace led
 } // namespace app

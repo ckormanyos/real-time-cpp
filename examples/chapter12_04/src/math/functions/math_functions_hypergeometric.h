@@ -1,32 +1,33 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2018.
+//  Copyright Christopher Kormanyos 2014 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MATH_FUNCTIONS_HYPERGEOMETRIC_2014_04_29_H_
-  #define MATH_FUNCTIONS_HYPERGEOMETRIC_2014_04_29_H_
+#ifndef MATH_FUNCTIONS_HYPERGEOMETRIC_2014_04_29_H
+  #define MATH_FUNCTIONS_HYPERGEOMETRIC_2014_04_29_H
+
+  #include <util/memory/util_ring_allocator.h>
+  #include <util/utility/util_dynamic_array.h>
 
   #include <algorithm>
   #include <array>
+  #include <cmath>
   #include <cstdint>
   #include <functional>
   #include <limits>
   #include <numeric>
   #include <vector>
 
-  #include <util/memory/util_ring_allocator.h>
-  #include <util/utility/util_dynamic_array.h>
-
   namespace math
   {
     namespace functions
     {
       template<typename T>
-      T hypergeometric_0f1(T b,
-                           T x,
-                           T tolerance = std::numeric_limits<T>::epsilon() * T(10))
+      auto hypergeometric_0f1(T b,
+                              T x,
+                              T tolerance = std::numeric_limits<T>::epsilon() * T(10)) -> T
       {
         // Compute the Taylor series representation of hypergeometric_0f1.
         // There are no checks on input range or parameter boundaries.
@@ -47,7 +48,7 @@
         for(n = static_cast<std::uint_fast16_t>(2U); n < max_iteration; ++n)
         {
           x_pow_n_div_n_fact *= x;
-          x_pow_n_div_n_fact /= n;
+          x_pow_n_div_n_fact  = static_cast<float>(x_pow_n_div_n_fact / static_cast<float>(n));
 
           ++bp;
 
@@ -69,22 +70,22 @@
       }
 
       template<typename T>
-      T hypergeometric_2f1(T a,
-                           T b,
-                           T c,
-                           T x,
-                           T tolerance = std::numeric_limits<T>::epsilon() * T(10))
+      auto hypergeometric_2f1(T a,
+                              T b,
+                              T c,
+                              T x,
+                              T tolerance = std::numeric_limits<T>::epsilon() * T(10)) -> T
       {
         // Compute the Taylor series representation of hypergeometric_2f1.
         // There are no checks on input range or parameter boundaries.
 
-        T x_pow_n_div_n_fact   (x);
-        T pochhammer_sequence_a(a);
-        T pochhammer_sequence_b(b);
-        T pochhammer_sequence_c(c);
-        T ap                   (a);
-        T bp                   (b);
-        T cp                   (c);
+        T x_pow_n_div_n_fact    { x };
+        T pochhammer_sequence_a { a };
+        T pochhammer_sequence_b { b };
+        T pochhammer_sequence_c { c };
+        T ap                    { a };
+        T bp                    { b };
+        T cp                    { c };
 
         T hypergeometric_2f1_result = T(1) + (((pochhammer_sequence_a * pochhammer_sequence_b) / pochhammer_sequence_c) * x_pow_n_div_n_fact);
 
@@ -96,7 +97,7 @@
         for(n = static_cast<std::uint_fast16_t>(2U); n < max_iteration; ++n)
         {
           x_pow_n_div_n_fact *= x;
-          x_pow_n_div_n_fact /= n;
+          x_pow_n_div_n_fact  = static_cast<float>(x_pow_n_div_n_fact / static_cast<float>(n));
 
           ++ap;
           ++bp;
@@ -124,12 +125,12 @@
       template<typename T,
                typename iterator_a_type,
                typename iterator_b_type>
-      T hypergeometric_pfq(iterator_a_type coefficients_a_begin,
-                           iterator_a_type coefficients_a_end,
-                           iterator_b_type coefficients_b_begin,
-                           iterator_b_type coefficients_b_end,
-                           T x,
-                           T tolerance = std::numeric_limits<T>::epsilon() * T(10))
+      auto hypergeometric_pfq(iterator_a_type coefficients_a_begin,
+                              iterator_a_type coefficients_a_end,
+                              iterator_b_type coefficients_b_begin,
+                              iterator_b_type coefficients_b_end,
+                              T x,
+                              T tolerance = std::numeric_limits<T>::epsilon() * T(10)) -> T
       {
         const std::ptrdiff_t count_of_a_terms = std::distance(coefficients_a_begin, coefficients_a_end);
         const std::ptrdiff_t count_of_b_terms = std::distance(coefficients_b_begin, coefficients_b_end);
@@ -160,10 +161,10 @@
         T x_pow_n_div_n_fact(x);
 
         // Define an allocator type for use in the containers below.
-        typedef util::ring_allocator<T> allocator_type;
+        using allocator_type = util::ring_allocator<T>;
 
         // Define a container type for the upcoming calculation.
-        typedef util::dynamic_array<T, allocator_type> container_type;
+        using container_type = util::dynamic_array<T, allocator_type>;
 
         // The pochhammer symbols for the multiplications in the series expansion
         // will be stored in non-constant STL vectors.
@@ -191,26 +192,20 @@
 
         T hypergeometric_pfq_result = my_one + first_term;
 
-        std::uint_fast16_t n;
+        std::uint_fast16_t n { };
 
         // Calculate the maximum number of iterations allowed.
-        const std::uint_fast16_t max_iteration =
-          static_cast<std::uint_fast16_t>(std::numeric_limits<T>::digits10 * 10);
+        const std::uint_fast16_t max_iteration = static_cast<std::uint_fast16_t>(std::numeric_limits<T>::digits10 * 10);
 
         for(n = static_cast<std::uint_fast16_t>(2U); n < max_iteration; ++n)
         {
           x_pow_n_div_n_fact *= x;
-          x_pow_n_div_n_fact /= n;
+          x_pow_n_div_n_fact  = static_cast<float>(x_pow_n_div_n_fact / static_cast<float>(n));
 
-          if(count_of_a_terms_is_zero == false)
+          if(!count_of_a_terms_is_zero)
           {
             // Increment each of the pochhammer elements in {an}.
-            std::for_each(an.begin(),
-                          an.end(),
-                          [](T& a)
-                          {
-                            ++a;
-                          });
+            std::for_each(an.begin(), an.end(), [](T& a) { ++a; });
 
             // Multiply the pochhammer product terms with the products of the
             // incremented pochhammer elements. This is a product of the form:
@@ -218,15 +213,10 @@
             pochhammer_sequence_a *= std::accumulate(an.begin(), an.end(), my_one, std::multiplies<T>());
           }
 
-          if(count_of_b_terms_is_zero == false)
+          if(!count_of_b_terms_is_zero)
           {
             // Increment each of the pochhammer elements in {bm}.
-            std::for_each(bm.begin(),
-                          bm.end(),
-                          [](T& b)
-                          {
-                            ++b;
-                          });
+            std::for_each(bm.begin(), bm.end(), [](T& b) { ++b; });
 
             // Multiply the pochhammer product terms with the products of the
             // incremented pochhammer elements. This is a product of the form:
@@ -244,7 +234,7 @@
 
           using std::fabs;
 
-          if((n > UINT16_C(5)) && (fabs(next_term) < tolerance))
+          if((n > UINT16_C(3)) && (fabs(next_term) < tolerance))
           {
             break;
           }
@@ -257,4 +247,4 @@
     }
   } // namespace math::functions
 
-#endif // MATH_FUNCTIONS_HYPERGEOMETRIC_2014_04_29_H_
+#endif // MATH_FUNCTIONS_HYPERGEOMETRIC_2014_04_29_H

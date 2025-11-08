@@ -1,46 +1,37 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_NONCOPYABLE_2008_12_16_H_
-  #define UTIL_NONCOPYABLE_2008_12_16_H_
+#ifndef UTIL_NONCOPYABLE_2008_12_16_H // NOLINT(llvm-header-guard)
+  #define UTIL_NONCOPYABLE_2008_12_16_H
 
   // Taken (with slight modification) from boost::noncopyable.
 
-  namespace util
+  namespace util {
+  namespace my_noncopyable_namespace {
+
+  class noncopyable
   {
-    namespace my_noncopyable_namespace
-    {
-      class noncopyable
-      {
-      protected:
+  protected:
+    noncopyable() = default;  // LCOV_EXCL_LINE
+    ~noncopyable() = default; // LCOV_EXCL_LINE
 
-      #if defined(__GNUC__)
-        constexpr noncopyable() = default;
-        ~noncopyable() = default;
-      #else
-        noncopyable() {}
-        ~noncopyable() {}
-      #endif
+  private:
+    // Emphasize: The following members are private.
+    noncopyable(const noncopyable&) = delete; // NOLINT(hicpp-use-equals-delete,modernize-use-equals-delete)
+    noncopyable(noncopyable&&)      = delete; // NOLINT(hicpp-use-equals-delete,modernize-use-equals-delete)
 
-      private:
+    auto operator=(const noncopyable&) -> noncopyable& = delete; // NOLINT(hicpp-use-equals-delete,modernize-use-equals-delete)
+    auto operator=(noncopyable&&)      -> noncopyable& = delete; // NOLINT(hicpp-use-equals-delete,modernize-use-equals-delete)
+  };
 
-      #if defined(__GNUC__)
-        // Emphasize: The following members are private.
-        noncopyable(const noncopyable&) = delete;
-        noncopyable& operator=(const noncopyable&) = delete;
-      #else
-        // Emphasize: The following members are private.
-        noncopyable(const noncopyable&);
-        noncopyable& operator=(const noncopyable&);
-      #endif
-      };
-    }
+  } // namespace my_noncopyable_namespace
 
-    typedef my_noncopyable_namespace::noncopyable noncopyable;
-  }
+  using noncopyable = my_noncopyable_namespace::noncopyable;
 
-#endif // UTIL_NONCOPYABLE_2008_12_16_H_
+  } // namespace util
+
+#endif // UTIL_NONCOPYABLE_2008_12_16_H

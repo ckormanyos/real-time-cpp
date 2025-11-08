@@ -14,7 +14,7 @@
 #ifndef CSTDFLOAT_2014_01_09_
   #define CSTDFLOAT_2014_01_09_
 
-  #include <stdfloat.h>
+  #include "stdfloat.h"
   #include <limits>
 
   // Here, we define floating-point typedefs having specified widths
@@ -30,7 +30,7 @@
       using ::float_fast16_t;
       using ::float_least16_t;
 
-      static_assert(   (std::numeric_limits<float16_t>::is_iec559    == true)
+      static_assert(    std::numeric_limits<float16_t>::is_iec559
                     && (std::numeric_limits<float16_t>::radix        ==    2)
                     && (std::numeric_limits<float16_t>::digits       ==   11)
                     && (std::numeric_limits<float16_t>::max_exponent ==   16),
@@ -42,7 +42,7 @@
       using ::float_fast32_t;
       using ::float_least32_t;
 
-      static_assert(   (std::numeric_limits<float32_t>::is_iec559    == true)
+      static_assert(    std::numeric_limits<float32_t>::is_iec559
                     && (std::numeric_limits<float32_t>::radix        ==    2)
                     && (std::numeric_limits<float32_t>::digits       ==   24)
                     && (std::numeric_limits<float32_t>::max_exponent ==  128),
@@ -54,7 +54,7 @@
       using ::float_fast64_t;
       using ::float_least64_t;
 
-      static_assert(   (std::numeric_limits<float64_t>::is_iec559    == true)
+      static_assert(    std::numeric_limits<float64_t>::is_iec559
                     && (std::numeric_limits<float64_t>::radix        ==    2)
                     && (std::numeric_limits<float64_t>::digits       ==   53)
                     && (std::numeric_limits<float64_t>::max_exponent == 1024),
@@ -66,7 +66,7 @@
       using ::float_fast80_t;
       using ::float_least80_t;
 
-      static_assert(   (std::numeric_limits<float80_t>::is_iec559    ==  true)
+      static_assert(    std::numeric_limits<float80_t>::is_iec559
                     && (std::numeric_limits<float80_t>::radix        ==     2)
                     && (std::numeric_limits<float80_t>::digits       ==    64)
                     && (std::numeric_limits<float80_t>::max_exponent == 16384),
@@ -78,7 +78,7 @@
       using ::float_fast128_t;
       using ::float_least128_t;
 
-      static_assert(   (std::numeric_limits<float128_t>::is_iec559    ==  true)
+      static_assert(    std::numeric_limits<float128_t>::is_iec559
                     && (std::numeric_limits<float128_t>::radix        ==     2)
                     && (std::numeric_limits<float128_t>::digits       ==   113)
                     && (std::numeric_limits<float128_t>::max_exponent == 16384),

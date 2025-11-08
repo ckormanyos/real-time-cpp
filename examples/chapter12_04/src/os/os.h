@@ -1,24 +1,31 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2016.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef OS_2011_10_20_H_
-  #define OS_2011_10_20_H_
+#ifndef OS_2011_10_20_H
+  #define OS_2011_10_20_H
 
-  #include <cstdint>
-  #include <limits>
   #include <os/os_cfg.h>
   #include <util/utility/util_time.h>
 
+  #include <cstdint>
+  #include <limits>
+
+  #if defined(_MSC_VER)
+  #define  OS_NORETURN
+  #else
+  #define  OS_NORETURN [[noreturn]]
+  #endif
+
   namespace os
   {
-    void start_os   ();
-    bool set_event  (const task_id_type task_id, const event_type& event_to_set);
-    void get_event  (event_type& event_to_get);
-    void clear_event(const event_type& event_to_clear);
-  }
+    OS_NORETURN auto start_os() -> void;
+    auto set_event  (const task_id_type task_id, const event_type& event_to_set) -> bool;
+    auto get_event  (event_type& event_to_get) -> void;
+    auto clear_event(const event_type& event_to_clear) -> void;
+  } // namespace os
 
-#endif // OS_2011_10_20_H_
+#endif // OS_2011_10_20_H

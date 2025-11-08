@@ -1,30 +1,26 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_WDG_2010_04_10_H_
-  #define MCAL_WDG_2010_04_10_H_
-
-  namespace sys { namespace idle { void task_func(); } }
+#ifndef MCAL_WDG_2010_04_10_H
+  #define MCAL_WDG_2010_04_10_H
 
   namespace mcal
   {
     namespace wdg
     {
-      typedef void config_type;
+      using config_type = void;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
 
-      class secure final
+      struct secure final
       {
-        static void trigger();
-
-        friend void ::sys::idle::task_func();
+        static auto trigger() -> void;
       };
-    }
-  }
+    } // namespace wdg
+  } // namespace mcal
 
-#endif // MCAL_WDG_2010_04_10_H_
+#endif // MCAL_WDG_2010_04_10_H

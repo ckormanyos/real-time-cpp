@@ -1,22 +1,31 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PORT_2012_06_27_H_
-  #define MCAL_PORT_2012_06_27_H_
+#ifndef MCAL_PORT_2012_06_27_H
+  #define MCAL_PORT_2012_06_27_H
 
   #include <mcal_reg.h>
+
+  #include <cstdint>
+
+  auto mcal_port_pin_expander_set_direction_output(const uint8_t bpos) -> void;
+  auto mcal_port_pin_expander_set_direction_input (const uint8_t bpos) -> void;
+  auto mcal_port_pin_expander_set_pin_high        (const uint8_t bpos) -> void;
+  auto mcal_port_pin_expander_set_pin_low         (const uint8_t bpos) -> void;
+  auto mcal_port_pin_expander_read_input_value    (const uint8_t bpos) -> bool;
+  auto mcal_port_pin_expander_toggle_pin          (const uint8_t bpos) -> void;
 
   namespace mcal
   {
     namespace port
     {
-      typedef void config_type;
+      using config_type = void;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
 
       template<typename addr_type,
                typename reg_type,
@@ -35,7 +44,7 @@
         static constexpr address_uintptr_type sfr_offset   = address_uintptr_type(0x20U);
 
       public:
-        static void set_direction_output()
+        static auto set_direction_output() -> void
         {
           // Set the port pin's direction to output.
           // C++:
@@ -46,7 +55,7 @@
           asm volatile("sbi %[myport],%[mybit]" : : [myport]"I"(pdir_address - sfr_offset), [mybit]"I"(bpos_value));
         }
 
-        static void set_direction_input()
+        static auto set_direction_input() -> void
         {
           // Set the port pin's direction to input.
           // C++:
@@ -57,7 +66,7 @@
           asm volatile("cbi %[myport],%[mybit]" : : [myport]"I"(pdir_address - sfr_offset), [mybit]"I"(bpos_value));
         }
 
-        static void set_pin_high()
+        static auto set_pin_high() -> void
         {
           // Set the port output value to high.
           // C++:
@@ -68,7 +77,7 @@
           asm volatile("sbi %[myport],%[mybit]" : : [myport]"I"(port_address - sfr_offset), [mybit]"I"(bpos_value));
         }
 
-        static void set_pin_low()
+        static auto set_pin_low() -> void
         {
           // Set the port output value to low.
           // C++:
@@ -79,7 +88,7 @@
           asm volatile("cbi %[myport],%[mybit]" : : [myport]"I"(port_address - sfr_offset), [mybit]"I"(bpos_value));
         }
 
-        static bool read_input_value()
+        static auto read_input_value() -> bool
         {
           // Read the port input value.
           return mcal::reg::reg_access_static<address_uintptr_type,
@@ -88,7 +97,7 @@
                                               bpos_value>::bit_get();
         }
 
-        static void toggle_pin()
+        static auto toggle_pin() -> void
         {
           // Toggle the port output value.
           mcal::reg::reg_access_static<address_uintptr_type,
@@ -97,7 +106,19 @@
                                        bpos_value>::bit_not();
         }
       };
+
+      template<const std::uint8_t bpos>
+      class port_pin_expander
+      {
+      public:
+        static auto set_direction_output() -> void {        mcal_port_pin_expander_set_direction_output(bpos); }
+        static auto set_direction_input () -> void {        mcal_port_pin_expander_set_direction_input (bpos); }
+        static auto set_pin_high        () -> void {        mcal_port_pin_expander_set_pin_high        (bpos); }
+        static auto set_pin_low         () -> void {        mcal_port_pin_expander_set_pin_low         (bpos); }
+        static auto read_input_value    () -> bool { return mcal_port_pin_expander_read_input_value    (bpos); }
+        static auto toggle_pin          () -> void {        mcal_port_pin_expander_toggle_pin          (bpos); }
+      };
     }
   }
 
-#endif // MCAL_PORT_2012_06_27_H_
+#endif // MCAL_PORT_2012_06_27_H

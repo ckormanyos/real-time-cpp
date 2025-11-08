@@ -1,24 +1,26 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 // ATMEL(R) AVR(R) startup code.
-// Expressed with C++ for AtmegaX by Chris.
+// Expressed with C++ for atmega328p by Chris.
 
 #include <mcal/mcal.h>
+
+#include <util/utility/util_attribute.h>
 
 asm(".extern __initial_stack_pointer");
 
 namespace crt
 {
-  void init_ram  () __attribute__((section(".startup"), used, noinline));
-  void init_ctors() __attribute__((section(".startup"), used, noinline));
+  void init_ram  () ATTRIBUTE(section(".startup"), used, noinline);
+  void init_ctors() ATTRIBUTE(section(".startup"), used, noinline);
 }
 
-extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
+extern "C" void __my_startup() ATTRIBUTE(section(".startup"), used, noinline);
 
 void __my_startup()
 {
