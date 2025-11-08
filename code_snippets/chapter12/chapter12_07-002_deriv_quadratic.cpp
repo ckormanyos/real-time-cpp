@@ -5,9 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter12_07-001_derivative.cpp
-
-// See also https://godbolt.org/z/baWzcrd1T
+// chapter12_07-002_deriv_quadratic.cpp
 
 #include <cmath>
 #include <iomanip>
@@ -43,16 +41,33 @@ auto derivative(const ValueType x,
   return ((fifteen_m1 - six_m2) + m3) / ten_dx1;
 }
 
-const auto x = static_cast<float>(std::numbers::pi_v<float> / static_cast<float>(3.0L));
+template<typename T>
+class quadratic
+{
+public:
+  const T a;
+  const T b;
+  const T c;
 
-// Should be very near 0.5.
-const auto y =
+  quadratic(const T& a_,
+            const T& b_,
+            const T& c_) : a(a_),
+                           b(b_),
+                           c(c_) { }
+
+  auto operator()(const T& x) const -> T
+  {
+    return ((a * x + b) * x) + c;
+  }
+};
+
+const float x { 0.5F };
+
+// Should be very near 4.6.
+const float y =
   derivative(x,
-             static_cast<float>(0.01L),
-             [](const float& x) -> float
-             {
-               return std::sin(x);
-             });
+             0.01F,
+             quadratic<float>(1.2F, 3.4F, 5.6F));
 
 auto main() -> int;
 
@@ -60,12 +75,12 @@ auto main() -> int
 {
   std::stringstream strm { };
 
-  // 0.500003
+  // 4.6
   strm << std::setprecision(std::numeric_limits<float>::digits10) << y << '\n';
 
   using std::fabs;
 
-  const auto delta = fabs(static_cast<float>(1.0L) - static_cast<float>(y / static_cast<float>(0.5L)));
+  const auto delta = fabs(static_cast<float>(1.0L) - static_cast<float>(y / static_cast<float>(4.6L)));
 
   const auto result_close_fraction_is_ok = (delta < static_cast<float>(std::numeric_limits<float>::epsilon() * 128));
 

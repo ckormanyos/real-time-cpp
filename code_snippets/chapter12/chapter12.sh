@@ -36,9 +36,12 @@ $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fs
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_04-004_euler_gamma_approx.cpp    -o ./bin/chapter12_04-004_euler_gamma_approx.exe
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_05-001_complex.cpp               -o ./bin/chapter12_05-001_complex.exe
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_05-002_complex.cpp               -o ./bin/chapter12_05-002_complex.exe
-$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_05-003_complex_sinc_function.cpp -o ./bin/chapter12_05-003_complex_sinc_function.exe
+$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_05-003_complex.cpp               -o ./bin/chapter12_05-003_complex.exe
+$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_05-004_complex_sinc_function.cpp -o ./bin/chapter12_05-004_complex_sinc_function.exe
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_06-001_constexpr_sine.cpp        -o ./bin/chapter12_06-001_constexpr_sine.exe
 $GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_07-001_derivative.cpp            -o ./bin/chapter12_07-001_derivative.exe
+$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_07-002_deriv_quadratic.cpp       -o ./bin/chapter12_07-002_deriv_quadratic.exe
+$GCC -std=$STD  -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter12_07-003_integral_j2.cpp           -o ./bin/chapter12_07-003_integral_j2.exe
 
 ls -la \
 ./bin/chapter12_01-001_area_of_circle.exe           \
@@ -53,9 +56,12 @@ ls -la \
 ./bin/chapter12_04-004_euler_gamma_approx.exe       \
 ./bin/chapter12_05-001_complex.exe                  \
 ./bin/chapter12_05-002_complex.exe                  \
-./bin/chapter12_05-003_complex_sinc_function.exe    \
+./bin/chapter12_05-003_complex.exe                  \
+./bin/chapter12_05-004_complex_sinc_function.exe    \
 ./bin/chapter12_06-001_constexpr_sine.exe           \
-./bin/chapter12_07-001_derivative.exe
+./bin/chapter12_07-001_derivative.exe               \
+./bin/chapter12_07-002_deriv_quadratic.exe          \
+./bin/chapter12_07-003_integral_j2.exe
 
 result_ls=$?
 
