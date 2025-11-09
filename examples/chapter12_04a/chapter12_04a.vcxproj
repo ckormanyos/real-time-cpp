@@ -391,6 +391,7 @@
   <ItemGroup>
     <None Include="build.bat" />
     <None Include="build.sh" />
+    <None Include="readme.md" />
     <None Include="src\util\STL\algorithm">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
