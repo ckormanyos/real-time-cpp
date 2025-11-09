@@ -1,4 +1,4 @@
-# Example Chapter12_04a (variation 32-bit controller)
+# Example Chapter12_04a (variation 32-bit microcontroller)
 ## Benchmarking Floating-Point Calculations
 
 Example chapter12_04a performs a variety of floating-point
@@ -14,9 +14,10 @@ is used.
 
 ## Hardware Setup
 
-In this particular example, we have simply used a commercially-available
-the open-platform STM32F100 Value Line Discovery Kit placed on a breadboard
-with soldered-on pins.
+In this particular example, we have simply used
+the commercially-available, open-platform
+[STM32F100 Value Line Discovery Kit](https://www.st.com/en/evaluation-tools/stm32vldiscovery.html)
+placed on a breadboard with soldered-on pins.
 
 The wiring is straightforward. The blinking LED uses the blue colored
 user LED controlled by pin `portc.8`. The benchmark toggle pin is `portb.9`.
