@@ -13,14 +13,14 @@
     <Filter Include="micros">
       <UniqueIdentifier>{0a8b6cbb-02d4-4780-a2a9-c5a1b34deb53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\bl602_sifive_e24_riscv">
-      <UniqueIdentifier>{c844e189-6cfd-407f-83b5-806763d8b845}</UniqueIdentifier>
+    <Filter Include="micros\stm32f100">
+      <UniqueIdentifier>{5f9acc74-9dfb-4961-923c-444421c47605}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\bl602_sifive_e24_riscv\make">
-      <UniqueIdentifier>{925ecd73-588a-426f-a3a3-2b0071939294}</UniqueIdentifier>
+    <Filter Include="micros\stm32f100\make">
+      <UniqueIdentifier>{4944fce6-fe7e-4cf0-b062-d6b7b70aee98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\bl602_sifive_e24_riscv\startup">
-      <UniqueIdentifier>{3c35caf4-5f5b-4a28-bb8d-1f388fdcec1c}</UniqueIdentifier>
+    <Filter Include="micros\stm32f100\startup">
+      <UniqueIdentifier>{f629ad77-98fd-412e-b115-847c4c428883}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,31 +36,28 @@
     <None Include="target\build\build.bat">
       <Filter>build</Filter>
     </None>
-    <None Include="target\micros\bl602_sifive_e24_riscv\make\bl602_sifive_e24_riscv.ld">
-      <Filter>micros\bl602_sifive_e24_riscv\make</Filter>
+    <None Include="target\micros\stm32f100\make\stm32f100_files.gmk">
+      <Filter>micros\stm32f100\make</Filter>
     </None>
-    <None Include="target\micros\bl602_sifive_e24_riscv\make\bl602_sifive_e24_riscv_files.gmk">
-      <Filter>micros\bl602_sifive_e24_riscv\make</Filter>
+    <None Include="target\micros\stm32f100\make\stm32f100_flags.gmk">
+      <Filter>micros\stm32f100\make</Filter>
     </None>
-    <None Include="target\micros\bl602_sifive_e24_riscv\make\bl602_sifive_e24_riscv_flags.gmk">
-      <Filter>micros\bl602_sifive_e24_riscv\make</Filter>
-    </None>
-    <None Include="target\micros\bl602_sifive_e24_riscv\startup\boot.s">
-      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
+    <None Include="target\micros\stm32f100\make\stm32f100.ld">
+      <Filter>micros\stm32f100\make</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\crt0.cpp">
-      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
+    <ClCompile Include="target\micros\stm32f100\startup\crt0_init_ram.cpp">
+      <Filter>micros\stm32f100\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\crt0_init_ram.cpp">
-      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
+    <ClCompile Include="target\micros\stm32f100\startup\crt1.cpp">
+      <Filter>micros\stm32f100\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\crt1.cpp">
-      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
+    <ClCompile Include="target\micros\stm32f100\startup\int_vect.cpp">
+      <Filter>micros\stm32f100\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\int_vect.c">
-      <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
+    <ClCompile Include="target\micros\stm32f100\startup\crt0.cpp">
+      <Filter>micros\stm32f100\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
