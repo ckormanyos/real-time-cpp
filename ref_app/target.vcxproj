@@ -1135,7 +1135,7 @@
     <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\crt0.cpp" />
     <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\intvect.c" />
+    <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\int_vect.c" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt0.cpp" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt1.cpp" />

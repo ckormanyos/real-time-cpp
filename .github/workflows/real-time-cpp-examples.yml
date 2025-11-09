@@ -1,5 +1,5 @@
 ##############################################################################
-#  Copyright Christopher Kormanyos 2023 - 2024.
+#  Copyright Christopher Kormanyos 2023 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -53,6 +53,29 @@ jobs:
         run: |
           cd ${{ matrix.example }}
           ./build.sh /usr/bin avr
+          ls -la ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.map ./bin/${{ matrix.example }}.hex
+        working-directory: ./examples/
+  target-bl602_sifive_e24_riscv-examples:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [ chapter12_04a ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: |
+          wget --no-check-certificate https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v15.2.0-1/xpack-riscv-none-elf-gcc-15.2.0-1-linux-x64.tar.gz
+          tar -xzf xpack-riscv-none-elf-gcc-15.2.0-1-linux-x64.tar.gz -C ${{ runner.workspace }}
+      - name: target-bl602_sifive_e24_riscv-examples
+        run: |
+          cd ${{ matrix.example }}
+          ./build.sh ${{ runner.workspace }}/xpack-riscv-none-elf-gcc-15.2.0-1/bin riscv-none-elf
           ls -la ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.map ./bin/${{ matrix.example }}.hex
         working-directory: ./examples/
   target-bcm2835_raspi_b-example10_09:
