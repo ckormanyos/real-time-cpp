@@ -106,7 +106,7 @@ This example performs a variety of floating-point calculations of selected speci
 
 Example ![chapter12_04a](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter12_04a) Benchmarking Floating-Point Calculations (32-bit variation).\
 The same special functions and arguments are used as in Example Chapter12_04. In variation 12_04a, however,
-the open-source 32-bit BL602 single-core RISC-V (SiFive E24) microcontroller is used.
+the open-platform STM32F100 Value Line Discovery Kit placed on a breadboard is used.
 
 Example ![chapter16_08](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter16_08) Generating and displaying 128-bit Random Prime Numbers.\
 This advanced example uses an extended integer class to create 128-bit unsigned prime integers with primality testing performed via Miller-Rabin.
