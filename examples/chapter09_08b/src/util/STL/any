@@ -1,0 +1,239 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef ANY_2017_11_07_
+  #define ANY_2017_11_07_
+
+  #if defined(__GNUC__)
+  #pragma GCC system_header
+  #endif
+
+  // Implement some of <any> for compilers that do not yet support it.
+  // This is a very naive (and only partial) implementation of std::any.
+  // It is not intended to be entirely conformant with the standard.
+  // In fact, this naive implementation of <any> merely mimics
+  // some essential parts of the real <any>.
+
+  // There are (at least) three significant limitations
+  // of this naive partial implementation of std::any.
+  //   1) RTTI is not used. Therefore, some assignment
+  //      operators simply use raw copy, not deep copy.
+  //   2) Memory allocation uses a trivial ring buffer.
+  //      Although this can work in situations such as
+  //      subroutine calls or static one-time allocation,
+  //      there are certain limitations, including buffer size.
+  //      In addition, this memory management is not really
+  //      intended to be used for a combination of mixed
+  //      dynamic and static allocation. The intention
+  //      is actually pure dynamic allocation in small chunks
+  //      limited to non-preemptive subroutines.
+  //   3) In the desctructor of any, no proper dtor
+  //      of the wrapped object is called.
+
+  #include <algorithm>
+  #include <cstddef>
+  #include <cstdint>
+
+  #include <impl/stl_local_noexcept.h>
+  #include <impl/stl_local_constexpr.h>
+  #include <util/utility/util_alignas.h>
+
+  namespace std
+  {
+    class any;
+
+    template<typename value_type>
+    value_type any_cast(const any&);
+
+    class any
+    {
+    public:
+      STL_LOCAL_CONSTEXPR any() STL_LOCAL_NOEXCEPT
+        : __my_size     (0U),
+          __my_memory   (nullptr),
+          __my_has_value(false) { }
+
+      any(const any& __other_any) : __my_size(__other_any.__my_size)
+      {
+        if(__my_size == 0U)
+        {
+          __my_memory    = nullptr;
+          __my_has_value = false;
+        }
+        else
+        {
+          __my_memory    = do_allocate(__my_size);
+          __my_has_value = true;
+
+          // There is no assignment operator here.
+          // Just a raw byte-copy operation is used.
+          // RTTI is not used.
+          // Deep copies are *not* supported.
+
+          std::copy(reinterpret_cast<const uint8_t*>(__other_any.__my_memory),
+                    reinterpret_cast<const uint8_t*>(__other_any.__my_memory) + __my_size,
+                    reinterpret_cast<      uint8_t*>(            __my_memory));
+        }
+      }
+
+      any(any&& __other_any) STL_LOCAL_NOEXCEPT
+        : __my_size     (__other_any.__my_size),
+          __my_memory   (__other_any.__my_memory),
+          __my_has_value(__other_any.__my_has_value) { }
+
+      template<typename value_type>
+      any(value_type&& __other_value) : __my_size(sizeof(value_type))
+      {
+        if(__my_size == 0U)
+        {
+          __my_memory    = nullptr;
+          __my_has_value = false;
+        }
+        else
+        {
+          __my_memory    = do_allocate(__my_size);
+          __my_has_value = true;
+
+          *reinterpret_cast<value_type*>(__my_memory) = __other_value;
+        }
+      }
+
+      ~any()
+      {
+        // Warning: No proper dtor is called for the wrapped object.
+      }
+
+      any& operator=(const any& __other_any)
+      {
+        if(this != &__other_any)
+        {
+          if(__other_any.__my_size == 0U)
+          {
+            __my_size      = 0U;
+            __my_memory    = nullptr;
+            __my_has_value = false;
+          }
+          else
+          {
+            if(__my_size != __other_any.__my_size)
+            {
+              __my_size   = __other_any.__my_size;
+              __my_memory = do_allocate(__my_size);
+            }
+
+            __my_has_value = true;
+
+            // There is no assignment operator here.
+            // Just a raw byte-copy operation is used.
+            // RTTI is not used.
+            // Deep copies are *not* supported.
+
+            std::copy(reinterpret_cast<const uint8_t*>(__other_any.__my_memory),
+                      reinterpret_cast<const uint8_t*>(__other_any.__my_memory) + __my_size,
+                      reinterpret_cast<      uint8_t*>(            __my_memory));
+          }
+        }
+
+        return *this;
+      }
+
+      any& operator=(any&& __other_any) STL_LOCAL_NOEXCEPT
+      {
+        __my_size      = __other_any.__my_size;
+        __my_memory    = __other_any.__my_memory;
+        __my_has_value = __other_any.__my_has_value;
+
+        return *this;
+      }
+
+      template<typename value_type>
+      any& operator=(value_type&& __other_value)
+      {
+        if(sizeof(value_type) == 0U)
+        {
+          __my_size      = 0U;
+          __my_memory    = nullptr;
+          __my_has_value = false;
+        }
+        else
+        {
+          if(__my_size != sizeof(value_type))
+          {
+            __my_size   = sizeof(value_type);
+            __my_memory = do_allocate(__my_size);
+          }
+
+          *reinterpret_cast<value_type*>(__my_memory) = __other_value;
+
+          __my_has_value = true;
+        }
+
+        return *this;
+      }
+
+      bool has_value() const { return __my_has_value; }
+
+    private:
+                 std::size_t __my_size;
+      ALIGNAS(4) void*       __my_memory;
+                 bool        __my_has_value;
+
+      static void* do_allocate(const std::size_t chunk_size)
+      {
+        // Implement a simple ring buffer for the memory management.
+
+        static std::uint8_t  buffer[64U];
+
+        static std::uint8_t* get_ptr = &buffer[0U];
+
+        // Get the newly allocated pointer.
+        std::uint8_t* p = get_ptr;
+
+        // Increment the get-pointer for the next allocation.
+
+        get_ptr += chunk_size;
+
+        // Does this attempted allocation overflow the capacity of the buffer?
+        const bool is_overflow = (get_ptr >= (buffer + sizeof(buffer)));
+
+        if(is_overflow)
+        {
+          // The buffer has overflowed.
+
+          // Reset the allocated pointer to the bottom of the buffer
+          // and increment the next get-pointer.
+          p       = &buffer[0U];
+          get_ptr = &buffer[chunk_size];
+        }
+
+        return static_cast<void*>(p);
+      }
+
+      template<typename value_type>
+      friend value_type any_cast(const any&);
+    };
+
+    template<typename value_type>
+    value_type any_cast(const any& any_instance)
+    {
+      value_type result;
+
+      if(   (any_instance.__my_size == sizeof(value_type))
+         && (any_instance.__my_size != 0U))
+      {
+        result = *reinterpret_cast<value_type*>(any_instance.__my_memory);
+      }
+      else
+      {
+        result = value_type();
+      }
+
+      return result;
+    }
+  }
+
+#endif // ANY_2017_11_07_

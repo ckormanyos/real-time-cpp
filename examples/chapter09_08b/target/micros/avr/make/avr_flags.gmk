@@ -1,0 +1,48 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2025.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+ifneq ($(MAKE),make)
+GCC_VERSION   = 15.1.0
+endif
+
+GCC_TARGET    = avr
+GCC_PREFIX    = avr
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -O2                                                               \
+                -mmcu=atmega328p                                                  \
+                -mrelax                                                           \
+                -finline-functions                                                \
+                -finline-limit=32                                                 \
+                -fsigned-char
+
+ifeq ($(GCC_VERSION),15.1.0)
+TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
+                -mdouble=32                                                       \
+                -mlong-double=64
+endif
+
+TGT_CFLAGS    = -std=c11                                                          \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++20                                                        \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
+                -T $(LINKER_DEFINITION_FILE)
