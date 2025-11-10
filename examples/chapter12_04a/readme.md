@@ -17,7 +17,7 @@ is used.
 In this particular example, we have simply used
 the commercially-available, open-platform
 [STM32F100 Value Line Discovery Kit](https://www.st.com/en/evaluation-tools/stm32vldiscovery.html)
-placed on a breadboard with soldered-on pins.
+directly out-of-the-box.
 
 The wiring is straightforward. The blinking LED uses the blue colored
 user LED controlled by pin `portc.8`. The benchmark toggle pin is `portb.9`.

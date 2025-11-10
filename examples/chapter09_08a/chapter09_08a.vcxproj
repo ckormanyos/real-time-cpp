@@ -106,6 +106,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_eep.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_gpt.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -138,6 +142,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_spi.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_wdg.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -147,6 +155,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_cpu.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_eep.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_gpt.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_irq.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led.cpp" />
@@ -154,10 +164,13 @@
     <ClCompile Include="src\mcal\win32\mcal_led_rgb.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_rgb_pc.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_sys_start_interface.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_osc.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_port.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_pwm.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_spi.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_wdg.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp" />
     <ClCompile Include="src\os\os.cpp" />
-    <ClCompile Include="src\os\os_task_control_block.cpp" />
     <ClCompile Include="src\sys\idle\sys_idle.cpp" />
     <ClCompile Include="src\sys\mon\sys_mon.cpp" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
@@ -179,7 +192,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_cpu.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_eep.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -227,14 +248,26 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_ser.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_spi.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_wdg.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\mcal\mcal.h" />
+    <ClInclude Include="src\mcal\mcal_gpt_arm_sys_tick.h" />
+    <ClInclude Include="src\mcal\mcal_helper.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_static.h" />
+    <ClInclude Include="src\mcal\win32\mcal_benchmark.h" />
     <ClInclude Include="src\mcal\win32\mcal_cpu.h" />
+    <ClInclude Include="src\mcal\win32\mcal_eep.h" />
     <ClInclude Include="src\mcal\win32\mcal_gpt.h" />
     <ClInclude Include="src\mcal\win32\mcal_irq.h" />
     <ClInclude Include="src\mcal\win32\mcal_led.h" />
@@ -244,9 +277,12 @@
     <ClInclude Include="src\mcal\win32\mcal_led_rgb_pc.h" />
     <ClInclude Include="src\mcal\win32\mcal_led_sys_start_interface.h" />
     <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h" />
+    <ClInclude Include="src\mcal\win32\mcal_osc.h" />
     <ClInclude Include="src\mcal\win32\mcal_port.h" />
+    <ClInclude Include="src\mcal\win32\mcal_pwm.h" />
     <ClInclude Include="src\mcal\win32\mcal_reg.h" />
-    <ClInclude Include="src\mcal\win32\mcal_reg_access.h" />
+    <ClInclude Include="src\mcal\win32\mcal_ser.h" />
+    <ClInclude Include="src\mcal\win32\mcal_spi.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h" />
     <ClInclude Include="src\mcal_led\mcal_led_base.h" />
@@ -255,6 +291,12 @@
     <ClInclude Include="src\mcal_led\mcal_led_port.h" />
     <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h" />
     <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h" />
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_base.h" />
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_console.h" />
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_dummy.h" />
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_port.h" />
+    <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h" />
+    <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h" />
     <ClInclude Include="src\os\os.h" />
     <ClInclude Include="src\os\os_cfg.h" />
     <ClInclude Include="src\os\os_task_control_block.h" />
@@ -313,6 +355,8 @@
     <ClInclude Include="src\util\utility\util_utype_helper.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="build.bat" />
+    <None Include="build.sh" />
     <None Include="readme.md" />
     <None Include="src\util\STL\algorithm">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

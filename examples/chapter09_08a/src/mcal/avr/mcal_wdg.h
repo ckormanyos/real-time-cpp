@@ -8,10 +8,6 @@
 #ifndef MCAL_WDT_2010_04_10_H
   #define MCAL_WDT_2010_04_10_H
 
-  extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
-
-  namespace sys { namespace idle { auto task_func() -> void; } }
-
   namespace mcal
   {
     namespace wdg
@@ -22,11 +18,7 @@
 
       struct secure final
       {
-      private:
         static auto trigger() -> void;
-
-        friend auto ::sys::idle::task_func() -> void;
-        friend auto ::__my_startup() -> void;
       };
     }
   }
