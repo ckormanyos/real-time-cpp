@@ -63,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        example: [ chapter12_04a ]
+        example: [ chapter09_08b, chapter12_04a ]
     steps:
       - uses: actions/checkout@v4
         with:

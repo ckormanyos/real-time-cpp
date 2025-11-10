@@ -128,7 +128,7 @@ echo "Compile  : crt1.cpp to bin/crt1.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c target/micros/stm32f100/startup/crt1.cpp -o bin/crt1.o
 
 echo "Compile  : int_vect.cpp to bin/int_vect.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CINCLUDES -c target/micros/stm32f100/startup/int_vect.cpp -o bin/int_vect.o
+$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c target/micros/stm32f100/startup/int_vect.cpp -o bin/int_vect.o
 
 echo "Link     : objects to bin/chapter12_04a.elf"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x none -nostartfiles $CFLAGS $CPPFLAGS $CINCLUDES -Wl,--gc-sections -Wl,-Ttarget/micros/stm32f100/make/stm32f100.ld,-Map,bin/chapter12_04a.map bin/app_benchmark.o bin/app_led.o bin/cmath_impl_gamma.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_eep.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_pwm.o bin/mcal_spi.o bin/mcal_wdg.o bin/os.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter12_04a.elf
