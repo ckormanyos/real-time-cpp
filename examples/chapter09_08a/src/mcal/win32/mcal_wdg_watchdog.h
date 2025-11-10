@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2023.
+//  Copyright Christopher Kormanyos 2013 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,14 +8,15 @@
 #ifndef MCAL_WDG_WATCHDOG_2013_12_11_H
   #define MCAL_WDG_WATCHDOG_2013_12_11_H
 
+  #include <mcal_wdg.h>
+
+  #include <util/utility/util_noncopyable.h>
+  #include <util/utility/util_time.h>
+
   #include <atomic>
   #include <cstdint>
   #include <functional>
   #include <thread>
-
-  #include <mcal_wdg.h>
-  #include <util/utility/util_noncopyable.h>
-  #include <util/utility/util_time.h>
 
   #if defined(_MSC_VER)
   #define  MCAL_WDG_NORETURN
@@ -69,8 +70,8 @@
         timer_type  my_timer { my_period };
         const std::thread my_thread;
 
-        static watchdog         my_watchdog;
-        static std::atomic_flag my_lock;
+        static watchdog         my_watchdog; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+        static std::atomic_flag my_lock;     // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
         auto get_watchdog_timeout() const -> bool
         {
@@ -90,7 +91,7 @@
 
         MCAL_WDG_NORETURN static auto thread_function() -> void
         {
-          std::this_thread::sleep_for(std::chrono::milliseconds(10U));
+          std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<unsigned>(UINT8_C(10))));
 
           bool timeout_has_occurred = false;
 
@@ -100,7 +101,7 @@
             {
               print_timeout_message();
 
-              std::this_thread::sleep_for(std::chrono::milliseconds(500U));
+              std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<unsigned>(UINT16_C(500))));
             }
             else
             {
@@ -109,20 +110,20 @@
                 timeout_has_occurred = true;
               }
 
-              std::this_thread::sleep_for(std::chrono::milliseconds(20U));
+              std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<unsigned>(UINT8_C(20))));
             }
           }
         }
 
-        friend class ::mcal::wdg::secure;
+        friend struct ::mcal::wdg::secure;
       };
 
       template<const typename watchdog_base::base_timer_type::tick_type MyPeriod>
-      watchdog<MyPeriod> watchdog<MyPeriod>::my_watchdog(thread_function);
+      watchdog<MyPeriod> watchdog<MyPeriod>::my_watchdog(thread_function); // NOLINT(cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)
 
       template<const typename watchdog_base::base_timer_type::tick_type MyPeriod>
-      std::atomic_flag watchdog<MyPeriod>::my_lock = ATOMIC_FLAG_INIT;
-    }
-  }
+      std::atomic_flag watchdog<MyPeriod>::my_lock = ATOMIC_FLAG_INIT; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+    } // namespace wdg
+  } // namespace mcal
 
 #endif // MCAL_WDG_WATCHDOG_2013_12_11_H

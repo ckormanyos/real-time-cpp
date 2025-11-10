@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
-  #define UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
+#ifndef UTIL_LINEAR_INTERPOLATE_2008_11_22_H
+  #define UTIL_LINEAR_INTERPOLATE_2008_11_22_H
 
   #include <util/utility/util_point.h>
 
@@ -15,18 +15,17 @@
     template<typename point_iterator,
              typename x_type,
              typename y_type = x_type>
-    y_type linear_interpolate(point_iterator pts_begin,
-                              point_iterator pts_end,
-                              const x_type& x,
-                              const y_type& offset)
+    auto linear_interpolate(point_iterator pts_begin,
+                            point_iterator pts_end,
+                            const x_type& x,
+                            const y_type& offset) -> y_type
     {
       if(pts_begin == pts_end)
       {
         // There are no data points to interpolate.
         return y_type();
       }
-      else if(   (x <= pts_begin->x)
-              || ((pts_begin + 1U) == pts_end))
+      else if((x <= pts_begin->x) || ((pts_begin + 1U) == pts_end))
       {
         // We are beneath the lower x-range or there
         // is only one data point to interpolate.
@@ -58,4 +57,4 @@
     }
   }
 
-#endif // UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
+#endif // UTIL_LINEAR_INTERPOLATE_2008_11_22_H

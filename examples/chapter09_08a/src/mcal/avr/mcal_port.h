@@ -10,6 +10,15 @@
 
   #include <mcal_reg.h>
 
+  #include <cstdint>
+
+  auto mcal_port_pin_expander_set_direction_output(const uint8_t bpos) -> void;
+  auto mcal_port_pin_expander_set_direction_input (const uint8_t bpos) -> void;
+  auto mcal_port_pin_expander_set_pin_high        (const uint8_t bpos) -> void;
+  auto mcal_port_pin_expander_set_pin_low         (const uint8_t bpos) -> void;
+  auto mcal_port_pin_expander_read_input_value    (const uint8_t bpos) -> bool;
+  auto mcal_port_pin_expander_toggle_pin          (const uint8_t bpos) -> void;
+
   namespace mcal
   {
     namespace port
@@ -96,6 +105,18 @@
                                        port_address,
                                        bpos_value>::bit_not();
         }
+      };
+
+      template<const std::uint8_t bpos>
+      class port_pin_expander
+      {
+      public:
+        static auto set_direction_output() -> void {        mcal_port_pin_expander_set_direction_output(bpos); }
+        static auto set_direction_input () -> void {        mcal_port_pin_expander_set_direction_input (bpos); }
+        static auto set_pin_high        () -> void {        mcal_port_pin_expander_set_pin_high        (bpos); }
+        static auto set_pin_low         () -> void {        mcal_port_pin_expander_set_pin_low         (bpos); }
+        static auto read_input_value    () -> bool { return mcal_port_pin_expander_read_input_value    (bpos); }
+        static auto toggle_pin          () -> void {        mcal_port_pin_expander_toggle_pin          (bpos); }
       };
     }
   }

@@ -148,6 +148,8 @@
     <Folder Include="src\app\led" />
     <Folder Include="src\mcal_memory" />
     <Folder Include="src\mcal_led" />
+    <Folder Include="src\mcal_pwm" />
+    <Folder Include="src\mcal_spi" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
     <Folder Include="src\sys\mon" />
@@ -174,10 +176,19 @@
     <Compile Include="src\app\led\app_led.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_benchmark.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_cpu.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_cpu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_eep.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_eep.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_gpt.cpp">
@@ -237,6 +248,12 @@
     <Compile Include="src\mcal\avr\mcal_reg.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_spi.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_spi.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_wdg.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -267,10 +284,16 @@
     <Compile Include="src\mcal_led\mcal_led_console.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal_led\mcal_led_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal_led\mcal_led_port.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_led\mcal_led_port_inverted.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_pwm.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_led\mcal_led_rgb_base.h">
@@ -297,6 +320,24 @@
     <Compile Include="src\mcal_memory\mcal_memory_progmem_ref.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_spi\mcal_spi_software_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_spi\mcal_spi_software_port_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\os\os.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -304,9 +345,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\os\os_cfg.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\os\os_task_control_block.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\os\os_task_control_block.h">
@@ -366,22 +404,40 @@
     <Compile Include="src\util\utility\util_alignas.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\utility\util_bit_mask.h">
+    <Compile Include="src\util\utility\util_attribute.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\utility\util_circular_buffer.h">
+    <Compile Include="src\util\utility\util_baselexical_cast.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_bit_mask.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_communication.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\utility\util_constexpr_algorithm_unsafe.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_constexpr_cmath_unsafe.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_countof.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_display.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_dynamic_array.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\utility\util_dynamic_bitset.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_linear_interpolate.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_narrow_cast.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_noexcept.h">
@@ -397,6 +453,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_stopwatch.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_swdm.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_time.h">
@@ -458,6 +517,9 @@
     <None Include="src\util\STL\cinttypes">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\ciso646">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\climits">
       <SubType>compile</SubType>
     </None>
@@ -515,6 +577,9 @@
     <None Include="src\util\STL\stdexcept">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\stdfloat">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\string">
       <SubType>compile</SubType>
     </None>
@@ -528,6 +593,9 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\vector">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\version">
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">

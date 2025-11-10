@@ -149,6 +149,10 @@
     <Folder Include="src\math\constants" />
     <Folder Include="src\math\functions" />
     <Folder Include="src\mcal_memory" />
+    <Folder Include="src\mcal_lcd" />
+    <Folder Include="src\mcal_led" />
+    <Folder Include="src\mcal_pwm" />
+    <Folder Include="src\mcal_spi" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
     <Folder Include="src\sys\mon" />
@@ -292,6 +296,42 @@
     <Compile Include="src\mcal\mcal_reg_access_static.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal_lcd\mcal_lcd_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_lcd\mcal_lcd_buffered_instance.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_lcd\mcal_lcd_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_lcd\mcal_lcd_generic_st7066.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_boolean_state_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_port_inverted.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_rgb_base.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
       <SubType>compile</SubType>
     </Compile>
@@ -311,6 +351,24 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_progmem_ref.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_spi\mcal_spi_software_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_spi\mcal_spi_software_port_driver.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\os\os.cpp">
@@ -382,22 +440,43 @@
     <Compile Include="src\util\utility\util_alignas.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\utility\util_bit_mask.h">
+    <Compile Include="src\util\utility\util_attribute.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\utility\util_circular_buffer.h">
+    <Compile Include="src\util\utility\util_baselexical_cast.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_bit_mask.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_communication.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\utility\util_constexpr_algorithm_unsafe.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_constexpr_cmath_unsafe.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_countof.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_display.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_dynamic_array.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\utility\util_dynamic_bitset.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_linear_interpolate.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_narrow_cast.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_noexcept.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_noncopyable.h">
@@ -406,13 +485,13 @@
     <Compile Include="src\util\utility\util_nothing.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\utility\util_null_ptr_workaround.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\util\utility\util_point.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_stopwatch.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_swdm.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_time.h">

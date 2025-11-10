@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2012 - 2022.
+//  Copyright Christopher Kormanyos 2012 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -46,11 +46,10 @@
     using const_reverse_iterator =       std::reverse_iterator<const_iterator>;
 
     // Constructors.
-    explicit dynamic_array(      size_type       count = static_cast<size_type>(UINT8_C(0)),
-                                 const_reference v     = value_type(),
-                           const allocator_type& a     = allocator_type())
-      : elem_count(count),
-        elems     (nullptr)
+    explicit constexpr dynamic_array(      size_type       count = static_cast<size_type>(UINT8_C(0)),
+                                           const_reference v     = value_type(),
+                                     const allocator_type& a     = allocator_type())
+      : elem_count(count)
     {
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
@@ -69,9 +68,8 @@
       }
     }
 
-    dynamic_array(const dynamic_array& other)
-      : elem_count(other.size()),
-        elems     (nullptr)
+    constexpr dynamic_array(const dynamic_array& other)
+      : elem_count(other.size())
     {
       allocator_type my_a;
 
@@ -84,11 +82,10 @@
     }
 
     template<typename input_iterator>
-    dynamic_array(input_iterator first,
-                  input_iterator last,
-                  const allocator_type& a = allocator_type())
-      : elem_count(static_cast<size_type>(std::distance(first, last))),
-        elems     (nullptr)
+    constexpr dynamic_array(input_iterator first,
+                            input_iterator last,
+                            const allocator_type& a = allocator_type())
+      : elem_count(static_cast<size_type>(std::distance(first, last)))
     {
       allocator_type my_a(a);
 
@@ -100,10 +97,9 @@
       std::copy(first, last, elems);
     }
 
-    dynamic_array(std::initializer_list<value_type> lst,
-                  const allocator_type& a = allocator_type())
-      : elem_count(lst.size()),
-        elems     (nullptr)
+    constexpr dynamic_array(std::initializer_list<value_type> lst,
+                            const allocator_type& a = allocator_type())
+      : elem_count(lst.size())
     {
       allocator_type my_a(a);
 
@@ -116,35 +112,26 @@
     }
 
     // Move constructor.
-    dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
-                                                    elems     (other.elems)
+    constexpr dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
+                                                              elems     (other.elems)
     {
       other.elem_count = static_cast<size_type>(UINT8_C(0));
       other.elems      = nullptr;
     }
 
     // Destructor.
-    virtual ~dynamic_array()
+    virtual ~dynamic_array() // LCOV_EXCL_LINE
     {
-      pointer p = elems; // NOLINT(altera-id-dependent-backward-branch)
-
       using local_allocator_traits_type = std::allocator_traits<allocator_type>;
 
       allocator_type my_a;
-
-      while(p != elems + elem_count) // NOLINT(altera-id-dependent-backward-branch)
-      {
-        local_allocator_traits_type::destroy(my_a, p);
-
-        ++p;
-      }
 
       // Destroy the elements and deallocate the range.
       local_allocator_traits_type::deallocate(my_a, elems, elem_count);
     }
 
     // Assignment operator.
-    auto operator=(const dynamic_array& other) -> dynamic_array&
+    constexpr auto operator=(const dynamic_array& other) -> dynamic_array&
     {
       if(this != &other)
       {
@@ -157,7 +144,7 @@
     }
 
     // Move assignment operator.
-    auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
+    constexpr auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
     {
       std::swap(elem_count, other.elem_count);
       std::swap(elems,      other.elems);
@@ -166,22 +153,22 @@
     }
 
     // Iterator members:
-    auto begin  ()       noexcept -> iterator               { return elems; }
-    auto end    ()       noexcept -> iterator               { return elems + elem_count; }
-    auto begin  () const noexcept -> const_iterator         { return elems; }
-    auto end    () const noexcept -> const_iterator         { return elems + elem_count; }
-    auto cbegin () const noexcept -> const_iterator         { return elems; }
-    auto cend   () const noexcept -> const_iterator         { return elems + elem_count; }
-    auto rbegin ()       noexcept -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
-    auto rend   ()       noexcept -> reverse_iterator       { return reverse_iterator(elems); }
-    auto rbegin () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    auto rend   () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
-    auto crbegin() const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    auto crend  () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    constexpr auto begin  ()       noexcept -> iterator               { return elems; }
+    constexpr auto end    ()       noexcept -> iterator               { return elems + elem_count; }
+    constexpr auto begin  () const noexcept -> const_iterator         { return elems; }
+    constexpr auto end    () const noexcept -> const_iterator         { return elems + elem_count; }
+    constexpr auto cbegin () const noexcept -> const_iterator         { return elems; }
+    constexpr auto cend   () const noexcept -> const_iterator         { return elems + elem_count; }
+    constexpr auto rbegin ()       noexcept -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
+    constexpr auto rend   ()       noexcept -> reverse_iterator       { return reverse_iterator(elems); }
+    constexpr auto rbegin () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    constexpr auto rend   () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    constexpr auto crbegin() const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    constexpr auto crend  () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
 
     // Raw pointer access.
-    auto data()       noexcept -> pointer       { return elems; }
-    auto data() const noexcept -> const_pointer { return elems; }
+    constexpr auto data()       noexcept -> pointer       { return elems; }
+    constexpr auto data() const noexcept -> const_pointer { return elems; }
 
     // Size and capacity.
     constexpr auto size    () const noexcept -> size_type { return  elem_count; }
@@ -189,25 +176,25 @@
     constexpr auto empty   () const noexcept -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
 
     // Element access members.
-    auto operator[](const size_type i)       noexcept -> reference       { return elems[i]; }
-    auto operator[](const size_type i) const noexcept -> const_reference { return elems[i]; }
+    constexpr auto operator[](const size_type i)       noexcept -> reference       { return elems[i]; }
+    constexpr auto operator[](const size_type i) const noexcept -> const_reference { return elems[i]; }
 
-    auto front()       noexcept -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
-    auto front() const noexcept -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    constexpr auto front()       noexcept -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    constexpr auto front() const noexcept -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
 
-    auto back()       noexcept -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    auto back() const noexcept -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    constexpr auto back()       noexcept -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    constexpr auto back() const noexcept -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
-    auto at(const size_type i)       noexcept -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    auto at(const size_type i) const noexcept -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    constexpr auto at(const size_type i)       noexcept -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    constexpr auto at(const size_type i) const noexcept -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
     // Element manipulation members.
-    auto fill(const value_type& v) -> void
+    constexpr auto fill(const value_type& v) -> void
     {
-      std::fill_n(begin(), elem_count, v);
+      std::fill(begin(), begin() + elem_count, v);
     }
 
-    auto swap(dynamic_array& other) noexcept -> void
+    constexpr auto swap(dynamic_array& other) noexcept -> void
     {
       if(this != &other)
       {
@@ -216,17 +203,15 @@
       }
     }
 
-    auto swap(dynamic_array&& other) noexcept -> void
+    constexpr auto swap(dynamic_array&& other) noexcept -> void
     {
-      auto tmp = std::move(*this);
-
-      *this = std::move(other);
-      other = std::move(tmp);
+      elems      = std::move(other.elems);
+      elem_count = std::move(other.elem_count);
     }
 
   private:
-    mutable size_type elem_count; // NOLINT(readability-identifier-naming)
-    pointer           elems;      // NOLINT(readability-identifier-naming,altera-id-dependent-backward-branch)
+    size_type elem_count;        // NOLINT(readability-identifier-naming)
+    pointer   elems { nullptr }; // NOLINT(readability-identifier-naming,altera-id-dependent-backward-branch)
   };
 
   template<typename ValueType, typename AllocatorType>
