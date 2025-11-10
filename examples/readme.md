@@ -80,6 +80,13 @@ The main difference, however, is that a _digitally_-controlled industry-standard
 RGB LED of type WS2812 is used. In addition, the color transitions at and around $255~\text{bits}$-RGB
 are slowed down providing emphasized, longer-lasting RGB hues near these points.
 
+Example ![chapter09_08b](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter09_08b) Controlling an RGB LED of Type WS2812  (variation 32-bit microcontroller).\
+Example chapter09_08b utilizes essentially the same techniques to control its ws2812 RGB LED
+as were used in Example Chapter09_08a. In variation 09_08b, however,
+the open-platform [STM32F100 Value Line Discovery Kit](https://www.st.com/en/evaluation-tools/stm32vldiscovery.html)
+is used.
+
+
 Example ![chapter10_08](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter10_08) External SPI RAM and Computing $10,001$ Digits of Pi.\
 This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm
 to compute $10,001$ digits of the mathematical constant $\pi$

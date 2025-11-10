@@ -1,0 +1,45 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef STDFLOAT_2024_07_12
+  #define STDFLOAT_2024_07_12
+
+  #if defined(__GNUC__)
+  #pragma GCC system_header
+  #endif
+
+  #include <limits>
+
+  namespace std
+  {
+    using float32_t = float;
+    #define __STDCPP_FLOAT32_T__ 1
+
+    #if (defined(__GNUC__) && defined(__AVR__))
+
+    #if(__GNUC__ >= 12)
+    using float64_t = long double;
+    #define __STDCPP_FLOAT64_T__ 1
+    #endif
+
+    #elif (defined(__GNUC__) && defined(__RL78__))
+
+    using float64_t = long double;
+    #define __STDCPP_FLOAT64_T__ 1
+
+    #else
+
+    using float64_t = double;
+    #define __STDCPP_FLOAT64_T__ 1
+
+    #endif
+  }
+
+  static_assert((std::numeric_limits<std::float32_t>::digits == 24), "Error: Incorrect float32_t type definition");
+  static_assert((std::numeric_limits<std::float64_t>::digits == 53), "Error: Incorrect float64_t type definition");
+
+#endif // STDFLOAT_2024_07_12
