@@ -132,18 +132,11 @@
     <None Include="target\app\make\app_make.gmk" />
     <None Include="target\app\make\app_rules.gmk" />
     <None Include="target\build\build.bat" />
-    <None Include="target\micros\avr\make\avr.ld" />
-    <None Include="target\micros\avr\make\avr_files.gmk" />
-    <None Include="target\micros\avr\make\avr_flags.gmk" />
     <None Include="target\micros\stm32f100\make\stm32f100.ld" />
     <None Include="target\micros\stm32f100\make\stm32f100_files.gmk" />
     <None Include="target\micros\stm32f100\make\stm32f100_flags.gmk" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="target\micros\avr\startup\crt0.cpp" />
-    <ClCompile Include="target\micros\avr\startup\crt0_init_ram.cpp" />
-    <ClCompile Include="target\micros\avr\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\avr\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\stm32f100\startup\crt0.cpp" />
     <ClCompile Include="target\micros\stm32f100\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32f100\startup\crt1.cpp" />
