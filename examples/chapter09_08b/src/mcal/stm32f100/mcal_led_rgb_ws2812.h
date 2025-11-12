@@ -62,8 +62,8 @@
   #define MCAL_LED_RGB_WS2812_NOPS_10 { MCAL_LED_RGB_WS2812_NOPS_05 MCAL_LED_RGB_WS2812_NOPS_05 }
 
   #define MCAL_LED_RGB_WS2812_PUSH_DATA(next_bit_is_zero) port_pin_type::set_pin_high(); \
-  if   (next_bit_is_zero) { port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_10 } \
-  else                    { MCAL_LED_RGB_WS2812_NOPS_06 port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_02 MCAL_LED_RGB_WS2812_NOPS_01 }
+  if   (next_bit_is_zero) { port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_10 MCAL_LED_RGB_WS2812_NOPS_02 } \
+  else                    { MCAL_LED_RGB_WS2812_NOPS_06 MCAL_LED_RGB_WS2812_NOPS_02 port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_05 }
 
   template<typename PortPinType,
            const unsigned LedCount> auto led_rgb_ws2812<PortPinType, LedCount>::push_color() -> void
@@ -76,32 +76,32 @@
 
     mcal::irq::disable_all();
 
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x80))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x40))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x20))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x10))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x08))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x04))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x02))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x01))) != std::uint_fast8_t { UINT8_C(0) }));
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x80))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x40))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x20))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x10))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x08))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x04))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x02))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(green & static_cast<std::uint_fast8_t>(UINT8_C(0x01))) == std::uint_fast8_t { UINT8_C(0) });
 
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x80))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x40))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x20))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x10))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x08))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x04))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x02))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x01))) != std::uint_fast8_t { UINT8_C(0) }));
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x80))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x40))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x20))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x10))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x08))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x04))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x02))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(red   & static_cast<std::uint_fast8_t>(UINT8_C(0x01))) == std::uint_fast8_t { UINT8_C(0) });
 
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x80))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x40))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x20))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x10))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x08))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x04))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x02))) != std::uint_fast8_t { UINT8_C(0) }));
-    MCAL_LED_RGB_WS2812_PUSH_DATA((static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x01))) != std::uint_fast8_t { UINT8_C(0) }));
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x80))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x40))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x20))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x10))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x08))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x04))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x02))) == std::uint_fast8_t { UINT8_C(0) });
+    MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint_fast8_t>(blue  & static_cast<std::uint_fast8_t>(UINT8_C(0x01))) == std::uint_fast8_t { UINT8_C(0) });
 
     mcal::irq::enable_all();
   }
