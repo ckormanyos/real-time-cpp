@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,18 +26,18 @@
         using register_value_type   = RegisterValueType;
         using register_address_type = RegisterAddressType;
 
-        static auto reg_get() -> register_value_type { volatile register_value_type* pa = reinterpret_cast<register_value_type*>(address); return *pa; }
-        static auto reg_set() -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = value; }
-        static auto reg_and() -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = static_cast<register_value_type>(*pa & value); }
-        static auto reg_or () -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = static_cast<register_value_type>(*pa | value); }
-        static auto reg_not() -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = static_cast<register_value_type>(*pa & static_cast<register_value_type>(~value)); }
+        static auto reg_get() -> register_value_type { volatile register_value_type* p_addr = reinterpret_cast<register_value_type*>(address); return *p_addr; }
+        static auto reg_set() -> void                { volatile register_value_type* p_addr = reinterpret_cast<volatile register_value_type*>(address); *p_addr = value; }
+        static auto reg_and() -> void                { volatile register_value_type* p_addr = reinterpret_cast<volatile register_value_type*>(address); *p_addr = static_cast<register_value_type>(*p_addr & value); }
+        static auto reg_or () -> void                { volatile register_value_type* p_addr = reinterpret_cast<volatile register_value_type*>(address); *p_addr = static_cast<register_value_type>(*p_addr | value); }
+        static auto reg_not() -> void                { volatile register_value_type* p_addr = reinterpret_cast<volatile register_value_type*>(address); *p_addr = static_cast<register_value_type>(*p_addr & static_cast<register_value_type>(~value)); }
 
         template<const register_value_type mask_value>
         static auto reg_msk() -> void
         {
-          volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address);
+          volatile register_value_type* p_addr = reinterpret_cast<volatile register_value_type*>(address);
 
-          *pa =
+          *p_addr =
             static_cast<register_value_type>
             (
                 static_cast<register_value_type>(reg_get() & static_cast<register_value_type>(~mask_value))
@@ -45,9 +45,9 @@
             );
         }
 
-        static auto bit_set() -> void { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = static_cast<register_value_type>(*pa | static_cast<register_value_type>(1ULL << value)); }
-        static auto bit_clr() -> void { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = static_cast<register_value_type>(*pa & static_cast<register_value_type>(~static_cast<register_value_type>(1ULL << value))); }
-        static auto bit_not() -> void { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = static_cast<register_value_type>(*pa ^ static_cast<register_value_type>(1ULL << value)); }
+        static auto bit_set() -> void { volatile register_value_type* p_addr = reinterpret_cast<volatile register_value_type*>(address); *p_addr = static_cast<register_value_type>(*p_addr | static_cast<register_value_type>(1ULL << value)); }
+        static auto bit_clr() -> void { volatile register_value_type* p_addr = reinterpret_cast<volatile register_value_type*>(address); *p_addr = static_cast<register_value_type>(*p_addr & static_cast<register_value_type>(~static_cast<register_value_type>(1ULL << value))); }
+        static auto bit_not() -> void { volatile register_value_type* p_addr = reinterpret_cast<volatile register_value_type*>(address); *p_addr = static_cast<register_value_type>(*p_addr ^ static_cast<register_value_type>(1ULL << value)); }
         static auto bit_get() -> bool { return (static_cast<register_value_type>(reg_get() & static_cast<register_value_type>(1ULL << value)) != static_cast<register_value_type>(0U)); }
       };
     }
