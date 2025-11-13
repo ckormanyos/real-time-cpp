@@ -45,25 +45,26 @@
     }
   };
 
-  // Timing of WS2812.
+  // Timing of WS2812B.
 
   // Next bit is 0:
-  //   T0H = 0.35us
-  //   T0L = 0.80us
+  //   T0H = 220-380ns
+  //   T0L = 580ns - 1us
 
   // Next bit is 1:
-  //   T1H = 0.70us
-  //   T1L = 0.60us
+  //   T1H = 580ns - 1us
+  //   T1L = 220-420ns
 
   #define MCAL_LED_RGB_WS2812_NOPS_01 { asm volatile("nop"); }
   #define MCAL_LED_RGB_WS2812_NOPS_02 { MCAL_LED_RGB_WS2812_NOPS_01 MCAL_LED_RGB_WS2812_NOPS_01 }
-  #define MCAL_LED_RGB_WS2812_NOPS_05 { MCAL_LED_RGB_WS2812_NOPS_02 MCAL_LED_RGB_WS2812_NOPS_02 MCAL_LED_RGB_WS2812_NOPS_01 }
-  #define MCAL_LED_RGB_WS2812_NOPS_06 { MCAL_LED_RGB_WS2812_NOPS_02 MCAL_LED_RGB_WS2812_NOPS_02 MCAL_LED_RGB_WS2812_NOPS_02 }
-  #define MCAL_LED_RGB_WS2812_NOPS_10 { MCAL_LED_RGB_WS2812_NOPS_05 MCAL_LED_RGB_WS2812_NOPS_05 }
+  #define MCAL_LED_RGB_WS2812_NOPS_03 { MCAL_LED_RGB_WS2812_NOPS_02 MCAL_LED_RGB_WS2812_NOPS_01 }
+  #define MCAL_LED_RGB_WS2812_NOPS_09 { MCAL_LED_RGB_WS2812_NOPS_03 MCAL_LED_RGB_WS2812_NOPS_03 MCAL_LED_RGB_WS2812_NOPS_03 }
+  #define MCAL_LED_RGB_WS2812_NOPS_12 { MCAL_LED_RGB_WS2812_NOPS_09 MCAL_LED_RGB_WS2812_NOPS_03 }
 
-  #define MCAL_LED_RGB_WS2812_PUSH_DATA(next_bit_is_zero) port_pin_type::set_pin_high(); \
-  if   (next_bit_is_zero) { port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_10 MCAL_LED_RGB_WS2812_NOPS_02 } \
-  else                    { MCAL_LED_RGB_WS2812_NOPS_06 MCAL_LED_RGB_WS2812_NOPS_02 port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_05 }
+  #define MCAL_LED_RGB_WS2812_PUSH_DATA(next_bit_is_zero)  \
+  port_pin_type::set_pin_high();  \
+  if  (next_bit_is_zero) { port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_12 }  \
+  else                   { MCAL_LED_RGB_WS2812_NOPS_09   port_pin_type::set_pin_low();  }
 
   template<typename PortPinType,
            const unsigned LedCount> auto led_rgb_ws2812<PortPinType, LedCount>::push_color() -> void
@@ -106,29 +107,11 @@
     mcal::irq::enable_all();
   }
 
-  #if defined(MCAL_LED_RGB_WS2812_PUSH_DATA)
-  #undef MCAL_LED_RGB_WS2812_PUSH_DATA
-  #endif
-
-  #if defined(MCAL_LED_RGB_WS2812_NOPS_01)
   #undef MCAL_LED_RGB_WS2812_NOPS_01
-  #endif
-
-  #if defined(MCAL_LED_RGB_WS2812_NOPS_02)
   #undef MCAL_LED_RGB_WS2812_NOPS_02
-  #endif
-
-  #if defined(MCAL_LED_RGB_WS2812_NOPS_05)
-  #undef MCAL_LED_RGB_WS2812_NOPS_05
-  #endif
-
-  #if defined(MCAL_LED_RGB_WS2812_NOPS_06)
-  #undef MCAL_LED_RGB_WS2812_NOPS_06
-  #endif
-
-  #if defined(MCAL_LED_RGB_WS2812_NOPS_10)
-  #undef MCAL_LED_RGB_WS2812_NOPS_10
-  #endif
+  #undef MCAL_LED_RGB_WS2812_NOPS_03
+  #undef MCAL_LED_RGB_WS2812_NOPS_09
+  #undef MCAL_LED_RGB_WS2812_NOPS_12
 
   } } // namespace mcal::led
 
