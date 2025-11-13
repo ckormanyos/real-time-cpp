@@ -19,3 +19,9 @@ The RGB LED digital control signal is on `portb.9`.
 A logic-AND gate shifts the microcontroller pin's level
 from $3.3~\text{V}$ to $5~\text{V}$.
 The microcontroller is clocked at $24~\text{MHz}$.
+
+The hardware setup with the RGB LED in action is pictured
+in the image below. The pictures depicts a pink hue eminating
+from the bright RGB LED of type ws2812B.
+
+![](./images/board09_08b.jpg)
