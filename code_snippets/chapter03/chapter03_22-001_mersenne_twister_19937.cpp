@@ -46,11 +46,11 @@ auto do_something() -> void
        << ". ";
 
   // Generate 3 pseudo-random numbers in [1, 1023].
-  const unsigned random_numbers[3U] =
+  const unsigned random_numbers[std::size_t { UINT8_C(3) }] =
   {
-    distribution(eng),
-    distribution(eng),
-    distribution(eng)
+    static_cast<unsigned>(distribution(eng)),
+    static_cast<unsigned>(distribution(eng)),
+    static_cast<unsigned>(distribution(eng))
   };
 
   strm << "Random numbers in [1, 1023]: ";
