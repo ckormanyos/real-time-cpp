@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021 - 2022.
+//  Copyright Christopher Kormanyos 2021 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -246,7 +246,7 @@
         _S_destroy(__a, __p, 0);
       }
 
-      static size_type max_size(const AllocatorType& __a) noexcept
+      static size_type max_size(const AllocatorType& __a)
       { return _S_max_size(__a, 0); }
 
       static AllocatorType
@@ -291,10 +291,10 @@
       { __a.construct(__p, std::forward<_Args>(__args)...); }
 
       template<typename _Up>
-      static void destroy(allocator_type& __a, _Up* __p) noexcept(noexcept(__a.destroy(__p)))
+      static void destroy(allocator_type& __a, _Up* __p)(__a.destroy(__p))
       { __a.destroy(__p); }
 
-      static size_type max_size(const allocator_type& __a) noexcept
+      static size_type max_size(const allocator_type& __a)
       { return __a.max_size(); }
 
       static allocator_type select_on_container_copy_construction(const allocator_type& __rhs)

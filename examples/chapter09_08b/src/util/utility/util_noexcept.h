@@ -11,7 +11,7 @@
   #if defined(_MSC_VER) && (_MSC_VER <= 1900)
     #define UTIL_NOEXCEPT throw()
   #else
-    #define UTIL_NOEXCEPT noexcept
+    #define UTIL_NOEXCEPT
   #endif
 
 #endif // UTIL_NOEXCEPT_2017_11_06_H_

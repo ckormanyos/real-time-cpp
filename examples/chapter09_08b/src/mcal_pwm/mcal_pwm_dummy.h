@@ -20,9 +20,9 @@
   public:
     pwm_dummy() = default;
 
-    auto init() noexcept -> bool override { return true; }
+    auto init() -> bool override { return true; }
 
-    auto set_duty(const std::uint16_t duty_cycle) noexcept -> void override
+    auto set_duty(const std::uint16_t duty_cycle) -> void override
     {
       base_class_type::set_duty(duty_cycle);
     }

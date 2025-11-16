@@ -59,13 +59,13 @@
         );
 
     public:
-      template<typename other_tick_type> static constexpr auto microseconds(other_tick_type value_microseconds) noexcept -> tick_type { return static_cast<tick_type>(value_microseconds); }
-      template<typename other_tick_type> static constexpr auto milliseconds(other_tick_type value_milliseconds) noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(1000)) * microseconds(value_milliseconds); }
-      template<typename other_tick_type> static constexpr auto seconds     (other_tick_type value_seconds)      noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(1000)) * milliseconds(value_seconds     ); }
-      template<typename other_tick_type> static constexpr auto minutes     (other_tick_type value_minutes)      noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(  60)) * seconds     (value_minutes     ); }
-      template<typename other_tick_type> static constexpr auto hours       (other_tick_type value_hours)        noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(  60)) * minutes     (value_hours       ); }
-      template<typename other_tick_type> static constexpr auto days        (other_tick_type value_days)         noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(  24)) * hours       (value_days        ); }
-      template<typename other_tick_type> static constexpr auto weeks       (other_tick_type value_weeks)        noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(   7)) * days        (value_weeks       ); }
+      template<typename other_tick_type> static constexpr auto microseconds(other_tick_type value_microseconds) -> tick_type { return static_cast<tick_type>(value_microseconds); }
+      template<typename other_tick_type> static constexpr auto milliseconds(other_tick_type value_milliseconds) -> tick_type { return static_cast<tick_type>(UINT16_C(1000)) * microseconds(value_milliseconds); }
+      template<typename other_tick_type> static constexpr auto seconds     (other_tick_type value_seconds)      -> tick_type { return static_cast<tick_type>(UINT16_C(1000)) * milliseconds(value_seconds     ); }
+      template<typename other_tick_type> static constexpr auto minutes     (other_tick_type value_minutes)      -> tick_type { return static_cast<tick_type>(UINT16_C(  60)) * seconds     (value_minutes     ); }
+      template<typename other_tick_type> static constexpr auto hours       (other_tick_type value_hours)        -> tick_type { return static_cast<tick_type>(UINT16_C(  60)) * minutes     (value_hours       ); }
+      template<typename other_tick_type> static constexpr auto days        (other_tick_type value_days)         -> tick_type { return static_cast<tick_type>(UINT16_C(  24)) * hours       (value_days        ); }
+      template<typename other_tick_type> static constexpr auto weeks       (other_tick_type value_weeks)        -> tick_type { return static_cast<tick_type>(UINT16_C(   7)) * days        (value_weeks       ); }
 
       constexpr timer() = default;
 
@@ -73,13 +73,13 @@
 
       constexpr timer(const timer& other) = default;
 
-      constexpr timer(timer&& other) noexcept  = default;
+      constexpr timer(timer&& other)  = default;
 
       ~timer() = default;
 
       constexpr auto operator=(const timer& other) -> timer& = default;
 
-      constexpr auto operator=(timer&& other) noexcept -> timer& = default;
+      constexpr auto operator=(timer&& other) -> timer& = default;
 
       constexpr auto start_interval(const tick_type& tick_value) -> void
       {

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,9 +25,9 @@
       virtual ~ring_allocator_base() = default;
 
     protected:
-      ring_allocator_base() noexcept = default;
+      ring_allocator_base() = default;
 
-      ring_allocator_base(const ring_allocator_base&) noexcept = default;
+      ring_allocator_base(const ring_allocator_base&) = default;
 
       // The ring allocator's buffer type.
       struct buffer_type
@@ -36,7 +36,7 @@
 
         std::uint8_t data[size];
 
-        buffer_type() noexcept : data() { }
+        buffer_type() : data() { }
       };
 
       // The ring allocator's memory allocation.
@@ -81,13 +81,13 @@
 
     // Global comparison operators (required by the standard).
     inline auto operator==(const ring_allocator_base&,
-                           const ring_allocator_base&) noexcept -> bool
+                           const ring_allocator_base&) -> bool
     {
       return true;
     }
 
     inline auto operator!=(const ring_allocator_base&,
-                           const ring_allocator_base&) noexcept -> bool
+                           const ring_allocator_base&) -> bool
     {
       return false;
     }
@@ -125,12 +125,12 @@
       using reference       = value_type&;
       using const_reference = const value_type&;
 
-      ring_allocator() noexcept = default;
+      ring_allocator() = default;
 
-      ring_allocator(const ring_allocator&) noexcept : ring_allocator_base(ring_allocator()) { }
+      ring_allocator(const ring_allocator&) : ring_allocator_base(ring_allocator()) { }
 
       template <typename U>
-      ring_allocator(const ring_allocator<U, buffer_alignment>&) noexcept { }
+      ring_allocator(const ring_allocator<U, buffer_alignment>&) { }
 
       template<typename U> 
       struct rebind
@@ -138,7 +138,7 @@
         using other = ring_allocator<U, buffer_alignment>;
       };
 
-      auto max_size() const noexcept -> size_type
+      auto max_size() const -> size_type
       {
         return buffer_type::size / sizeof(value_type);
       }
@@ -156,14 +156,14 @@
         return static_cast<pointer>(p);
       }
 
-      auto construct(pointer p, const value_type& x) noexcept -> void
+      auto construct(pointer p, const value_type& x) -> void
       {
         new(static_cast<void*>(p)) value_type(x);
       }
 
-      auto destroy(pointer p) noexcept -> void { p->~value_type(); }
+      auto destroy(pointer p) -> void { p->~value_type(); }
 
-      auto deallocate(pointer, size_type) noexcept -> void { }
+      auto deallocate(pointer, size_type) -> void { }
     };
   }
 

@@ -19,12 +19,12 @@
       class port_pin
       {
       public:
-        static constexpr auto set_direction_output() noexcept -> void { }
-        static constexpr auto set_direction_input () noexcept -> void { }
-        static constexpr auto set_pin_high        () noexcept -> void { }
-        static constexpr auto set_pin_low         () noexcept -> void { }
-        static constexpr auto read_input_value    () noexcept -> bool { return false; }
-        static constexpr auto toggle_pin          () noexcept -> void { }
+        static constexpr auto set_direction_output() -> void { }
+        static constexpr auto set_direction_input () -> void { }
+        static constexpr auto set_pin_high        () -> void { }
+        static constexpr auto set_pin_low         () -> void { }
+        static constexpr auto read_input_value    () -> bool { return false; }
+        static constexpr auto toggle_pin          () -> void { }
       };
     } // namespace port
   } // namespace mcal

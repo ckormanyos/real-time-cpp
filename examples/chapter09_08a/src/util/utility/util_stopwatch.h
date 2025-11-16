@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2024.
+//  Copyright Christopher Kormanyos 2014 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,7 +26,7 @@
 
       stopwatch(const stopwatch& other) : my_start(other.my_start) { }
 
-      stopwatch(stopwatch&& other) noexcept : my_start(other.my_start) { }
+      stopwatch(stopwatch&& other) : my_start(other.my_start) { }
 
       ~stopwatch() = default;
 
@@ -40,7 +40,7 @@
         return *this;
       }
 
-      auto operator=(stopwatch&& other) noexcept -> stopwatch&
+      auto operator=(stopwatch&& other) -> stopwatch&
       {
         my_start = other.my_start;
 

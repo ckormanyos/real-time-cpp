@@ -47,7 +47,7 @@ else
     TOOL_PREFIX="$2"
 fi
 
-CFLAGS="-Wall -Wextra -Wpedantic -O2 -finline-functions -finline-limit=64 -mcpu=cortex-m3 -mtune=cortex-m3 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections"
+CFLAGS="-Wall -Wextra -Wpedantic -O2 -mcpu=cortex-m3 -mtune=cortex-m3 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -finline-functions -finline-limit=64 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections"
 CPPFLAGS="-std=c++14 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs"
 CINCLUDES="-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc/mcal/stm32f100 -Isrc"
 
@@ -60,18 +60,6 @@ rm -rf bin/
 echo "Create bin directory : bin/"
 mkdir -p bin
 echo
-
-echo "Compile  : app_led.cpp to bin/app_led.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/app/led/app_led.cpp -o bin/app_led.o
-
-echo "Compile  : mcal.cpp to bin/mcal.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/mcal.cpp -o bin/mcal.o
-
-echo "Compile  : mcal_gcc_cxx_completion.cpp to bin/mcal_gcc_cxx_completion.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/mcal_gcc_cxx_completion.cpp -o bin/mcal_gcc_cxx_completion.o
-
-echo "Compile  : mcal_cpu.cpp to bin/mcal_cpu.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/stm32f100/mcal_cpu.cpp -o bin/mcal_cpu.o
 
 echo "Compile  : app_led.cpp to bin/app_led.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/app/led/app_led.cpp -o bin/app_led.o

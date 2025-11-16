@@ -35,21 +35,21 @@
       port_pin_type::set_direction_output();
     }
 
-    ~pwm_port() noexcept override = default;
+    ~pwm_port() override = default;
 
-    auto init() noexcept -> bool override
+    auto init() -> bool override
     {
       return true;
     }
 
-    static constexpr auto get_resolution() noexcept -> duty_type { return duty_type { UINT16_C(1000) }; }
+    static constexpr auto get_resolution() -> duty_type { return duty_type { UINT16_C(1000) }; }
 
-    auto set_duty(const duty_type duty_cycle) noexcept -> void override
+    auto set_duty(const duty_type duty_cycle) -> void override
     {
       my_duty_shadow = (std::min)(duty_cycle, get_resolution());
     }
 
-    auto service() noexcept -> void
+    auto service() -> void
     {
       // Increment the cycle counter.
       ++my_cycle_counter;

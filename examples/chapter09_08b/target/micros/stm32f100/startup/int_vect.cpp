@@ -11,31 +11,31 @@
 
 extern "C" void __initial_stack_pointer();
 
-extern "C" void __my_startup         () noexcept __attribute__((used, noinline));
-extern "C" void __vector_unused_irq  () noexcept __attribute__((used, noinline));
-extern "C" void __nmi_handler        () noexcept __attribute__((used, noinline));
-extern "C" void __hard_fault_handler () noexcept __attribute__((used, noinline));
-extern "C" void __mem_manage_handler () noexcept __attribute__((used, noinline));
-extern "C" void __bus_fault_handler  () noexcept __attribute__((used, noinline));
-extern "C" void __usage_fault_handler() noexcept __attribute__((used, noinline));
-extern "C" void __svc_handler        () noexcept __attribute__((used, noinline));
-extern "C" void __debug_mon_handler  () noexcept __attribute__((used, noinline));
-extern "C" void __pend_sv_handler    () noexcept __attribute__((used, noinline));
-extern "C" void __sys_tick_handler   () noexcept __attribute__((used, noinline));
+extern "C" void __my_startup         () __attribute__((used, noinline));
+extern "C" void __vector_unused_irq  () __attribute__((used, noinline));
+extern "C" void __nmi_handler        () __attribute__((used, noinline));
+extern "C" void __hard_fault_handler () __attribute__((used, noinline));
+extern "C" void __mem_manage_handler () __attribute__((used, noinline));
+extern "C" void __bus_fault_handler  () __attribute__((used, noinline));
+extern "C" void __usage_fault_handler() __attribute__((used, noinline));
+extern "C" void __svc_handler        () __attribute__((used, noinline));
+extern "C" void __debug_mon_handler  () __attribute__((used, noinline));
+extern "C" void __pend_sv_handler    () __attribute__((used, noinline));
+extern "C" void __sys_tick_handler   () __attribute__((used, noinline));
 
-extern "C" void __vector_unused_irq  () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __nmi_handler        () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __hard_fault_handler () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __mem_manage_handler () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __bus_fault_handler  () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __usage_fault_handler() noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __svc_handler        () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __debug_mon_handler  () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __pend_sv_handler    () noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __nmi_handler        () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __hard_fault_handler () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __mem_manage_handler () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __bus_fault_handler  () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __usage_fault_handler() { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __svc_handler        () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __debug_mon_handler  () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
 
 namespace
 {
-  typedef void(*isr_type)();
+  using isr_type = void(*)();
 
   constexpr auto number_of_interrupts = static_cast<std::size_t>(UINT8_C(128));
 }

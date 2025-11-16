@@ -16,8 +16,8 @@
 
       auto init(const config_type*) -> void;
 
-      inline auto enable_all () noexcept -> void { }
-      inline auto disable_all() noexcept -> void { }
+      inline auto enable_all () -> void { }
+      inline auto disable_all() -> void { }
     } // namespace irq
   } // namespace mcal
 

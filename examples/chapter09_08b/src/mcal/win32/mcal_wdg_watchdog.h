@@ -35,14 +35,14 @@
       public:
         using base_timer_type = util::timer<std::uint32_t>;
 
-        watchdog_base() noexcept = default;
+        watchdog_base() = default;
         watchdog_base(const watchdog_base&) = delete;
         watchdog_base(watchdog_base&&) = delete;
 
         auto operator=(const watchdog_base&) -> watchdog_base& = delete;
         auto operator=(watchdog_base&&) -> watchdog_base& = delete;
 
-        virtual ~watchdog_base() noexcept = default;
+        virtual ~watchdog_base() = default;
       };
 
       template<const typename watchdog_base::base_timer_type::tick_type MyPeriod>
@@ -51,14 +51,14 @@
       public:
         using timer_type = watchdog_base::base_timer_type;
 
-        watchdog() noexcept = delete;
+        watchdog() = delete;
         watchdog(const watchdog&) = delete;
         watchdog(watchdog&&) = delete;
 
         auto operator=(const watchdog&) -> watchdog& = delete;
         auto operator=(watchdog&&) -> watchdog& = delete;
 
-        ~watchdog() noexcept override = default;
+        ~watchdog() override = default;
 
       private:
         using function_type = std::function<void()>;

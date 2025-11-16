@@ -17,7 +17,7 @@
       using config_type = void;
       using value_type  = std::uint64_t;
 
-      inline auto init(const config_type*) noexcept -> void { }
+      inline auto init(const config_type*) -> void { }
 
       struct secure final
       {

@@ -112,7 +112,7 @@
     }
 
     // Move constructor.
-    constexpr dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
+    constexpr dynamic_array(dynamic_array&& other) : elem_count(other.elem_count),
                                                               elems     (other.elems)
     {
       other.elem_count = static_cast<size_type>(UINT8_C(0));
@@ -144,7 +144,7 @@
     }
 
     // Move assignment operator.
-    constexpr auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
+    constexpr auto operator=(dynamic_array&& other) -> dynamic_array&
     {
       std::swap(elem_count, other.elem_count);
       std::swap(elems,      other.elems);
@@ -153,40 +153,40 @@
     }
 
     // Iterator members:
-    constexpr auto begin  ()       noexcept -> iterator               { return elems; }
-    constexpr auto end    ()       noexcept -> iterator               { return elems + elem_count; }
-    constexpr auto begin  () const noexcept -> const_iterator         { return elems; }
-    constexpr auto end    () const noexcept -> const_iterator         { return elems + elem_count; }
-    constexpr auto cbegin () const noexcept -> const_iterator         { return elems; }
-    constexpr auto cend   () const noexcept -> const_iterator         { return elems + elem_count; }
-    constexpr auto rbegin ()       noexcept -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
-    constexpr auto rend   ()       noexcept -> reverse_iterator       { return reverse_iterator(elems); }
-    constexpr auto rbegin () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    constexpr auto rend   () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
-    constexpr auto crbegin() const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    constexpr auto crend  () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    constexpr auto begin  ()       -> iterator               { return elems; }
+    constexpr auto end    ()       -> iterator               { return elems + elem_count; }
+    constexpr auto begin  () const -> const_iterator         { return elems; }
+    constexpr auto end    () const -> const_iterator         { return elems + elem_count; }
+    constexpr auto cbegin () const -> const_iterator         { return elems; }
+    constexpr auto cend   () const -> const_iterator         { return elems + elem_count; }
+    constexpr auto rbegin ()       -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
+    constexpr auto rend   ()       -> reverse_iterator       { return reverse_iterator(elems); }
+    constexpr auto rbegin () const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    constexpr auto rend   () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    constexpr auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    constexpr auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
 
     // Raw pointer access.
-    constexpr auto data()       noexcept -> pointer       { return elems; }
-    constexpr auto data() const noexcept -> const_pointer { return elems; }
+    constexpr auto data()       -> pointer       { return elems; }
+    constexpr auto data() const -> const_pointer { return elems; }
 
     // Size and capacity.
-    constexpr auto size    () const noexcept -> size_type { return  elem_count; }
-    constexpr auto max_size() const noexcept -> size_type { return  elem_count; }
-    constexpr auto empty   () const noexcept -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
+    constexpr auto size    () const -> size_type { return  elem_count; }
+    constexpr auto max_size() const -> size_type { return  elem_count; }
+    constexpr auto empty   () const -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
 
     // Element access members.
-    constexpr auto operator[](const size_type i)       noexcept -> reference       { return elems[i]; }
-    constexpr auto operator[](const size_type i) const noexcept -> const_reference { return elems[i]; }
+    constexpr auto operator[](const size_type i)       -> reference       { return elems[i]; }
+    constexpr auto operator[](const size_type i) const -> const_reference { return elems[i]; }
 
-    constexpr auto front()       noexcept -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
-    constexpr auto front() const noexcept -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    constexpr auto front()       -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    constexpr auto front() const -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
 
-    constexpr auto back()       noexcept -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    constexpr auto back() const noexcept -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    constexpr auto back()       -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    constexpr auto back() const -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
-    constexpr auto at(const size_type i)       noexcept -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    constexpr auto at(const size_type i) const noexcept -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    constexpr auto at(const size_type i)       -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    constexpr auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
     // Element manipulation members.
     constexpr auto fill(const value_type& v) -> void
@@ -194,7 +194,7 @@
       std::fill(begin(), begin() + elem_count, v);
     }
 
-    constexpr auto swap(dynamic_array& other) noexcept -> void
+    constexpr auto swap(dynamic_array& other) -> void
     {
       if(this != &other)
       {
@@ -203,7 +203,7 @@
       }
     }
 
-    constexpr auto swap(dynamic_array&& other) noexcept -> void
+    constexpr auto swap(dynamic_array&& other) -> void
     {
       elems      = std::move(other.elems);
       elem_count = std::move(other.elem_count);
@@ -301,7 +301,7 @@
 
   template<typename ValueType, typename AllocatorType>
   auto swap(dynamic_array<ValueType, AllocatorType>& x,
-            dynamic_array<ValueType, AllocatorType>& y) noexcept -> void
+            dynamic_array<ValueType, AllocatorType>& y) -> void
   {
     x.swap(y);
   }

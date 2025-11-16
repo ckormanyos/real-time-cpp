@@ -7,53 +7,79 @@
 
 // chapter03_22-001_mersenne_twister_19937.cpp
 
+// See also: https://godbolt.org/z/azW71ahfK
+
 #include <cstdint>
-#include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <random>
+#include <sstream>
 
+template<typename EngineType>
 auto do_something() -> void
 {
-  using local_result_type = typename std::random_device::result_type;
+  using local_result_type = typename EngineType::result_type;
 
-        std::random_device                               device;
-  const local_result_type                                seed(device());
-        std::mt19937                                     gtor(seed);
-        std::uniform_int_distribution<local_result_type> distribution
-                                                         {
-                                                           static_cast<local_result_type>(UINT16_C(1)),
-                                                           static_cast<local_result_type>(UINT16_C(1023))
-                                                         };
+  using dist_type = std::uniform_int_distribution<local_result_type>;
+
+  std::random_device dev { };
+
+  const local_result_type seed(dev());
+  EngineType eng { seed };
+
+  dist_type
+    distribution
+    {
+      static_cast<local_result_type>(UINT16_C(1)),
+      static_cast<local_result_type>(UINT16_C(1023))
+    };
+
+  std::stringstream strm { };
 
   // Print the seed.
-  std::cout << "Seed is: 0x"
-            << std::hex
-            << std::setw(8)
-            << std::setfill('0')
-            << std::uppercase
-            << seed
-            << ". ";
+  strm << "Seed is: 0x"
+       << std::hex
+       << std::setw(8)
+       << std::setfill('0')
+       << std::uppercase
+       << seed
+       << ". ";
 
   // Generate 3 pseudo-random numbers in [1, 1023].
-  const unsigned random_numbers[3U] =
+  const unsigned random_numbers[std::size_t { UINT8_C(3) }] =
   {
-    distribution(gtor),
-    distribution(gtor),
-    distribution(gtor)
+    static_cast<unsigned>(distribution(eng)),
+    static_cast<unsigned>(distribution(eng)),
+    static_cast<unsigned>(distribution(eng))
   };
 
-  std::cout << "Random numbers in [1, 1023]: ";
-  std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[0U] << ", ";
-  std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[1U] << ", ";
-  std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[2U] << std::endl;
+  strm << "Random numbers in [1, 1023]: ";
+  strm << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[0U] << ", ";
+  strm << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[1U] << ", ";
+  strm << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[2U];
+
+  std::cout << strm.str() << std::endl;
 }
 
 auto main() -> int
 {
-  // Generate 20 sequences of 3 pseudo-random numbers.
-  for(std::uint_fast8_t i = 0U; i < 20U; ++i)
+  // Generate 8 sequences of 3 pseudo-random numbers.
+  for(std::uint_fast8_t i = { UINT8_C(0) }; i < std::uint_fast8_t { UINT8_C(8) }; ++i)
   {
-    do_something();
+    // For std::mt19937.
+    using eng32_type = std::mt19937;
+
+    do_something<eng32_type>();
+  }
+
+  std::cout << std::endl;
+
+  // Generate 8 sequences of 3 pseudo-random numbers.
+  for(std::uint_fast8_t i = { UINT8_C(0) }; i < std::uint_fast8_t { UINT8_C(8) }; ++i)
+  {
+  // For std::mt19937_64.
+  using eng64_type = std::mt19937_64;
+
+    do_something<eng64_type>();
   }
 }
