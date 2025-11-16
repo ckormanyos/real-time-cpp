@@ -19,16 +19,16 @@
   public:
     using duty_type = std::uint16_t;
 
-    virtual ~pwm_base() noexcept = default;
+    virtual ~pwm_base() = default;
 
-    virtual auto init() noexcept -> bool = 0;
+    virtual auto init() -> bool = 0;
 
     virtual auto set_duty(const duty_type duty_cycle) -> void { my_duty_cycle = duty_cycle; }
 
-    auto get_duty() const noexcept -> duty_type { return my_duty_cycle; }
+    auto get_duty() const -> duty_type { return my_duty_cycle; }
 
   protected:
-    explicit pwm_base(const duty_type initial_duty = static_cast<duty_type>(UINT8_C(0))) noexcept
+    explicit pwm_base(const duty_type initial_duty = static_cast<duty_type>(UINT8_C(0)))
       : my_duty_cycle(initial_duty) { }
 
   private:

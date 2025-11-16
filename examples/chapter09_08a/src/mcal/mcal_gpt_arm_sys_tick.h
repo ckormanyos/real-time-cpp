@@ -41,9 +41,9 @@
              const register_value_type value = static_cast<register_value_type>(UINT8_C(0))>
     struct reg_access_static
     {
-      static auto reg_get() noexcept -> register_value_type { volatile register_value_type* pa = reinterpret_cast<register_value_type*>(address); return *pa; }
-      static auto reg_set() noexcept -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa =       value; }
-      static auto reg_or () noexcept -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = *pa | value; }
+      static auto reg_get() -> register_value_type { volatile register_value_type* pa = reinterpret_cast<register_value_type*>(address); return *pa; }
+      static auto reg_set() -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa =       value; }
+      static auto reg_or () -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = *pa | value; }
     };
   };
 
@@ -66,9 +66,9 @@
   public:
     using value_type = typename base_class_type::value_type;
 
-    static constexpr auto sys_tick_mhz() noexcept -> std::uint32_t { return SysTickMHz; }
+    static constexpr auto sys_tick_mhz() -> std::uint32_t { return SysTickMHz; }
 
-    static auto init() noexcept -> void
+    static auto init() -> void
     {
       if(!my_is_init)
       {
@@ -95,7 +95,7 @@
       }
     }
 
-    static auto get_time_elapsed() noexcept -> value_type
+    static auto get_time_elapsed() -> value_type
     {
       return
         static_cast<value_type>
@@ -108,7 +108,7 @@
     static volatile value_type my_sys_tick_value;
     static          bool       my_is_init;
 
-    static auto get_consistent_microsecond_tick() noexcept -> value_type
+    static auto get_consistent_microsecond_tick() -> value_type
     {
       // Return the system tick using a multiple read to ensure data consistency.
 

@@ -17,7 +17,7 @@
   class led_port_inverted : public mcal::led::led_boolean_state_base
   {
   public:
-    led_port_inverted() noexcept
+    led_port_inverted()
     {
       port_type::set_pin_high();
       port_type::set_direction_output();
@@ -25,7 +25,7 @@
 
     ~led_port_inverted() override = default;
 
-    auto toggle() noexcept -> void override
+    auto toggle() -> void override
     {
       using base_class_type = led_boolean_state_base;
 

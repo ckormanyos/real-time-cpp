@@ -13,7 +13,7 @@
   #elif defined(__IAR_SYSTEMS_ICC__)
     #define STL_LOCAL_NOEXCEPT
   #else
-    #define STL_LOCAL_NOEXCEPT noexcept
+    #define STL_LOCAL_NOEXCEPT
   #endif
 
 #endif // STL_LOCAL_NOEXCEPT_2017_08_16_H_

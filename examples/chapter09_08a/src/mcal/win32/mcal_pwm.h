@@ -18,7 +18,7 @@
 
       inline auto init(const config_type*) -> void { }
 
-      auto pwm0() noexcept -> mcal::pwm::pwm_base&;
+      auto pwm0() -> mcal::pwm::pwm_base&;
     } // namespace pwm
   } // namespace mcal
 

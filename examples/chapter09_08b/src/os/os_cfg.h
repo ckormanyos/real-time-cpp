@@ -17,7 +17,7 @@
   // Declare the task initialization and the task function of the idle process.
   namespace sys { namespace idle {
 
-  auto task_init() noexcept -> void; auto task_func() -> void;
+  auto task_init() -> void; auto task_func() -> void;
 
   } // namespace idle
   } // namespace sys

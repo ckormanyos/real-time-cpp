@@ -30,14 +30,14 @@
 
       task_control_block(const task_control_block& other_tcb) = default;
 
-      task_control_block(task_control_block&& other_tcb) noexcept = default;
+      task_control_block(task_control_block&& other_tcb) = default;
 
       task_control_block() = delete;
 
       ~task_control_block() = default;
 
       auto operator=(const task_control_block&) -> task_control_block& = delete;
-      auto operator=(task_control_block&&) noexcept -> task_control_block& = delete;
+      auto operator=(task_control_block&&) -> task_control_block& = delete;
 
     private:
       const function_type my_init;  // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)

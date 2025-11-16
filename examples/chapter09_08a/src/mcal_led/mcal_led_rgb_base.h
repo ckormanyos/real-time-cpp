@@ -19,7 +19,7 @@
   public:
     ~led_rgb_base() override = default;
 
-    auto toggle() noexcept -> void override
+    auto toggle() -> void override
     {
       using base_class_type = mcal::led::led_boolean_state_base;
 
@@ -50,7 +50,7 @@
       );
     }
 
-    auto get_color() const noexcept -> std::uint32_t
+    auto get_color() const -> std::uint32_t
     {
       return
         static_cast<std::uint32_t>
@@ -61,9 +61,9 @@
         );
     }
 
-    auto get_hue_r() const noexcept -> std::uint_fast8_t { return my_hue_r; }
-    auto get_hue_g() const noexcept -> std::uint_fast8_t { return my_hue_g; }
-    auto get_hue_b() const noexcept -> std::uint_fast8_t { return my_hue_b; }
+    auto get_hue_r() const -> std::uint_fast8_t { return my_hue_r; }
+    auto get_hue_g() const -> std::uint_fast8_t { return my_hue_g; }
+    auto get_hue_b() const -> std::uint_fast8_t { return my_hue_b; }
 
   protected:
     constexpr led_rgb_base() = default;

@@ -31,7 +31,7 @@
     #endif
     auto push_color() -> void;
 
-    static constexpr auto led_count() noexcept -> unsigned { return LedCount; }
+    static constexpr auto led_count() -> unsigned { return LedCount; }
 
   public:
     led_rgb_ws2812() { port_pin_type::set_direction_output(); }

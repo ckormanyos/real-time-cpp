@@ -20,7 +20,7 @@
   class led_console final : public mcal::led::led_boolean_state_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   public:
-    explicit constexpr led_console(const std::uint_fast8_t idx = std::uint_fast8_t { UINT8_C(0) }) noexcept
+    explicit constexpr led_console(const std::uint_fast8_t idx = std::uint_fast8_t { UINT8_C(0) })
       : my_index(idx) { }
 
     ~led_console() override = default;
@@ -47,7 +47,7 @@
   private:
     const std::uint_fast8_t my_index { };
 
-    static auto console_sync() noexcept -> std::atomic_flag&
+    static auto console_sync() -> std::atomic_flag&
     {
       static std::atomic_flag console_lock { };
 

@@ -19,7 +19,7 @@
 
     virtual auto toggle() -> void = 0;
 
-    virtual auto state_is_on() const noexcept -> bool = 0;
+    virtual auto state_is_on() const -> bool = 0;
 
   protected:
     constexpr led_base() = default;

@@ -44,13 +44,13 @@ void* operator new(std::size_t size)
   return static_cast<void*>(const_cast<std::uint8_t*>(p));
 }
 
-void operator delete(void*)              noexcept { }
+void operator delete(void*)              { }
 #if (defined(__GNUC__) && (__GNUC__ >= 12))
 #else
-void operator delete(void*, void*)       noexcept { }
+void operator delete(void*, void*)       { }
 #endif
 #if(__cplusplus >= 201400L)
-void operator delete(void*, std::size_t) noexcept { }
+void operator delete(void*, std::size_t) { }
 #endif
 
 extern "C"

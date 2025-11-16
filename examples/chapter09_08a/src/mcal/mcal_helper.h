@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2024.
+//  Copyright Christopher Kormanyos 2020 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -46,25 +46,25 @@
 
   template<const bool has_disable_enable_interrupts>
   auto disable_all_interrupts(const bool = has_disable_enable_interrupts,
-                              const typename std::enable_if<has_disable_enable_interrupts>::type* = nullptr) noexcept -> void
+                              const typename std::enable_if<has_disable_enable_interrupts>::type* = nullptr) -> void
   {
     mcal::irq::disable_all();
   }
 
   template<const bool has_disable_enable_interrupts>
   auto enable_all_interrupts(const bool = has_disable_enable_interrupts,
-                             const typename std::enable_if<has_disable_enable_interrupts>::type* = nullptr) noexcept -> void
+                             const typename std::enable_if<has_disable_enable_interrupts>::type* = nullptr) -> void
   {
     mcal::irq::enable_all();
   }
 
   template<const bool has_disable_enable_interrupts>
   auto disable_all_interrupts(const bool = has_disable_enable_interrupts,
-                              const typename std::enable_if<(!has_disable_enable_interrupts)>::type* = nullptr) noexcept -> void { }
+                              const typename std::enable_if<(!has_disable_enable_interrupts)>::type* = nullptr) -> void { }
 
   template<const bool has_disable_enable_interrupts>
   auto enable_all_interrupts(const bool = has_disable_enable_interrupts,
-                             const typename std::enable_if<(!has_disable_enable_interrupts)>::type* = nullptr) noexcept -> void { }
+                             const typename std::enable_if<(!has_disable_enable_interrupts)>::type* = nullptr) -> void { }
 
   } } // namespace mcal::helper
 

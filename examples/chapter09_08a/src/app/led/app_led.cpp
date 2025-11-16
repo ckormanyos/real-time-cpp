@@ -98,12 +98,12 @@ auto app::led::task_func() -> void
     {
       const auto delta_bump_point = std::abs(static_cast<int>(rgb_hue_sum) - static_cast<int>(INT16_C(255)));
 
-      if     (delta_bump_point == static_cast<int>(INT8_C(0))) { color_persist_time = static_cast<unsigned>(UINT8_C(600)); }
-      else if(delta_bump_point == static_cast<int>(INT8_C(1))) { color_persist_time = static_cast<unsigned>(UINT8_C(500)); }
-      else if(delta_bump_point == static_cast<int>(INT8_C(2))) { color_persist_time = static_cast<unsigned>(UINT8_C(400)); }
-      else if(delta_bump_point == static_cast<int>(INT8_C(3))) { color_persist_time = static_cast<unsigned>(UINT8_C(300)); }
-      else if(delta_bump_point == static_cast<int>(INT8_C(4))) { color_persist_time = static_cast<unsigned>(UINT8_C(200)); }
-      else                                                     { color_persist_time = static_cast<unsigned>(UINT8_C(100)); }
+      if     (delta_bump_point == static_cast<int>(INT8_C(0))) { color_persist_time = static_cast<unsigned>(UINT16_C(600)); }
+      else if(delta_bump_point == static_cast<int>(INT8_C(1))) { color_persist_time = static_cast<unsigned>(UINT16_C(500)); }
+      else if(delta_bump_point == static_cast<int>(INT8_C(2))) { color_persist_time = static_cast<unsigned>(UINT16_C(400)); }
+      else if(delta_bump_point == static_cast<int>(INT8_C(3))) { color_persist_time = static_cast<unsigned>(UINT16_C(300)); }
+      else if(delta_bump_point == static_cast<int>(INT8_C(4))) { color_persist_time = static_cast<unsigned>(UINT16_C(200)); }
+      else                                                     { color_persist_time = static_cast<unsigned>(UINT16_C(100)); }
     }
 
     // Make a smooth color transition and increment the color transition state
