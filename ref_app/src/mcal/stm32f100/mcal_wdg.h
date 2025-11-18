@@ -12,13 +12,13 @@
   {
     namespace wdg
     {
-      typedef void config_type;
+      using config_type = void;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
 
       struct secure final
       {
-        static void trigger();
+        static auto trigger() -> void;
       };
     }
   }

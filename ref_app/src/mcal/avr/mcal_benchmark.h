@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_BENCHMARK_2014_04_16_H_
-  #define MCAL_BENCHMARK_2014_04_16_H_
+#ifndef MCAL_BENCHMARK_2014_04_16_H
+  #define MCAL_BENCHMARK_2014_04_16_H
 
   #include <mcal_port.h>
   #include <mcal_reg.h>
@@ -24,4 +24,4 @@
     }
   }
 
-#endif // MCAL_BENCHMARK_2014_04_16_H_
+#endif // MCAL_BENCHMARK_2014_04_16_H

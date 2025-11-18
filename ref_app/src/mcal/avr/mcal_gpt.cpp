@@ -30,7 +30,7 @@ auto __vector_16() -> void ATTRIBUTE(signal, used, externally_visible);
 
 auto __vector_16() -> void
 {
-  // Increment the 32-bit system tick with 0x100, representing 256 [(1/2) us].
+  // Increment the 64-bit system tick with 0x100, representing 256 [(1/2) us].
   // This is basically the roll-over of the 8-bit timer0 at 2MHz each 128us.
 
   const auto new_tick =

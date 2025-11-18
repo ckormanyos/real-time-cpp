@@ -48,7 +48,7 @@ void* operator new(std::size_t size)
   // This is a naive and not completely functional
   // implementation of operator new(). In particular, there is
   // no sensible momory management or reaction to buffer overflow.
-  volatile static std::uint8_t  buffer[8U];
+  volatile static std::uint8_t  buffer[std::size_t { UINT8_C(16) }];
   volatile static std::uint8_t* get_ptr = buffer;
 
   // Get the newly allocated pointer.

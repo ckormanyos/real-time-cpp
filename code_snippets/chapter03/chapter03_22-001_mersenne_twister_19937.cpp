@@ -16,6 +16,9 @@
 #include <sstream>
 
 template<typename EngineType>
+auto do_something() -> void;
+
+template<typename EngineType>
 auto do_something() -> void
 {
   using local_result_type = typename EngineType::result_type;
@@ -61,6 +64,8 @@ auto do_something() -> void
   std::cout << strm.str() << std::endl;
 }
 
+auto main() -> int;
+
 auto main() -> int
 {
   // Generate 8 sequences of 3 pseudo-random numbers.
@@ -77,8 +82,8 @@ auto main() -> int
   // Generate 8 sequences of 3 pseudo-random numbers.
   for(std::uint_fast8_t i = { UINT8_C(0) }; i < std::uint_fast8_t { UINT8_C(8) }; ++i)
   {
-  // For std::mt19937_64.
-  using eng64_type = std::mt19937_64;
+    // For std::mt19937_64.
+    using eng64_type = std::mt19937_64;
 
     do_something<eng64_type>();
   }

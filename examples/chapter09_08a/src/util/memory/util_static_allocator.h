@@ -5,21 +5,21 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_STATIC_ALLOCATOR_2010_02_23_H_
-  #define UTIL_STATIC_ALLOCATOR_2010_02_23_H_
+#ifndef UTIL_STATIC_ALLOCATOR_2010_02_23_H
+  #define UTIL_STATIC_ALLOCATOR_2010_02_23_H
+
+  #include <util/utility/util_alignas.h>
 
   #include <cstddef>
   #include <cstdint>
   #include <memory>
-
-  #include <util/utility/util_alignas.h>
 
   namespace util
   {
     class static_allocator_base
     {
     public:
-      typedef std::size_t size_type;
+      using size_type = std::size_t;
 
       virtual ~static_allocator_base() = default;
 
@@ -31,7 +31,7 @@
       // The static allocator's buffer type.
       struct buffer_type
       {
-        static constexpr size_type size = 640U;
+        static constexpr size_type size { UINT16_C(640) };
 
         std::uint8_t data[size];
 
@@ -40,9 +40,9 @@
 
       // The static allocator's memory allocation.
       template<const std::uint_fast8_t buffer_alignment>
-      static void* do_allocate(size_type chunk_size,
-                               size_type& remaining,
-                               bool& is_overflow)
+      static auto do_allocate(size_type chunk_size,
+                              size_type& remaining,
+                              bool& is_overflow) -> void*
       {
         ALIGNAS(16) static buffer_type buffer;
 
@@ -89,14 +89,14 @@
     };
 
     // Global comparison operators (required by the standard).
-    inline bool operator==(const static_allocator_base&,
-                           const static_allocator_base&)
+    inline auto operator==(const static_allocator_base&,
+                           const static_allocator_base&) -> bool
     {
       return true;
     }
 
-    inline bool operator!=(const static_allocator_base&,
-                           const static_allocator_base&)
+    inline auto operator!=(const static_allocator_base&,
+                           const static_allocator_base&) -> bool
     {
       return false;
     }
@@ -109,9 +109,9 @@
     class static_allocator<void, buffer_alignment> : public static_allocator_base
     {
     public:
-      typedef void              value_type;
-      typedef value_type*       pointer;
-      typedef const value_type* const_pointer;
+      using value_type = void;
+      using pointer = value_type*;
+      using const_pointer = const value_type*;
 
       template<typename U>
       struct rebind
@@ -128,11 +128,11 @@
       static_assert(sizeof(T) <= buffer_type::size,
                     "The size of the allocation object can not exceed the buffer size.");
 
-      typedef T                 value_type;
-      typedef value_type*       pointer;
-      typedef const value_type* const_pointer;
-      typedef value_type&       reference;
-      typedef const value_type& const_reference;
+      using value_type       = T;
+      using pointer          = value_type*;
+      using const_pointer    = const value_type*;
+      using reference        = value_type&;
+      using const_reference  = const value_type&;
 
       static_allocator() = default;
 
@@ -147,7 +147,7 @@
         using other = static_allocator<U, buffer_alignment>;
       };
 
-      size_type max_size() const
+      auto max_size() const -> size_type
       {
         size_type remaining;
         bool      is_overflow;
@@ -162,11 +162,11 @@
         return remaining / sizeof(value_type);
       }
 
-            pointer address(      reference x) const { return &x; }
-      const_pointer address(const_reference x) const { return &x; }
+      auto address(      reference x) const ->       pointer { return &x; }
+      auto address(const_reference x) const -> const_pointer { return &x; }
 
-      pointer allocate(size_type count,
-                       typename static_allocator<void, buffer_alignment>::const_pointer = nullptr)
+      auto allocate(size_type count,
+                    typename static_allocator<void, buffer_alignment>::const_pointer = nullptr) -> pointer
       {
         const size_type chunk_size = count * sizeof(value_type);
 
@@ -183,15 +183,15 @@
         return static_cast<pointer>(p);
       }
 
-      void construct(pointer p, const value_type& x)
+      auto construct(pointer p, const value_type& x) -> void
       {
         new(static_cast<void*>(p)) value_type(x);
       }
 
-      void destroy(pointer p) { p->~value_type(); }
+      auto destroy(pointer p) -> void { p->~value_type(); }
 
       void deallocate(pointer, size_type) { }
     };
   }
 
-#endif // UTIL_STATIC_ALLOCATOR_2010_02_23_H_
+#endif // UTIL_STATIC_ALLOCATOR_2010_02_23_H

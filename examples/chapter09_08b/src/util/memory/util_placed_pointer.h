@@ -1,17 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_PLACED_PTR_2010_02_23_H_
-  #define UTIL_PLACED_PTR_2010_02_23_H_
+#ifndef UTIL_PLACED_PTR_2010_02_23_H
+  #define UTIL_PLACED_PTR_2010_02_23_H
+
+  #include <util/utility/util_noncopyable.h>
 
   #include <cstdint>
   #include <memory>
-
-  #include <util/utility/util_noncopyable.h>
 
   namespace util
   {
@@ -19,8 +19,8 @@
     class placed_ptr : private util::noncopyable
     {
     public:
-      typedef T           value_type;
-      typedef value_type* pointer;
+      using value_type = T;
+      using pointer = value_type*;
 
       placed_ptr()
       {
@@ -38,17 +38,17 @@
         my_ptr()->~value_type();
       }
 
-      pointer operator->() const { return my_ptr(); }
-      pointer get()              { return my_ptr(); }
+      auto operator->() const -> pointer { return my_ptr(); }
+      auto get() -> pointer { return my_ptr(); }
 
     private:
       std::uint8_t my_buf[sizeof(T)];
 
-      pointer my_ptr() const
+      auto my_ptr() const -> pointer
       {
         return reinterpret_cast<pointer>(const_cast<void*>(static_cast<const void*>(my_buf)));
       }
     };
   }
 
-#endif // UTIL_PLACED_PTR_2010_02_23_H_
+#endif // UTIL_PLACED_PTR_2010_02_23_H

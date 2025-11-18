@@ -490,6 +490,8 @@
     <None Include="src\util\STL\ctime">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="build.bat" />
+    <None Include="build.sh" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\chapter09_08.rc">

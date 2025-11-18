@@ -11,5 +11,5 @@
 auto mcal::port::init(const config_type*) -> void
 {
   // Power management: Enable power for I/O ports : porta, portb, and portc.
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_apb2enr, 0x0000001CUL>::reg_or();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_apb2enr, UINT32_C(0x0000001C)>::reg_or();
 }

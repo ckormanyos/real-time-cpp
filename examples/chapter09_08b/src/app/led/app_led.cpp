@@ -31,21 +31,15 @@ auto app::led::task_init() -> void
 auto app::led::task_func() -> void
 {
   using app_led_monochrome_timer_type = util::timer<std::uint32_t>;
-  using app_led_rgb_timer_type        = util::timer<std::uint16_t>;
 
-  static auto app_led_monochrome_timer = static_cast<app_led_monochrome_timer_type>(app_led_monochrome_timer_type::seconds(UINT8_C(1)));
-  static auto app_led_rgb_timer        = static_cast<app_led_rgb_timer_type>(app_led_rgb_timer_type::milliseconds(UINT8_C(30)));
-
-  static std::uint_fast8_t app_led_hue_r { UINT8_C(255) };
-  static std::uint_fast8_t app_led_hue_g { UINT8_C(0) };
-  static std::uint_fast8_t app_led_hue_b { UINT8_C(0) };
+  static app_led_monochrome_timer_type app_led_monochrome_timer { app_led_monochrome_timer_type::seconds(UINT8_C(1)) };
 
   if(app_led_monochrome_timer.timeout())
   {
     // Toggle the monochrome user LED at 1/2 Hz.
     mcal::led::led0().toggle();
 
-    // Start the next timer interval for the monochrome user LED.
+    // Start the next 1s timer interval for the monochrome user LED.
     app_led_monochrome_timer.start_interval(app_led_monochrome_timer_type::seconds(1U));
   }
 
@@ -60,16 +54,21 @@ auto app::led::task_func() -> void
     magenta_to_red
   };
 
+  using app_led_rgb_timer_type = util::timer<std::uint16_t>;
 
-  // Initialize the color transition state.
-  static auto color_transition_state = color_transition_type::red_to_yellow;
+  static app_led_rgb_timer_type app_led_rgb_timer { app_led_rgb_timer_type::milliseconds(UINT8_C(30)) };
 
   if(app_led_rgb_timer.timeout())
   {
-    // Animate the RGB LED with the colors of the spectrum.
+    // Initialize the color hues.
+    static std::uint_fast8_t app_led_hue_r { UINT8_C(255) };
+    static std::uint_fast8_t app_led_hue_g { UINT8_C(0) };
+    static std::uint_fast8_t app_led_hue_b { UINT8_C(0) };
 
-    // Implement the enhanced RGB-color-light-show mentioned
-    // in the readme markdown of this example.
+    // Initialize the color transition state.
+    static color_transition_type color_transition_state { color_transition_type::red_to_yellow };
+
+    // Animate the RGB LED with the colors of the spectrum.
 
     const auto rgb_hue_sum =
       static_cast<std::uint_fast16_t>
@@ -79,18 +78,18 @@ auto app::led::task_func() -> void
         + static_cast<std::uint_fast16_t>(app_led_hue_b)
       );
 
-    const auto rgb_hue_sum_is_in_bump_range =
-    (
-         (rgb_hue_sum >= static_cast<std::uint_fast16_t>(UINT16_C(250)))
-      && (rgb_hue_sum <= static_cast<std::uint_fast16_t>(UINT16_C(260)))
-    );
+    const bool rgb_hue_sum_is_in_bump_range
+    {
+         (rgb_hue_sum >= std::uint_fast16_t { UINT16_C(250) })
+      && (rgb_hue_sum <= std::uint_fast16_t { UINT16_C(260) })
+    };
 
-    const auto rgb_hue_is_near_bump_point =
-    (
-         ((app_led_hue_r > static_cast<std::uint_fast8_t>(UINT8_C(250))) && rgb_hue_sum_is_in_bump_range)
-      || ((app_led_hue_g > static_cast<std::uint_fast8_t>(UINT8_C(250))) && rgb_hue_sum_is_in_bump_range)
-      || ((app_led_hue_b > static_cast<std::uint_fast8_t>(UINT8_C(250))) && rgb_hue_sum_is_in_bump_range)
-    );
+    const bool rgb_hue_is_near_bump_point
+    {
+         ((app_led_hue_r > std::uint_fast8_t { UINT8_C(250) }) && rgb_hue_sum_is_in_bump_range)
+      || ((app_led_hue_g > std::uint_fast8_t { UINT8_C(250) }) && rgb_hue_sum_is_in_bump_range)
+      || ((app_led_hue_b > std::uint_fast8_t { UINT8_C(250) }) && rgb_hue_sum_is_in_bump_range)
+    };
 
     unsigned color_persist_time { UINT8_C(30) };
 
@@ -98,23 +97,24 @@ auto app::led::task_func() -> void
     {
       const auto delta_bump_point = std::abs(static_cast<int>(rgb_hue_sum) - static_cast<int>(INT16_C(255)));
 
-      if     (delta_bump_point == static_cast<int>(INT8_C(0))) { color_persist_time = static_cast<unsigned>(UINT16_C(600)); }
-      else if(delta_bump_point == static_cast<int>(INT8_C(1))) { color_persist_time = static_cast<unsigned>(UINT16_C(500)); }
-      else if(delta_bump_point == static_cast<int>(INT8_C(2))) { color_persist_time = static_cast<unsigned>(UINT16_C(400)); }
-      else if(delta_bump_point == static_cast<int>(INT8_C(3))) { color_persist_time = static_cast<unsigned>(UINT16_C(300)); }
-      else if(delta_bump_point == static_cast<int>(INT8_C(4))) { color_persist_time = static_cast<unsigned>(UINT16_C(200)); }
-      else                                                     { color_persist_time = static_cast<unsigned>(UINT16_C(100)); }
+      if     (delta_bump_point == int { INT8_C(0) }) { color_persist_time = unsigned { UINT16_C(600) }; }
+      else if(delta_bump_point == int { INT8_C(1) }) { color_persist_time = unsigned { UINT16_C(500) }; }
+      else if(delta_bump_point == int { INT8_C(2) }) { color_persist_time = unsigned { UINT16_C(400) }; }
+      else if(delta_bump_point == int { INT8_C(3) }) { color_persist_time = unsigned { UINT16_C(300) }; }
+      else if(delta_bump_point == int { INT8_C(4) }) { color_persist_time = unsigned { UINT16_C(200) }; }
+      else                                           { color_persist_time = unsigned { UINT16_C(100) }; }
     }
 
-    // Make a smooth color transition and increment the color transition state
-    // if necessary.
+    // Make a smooth color transition and increment the color
+    // transition state if necessary.
+
     switch(color_transition_state)
     {
-      case color_transition_type::red_to_yellow:   { if(++app_led_hue_g == static_cast<std::uint_fast8_t>(UINT8_C(255))) { color_transition_state = color_transition_type::yellow_to_green; } } break;
-      case color_transition_type::yellow_to_green: { if(--app_led_hue_r == static_cast<std::uint_fast8_t>(UINT8_C(  0))) { color_transition_state = color_transition_type::green_to_cyan;   } } break;
-      case color_transition_type::green_to_cyan:   { if(++app_led_hue_b == static_cast<std::uint_fast8_t>(UINT8_C(255))) { color_transition_state = color_transition_type::cyan_to_blue;    } } break;
-      case color_transition_type::cyan_to_blue:    { if(--app_led_hue_g == static_cast<std::uint_fast8_t>(UINT8_C(  0))) { color_transition_state = color_transition_type::blue_to_magenta; } } break;
-      case color_transition_type::blue_to_magenta: { if(++app_led_hue_r == static_cast<std::uint_fast8_t>(UINT8_C(255))) { color_transition_state = color_transition_type::magenta_to_red;  } } break;
+      case color_transition_type::red_to_yellow:   { if(++app_led_hue_g == std::uint_fast8_t { UINT8_C(255) }) { color_transition_state = color_transition_type::yellow_to_green; } } break;
+      case color_transition_type::yellow_to_green: { if(--app_led_hue_r == std::uint_fast8_t { UINT8_C(  0) }) { color_transition_state = color_transition_type::green_to_cyan;   } } break;
+      case color_transition_type::green_to_cyan:   { if(++app_led_hue_b == std::uint_fast8_t { UINT8_C(255) }) { color_transition_state = color_transition_type::cyan_to_blue;    } } break;
+      case color_transition_type::cyan_to_blue:    { if(--app_led_hue_g == std::uint_fast8_t { UINT8_C(  0) }) { color_transition_state = color_transition_type::blue_to_magenta; } } break;
+      case color_transition_type::blue_to_magenta: { if(++app_led_hue_r == std::uint_fast8_t { UINT8_C(255) }) { color_transition_state = color_transition_type::magenta_to_red;  } } break;
       default:
       case color_transition_type::magenta_to_red:  { if(--app_led_hue_b == static_cast<std::uint_fast8_t>(UINT8_C(  0))) { color_transition_state = color_transition_type::red_to_yellow;   } } break;
     }
