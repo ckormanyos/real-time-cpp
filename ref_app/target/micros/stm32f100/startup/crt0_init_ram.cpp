@@ -5,6 +5,13 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#if defined(__GNUC__) && (__GNUC__ >= 12)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
+#endif
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -43,3 +50,8 @@ void crt::init_ram()
             static_cast<memory_aligned_type*>(static_cast<void*>(&_bss_end)),
             static_cast<memory_aligned_type>(0U));
 }
+
+#if defined(__GNUC__) && (__GNUC__ >= 12)
+#pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
+#endif

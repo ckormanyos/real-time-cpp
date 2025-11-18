@@ -1,12 +1,12 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2022.
+//  Copyright Christopher Kormanyos 2013 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef TYPE_TRAITS_2013_09_01_
-  #define TYPE_TRAITS_2013_09_01_
+#ifndef TYPE_TRAITS_2013_09_01
+  #define TYPE_TRAITS_2013_09_01
 
   #include <cstddef>
   #include <cstdint>
@@ -296,7 +296,7 @@
     };
 
     template <typename...>
-    using void_t = void; 
+    using void_t = void;
 
     // primary template (used for zero types)
     template <typename...>
@@ -304,7 +304,7 @@
 
     // 1 type
     template <typename T>
-    struct common_type<T> : common_type<T, T> {};
+    struct common_type<T> : common_type<T, T> { };
 
     // 2 types
     template <typename T1, typename T2>
@@ -335,7 +335,7 @@
     struct common_type<T1, T2, R...> : common_type_multi_impl<void, T1, T2, R...> {};
   }
 
-  #if(__cplusplus >= 201703L)
+  #if (defined(__cplusplus) && (__cplusplus >= 201703L))
   // C++17 and later
   namespace std
   {
@@ -353,7 +353,7 @@
   }
   #endif
 
-  #if(__cplusplus > 202002L)
+  #if (defined(__cplusplus) && (__cplusplus > 202002L))
   // C++20 and later
   namespace std
   {
@@ -394,7 +394,7 @@
 
     struct no_type
     {
-      char padding[8];
+      char padding[std::size_t { UINT8_C(8) }];
     };
 
     struct is_constructible_imp
@@ -419,14 +419,14 @@
     struct ok_tag { double d; char c[N]; };
 
     template <class T>
-    ok_tag<sizeof(T)> check_is_complete(int);
+    ok_tag<static_cast<unsigned>(sizeof(T))> check_is_complete(int);
 
     template <class T>
     char check_is_complete(...);
 
     struct is_default_constructible_imp
     {
-      template<typename _Tp, typename = decltype(_Tp())>
+      template<typename Tp, typename = decltype(Tp())>
       static traits_helper::yes_type test(int);
 
       template<typename>
@@ -440,7 +440,7 @@
       template<typename>
       static traits_helper::no_type test(...);
     };
-  }
+  } // namespace traits_helper
 
   namespace std
   {
@@ -501,4 +501,4 @@
     template <class T> struct is_constructible<T> : public is_default_constructible<T> { };
   }
 
-#endif // TYPE_TRAITS_2013_09_01_
+#endif // TYPE_TRAITS_2013_09_01

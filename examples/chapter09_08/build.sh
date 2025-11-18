@@ -12,7 +12,7 @@
 #
 # If command
 #     /usr/bin/avr-g++
-# installed, e.g. via command   apt-get install gcc-avr avr-libc
+# installed, e.g. via command  sudo apt-get install gcc-avr avr-libc
 # then:
 # ./build.sh
 #
@@ -23,11 +23,11 @@
 #
 # Usage example A (from *nix shell)
 # cd /usr/local/real-time-cpp/examples/chapter09_08
-# ./build.sh /usr/local/real-time-cpp/examples/chapter09_08/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+# ./build.sh /usr/local/real-time-cpp/examples/chapter09_08a/tools/Util/msys64/usr/local/gcc-15.1.0-avr/bin avr
 
 # Usage example B (from Win* shell such as in Git for Win*)
-# cd C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08
-# ./build.sh C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+# cd C:/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08
+# ./build.sh C:/Users/ckorm/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08/tools/Util/msys64/usr/local/gcc-15.1.0-avr/bin avr
 
 if [[ $# == 0 ]]; then                   ##  $# is the number of arguments
     if [[ -n "$(which avr-g++)" ]]; then ## -n tests if string is not empty
@@ -47,9 +47,9 @@ else
     TOOL_PREFIX="$2"
 fi
 
-CFLAGS="-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections"
+CFLAGS="-Wall -Wextra -Wpedantic -O2 -mmcu=atmega328p -fsigned-char -finline-functions -finline-limit=64 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections"
 CPPFLAGS="-std=c++14 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs"
-CINCLUDES="-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr"
+CINCLUDES="-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc/mcal/avr -Isrc"
 
 echo
 echo "Building with        : build.sh"

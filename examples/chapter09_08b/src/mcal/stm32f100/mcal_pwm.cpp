@@ -8,7 +8,7 @@
 #include <mcal_pwm.h>
 #include <mcal_pwm/mcal_pwm_dummy.h>
 
-mcal::pwm::pwm_base& mcal::pwm::pwm0()
+auto mcal::pwm::pwm0() -> mcal::pwm::pwm_base&
 {
   static mcal::pwm::pwm_dummy pwm;
 

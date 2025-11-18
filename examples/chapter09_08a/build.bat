@@ -12,22 +12,22 @@
 @rem build.bat directory_of_gcc_bin prefix_of_avr_gcc
 
 @rem Usage example A,
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
+@rem cd "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a"
+@rem build.bat "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a\tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin" avr
 
 @rem Usage example A1 (use a relative tool path),
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a"
-@rem build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
+@rem cd "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a"
+@rem build.bat ".\tools\Util\msys64\usr\local\gcc-15.1.0-avr\bin" avr
 
 @rem Usage example B,
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a"
-@rem build.bat "C:\Program Files (x86)\gcc-11.2.0-avr\bin" avr
+@rem cd "C:\Users\ckorm\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a"
+@rem build.bat "C:\Program Files (x86)\gcc-15.1.0-avr\bin" avr
 
 
 @set TOOL_PATH=%1
 @set TOOL_PREFIX=%2
 
-@set CFLAGS=-Wall -Wextra -Wpedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions
+@set CFLAGS=-Wall -Wextra -Wpedantic -O2 -mmcu=atmega328p -fsigned-char -fno-exceptions
 @set CPPFLAGS=-std=c++14 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
 @set CINCLUDES=-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr
 

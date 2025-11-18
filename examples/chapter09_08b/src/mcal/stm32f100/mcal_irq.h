@@ -21,4 +21,4 @@
     }
   }
 
-#endif // MCAL_IRQ_2010_04_10_H_
+#endif // MCAL_IRQ_2010_04_10_H
