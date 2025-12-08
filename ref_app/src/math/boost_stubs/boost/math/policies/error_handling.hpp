@@ -12,7 +12,7 @@
 #include <boost/math/tools/config.hpp>
 #include <boost/math/policies/policy.hpp>
 #include <boost/math/tools/precision.hpp>
-#ifndef BOOST_MATH_NO_EXCEPTIONS
+#if !defined(BOOST_MATH_NO_EXCEPTIONS)
 #include <boost/math/tools/throw_exception.hpp>
 #endif
 
@@ -21,11 +21,11 @@
 #include <complex>
 #include <cstdint>
 #include <cstring>
-#ifndef BOOST_MATH_NO_EXCEPTIONS
+#if !defined(BOOST_MATH_NO_EXCEPTIONS)
 #include <stdexcept>
 #endif
 #include <string>
-#ifndef BOOST_MATH_NO_RTTI
+#if !defined(BOOST_MATH_NO_RTTI)
 #include <typeinfo>
 #endif
 
@@ -42,7 +42,7 @@
 
 namespace boost{ namespace math {
 
-#ifndef BOOST_MATH_NO_EXCEPTIONS
+#if !defined(BOOST_MATH_NO_EXCEPTIONS)
 
 class evaluation_error : public std::runtime_error
 {
@@ -116,7 +116,7 @@ inline void replace_all_in_string(std::string& result, const char* what, const c
 template <class T>
 inline const char* name_of()
 {
-#ifndef BOOST_MATH_NO_RTTI
+#if !defined(BOOST_MATH_NO_RTTI)
    return typeid(T).name();
 #else
    return "unknown";
@@ -126,7 +126,7 @@ template <> inline const char* name_of<float>(){ return "float"; }
 template <> inline const char* name_of<double>(){ return "double"; }
 template <> inline const char* name_of<long double>(){ return "long double"; }
 
-#ifdef BOOST_MATH_USE_FLOAT128
+#if defined(BOOST_MATH_USE_FLOAT128)
 template <>
 inline const char* name_of<BOOST_MATH_FLOAT128_TYPE>()
 {
@@ -134,7 +134,7 @@ inline const char* name_of<BOOST_MATH_FLOAT128_TYPE>()
 }
 #endif
 
-#ifndef BOOST_MATH_NO_EXCEPTIONS
+#if !defined(BOOST_MATH_NO_EXCEPTIONS)
 template <class E, class T>
 void raise_error(const char* pfunction, const char* message)
 {
@@ -149,7 +149,7 @@ void raise_error(const char* pfunction, const char* message)
 
   std::string function(pfunction);
   std::string msg("Error in function ");
-#ifndef BOOST_MATH_NO_RTTI
+#if !defined(BOOST_MATH_NO_RTTI)
   replace_all_in_string(function, "%1%", boost::math::policies::detail::name_of<T>());
 #else
   replace_all_in_string(function, "%1%", "Unknown");
@@ -176,7 +176,7 @@ void raise_error(const char* pfunction, const char* pmessage, const T& val)
   std::string function(pfunction);
   std::string message(pmessage);
   std::string msg("Error in function ");
-#ifndef BOOST_MATH_NO_RTTI
+#if !defined(BOOST_MATH_NO_RTTI)
   replace_all_in_string(function, "%1%", boost::math::policies::detail::name_of<T>());
 #else
   replace_all_in_string(function, "%1%", "Unknown");
@@ -199,7 +199,7 @@ inline T raise_domain_error(
            const T& val,
            const ::boost::math::policies::domain_error< ::boost::math::policies::throw_on_error>&)
 {
-#ifdef BOOST_MATH_NO_EXCEPTIONS
+#if defined(BOOST_MATH_NO_EXCEPTIONS)
    static_assert(sizeof(T) == 0, "Error handler called with throw_on_error and BOOST_MATH_NO_EXCEPTIONS set.");
 #else
    raise_error<std::domain_error, T>(function, message, val);
@@ -250,7 +250,7 @@ inline T raise_pole_error(
            const T& val,
            const  ::boost::math::policies::pole_error< ::boost::math::policies::throw_on_error>&)
 {
-#ifdef BOOST_MATH_NO_EXCEPTIONS
+#if defined(BOOST_MATH_NO_EXCEPTIONS)
    static_assert(sizeof(T) == 0, "Error handler called with throw_on_error and BOOST_MATH_NO_EXCEPTIONS set.");
 #else
    return boost::math::policies::detail::raise_domain_error(function, message, val,  ::boost::math::policies::domain_error< ::boost::math::policies::throw_on_error>());
@@ -293,7 +293,7 @@ inline T raise_overflow_error(
            const char* message,
            const  ::boost::math::policies::overflow_error< ::boost::math::policies::throw_on_error>&)
 {
-#ifdef BOOST_MATH_NO_EXCEPTIONS
+#if defined(BOOST_MATH_NO_EXCEPTIONS)
    static_assert(sizeof(T) == 0, "Error handler called with throw_on_error and BOOST_MATH_NO_EXCEPTIONS set.");
 #else
    raise_error<std::overflow_error, T>(function, message ? message : "numeric overflow");
@@ -309,7 +309,7 @@ inline T raise_overflow_error(
            const T& val,
            const ::boost::math::policies::overflow_error< ::boost::math::policies::throw_on_error>&)
 {
-#ifdef BOOST_MATH_NO_EXCEPTIONS
+#if defined(BOOST_MATH_NO_EXCEPTIONS)
    static_assert(sizeof(T) == 0, "Error handler called with throw_on_error and BOOST_MATH_NO_EXCEPTIONS set.");
 #else
    raise_error<std::overflow_error, T>(function, message ? message : "numeric overflow", val);
@@ -395,7 +395,7 @@ inline T raise_underflow_error(
            const char* message,
            const  ::boost::math::policies::underflow_error< ::boost::math::policies::throw_on_error>&)
 {
-#ifdef BOOST_MATH_NO_EXCEPTIONS
+#if defined(BOOST_MATH_NO_EXCEPTIONS)
    static_assert(sizeof(T) == 0, "Error handler called with throw_on_error and BOOST_MATH_NO_EXCEPTIONS set.");
 #else
    raise_error<std::underflow_error, T>(function, message ? message : "numeric underflow");
@@ -443,7 +443,7 @@ inline T raise_denorm_error(
            const T& /* val */,
            const  ::boost::math::policies::denorm_error< ::boost::math::policies::throw_on_error>&)
 {
-#ifdef BOOST_MATH_NO_EXCEPTIONS
+#if defined(BOOST_MATH_NO_EXCEPTIONS)
    static_assert(sizeof(T) == 0, "Error handler called with throw_on_error and BOOST_MATH_NO_EXCEPTIONS set.");
 #else
    raise_error<std::underflow_error, T>(function, message ? message : "denormalised result");
@@ -494,7 +494,7 @@ inline T raise_evaluation_error(
            const T& val,
            const  ::boost::math::policies::evaluation_error< ::boost::math::policies::throw_on_error>&)
 {
-#ifdef BOOST_MATH_NO_EXCEPTIONS
+#if defined(BOOST_MATH_NO_EXCEPTIONS)
    static_assert(sizeof(T) == 0, "Error handler called with throw_on_error and BOOST_MATH_NO_EXCEPTIONS set.");
 #else
    raise_error<boost::math::evaluation_error, T>(function, message, val);
@@ -546,7 +546,7 @@ inline TargetType raise_rounding_error(
            const TargetType&,
            const  ::boost::math::policies::rounding_error< ::boost::math::policies::throw_on_error>&)
 {
-#ifdef BOOST_MATH_NO_EXCEPTIONS
+#if defined(BOOST_MATH_NO_EXCEPTIONS)
    static_assert(sizeof(T) == 0, "Error handler called with throw_on_error and BOOST_MATH_NO_EXCEPTIONS set.");
 #else
    raise_error<boost::math::rounding_error, T>(function, message, val);
@@ -602,7 +602,7 @@ inline T raise_indeterminate_result_error(
            const R& ,
            const ::boost::math::policies::indeterminate_result_error< ::boost::math::policies::throw_on_error>&)
 {
-#ifdef BOOST_MATH_NO_EXCEPTIONS
+#if defined(BOOST_MATH_NO_EXCEPTIONS)
    static_assert(sizeof(T) == 0, "Error handler called with throw_on_error and BOOST_MATH_NO_EXCEPTIONS set.");
 #else
    raise_error<std::domain_error, T>(function, message, val);
@@ -886,4 +886,3 @@ std::pair<T, T> pair_from_single(const T& val) BOOST_MATH_NOEXCEPT(T)
 }} // namespaces boost/math
 
 #endif // BOOST_MATH_POLICY_ERROR_HANDLING_HPP
-

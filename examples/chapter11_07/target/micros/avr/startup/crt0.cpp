@@ -20,7 +20,7 @@ namespace crt
 
 extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
 
-extern "C" int main(void) __attribute__((used, noinline));
+extern auto main(void) -> int __attribute__((used, noinline));
 
 void __my_startup()
 {

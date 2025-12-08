@@ -17,10 +17,10 @@
 
    template<typename real_value_type,
             typename real_function_type>
-   real_value_type integral(const real_value_type& a,
-                            const real_value_type& b,
-                            const real_value_type& tol,
-                            real_function_type real_function)
+   auto integral(const real_value_type& a,
+                 const real_value_type& b,
+                 const real_value_type& tol,
+                 real_function_type real_function) -> real_value_type
    {
      std::uint_fast32_t n2 { UINT8_C(1) };
 

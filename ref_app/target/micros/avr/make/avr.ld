@@ -65,6 +65,10 @@ SECTIONS
     . = ALIGN(2);
     *(.text*)
     . = ALIGN(2);
+    *(.jumptables.*)
+    . = ALIGN(2);
+    *(.trampolines*)
+    . = ALIGN(2);
   } > ROM
 
   . = 0x00800100;

@@ -72,7 +72,7 @@ void app_led_task_toggle_led0(void*)
       mcal::led::led0().toggle();
     }
 
-    // This application task is programmed to yield every 125ms.
+    // This application task is programmed to cyclically yield for 125ms.
 
     OS_TASK_WAIT_YIELD(TickType_t { UINT8_C(125) });
   }

@@ -1,20 +1,20 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef DERIVATIVE_2012_01_09_H_
-  #define DERIVATIVE_2012_01_09_H_
+#ifndef DERIVATIVE_2012_01_09_H
+  #define DERIVATIVE_2012_01_09_H
 
   namespace math
   {
     template<typename real_value_type,
              typename real_function_type>
-    real_value_type derivative(const real_value_type& x,
-                               const real_value_type& dx,
-                               real_function_type real_function)
+    auto derivative(const real_value_type& x,
+                    const real_value_type& dx,
+                    real_function_type real_function) -> real_value_type
     {
       // Compute the first derivative of the input function
       // using a three-point central difference rule of O(dx^6).
@@ -38,9 +38,9 @@
 
     template<typename real_value_type,
              typename real_function_type>
-    real_value_type derivative_two(const real_value_type& x,
-                                   const real_value_type& dx,
-                                   real_function_type real_function)
+    auto derivative_two(const real_value_type& x,
+                        const real_value_type& dx,
+                        real_function_type real_function) -> real_value_type
     {
       // Compute the second derivative of real_function using
       // a three-point central difference rule of O(dx^6).
@@ -63,4 +63,4 @@
     }
   } // namespace math
 
-#endif // DERIVATIVE_2012_01_09_H_
+#endif // DERIVATIVE_2012_01_09_H
