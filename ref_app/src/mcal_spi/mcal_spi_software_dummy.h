@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2025
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,45 +12,29 @@
 
   namespace mcal { namespace spi {
 
-  class spi_software_dummy : public ::util::communication_base
+  class spi_software_dummy : public util::communication_buffer_depth_one_byte // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   private:
-    using base_class_type = ::util::communication_base;
+    using base_class_type = util::communication_buffer_depth_one_byte;
 
   public:
     // This class implements a dummy SPI with no real functionality.
 
-    spi_software_dummy() = delete;
+    spi_software_dummy() = default;
 
-    ~spi_software_dummy() = delete;
+    ~spi_software_dummy() override = default;
 
-    static auto init() -> void { }
-
-    static auto send(const std::uint8_t byte_to_send, std::uint8_t& byte_to_recv) -> bool
+    auto send(const std::uint8_t byte_to_send) noexcept -> bool override
     {
       static_cast<void>(byte_to_send);
 
-      byte_to_recv = std::uint8_t { UINT8_C(0) };
+      base_class_type::recv_buffer = 0U;
 
       return true;
     }
 
-    static auto send_n(base_class_type::send_iterator_type first,
-                       base_class_type::send_iterator_type last,
-                       std::uint8_t& byte_to_recv) -> bool
-    {
-      while(first != last)
-      {
-        const auto byte_to_send = static_cast<base_class_type::buffer_value_type>(*first++);
-
-        static_cast<void>(send(byte_to_send, byte_to_recv));
-      }
-
-      return true;
-    }
-
-    static auto   select() -> void { }
-    static auto deselect() -> void { }
+    auto   select() -> void override { }
+    auto deselect() -> void override { }
   };
 
   } // namespace spi

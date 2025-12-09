@@ -1,16 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2025.
+//  Copyright Christopher Kormanyos 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_MEMORY_SRAM_PTR_2020_04_09_H
-  #define MCAL_MEMORY_SRAM_PTR_2020_04_09_H
-
-  #include <mcal_memory/mcal_memory_sram_ref.h>
+#ifndef MCAL_MEMORY_SRAM_PTR_2020_04_09_H_
+  #define MCAL_MEMORY_SRAM_PTR_2020_04_09_H_
 
   #include <iterator>
+
+  #include <mcal_memory/mcal_memory_sram_ref.h>
 
   // Implement a specialized pointer type for sram memory.
 
@@ -137,4 +137,4 @@
 
   } } } // namespace mcal::memory::sram
 
-#endif // MCAL_MEMORY_SRAM_PTR_2020_04_09_H
+#endif // MCAL_MEMORY_SRAM_PTR_2020_04_09_H_

@@ -171,6 +171,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp" />
+    <ClCompile Include="src\app\pi_spigot\pi_spigot.cpp" />
+    <ClCompile Include="src\app\pi_spigot\pi_spigot_callback.cpp" />
     <ClCompile Include="src\mcal\avr\mcal_cpu.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -243,7 +245,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\led\app_led.h" />
+    <ClInclude Include="src\app\pi_calc_cfg.h" />
     <ClInclude Include="src\math\checksums\crc\crc32.h" />
+    <ClInclude Include="src\math\checksums\hash\hash_base.h" />
+    <ClInclude Include="src\math\checksums\hash\hash_detail.h" />
+    <ClInclude Include="src\math\checksums\hash\hash_sha1.h" />
+    <ClInclude Include="src\math\checksums\hash\hash_sha256.h" />
+    <ClInclude Include="src\math\pi_spigot\pi_spigot.h" />
+    <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_cpu.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

@@ -1,18 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2025.
+//  Copyright Christopher Kormanyos 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_MEMORY_SRAM_ITERATOR_2020_04_27_H
-  #define MCAL_MEMORY_SRAM_ITERATOR_2020_04_27_H
-
-  #include <mcal_memory/mcal_memory_const_address_ptr.h>
-  #include <mcal_memory/mcal_memory_nonconst_address_ptr.h>
-  #include <mcal_memory/mcal_memory_sram_ptr.h>
+#ifndef MCAL_MEMORY_SRAM_ITERATOR_2020_04_27_H_
+  #define MCAL_MEMORY_SRAM_ITERATOR_2020_04_27_H_
 
   #include <iterator>
+
+  #include <mcal_memory/mcal_memory_nonconst_address_ptr.h>
+  #include <mcal_memory/mcal_memory_sram_ptr.h>
 
   // Implement specialized iterator types for read/write SRAM memory
   // (such as a serial SRAM chip or a parallel SRAM brick).
@@ -193,4 +192,4 @@
 
   } } } // namespace mcal::memory::sram
 
-#endif // MCAL_MEMORY_SRAM_ITERATOR_2020_04_27_H
+#endif // MCAL_MEMORY_SRAM_ITERATOR_2020_04_27_H_

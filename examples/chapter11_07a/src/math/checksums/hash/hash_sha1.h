@@ -18,15 +18,12 @@
 
   namespace math { namespace checksums { namespace hash {
 
-  template<typename CountType>
-  class hash_sha1 : public hash_base<CountType,
-                                     static_cast<std::uint16_t>(UINT8_C(160)),
+  class hash_sha1 : public hash_base<static_cast<std::uint16_t>(UINT8_C(160)),
                                      static_cast<std::uint16_t>(UINT8_C(64)),
                                      static_cast<std::uint16_t>(UINT8_C(64))>
   {
   private:
-    using base_class_type = hash_base<CountType,
-                                      static_cast<std::uint16_t>(UINT8_C(160)),
+    using base_class_type = hash_base<static_cast<std::uint16_t>(UINT8_C(160)),
                                       static_cast<std::uint16_t>(UINT8_C(64)),
                                       static_cast<std::uint16_t>(UINT8_C(64))>;
 
@@ -59,8 +56,7 @@
     auto perform_algorithm() -> void override;
   };
 
-  template <typename my_count_type>
-  auto hash_sha1<my_count_type>::perform_algorithm() -> void
+  auto hash_sha1::perform_algorithm() -> void
   {
     // Apply the hash transformation algorithm to a full data block.
 

@@ -11,18 +11,16 @@
   #include <limits>
 
   #include <math/checksums/hash/hash_detail.h>
+  #include <math/checksums/hash/hash_stream_base.h>
 
   namespace math { namespace checksums { namespace hash {
 
-  template<typename CountType,
-           const std::uint16_t ResultBitCount,
+  template<const std::uint16_t ResultBitCount,
            const std::uint16_t MessageBufferSize,
            const std::uint16_t MessageLengthTotalBitCount>
-  class hash_base
+  class hash_base : public hash_stream_base
   {
   public:
-    using count_type = CountType;
-
     using result_type = std::array<std::uint8_t, static_cast<std::size_t>(ResultBitCount / static_cast<std::uint16_t>(UINT8_C(8)))>;
 
     static_assert
@@ -40,20 +38,20 @@
 
     virtual auto initialize() -> void
     {
-      message_index        = static_cast<std::uint_least16_t>(UINT8_C(0));
+      message_index        = static_cast<std::uint_least32_t>(UINT8_C(0));
       message_length_total = static_cast<count_type>(UINT8_C(0));
 
       message_buffer.fill(static_cast<std::uint8_t>(UINT8_C(0)));
     }
 
-    auto process(const std::uint8_t* message, const count_type count) -> void
+    virtual auto process(const std::uint8_t* message, const count_type count) -> void
     {
       auto process_index      = count_type { };
       auto process_chunk_size = count_type { };
 
       while(process_index < count)
       {
-        message_index        = static_cast<std::uint_least16_t>(message_index        + process_chunk_size);
+        message_index        = static_cast<std::uint_least32_t>(message_index        + process_chunk_size);
         message_length_total = static_cast<count_type>         (message_length_total + process_chunk_size);
         process_index        = static_cast<count_type>         (process_index        + process_chunk_size);
 
@@ -72,10 +70,10 @@
       }
     }
 
-    auto finalize() -> void
+    virtual auto finalize() -> void
     {
       // Create the padding. Begin by setting the leading padding byte to 0x80.
-      message_buffer[message_index] = static_cast<std::uint8_t>(UINT8_C(0x80));
+      message_buffer[static_cast<std::size_t>(message_index)] = static_cast<std::uint8_t>(UINT8_C(0x80));
 
       ++message_index;
 
@@ -86,7 +84,7 @@
       const auto message_top =
         static_cast<std::uint16_t>
         (
-          message_index + static_cast<std::uint_least16_t>(message_length_total_width())
+          message_index + static_cast<std::uint_least32_t>(message_length_total_width())
         );
 
       if(message_top > message_buffer_static_size())
@@ -105,10 +103,10 @@
                  ri != message_buffer.rbegin() + static_cast<std::size_t>(message_length_total_width());
                ++ri)
       {
-        const std::uint_least16_t the_word =
-          static_cast<std::uint_least16_t>
+        const std::uint_least32_t the_word =
+          static_cast<std::uint_least32_t>
           (
-            static_cast<std::uint_least16_t>(message_length_total) << static_cast<unsigned>(UINT8_C(3))
+            static_cast<std::uint_least32_t>(message_length_total) << static_cast<unsigned>(UINT8_C(3))
           );
 
         *ri = static_cast<std::uint8_t>(the_word | carry);
@@ -141,13 +139,6 @@
       );
     }
 
-    auto hash(const std::uint8_t* message, const count_type count) -> void
-    {
-      this->initialize();
-      this->process(message, count);
-      this->finalize();
-    }
-
   protected:
     using message_block_type = std::array<std::uint8_t, static_cast<std::size_t>(MessageBufferSize)>;
 
@@ -158,7 +149,7 @@
       return static_cast<std::uint16_t>(std::tuple_size<message_block_type>::value);
     }
 
-    std::uint_least16_t message_index        { };
+    std::uint_least32_t message_index        { };
     count_type          message_length_total { };
     message_block_type  message_buffer       { };
     context_type        transform_context    { };
@@ -187,7 +178,7 @@
     {
       this->perform_algorithm();
 
-      message_index = static_cast<std::uint_least16_t>(UINT8_C(0));
+      message_index = static_cast<std::uint_least32_t>(UINT8_C(0));
 
       message_buffer.fill(static_cast<std::uint8_t>(UINT8_C(0)));
     }

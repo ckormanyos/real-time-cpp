@@ -10,6 +10,8 @@
 # ------------------------------------------------------------------------------
 
 FILES_CPP  = $(PATH_APP)/app/led/app_led                                      \
+             $(PATH_APP)/app/pi_spigot/pi_spigot                              \
+             $(PATH_APP)/app/pi_spigot/pi_spigot_callback                     \
              $(PATH_APP)/mcal/$(TGT)/mcal_cpu                                 \
              $(PATH_APP)/mcal/$(TGT)/mcal_gpt                                 \
              $(PATH_APP)/mcal/$(TGT)/mcal_irq                                 \

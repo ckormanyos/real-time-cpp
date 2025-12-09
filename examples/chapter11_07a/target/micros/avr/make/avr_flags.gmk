@@ -21,7 +21,8 @@ TGT_ALLFLAGS  = -O2                                                             
                 -mrelax                                                           \
                 -finline-functions                                                \
                 -finline-limit=64                                                 \
-                -fsigned-char
+                -fsigned-char                                                     \
+                -DPI_CRUNCH_METAL_DISABLE_IOSTREAM
 
 ifeq ($(TYP_OS),WIN)
 
@@ -50,6 +51,7 @@ TGT_CXXFLAGS  = -std=$(STD_CPP)                                                 
 TGT_INCLUDES  = -I$(PATH_APP)/os/FreeRTOS/Source/include/cfg/GCC-ATMega328        \
                 -I$(PATH_APP)/os/FreeRTOS/Source/portable/GCC-ATmega328           \
                 -I$(PATH_APP)/os/FreeRTOS/Source/include                          \
+                -I$(PATH_APP)/app                                                 \
                 -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =

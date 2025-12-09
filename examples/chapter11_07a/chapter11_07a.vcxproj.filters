@@ -103,6 +103,15 @@
     <Filter Include="_doc">
       <UniqueIdentifier>{ff14b2e1-f38c-4081-8657-97e5320e1911}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\math\pi_spigot">
+      <UniqueIdentifier>{79074285-b08d-4878-ab3a-8c373cf08080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\app\pi_spigot">
+      <UniqueIdentifier>{9d719275-19a2-4906-ba59-044aae78b2a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math\checksums\hash">
+      <UniqueIdentifier>{499b6f76-e0e7-43ad-aeef-11e3c736d1f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\mcal.cpp">
@@ -188,6 +197,12 @@
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_memory_sram.cpp">
       <Filter>src\mcal\avr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\pi_spigot\pi_spigot.cpp">
+      <Filter>src\app\pi_spigot</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\pi_spigot\pi_spigot_callback.cpp">
+      <Filter>src\app\pi_spigot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -463,6 +478,27 @@
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_spi_types.h">
       <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\pi_spigot\pi_spigot.h">
+      <Filter>src\math\pi_spigot</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\pi_calc_cfg.h">
+      <Filter>src\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\hash_detail.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\hash_sha1.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\hash_sha256.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\hash_base.h">
+      <Filter>src\math\checksums\hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
