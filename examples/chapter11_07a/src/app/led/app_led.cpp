@@ -19,9 +19,12 @@ namespace
 
   app_led_timer_type app_led_timer_background;
   app_led_timer_type app_led_timer_toggle_led0;
+
+  bool result_pi_calc_is_ok { true };
 }
 
-extern auto manip_container() -> bool;
+extern "C"
+auto pi_main() -> int;
 
 extern "C"
 void app_led_task_background(void*)
@@ -33,20 +36,21 @@ void app_led_task_background(void*)
 
   for(;;)
   {
-    while((!app_led_timer_background.timeout()))
+    const int next_pi_result { pi_main() };
+
+    result_pi_calc_is_ok = ((next_pi_result == int { INT8_C(0) }) && result_pi_calc_is_ok);
+
+    if(!result_pi_calc_is_ok)
     {
-      mcal::cpu::nop();
+      // If the pi calculation is wrong, exercise a hard, visible error
+      // that stops the perpetual calculation loop.
+      for(;;)
+      {
+        mcal::cpu::nop();
+
+        mcal::wdg::secure::trigger();
+      }
     }
-
-    if(!manip_container())
-    {
-      for(;;) { ; }
-    }
-    app_led_timer_background.start_interval(app_led_timer_type::milliseconds(app_led_tick_type { UINT8_C(50) }));
-
-    // Toggle led1 every 50ms.
-
-    mcal::led::led1().toggle();
   }
 }
 

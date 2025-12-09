@@ -28,8 +28,8 @@
 
 #include <math/checksums/hash/hash_sha1.h>
 #include <math/pi_spigot/pi_spigot.h>
-#if !defined(PI_CRUNCH_METAL_STANDALONE_MAIN)
 #include <mcal_benchmark.h>
+#if !defined(PI_CRUNCH_METAL_STANDALONE_MAIN)
 #include <mcal_memory/mcal_memory_sram_array.h>
 #endif
 #include <util/utility/util_baselexical_cast.h>
@@ -70,9 +70,7 @@ namespace local
 
   auto pi_output_digits10 = static_cast<std::uint32_t>(UINT8_C(0));
 
-  #if !defined(PI_CRUNCH_METAL_STANDALONE_MAIN)
   using benchmark_port_type = ::mcal::benchmark::benchmark_port_type;
-  #endif
 
   #if defined(PI_CRUNCH_METAL_STANDALONE_MAIN)
   using mcal_sram_uintptr_t = std::uintptr_t;
@@ -94,17 +92,7 @@ namespace local
 
 extern "C"
 {
-  auto mcal_led_toggle() -> void;
-
   auto pi_main() -> int;
-
-  auto pi_led_toggle() -> void;
-}
-
-extern "C"
-auto pi_led_toggle() -> void
-{
-  ::mcal_led_toggle();
 }
 
 extern auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void;
@@ -112,9 +100,7 @@ extern auto pi_count_of_calculations() -> std::uint32_t&;
 
 auto pi_main() -> int
 {
-  #if !defined(PI_CRUNCH_METAL_STANDALONE_MAIN)
   local::benchmark_port_type::toggle_pin();
-  #endif
 
   local::pi_spigot_instance.calculate(local::pi_spigot_input.data(), pi_lcd_progress, &local::pi_spigot_hash);
 
