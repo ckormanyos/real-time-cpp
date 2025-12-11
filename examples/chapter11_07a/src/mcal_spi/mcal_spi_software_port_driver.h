@@ -62,32 +62,14 @@
 
       byte_to_recv = static_cast<value_type>(UINT8_C(0));
 
-      for(auto bit_mask  = static_cast<std::uint_fast8_t>(UINT8_C(0x80));
-               bit_mask != static_cast<std::uint_fast8_t>(UINT8_C(0));
-               bit_mask  = static_cast<std::uint_fast8_t>(bit_mask >> static_cast<unsigned>(UINT8_C(1))))
-      {
-        const bool
-          bit_is_high
-          {
-            (static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(byte_to_send) & bit_mask) != static_cast<std::uint_fast8_t>(UINT8_C(0)))
-          };
-
-        (bit_is_high ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low());
-
-        port_pin_sck__type::set_pin_high();
-        mcal::helper::nop_maker<nop_count>();
-
-        if(port_pin_miso_type::read_input_value())
-        {
-          byte_to_recv =
-            static_cast<value_type>
-            (
-              static_cast<std::uint_fast8_t>(byte_to_recv) | bit_mask
-            );
-        }
-
-        port_pin_sck__type::set_pin_low();
-      }
+      transceive_bit<std::uint_fast8_t { UINT8_C(0x80) }>(byte_to_send, byte_to_recv);
+      transceive_bit<std::uint_fast8_t { UINT8_C(0x40) }>(byte_to_send, byte_to_recv);
+      transceive_bit<std::uint_fast8_t { UINT8_C(0x20) }>(byte_to_send, byte_to_recv);
+      transceive_bit<std::uint_fast8_t { UINT8_C(0x10) }>(byte_to_send, byte_to_recv);
+      transceive_bit<std::uint_fast8_t { UINT8_C(0x08) }>(byte_to_send, byte_to_recv);
+      transceive_bit<std::uint_fast8_t { UINT8_C(0x04) }>(byte_to_send, byte_to_recv);
+      transceive_bit<std::uint_fast8_t { UINT8_C(0x02) }>(byte_to_send, byte_to_recv);
+      transceive_bit<std::uint_fast8_t { UINT8_C(0x01) }>(byte_to_send, byte_to_recv);
 
       return true;
     }
@@ -98,7 +80,9 @@
     {
       while(first != last)
       {
-        const auto byte_to_send = static_cast<base_class_type::buffer_value_type>(*first++);
+        using value_type = typename base_class_type::buffer_value_type;
+
+        const auto byte_to_send { static_cast<value_type>(*first++) };
 
         static_cast<void>(send(byte_to_send, byte_to_recv));
       }
@@ -118,6 +102,37 @@
       port_pin_csn__type::set_pin_high();
 
       mcal::helper::enable_all_interrupts<has_disable_enable_interrupts>();
+    }
+
+  private:
+    template<const std::uint_fast8_t BitMask>
+    static auto transceive_bit(const std::uint8_t byte_to_send, std::uint8_t& byte_to_recv) -> void
+    {
+      using value_type = typename base_class_type::buffer_value_type;
+
+      constexpr std::uint_fast8_t bit_mask { BitMask };
+
+      const bool
+        bit_is_high
+        {
+          (static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(byte_to_send) & bit_mask) != static_cast<std::uint_fast8_t>(UINT8_C(0)))
+        };
+
+      (bit_is_high ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low());
+
+      port_pin_sck__type::set_pin_high();
+      mcal::helper::nop_maker<nop_count>();
+
+      if(port_pin_miso_type::read_input_value())
+      {
+        byte_to_recv =
+          static_cast<value_type>
+          (
+            static_cast<std::uint_fast8_t>(byte_to_recv) | bit_mask
+          );
+      }
+
+      port_pin_sck__type::set_pin_low();
     }
   };
 

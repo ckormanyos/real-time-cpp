@@ -20,7 +20,7 @@ TGT_ALLFLAGS  = -O2                                                             
                 -mmcu=atmega328p                                                  \
                 -mrelax                                                           \
                 -finline-functions                                                \
-                -finline-limit=64                                                 \
+                -finline-limit=256                                                \
                 -fsigned-char                                                     \
                 -DPI_CRUNCH_METAL_DISABLE_IOSTREAM
 
