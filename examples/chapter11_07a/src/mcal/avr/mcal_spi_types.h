@@ -50,6 +50,36 @@
 
   } // namespace sram
 
+  namespace lcd {
+
+  using port_pin_lcd_csn_type = mcal::port::port_pin<std::uint32_t,
+                                                     std::uint32_t,
+                                                     mcal::reg::portb,
+                                                     static_cast<std::uint32_t>(UINT32_C(2))>;
+
+  using port_pin_lcd_sdo_type = mcal::port::port_pin<std::uint32_t,
+                                                     std::uint32_t,
+                                                     mcal::reg::portb,
+                                                     static_cast<std::uint32_t>(UINT32_C(4))>;
+
+  using port_pin_lcd_sdi_type = mcal::port::port_pin<std::uint32_t,
+                                                     std::uint32_t,
+                                                     mcal::reg::portb,
+                                                     static_cast<std::uint32_t>(UINT32_C(1))>;
+
+  using port_pin_lcd_sck_type = mcal::port::port_pin<std::uint32_t,
+                                                     std::uint32_t,
+                                                     mcal::reg::portb,
+                                                     static_cast<std::uint32_t>(UINT32_C(0))>;
+
+  using mcal_spi_lcd_type = mcal::spi::spi_software_port_driver<port_pin_lcd_sck_type,
+                                                                port_pin_lcd_sdi_type,
+                                                                port_pin_lcd_csn_type,
+                                                                port_pin_lcd_sdo_type,
+                                                                static_cast<std::uint_fast16_t>(UINT8_C(2)),
+                                                                true>;
+  } // namespace lcd
+
   } // namespace spi
   } // namespace mcal
 

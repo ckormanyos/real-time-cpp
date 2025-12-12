@@ -112,6 +112,9 @@
     <Filter Include="src\math\checksums\hash">
       <UniqueIdentifier>{499b6f76-e0e7-43ad-aeef-11e3c736d1f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal_lcd">
+      <UniqueIdentifier>{b6095ce0-1dbe-403c-a487-1a9a65ef7288}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\mcal.cpp">
@@ -203,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="src\app\pi_spigot\pi_spigot_callback.cpp">
       <Filter>src\app\pi_spigot</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_lcd.cpp">
+      <Filter>src\mcal\avr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -499,6 +505,30 @@
     </ClInclude>
     <ClInclude Include="src\math\checksums\hash\hash_base.h">
       <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_buffered_instance.h">
+      <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_console.h">
+      <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_generic_device.h">
+      <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_generic_st7066.h">
+      <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_serlcd_sparkfun.h">
+      <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_base.h">
+      <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_lcd.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_helper.h">
+      <Filter>src\mcal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

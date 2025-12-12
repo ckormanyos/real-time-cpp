@@ -26,6 +26,7 @@ auto main() -> int
   benchmark_port_type::set_direction_output();
 
   mcal::spi::sram::mcal_spi_sram_type::init();
+  mcal::spi::lcd::mcal_spi_lcd_type::init();
 
   // Configure and create the OS tasks. These macros
   // also setup the task static resources including the

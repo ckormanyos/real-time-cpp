@@ -20,7 +20,7 @@
       using benchmark_port_type = mcal::port::port_pin<std::uint8_t,
                                                        std::uint8_t,
                                                        mcal::reg::portb,
-                                                       UINT8_C(2)>;
+                                                       UINT8_C(3)>;
     }
   }
 

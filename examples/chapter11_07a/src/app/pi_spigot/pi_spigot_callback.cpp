@@ -7,7 +7,7 @@
 //                                                               //
 ///////////////////////////////////////////////////////////////////
 
-//#include <mcal_lcd.h>
+#include <mcal_lcd.h>
 #include <util/utility/util_baselexical_cast.h>
 
 #include <cstdint>
@@ -25,7 +25,6 @@ auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void;
 
 auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void
 {
-  #if 0
   char p_str[std::size_t { UINT8_C(20) }];
 
   {
@@ -43,7 +42,4 @@ auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void
 
     ::mcal_lcd_write_line(p_str, static_cast<std::size_t>(p_end - p_str), std::size_t { UINT8_C(1) });
   }
-  #else
-  static_cast<void>(pi_output_digits10);
-  #endif
 }
