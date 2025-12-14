@@ -210,6 +210,15 @@
     <ClCompile Include="src\mcal\avr\mcal_lcd.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_lcd.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_memory_sram.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_dev.cpp">
+      <Filter>src\mcal\avr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mcal\mcal.h">
@@ -529,6 +538,45 @@
     </ClInclude>
     <ClInclude Include="src\mcal\mcal_helper.h">
       <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_lcd.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_benchmark.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_access.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_array.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_spi.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_ref.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_types.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memroy_sram_iterator.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_memory_sram.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_host.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_dev.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_dev.h">
+      <Filter>src\mcal\host</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

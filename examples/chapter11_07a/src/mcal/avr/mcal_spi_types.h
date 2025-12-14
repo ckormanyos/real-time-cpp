@@ -76,7 +76,7 @@
                                                                 port_pin_lcd_sdi_type,
                                                                 port_pin_lcd_csn_type,
                                                                 port_pin_lcd_sdo_type,
-                                                                static_cast<std::uint_fast16_t>(UINT8_C(2)),
+                                                                static_cast<std::uint_fast16_t>(UINT8_C(4)),
                                                                 true>;
   } // namespace lcd
 

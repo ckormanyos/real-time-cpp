@@ -62,7 +62,14 @@ namespace local
 
   using pi_spigot_type = math::constants::pi_spigot<result_digit, loop_digit>;
 
-  pi_spigot_type pi_spigot_instance;
+  auto pi_spigot_instance() -> pi_spigot_type&;
+
+  auto pi_spigot_instance() -> pi_spigot_type&
+  {
+    static pi_spigot_type instance { };
+
+    return instance;
+  }
 
   using hash_type = math::checksums::hash::hash_sha1;
 
@@ -102,7 +109,9 @@ auto pi_main() -> int
 {
   local::benchmark_port_type::toggle_pin();
 
-  local::pi_spigot_instance.calculate(local::pi_spigot_input.data(), pi_lcd_progress, &local::pi_spigot_hash);
+  auto& local_pi_spigot_instance { local::pi_spigot_instance() };
+
+  local_pi_spigot_instance.calculate(local::pi_spigot_input.data(), pi_lcd_progress, &local::pi_spigot_hash);
 
   ++pi_count_of_calculations();
 

@@ -47,6 +47,8 @@
     {
       blocking_delay(timer_type::milliseconds(tick_type { UINT16_C(1250) }));
 
+      communication_type::init();
+
       setting(serlcd_clear_display);
       setting(serlcd_green_backlight);
       setting(serlcd_size_lines_04);

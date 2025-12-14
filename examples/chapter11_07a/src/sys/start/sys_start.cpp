@@ -21,19 +21,12 @@ auto main() -> int
   // Initialize the microcontroller abstraction layer.
   mcal::init();
 
-  using benchmark_port_type = ::mcal::benchmark::benchmark_port_type;
-
-  benchmark_port_type::set_direction_output();
-
-  mcal::spi::sram::mcal_spi_sram_type::init();
-  mcal::spi::lcd::mcal_spi_lcd_type::init();
-
   // Configure and create the OS tasks. These macros
   // also setup the task static resources including the
   // task control block structures and task stacks.
 
   OS_TASK_CREATE(app_led_task_background,  nullptr, 1U, 512U);
-  OS_TASK_CREATE(app_led_task_toggle_led0, nullptr, 3U,  32U);
+  OS_TASK_CREATE(app_led_task_toggle_led0, nullptr, 3U,  64U);
 
   // Start the OS scheduler (and never return).
   OS_TASK_START_SCHEDULER();

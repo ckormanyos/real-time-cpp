@@ -55,12 +55,12 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)src;$(SolutionDir)src/mcal/host;$(SolutionDir)src/os/FreeRTOS/Source/include/cfg/WIN32-MSVC-Static-Allocation-Only;$(SolutionDir)src/os/FreeRTOS/Source/portable/MSVC-MingW;$(SolutionDir)src/os/FreeRTOS/Source/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src/app;$(SolutionDir)src;$(SolutionDir)src/mcal/host;$(SolutionDir)src/os/FreeRTOS/Source/include/cfg/WIN32-MSVC-Static-Allocation-Only;$(SolutionDir)src/os/FreeRTOS/Source/portable/MSVC-MingW;$(SolutionDir)src/os/FreeRTOS/Source/include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)src;$(SolutionDir)src/mcal/host;$(SolutionDir)src/os/FreeRTOS/Source/include/cfg/WIN32-MSVC-Static-Allocation-Only;$(SolutionDir)src/os/FreeRTOS/Source/portable/MSVC-MingW;$(SolutionDir)src/os/FreeRTOS/Source/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src/app;$(SolutionDir)src;$(SolutionDir)src/mcal/host;$(SolutionDir)src/os/FreeRTOS/Source/include/cfg/WIN32-MSVC-Static-Allocation-Only;$(SolutionDir)src/os/FreeRTOS/Source/portable/MSVC-MingW;$(SolutionDir)src/os/FreeRTOS/Source/include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -177,6 +177,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_dev.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_gpt.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -211,7 +215,9 @@
     </ClCompile>
     <ClCompile Include="src\mcal\host\mcal_gpt.cpp" />
     <ClCompile Include="src\mcal\host\mcal_irq.cpp" />
+    <ClCompile Include="src\mcal\host\mcal_lcd.cpp" />
     <ClCompile Include="src\mcal\host\mcal_led.cpp" />
+    <ClCompile Include="src\mcal\host\mcal_memory_sram.cpp" />
     <ClCompile Include="src\mcal\host\mcal_wdg.cpp" />
     <ClCompile Include="src\mcal\host\mcal_wdg_watchdog.cpp" />
     <ClCompile Include="src\mcal\mcal.cpp" />
@@ -264,6 +270,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_dev.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_gpt.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -312,11 +322,15 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_benchmark.h" />
     <ClInclude Include="src\mcal\host\mcal_cpu.h" />
+    <ClInclude Include="src\mcal\host\mcal_dev.h" />
     <ClInclude Include="src\mcal\host\mcal_gpt.h" />
     <ClInclude Include="src\mcal\host\mcal_irq.h" />
+    <ClInclude Include="src\mcal\host\mcal_lcd.h" />
     <ClInclude Include="src\mcal\host\mcal_led.h" />
     <ClInclude Include="src\mcal\host\mcal_memory_progmem.h" />
+    <ClInclude Include="src\mcal\host\mcal_memory_sram.h" />
     <ClInclude Include="src\mcal\host\mcal_port.h" />
     <ClInclude Include="src\mcal\host\mcal_reg_access.h" />
     <ClInclude Include="src\mcal\host\mcal_wdg.h" />
@@ -345,6 +359,14 @@
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_access.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_array.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_host.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_spi.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_ptr.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_ref.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_types.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memroy_sram_iterator.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h" />
     <ClInclude Include="src\os\FreeRTOS\Source\include\atomic.h" />

@@ -21,5 +21,5 @@ auto mcal::init() -> void
 
   mcal::gpt::init(nullptr);
 
-  mcal::cpu::post_init();
+  mcal::dev::post_init();
 }

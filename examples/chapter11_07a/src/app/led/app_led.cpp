@@ -12,16 +12,10 @@
 #include <os/os_task.h>
 #include <util/utility/util_time.h>
 
-namespace
+namespace local
 {
-  using app_led_timer_type = util::timer<std::uint32_t>;
-  using app_led_tick_type  = typename app_led_timer_type::tick_type;
-
-  app_led_timer_type app_led_timer_background;
-  app_led_timer_type app_led_timer_toggle_led0;
-
   bool result_pi_calc_is_ok { true };
-}
+} // namespace local
 
 extern "C"
 auto pi_main() -> int;
@@ -38,9 +32,9 @@ void app_led_task_background(void*)
   {
     const int next_pi_result { pi_main() };
 
-    result_pi_calc_is_ok = ((next_pi_result == int { INT8_C(0) }) && result_pi_calc_is_ok);
+    local::result_pi_calc_is_ok = ((next_pi_result == int { INT8_C(0) }) && local::result_pi_calc_is_ok);
 
-    if(!result_pi_calc_is_ok)
+    if(!local::result_pi_calc_is_ok)
     {
       // If the pi calculation is wrong, exercise a hard, visible error
       // that stops the perpetual calculation loop.
@@ -69,8 +63,21 @@ void app_led_task_toggle_led0(void*)
   // thread scheduler supports preemptive scheduling and emulates
   // the desired timing quite well.
 
+  using app_led_timer_type = util::timer<std::uint32_t>;
+  using app_led_tick_type  = typename app_led_timer_type::tick_type;
+
+  app_led_timer_type app_led_timer_toggle_led0 { app_led_timer_type::seconds(app_led_tick_type { UINT8_C(1) }) };
+
+  auto& local_led0 { mcal::led::led0() };
+
+  local_led0.toggle();
+
   for(;;)
   {
+    // This application task is programmed to cyclically yield for 125ms.
+
+    OS_TASK_WAIT_YIELD(TickType_t { UINT8_C(125) });
+
     mcal::wdg::secure::trigger();
 
     // Toggle led0 every 1s.
@@ -79,11 +86,7 @@ void app_led_task_toggle_led0(void*)
     {
       app_led_timer_toggle_led0.start_interval(app_led_timer_type::seconds(app_led_tick_type { UINT8_C(1) }));
 
-      mcal::led::led0().toggle();
+      local_led0.toggle();
     }
-
-    // This application task is programmed to cyclically yield for 125ms.
-
-    OS_TASK_WAIT_YIELD(TickType_t { UINT8_C(125) });
   }
 }

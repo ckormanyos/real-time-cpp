@@ -8,10 +8,6 @@
 #ifndef MCAL_WDG_2010_04_10_H_
   #define MCAL_WDG_2010_04_10_H_
 
-  extern "C" void app_led_task_toggle_led0(void* pv);
-
-  namespace sys { namespace idle { void task_func(); } }
-
   namespace mcal
   {
     namespace wdg
@@ -22,10 +18,7 @@
 
       struct secure final
       {
-      private:
         static void trigger();
-
-        friend void ::app_led_task_toggle_led0(void* pv);
       };
     }
   }

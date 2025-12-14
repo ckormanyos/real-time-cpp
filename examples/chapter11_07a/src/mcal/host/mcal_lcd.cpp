@@ -7,16 +7,15 @@
 //
 
 #include <mcal_lcd.h>
-#include <mcal_lcd/mcal_lcd_serlcd_sparkfun.h>
-#include <mcal_spi_types.h>
+#include <mcal_lcd/mcal_lcd_console.h>
 
 namespace local_lcd
 {
-  auto lcd_sparkfun() -> mcal::lcd::lcd_base&;
+  auto lcd_host_console() -> mcal::lcd::lcd_base&;
 
-  auto lcd_sparkfun() -> mcal::lcd::lcd_base&
+  auto lcd_host_console() -> mcal::lcd::lcd_base&
   {
-    static mcal::lcd::lcd_serlcd_sparkfun<mcal::spi::lcd::mcal_spi_lcd_type> my_lcd { };
+    static mcal::lcd::lcd_console my_lcd { };
 
     return my_lcd;
   }
@@ -26,7 +25,7 @@ extern "C"
 {
   void mcal_lcd_init(void)
   {
-    static const bool is_init { local_lcd::lcd_sparkfun().init() };
+    static const bool is_init { local_lcd::lcd_host_console().init() };
 
     static_cast<void>(is_init);
   }
@@ -35,7 +34,7 @@ extern "C"
   {
     static_cast<void>
     (
-      local_lcd::lcd_sparkfun().write(StringToPrint, StringSize, static_cast<std::uint_fast8_t>(LineIndex))
+      local_lcd::lcd_host_console().write(StringToPrint, StringSize, static_cast<std::uint_fast8_t>(LineIndex))
     );
   }
 }

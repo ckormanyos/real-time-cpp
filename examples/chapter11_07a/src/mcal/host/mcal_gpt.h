@@ -13,13 +13,6 @@
 
   #include <util/utility/util_noexcept.h>
 
-  // Forward declaration of the util::timer template class.
-  namespace util
-  {
-    template<typename unsigned_tick_type>
-    class timer;
-  }
-
   namespace mcal
   {
     namespace gpt
@@ -31,13 +24,7 @@
 
       struct secure final
       {
-      private:
         static value_type get_time_elapsed();
-
-        friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() UTIL_NOEXCEPT;
-
-        template<typename unsigned_tick_type>
-        friend class util::timer;
       };
     }
   }
