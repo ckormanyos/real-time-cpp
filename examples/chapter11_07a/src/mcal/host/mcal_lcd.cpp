@@ -23,14 +23,14 @@ namespace local_lcd
 
 extern "C"
 {
-  void mcal_lcd_init(void)
+  auto mcal_lcd_init() -> void
   {
     static const bool is_init { local_lcd::lcd_host_console().init() };
 
     static_cast<void>(is_init);
   }
 
-  void mcal_lcd_write_line(const char* StringToPrint, const size_t StringSize, const size_t LineIndex)
+  auto mcal_lcd_write_line(const char* StringToPrint, const size_t StringSize, const size_t LineIndex) -> void
   {
     static_cast<void>
     (

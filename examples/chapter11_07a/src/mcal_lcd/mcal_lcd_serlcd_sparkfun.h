@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //  Copyright Iliass Mahjoub 2023 - 2024
-//  Copyright Christopher Kormanyos 2024
+//  Copyright Christopher Kormanyos 2024 - 2025
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,6 +13,8 @@
 
   #include <util/utility/util_communication.h>
   #include <util/utility/util_time.h>
+
+  #include <algorithm>
 
   #if(__cplusplus >= 201703L)
   namespace mcal::lcd {
@@ -62,20 +64,19 @@
                const std::uint_fast8_t line_index) -> bool override
     {
       // Limit to the maximum count of the display lines.
-      const size_t
+      const std::uint8_t
         line_index_to_use
         {
-          (line_index > std::size_t { UINT8_C(3) }) ? std::size_t { UINT8_C(3) } : line_index
+          static_cast<std::uint8_t>
+          (
+            (std::min)(line_index, std::uint_fast8_t { UINT8_C(3) })
+          )
         };
 
       // Limit to the maximum count of the display rows.
-      const std::size_t
-        size_to_write
-        {
-          (length > std::size_t { UINT8_C(20)}) ? std::size_t { UINT8_C(20) } : length
-        };
+      const std::size_t size_to_write { (std::min)(length, std::size_t { UINT8_C(20)}) };
 
-      set_line_index(static_cast<std::uint8_t>(line_index_to_use));
+      set_line_index(line_index_to_use);
 
       for(std::size_t idx { UINT8_C(0) }; idx < std::size_t { UINT8_C(20) }; ++idx)
       {

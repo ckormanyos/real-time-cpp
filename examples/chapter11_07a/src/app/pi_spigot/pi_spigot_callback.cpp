@@ -12,14 +12,7 @@
 
 #include <cstdint>
 
-auto pi_count_of_calculations() -> std::uint32_t&;
-
-auto pi_count_of_calculations() -> std::uint32_t&
-{
-  static std::uint32_t my_count { };
-
-  return my_count;
-}
+extern auto pi_count_of_calculations() -> std::uint32_t;
 
 auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void;
 

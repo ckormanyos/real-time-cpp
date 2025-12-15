@@ -29,18 +29,8 @@
 #include <math/checksums/hash/hash_sha1.h>
 #include <math/pi_spigot/pi_spigot.h>
 #include <mcal_benchmark.h>
-#if !defined(PI_CRUNCH_METAL_STANDALONE_MAIN)
 #include <mcal_memory/mcal_memory_sram_array.h>
-#endif
 #include <util/utility/util_baselexical_cast.h>
-
-#if !defined(PI_CRUNCH_METAL_DISABLE_IOSTREAM)
-#include <array>
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-#endif // !PI_CRUNCH_METAL_DISABLE_IOSTREAM
 
 namespace local
 {
@@ -79,20 +69,11 @@ namespace local
 
   using benchmark_port_type = ::mcal::benchmark::benchmark_port_type;
 
-  #if defined(PI_CRUNCH_METAL_STANDALONE_MAIN)
-  using mcal_sram_uintptr_t = std::uintptr_t;
-  #endif
-
   constexpr auto pi_spigot_input_start_address = static_cast<mcal_sram_uintptr_t>(UINT8_C(0));
 
-  #if !defined(PI_CRUNCH_METAL_DISABLE_IOSTREAM)
-  using pi_spigot_input_container_type = std::array<std::uint32_t,
-                                                    pi_spigot_type::input_static_size>;
-  #else
   using pi_spigot_input_container_type = mcal::memory::sram::array<std::uint32_t,
                                                                    pi_spigot_type::input_static_size,
                                                                    pi_spigot_input_start_address>;
-  #endif
 
   pi_spigot_input_container_type pi_spigot_input;
 } // namespace local
@@ -103,7 +84,13 @@ extern "C"
 }
 
 extern auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void;
-extern auto pi_count_of_calculations() -> std::uint32_t&;
+
+auto pi_count_of_calculations() -> std::uint32_t;
+
+auto pi_count_of_calculations() -> std::uint32_t
+{
+  return local::pi_spigot_type::get_count_of_calculations();
+}
 
 auto pi_main() -> int
 {
@@ -112,8 +99,6 @@ auto pi_main() -> int
   auto& local_pi_spigot_instance { local::pi_spigot_instance() };
 
   local_pi_spigot_instance.calculate(local::pi_spigot_input.data(), pi_lcd_progress, &local::pi_spigot_hash);
-
-  ++pi_count_of_calculations();
 
   // Check the hash result of the pi calculation.
   const auto hash_control =
@@ -159,76 +144,3 @@ auto pi_main() -> int
 
   return result_of_pi_main;
 }
-
-#if defined(PI_CRUNCH_METAL_STANDALONE_MAIN)
-
-auto pi_count_of_calculations() -> std::uint32_t&;
-auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void;
-
-auto pi_count_of_calculations() -> std::uint32_t&
-{
-  static std::uint32_t my_count { };
-
-  return my_count;
-}
-
-auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void { static_cast<void>(pi_output_digits10); }
-
-extern "C"
-{
-  auto mcal_init      () -> void;
-  auto mcal_led_toggle() -> void;
-
-  auto mcal_init      () -> void { }
-  auto mcal_led_toggle() -> void { }
-}
-
-auto main() -> int
-{
-  ::mcal_init();
-
-  #if !defined(PI_CRUNCH_METAL_DISABLE_IOSTREAM)
-  std::stringstream strm { };
-
-  strm << "Begin pi spigot calculation...\n";
-
-  const auto start = std::chrono::high_resolution_clock::now();
-  #endif
-
-  const int result_pi_main { ::pi_main() };
-
-  const bool result_is_ok { (result_pi_main == 0) };
-
-  #if !defined(PI_CRUNCH_METAL_DISABLE_IOSTREAM)
-
-  const auto stop = std::chrono::high_resolution_clock::now();
-
-  const float
-    elapsed
-    {
-      static_cast<float>
-      (
-          static_cast<float>(std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count())
-        / 1000.0F
-      )
-    };
-
-  strm << "digits10:     " << local::pi_spigot_type::result_digit() << '\n'
-       << "time:         " << std::fixed << std::setprecision(2) << elapsed << "s\n"
-       << "result_is_ok: " << std::boolalpha << result_is_ok;
-
-  std::cout << strm.str() << std::endl;
-  #endif
-
-  const int result_of_main { (result_is_ok ? static_cast<int>(INT8_C(0)) : static_cast<int>(INT8_C(-1))) };
-
-  return result_of_main;
-}
-
-#else
-
-auto pi_calc_dummy() -> void;
-
-auto pi_calc_dummy() -> void { }
-
-#endif

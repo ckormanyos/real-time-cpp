@@ -20,6 +20,4 @@ auto mcal::init() -> void
   mcal::irq::init(nullptr);
 
   mcal::gpt::init(nullptr);
-
-  mcal::dev::post_init();
 }

@@ -114,11 +114,6 @@
                    callback_type pfn_callback_to_report_digits10 = nullptr,
                    ::math::checksums::hash::hash_stream_base* p_hash = nullptr) -> void
     {
-      if(pfn_callback_to_report_digits10 != nullptr)
-      {
-        pfn_callback_to_report_digits10(std::uint32_t { UINT8_C(0) });
-      }
-
       // Use pi_spigot::calculate() to calculate result_digit
       // decimal digits of pi.
 
@@ -135,11 +130,11 @@
       using local_input_iterator_type = InputIteratorType;
       using local_input_value_type    = typename std::iterator_traits<local_input_iterator_type>::value_type;
 
-      // Invalidate the input container values at the first 16 indices.
+      // Invalidate the input container values at the first 32 indices.
       const std::uint32_t
         invalidate_size
         {
-          (std::min)(static_cast<std::uint32_t>(UINT8_C(16)), input_static_size)
+          (std::min)(static_cast<std::uint32_t>(UINT8_C(32)), input_static_size)
         };
 
       std::fill(my_pi_in,
@@ -148,7 +143,7 @@
 
       unsigned_small_type val_c { static_cast<unsigned_small_type>(static_cast<unsigned>(UINT8_C(0))) };
 
-      my_output_count    = static_cast<std::uint32_t>(UINT8_C(0));
+      my_output_count = static_cast<std::uint32_t>(UINT8_C(0));
       my_operation_count = static_cast<std::uintmax_t>(UINT8_C(0));
 
       if(pfn_callback_to_report_digits10 != nullptr)
@@ -303,6 +298,13 @@
         }
       }
 
+      ++my_count_of_calculations;
+
+      if(pfn_callback_to_report_digits10 != nullptr)
+      {
+        pfn_callback_to_report_digits10(my_output_count);
+      }
+
       if(p_hash != nullptr)
       {
         p_hash->finalize();
@@ -312,7 +314,12 @@
     [[nodiscard]]
     auto get_output_count() const noexcept -> std::uint32_t { return my_output_count; }
 
+    [[nodiscard]]
+    static auto get_count_of_calculations() -> std::uint32_t { return my_count_of_calculations; }
+
   private:
+    static std::uint32_t my_count_of_calculations;
+
     std::uintmax_t my_operation_count { };
     std::uint32_t  my_output_count    { };
 
@@ -339,6 +346,13 @@
         );
     }
   };
+
+
+  template<const std::uint32_t ResultDigit,
+           const std::uint32_t LoopDigit,
+           typename UnsignedSmallType,
+           typename UnsignedLargeType>
+  std::uint32_t pi_spigot<ResultDigit, LoopDigit, UnsignedSmallType, UnsignedLargeType>::my_count_of_calculations { };
 
   #if (__cplusplus >= 201703L)
   } // namespace math::constants
