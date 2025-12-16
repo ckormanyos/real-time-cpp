@@ -78,14 +78,10 @@ namespace local
   pi_spigot_input_container_type pi_spigot_input;
 } // namespace local
 
-extern "C"
-{
-  auto pi_main() -> int;
-}
-
 extern auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void;
 
 auto pi_count_of_calculations() -> std::uint32_t;
+auto pi_main() -> int;
 
 auto pi_count_of_calculations() -> std::uint32_t
 {
@@ -100,9 +96,11 @@ auto pi_main() -> int
 
   local_pi_spigot_instance.calculate(local::pi_spigot_input.data(), pi_lcd_progress, &local::pi_spigot_hash);
 
+  using local_hash_type = local::hash_type;
+  using local_hash_result_type = typename local_hash_type::result_type;
+
   // Check the hash result of the pi calculation.
-  const auto hash_control =
-    typename local::hash_type::result_type
+  constexpr local_hash_result_type hash_control
     #if (PI_CRUNCH_METAL_PI_SPIGOT_DIGITS == PI_CRUNCH_METAL_PI_SPIGOT_USE_100_DIGITS)
     {
       0x93U, 0xF1U, 0xB4U, 0xEAU, 0xABU, 0xCBU, 0xC9U, 0xB9U,
@@ -130,9 +128,6 @@ auto pi_main() -> int
       0x17U, 0x67U, 0x07U, 0x1DU
     };
     #endif
-
-  using local_hash_type = local::hash_type;
-  using local_hash_result_type = typename local_hash_type::result_type;
 
   local_hash_result_type hash_result { };
 

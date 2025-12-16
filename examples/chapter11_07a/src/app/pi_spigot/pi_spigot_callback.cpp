@@ -25,7 +25,7 @@ auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void
 
     const char* p_end { util::baselexical_cast(pi_output_digits10, p_str, p_str + sizeof(p_str)) };
 
-    ::mcal_lcd_write_line(p_str, static_cast<std::size_t>(p_end - p_str), std::size_t { UINT8_C(0) });
+    mcal::lcd::write_line(p_str, static_cast<std::size_t>(p_end - p_str), std::size_t { UINT8_C(0) });
   }
 
   {
@@ -33,6 +33,6 @@ auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void
 
     const char* p_end = util::baselexical_cast(pi_count_of_calculations(), p_str, p_str + sizeof(p_str));
 
-    ::mcal_lcd_write_line(p_str, static_cast<std::size_t>(p_end - p_str), std::size_t { UINT8_C(1) });
+    mcal::lcd::write_line(p_str, static_cast<std::size_t>(p_end - p_str), std::size_t { UINT8_C(1) });
   }
 }

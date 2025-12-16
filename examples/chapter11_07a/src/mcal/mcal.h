@@ -12,6 +12,7 @@
   #include <mcal_dev.h>
   #include <mcal_gpt.h>
   #include <mcal_irq.h>
+  #include <mcal_lcd.h>
   #include <mcal_led.h>
   #include <mcal_wdg.h>
 

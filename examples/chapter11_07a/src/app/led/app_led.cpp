@@ -17,8 +17,7 @@ namespace local
   bool result_pi_calc_is_ok { true };
 } // namespace local
 
-extern "C"
-auto pi_main() -> int;
+extern auto pi_main() -> int;
 
 extern "C"
 void app_led_task_background(void*)

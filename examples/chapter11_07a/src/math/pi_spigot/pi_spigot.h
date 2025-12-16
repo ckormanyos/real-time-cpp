@@ -151,7 +151,7 @@
         pfn_callback_to_report_digits10(my_output_count);
       }
 
-      const unsigned_large_type p10 { static_cast<unsigned_large_type>(pow10(loop_digit())) };
+      constexpr unsigned_large_type p10_loop { static_cast<unsigned_large_type>(pow10(loop_digit())) };
 
       // Operation count Mathematica(R), example for loop_digit=9.
       // Sum[Floor[((d - j) (Floor[((10 9)/3)] + 1))/9], {j, 0, Floor[d/9] 9, 9}]
@@ -184,7 +184,7 @@
             static_cast<unsigned_large_type>
             (
                 val_d
-              + static_cast<unsigned_large_type>(di * p10)
+              + static_cast<unsigned_large_type>(di * p10_loop)
             );
 
           const auto val_b =
@@ -219,8 +219,6 @@
         // above 50,000 digits stops iteration for a loop_digit count of 4.
         // For this reason, we usually use a loop_digit count of 9, which
         // has been tested on the PC up to 1,000,001 (a million) decimal digits.
-
-        const auto p10_loop = static_cast<unsigned_large_type>(pow10(loop_digit()));
 
         const auto next_digits =
           static_cast<unsigned_small_type>
@@ -321,7 +319,7 @@
     static std::uint32_t my_count_of_calculations;
 
     std::uintmax_t my_operation_count { };
-    std::uint32_t  my_output_count    { };
+    std::uint32_t  my_output_count { };
 
     static constexpr auto pow10(std::uint32_t n) -> unsigned_small_type
     {

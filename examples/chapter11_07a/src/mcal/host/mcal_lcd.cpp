@@ -21,20 +21,17 @@ namespace local_lcd
   }
 } // namespace local_lcd;
 
-extern "C"
+auto mcal::lcd::init() -> void
 {
-  auto mcal_lcd_init() -> void
-  {
-    static const bool is_init { local_lcd::lcd_host_console().init() };
+  static const bool is_init { local_lcd::lcd_host_console().init() };
 
-    static_cast<void>(is_init);
-  }
+  static_cast<void>(is_init);
+}
 
-  auto mcal_lcd_write_line(const char* StringToPrint, const size_t StringSize, const size_t LineIndex) -> void
-  {
-    static_cast<void>
-    (
-      local_lcd::lcd_host_console().write(StringToPrint, StringSize, static_cast<std::uint_fast8_t>(LineIndex))
-    );
-  }
+auto mcal::lcd::write_line(const char* StringToPrint, const size_t StringSize, const size_t LineIndex) -> void
+{
+  static_cast<void>
+  (
+    local_lcd::lcd_host_console().write(StringToPrint, StringSize, static_cast<std::uint_fast8_t>(LineIndex))
+  );
 }

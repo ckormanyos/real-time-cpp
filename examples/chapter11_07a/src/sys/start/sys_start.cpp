@@ -16,12 +16,6 @@
 
 ATTRIBUTE(used,noinline) auto main() -> int;
 
-extern "C"
-{
-  auto mcal_lcd_init() -> void;
-  auto mcal_lcd_write_line(const char* StringToPrint, const size_t StringSize, const size_t LineIndex) -> void;
-}
-
 auto main() -> int
 {
   // Initialize the microcontroller abstraction layer.
@@ -29,10 +23,10 @@ auto main() -> int
 
   mcal::dev::post_init();
 
-  mcal_lcd_init();
+  mcal::lcd::init();
 
-  mcal_lcd_write_line("0", std::size_t { UINT8_C(1) }, std::size_t { UINT8_C(0) });
-  mcal_lcd_write_line("0", std::size_t { UINT8_C(1) }, std::size_t { UINT8_C(1) });
+  mcal::lcd::write_line("0", std::size_t { UINT8_C(1) }, std::size_t { UINT8_C(0) });
+  mcal::lcd::write_line("0", std::size_t { UINT8_C(1) }, std::size_t { UINT8_C(1) });
 
   // Configure and create the OS tasks. These macros
   // also setup the task static resources including the

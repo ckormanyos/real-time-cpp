@@ -56,7 +56,7 @@
       setting(serlcd_size_lines_04);
       setting(serlcd_size_width_20);
 
-      set_rgb_fast(UINT8_C(84), UINT8_C(96), UINT8_C(84));
+      set_rgb_fast(UINT8_C(48), UINT8_C(96), UINT8_C(48));
 
       return
       {
@@ -119,13 +119,14 @@
     {
       // Set the active cursor position to the beginning of the line index.
 
-      constexpr std::uint_fast8_t index_to_row_table[std::size_t { UINT8_C(4) }] =
-      {
-        std::uint_fast8_t { UINT8_C( 0) },
-        std::uint_fast8_t { UINT8_C(64) },
-        std::uint_fast8_t { UINT8_C(20) },
-        std::uint_fast8_t { UINT8_C(84) }
-      };
+      constexpr std::array<std::uint_fast8_t, std::size_t { UINT8_C(4) }>
+        index_to_row_table =
+        {{
+          std::uint_fast8_t { UINT8_C( 0) },
+          std::uint_fast8_t { UINT8_C(64) },
+          std::uint_fast8_t { UINT8_C(20) },
+          std::uint_fast8_t { UINT8_C(84) }
+        }};
 
       transfer(std::uint8_t { UINT8_C(0xFE) });
 
@@ -135,7 +136,7 @@
           static_cast<std::uint_fast8_t>
           (
               std::uint_fast8_t { UINT8_C(0x80) }
-            + index_to_row_table[index]
+            + index_to_row_table[std::size_t { index }]
             + std::uint_fast8_t { UINT8_C(0x00) }
           )
         };
@@ -157,11 +158,10 @@
         hue_b,                // Blue value.
       }};
 
-      transfer(cmd[std::size_t { UINT8_C(0) }]);
-      transfer(cmd[std::size_t { UINT8_C(1) }]);
-      transfer(cmd[std::size_t { UINT8_C(2) }]);
-      transfer(cmd[std::size_t { UINT8_C(3) }]);
-      transfer(cmd[std::size_t { UINT8_C(4) }]);
+      for(const std::uint8_t& next_cmd_byte : cmd)
+      {
+        transfer(next_cmd_byte);
+      }
     }
   };
 

@@ -34,7 +34,7 @@
 
       bool write_is_ok { };
 
-      if((pstr != nullptr) && (length > 0U))
+      if((pstr != nullptr) && (length > std::size_t { UINT8_C(0) }))
       {
         const std::string str(pstr, pstr + length); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
@@ -50,6 +50,7 @@
       return write_is_ok;
     }
 
+    [[nodiscard]]
     auto init() -> bool override { return true; } // LCOV_EXCL_LINE
   };
 
