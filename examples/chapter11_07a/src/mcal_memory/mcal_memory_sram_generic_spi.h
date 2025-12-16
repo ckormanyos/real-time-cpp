@@ -111,7 +111,7 @@
 
           communication_type::select();
 
-          static_cast<void>(communication_type::send_n(cmd.cbegin(), cmd.end(), dummy_byte_to_read));
+          static_cast<void>(communication_type::send_n(cmd.cbegin(), cmd.cend(), dummy_byte_to_read));
 
           for(auto i = static_cast<std::size_t>(UINT8_C(0)); i < count; ++i)
           {

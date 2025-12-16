@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Iliass Mahjoub 2023 - 2024
+//  Copyright Iliass Mahjoub 2023 - 2025
 //  Copyright Christopher Kormanyos 2024 - 2025
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -15,6 +15,7 @@
   #include <util/utility/util_time.h>
 
   #include <algorithm>
+  #include <array>
 
   #if(__cplusplus >= 201703L)
   namespace mcal::lcd {
@@ -52,11 +53,20 @@
       communication_type::init();
 
       setting(serlcd_clear_display);
-      setting(serlcd_green_backlight);
       setting(serlcd_size_lines_04);
       setting(serlcd_size_width_20);
 
-      return true;
+      set_rgb_fast(UINT8_C(84), UINT8_C(96), UINT8_C(84));
+
+      return
+      {
+        (
+             write(" ", std::size_t { UINT8_C(1) }, std::uint_fast8_t { UINT8_C(0) })
+          && write(" ", std::size_t { UINT8_C(1) }, std::uint_fast8_t { UINT8_C(1) })
+          && write(" ", std::size_t { UINT8_C(1) }, std::uint_fast8_t { UINT8_C(2) })
+          && write(" ", std::size_t { UINT8_C(1) }, std::uint_fast8_t { UINT8_C(3) })
+        )
+      };
     }
 
     auto write(const char* pstr,
@@ -99,7 +109,7 @@
       blocking_delay(timer_type::microseconds(tick_type { UINT8_C(150) }));
     }
 
-    void setting(const std::uint8_t setting)
+    auto setting(const std::uint8_t setting) -> void
     {
       transfer(serlcd_setting_mode);
       transfer(setting);
@@ -133,6 +143,25 @@
       transfer(static_cast<std::uint8_t>(by_row));
 
       return true;
+    }
+
+    auto set_rgb_fast(const std::uint8_t hue_r, const std::uint8_t hue_g, const std::uint8_t hue_b) -> void
+    {
+      // Create the RGB command data stream.
+      const std::array<std::uint8_t, std::size_t { UINT8_C(5) }> cmd =
+      {{
+        serlcd_setting_mode,  // Special command character.
+        UINT8_C(0x2B),        // Set RGB character '+' or plus.
+        hue_r,                // Red value.
+        hue_g,                // Green value.
+        hue_b,                // Blue value.
+      }};
+
+      transfer(cmd[std::size_t { UINT8_C(0) }]);
+      transfer(cmd[std::size_t { UINT8_C(1) }]);
+      transfer(cmd[std::size_t { UINT8_C(2) }]);
+      transfer(cmd[std::size_t { UINT8_C(3) }]);
+      transfer(cmd[std::size_t { UINT8_C(4) }]);
     }
   };
 
