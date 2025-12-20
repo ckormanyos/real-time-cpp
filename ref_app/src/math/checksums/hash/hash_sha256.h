@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2025.
+//  Copyright Christopher Kormanyos 2013 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef HASH_SHA256_2023_02_26_H
-  #define HASH_SHA256_2023_02_26_H
+#ifndef HASH_SHA256_2023_02_26_H_
+  #define HASH_SHA256_2023_02_26_H_
 
   // See also: https://en.wikipedia.org/wiki/SHA-2
 
@@ -239,4 +239,4 @@
 
   } } } // namespace math::checksums::hash
 
-#endif // HASH_SHA256_2023_02_26_H
+#endif // HASH_SHA256_2023_02_26_H_

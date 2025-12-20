@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2025.
+//  Copyright Christopher Kormanyos 2013 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef HASH_SHA1_2013_09_03_H
-  #define HASH_SHA1_2013_09_03_H
+#ifndef HASH_SHA1_2013_09_03_H_
+  #define HASH_SHA1_2013_09_03_H_
 
   // See also: https://en.wikipedia.org/wiki/SHA-1
 
@@ -18,12 +18,15 @@
 
   namespace math { namespace checksums { namespace hash {
 
-  class hash_sha1 : public hash_base<static_cast<std::uint16_t>(UINT8_C(160)),
+  template<typename CountType>
+  class hash_sha1 : public hash_base<CountType,
+                                     static_cast<std::uint16_t>(UINT8_C(160)),
                                      static_cast<std::uint16_t>(UINT8_C(64)),
                                      static_cast<std::uint16_t>(UINT8_C(64))>
   {
   private:
-    using base_class_type = hash_base<static_cast<std::uint16_t>(UINT8_C(160)),
+    using base_class_type = hash_base<CountType,
+                                      static_cast<std::uint16_t>(UINT8_C(160)),
                                       static_cast<std::uint16_t>(UINT8_C(64)),
                                       static_cast<std::uint16_t>(UINT8_C(64))>;
 
@@ -56,7 +59,8 @@
     auto perform_algorithm() -> void override;
   };
 
-  auto hash_sha1::perform_algorithm() -> void
+  template <typename my_count_type>
+  auto hash_sha1<my_count_type>::perform_algorithm() -> void
   {
     // Apply the hash transformation algorithm to a full data block.
 
@@ -146,4 +150,4 @@
 
   } } } // namespace math::checksums::hash
 
-#endif // HASH_SHA1_2013_09_03_H
+#endif // HASH_SHA1_2013_09_03_H_
