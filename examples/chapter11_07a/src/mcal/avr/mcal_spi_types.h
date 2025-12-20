@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2024
+//  Copyright Christopher Kormanyos 2024 - 2025
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,25 +16,25 @@
 
   namespace sram {
 
-  // Pin 1 on SRAM chip.
+  // portd.7 (connect to pin 1 on SRAM chip).
   using port_pin_sram_csn0_type = mcal::port::port_pin<std::uint8_t,
                                                        std::uint8_t,
                                                        mcal::reg::portd,
                                                        UINT8_C(7)>;
 
-  // Pin 2 on SRAM chip.
+  // portd.6 (connect to pin 2 on SRAM chip).
   using port_pin_sram_miso_type = mcal::port::port_pin<std::uint8_t,
                                                        std::uint8_t,
                                                        mcal::reg::portd,
                                                        UINT8_C(6)>;
 
-  // Pin 6 on SRAM chip.
+  // portd.5 (connect to pin 6 on SRAM chip).
   using port_pin_sram_sck__type = mcal::port::port_pin<std::uint8_t,
                                                        std::uint8_t,
                                                        mcal::reg::portd,
                                                        UINT8_C(5)>;
 
-  // Pin 5 on SRAM chip.
+  // portd.4 (connect to pin 5 on SRAM chip).
   using port_pin_sram_mosi_type = mcal::port::port_pin<std::uint8_t,
                                                        std::uint8_t,
                                                        mcal::reg::portd,

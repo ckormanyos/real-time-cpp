@@ -281,7 +281,7 @@
               (std::min)
               (
                 static_cast<local_count_type>(n_loop),
-                static_cast<local_count_type>(std::tuple_size<output_chars_array_type>::value)
+                static_cast<local_count_type>(std::tuple_size_v<output_chars_array_type>)
               )
             };
 

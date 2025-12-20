@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H_
-  #define MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H_
+#ifndef MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H
+  #define MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H
 
   #include <algorithm>
   #include <cstddef>
@@ -146,4 +146,4 @@
 
   } } } // namespace mcal::memory::progmem
 
-#endif // MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H_
+#endif // MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H

@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2020.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_MEMORY_PROGMEM_PTR_2019_09_08_H_
-  #define MCAL_MEMORY_PROGMEM_PTR_2019_09_08_H_
+#ifndef MCAL_MEMORY_PROGMEM_PTR_2019_09_08_H
+  #define MCAL_MEMORY_PROGMEM_PTR_2019_09_08_H
 
   #include <mcal_memory/mcal_memory_progmem_ref.h>
 
@@ -127,4 +127,4 @@
 
   } } } // namespace mcal::memory::progmem
 
-#endif // MCAL_MEMORY_PROGMEM_PTR_2019_09_08_H_
+#endif // MCAL_MEMORY_PROGMEM_PTR_2019_09_08_H

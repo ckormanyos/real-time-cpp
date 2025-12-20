@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef CRC32_2015_01_26_H_
-  #define CRC32_2015_01_26_H_
+#ifndef CRC32_2015_01_26_H
+  #define CRC32_2015_01_26_H
 
   #include <array>
   #include <cstdint>
@@ -63,4 +63,4 @@
 
   } } } // namespace math::checksums::crc
 
-#endif // CRC32_2015_01_26_H_
+#endif // CRC32_2015_01_26_H

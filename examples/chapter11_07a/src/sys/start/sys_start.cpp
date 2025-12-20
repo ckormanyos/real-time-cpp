@@ -7,10 +7,9 @@
 
 #include <app/led/app_led.h>
 #include <mcal_benchmark.h>
+#include <mcal_memory/mcal_memory_sram_array.h>
 #include <mcal/mcal.h>
 #include <os/os_task.h>
-
-#include <mcal_memory/mcal_memory_sram_array.h>
 
 #include <util/utility/util_attribute.h>
 

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_MEMORY_SRAM_REF_2020_04_11_H_
-  #define MCAL_MEMORY_SRAM_REF_2020_04_11_H_
+#ifndef MCAL_MEMORY_SRAM_REF_2020_04_11_H
+  #define MCAL_MEMORY_SRAM_REF_2020_04_11_H
 
   #include <mcal_memory/mcal_memory_sram_access.h>
 
@@ -72,4 +72,4 @@
 
   } } } // namespace mcal::memory::sram
 
-#endif // MCAL_MEMORY_SRAM_REF_2020_04_11_H_
+#endif // MCAL_MEMORY_SRAM_REF_2020_04_11_H

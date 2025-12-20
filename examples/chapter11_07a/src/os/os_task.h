@@ -26,18 +26,18 @@
   #if defined(__AVR__)
 
   #define OS_TASK_CREATE(name, param, prio, size) \
-    static StackType_t os_task_##name##_stack_buffer[size]; \
+    static StackType_t os_task_##name##_stack_buffer[(size_t) (size)]; \
     static StaticTask_t os_task_##name##_cb_buffer; \
     ::xTaskCreateStatic(name,                                                          \
                         #name,                                                         \
                         sizeof(os_task_##name##_stack_buffer) / sizeof(StackType_t),   \
-                        (void*) param,                                                 \
-                        prio,                                                          \
-                        &os_task_##name##_stack_buffer[0U],                            \
+                        (void*) (param),                                               \
+                        (UBaseType_t) prio,                                            \
+                        &os_task_##name##_stack_buffer[(size_t) (UINT8_C(0))],         \
                         &os_task_##name##_cb_buffer)
 
-  static inline void OS_TASK_START_SCHEDULER() { ::vTaskStartScheduler(); }
-  static inline void OS_TASK_WAIT_YIELD(const TickType_t x) { ::vTaskDelay(pdMS_TO_TICKS(x)); }
+  static inline void OS_TASK_START_SCHEDULER() { vTaskStartScheduler(); }
+  static inline void OS_TASK_WAIT_YIELD(const TickType_t x) { vTaskDelay(pdMS_TO_TICKS(x)); }
 
   #else
 
@@ -78,7 +78,7 @@
 
   #define OS_TASK_CREATE(name, param, prio, size) \
     std::thread t##prio { name, (void*) param }; \
-    ::os_task::detail::task_list<std::size_t { UINT8_C(8) }>::task_pointers[prio] = &t##prio
+    ::os_task::detail::task_list<std::size_t { UINT8_C(8) }>::task_pointers[static_cast<std::size_t>(prio)] = &t##prio
 
   static inline void OS_TASK_START_SCHEDULER() { ::os_task::start_scheduler(); }
 
