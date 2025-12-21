@@ -61,10 +61,6 @@ namespace local
     return instance;
   }
 
-  using hash_type = math::checksums::hash::hash_sha1;
-
-  hash_type pi_spigot_hash;
-
   auto pi_output_digits10 = static_cast<std::uint32_t>(UINT8_C(0));
 
   using benchmark_port_type = ::mcal::benchmark::benchmark_port_type;
@@ -75,7 +71,26 @@ namespace local
                                                                    pi_spigot_type::input_static_size,
                                                                    pi_spigot_input_start_address>;
 
-  pi_spigot_input_container_type pi_spigot_input;
+  auto pi_spigot_input() -> pi_spigot_input_container_type&;
+
+  auto pi_spigot_input() -> pi_spigot_input_container_type&
+  {
+    static pi_spigot_input_container_type container_instance { };
+
+    return container_instance;
+  }
+
+  using hash_type = math::checksums::hash::hash_sha1;
+  using hash_result_type = typename hash_type::result_type;
+
+  auto pi_spigot_hash() -> hash_type&;
+
+  auto pi_spigot_hash() -> hash_type&
+  {
+    static hash_type hash_instance { };
+
+    return hash_instance;
+  }
 } // namespace local
 
 extern auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void;
@@ -94,13 +109,14 @@ auto pi_main() -> int
 
   auto& local_pi_spigot_instance { local::pi_spigot_instance() };
 
-  local_pi_spigot_instance.calculate(local::pi_spigot_input.data(), pi_lcd_progress, &local::pi_spigot_hash);
+  auto& local_container_instance { local::pi_spigot_input() };
 
-  using local_hash_type = local::hash_type;
-  using local_hash_result_type = typename local_hash_type::result_type;
+  auto& local_hash { local::pi_spigot_hash() };
+
+  local_pi_spigot_instance.calculate(local_container_instance.data(), pi_lcd_progress, &local_hash);
 
   // Check the hash result of the pi calculation.
-  constexpr local_hash_result_type hash_control
+  constexpr local::hash_result_type hash_control
     #if (PI_CRUNCH_METAL_PI_SPIGOT_DIGITS == PI_CRUNCH_METAL_PI_SPIGOT_USE_100_DIGITS)
     {
       0x93U, 0xF1U, 0xB4U, 0xEAU, 0xABU, 0xCBU, 0xC9U, 0xB9U,
@@ -129,9 +145,9 @@ auto pi_main() -> int
     };
     #endif
 
-  local_hash_result_type hash_result { };
+  local::hash_result_type hash_result { };
 
-  local::pi_spigot_hash.get_result(hash_result.data());
+  local_hash.get_result(hash_result.data());
 
   const bool result_is_ok { std::equal(hash_result.cbegin(), hash_result.cend(), hash_control.cbegin()) };
 

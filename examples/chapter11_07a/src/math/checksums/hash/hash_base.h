@@ -16,27 +16,30 @@
   namespace math { namespace checksums { namespace hash {
 
   template<const std::uint16_t ResultBitCount,
-           const std::uint16_t MessageBufferSize,
-           const std::uint16_t MessageLengthTotalBitCount>
+           const std::uint16_t MessageBlockBufferSize,
+           const std::uint16_t MessageBlockBitCount>
   class hash_base : public hash_stream_base
   {
+  private:
+    using base_class_type = hash_stream_base;
+
   public:
     using result_type = std::array<std::uint8_t, static_cast<std::size_t>(ResultBitCount / static_cast<std::uint16_t>(UINT8_C(8)))>;
 
     static_assert
     (
-           std::numeric_limits<count_type>::is_specialized
-      &&   std::numeric_limits<count_type>::is_integer
-      && (!std::numeric_limits<count_type>::is_signed)
-      && (std::numeric_limits<count_type>::radix == static_cast<int>(INT8_C(2)))
-      && (std::numeric_limits<count_type>::digits >= static_cast<int>(INT8_C(16)))
-      && (static_cast<int>(std::numeric_limits<count_type>::digits % static_cast<int>(INT8_C(8))) == static_cast<int>(INT8_C(0))),
-      "Error: The count type must be an unsigned integer with radix 2, that is 16 bits or wider, and having a multiple of 8 bits"
+           std::numeric_limits<base_class_type::count_type>::is_specialized
+      &&   std::numeric_limits<base_class_type::count_type>::is_integer
+      && (!std::numeric_limits<base_class_type::count_type>::is_signed)
+      && (std::numeric_limits<base_class_type::count_type>::radix == static_cast<int>(INT8_C(2)))
+      && (std::numeric_limits<base_class_type::count_type>::digits >= static_cast<int>(INT8_C(32)))
+      && (static_cast<int>(std::numeric_limits<base_class_type::count_type>::digits % static_cast<int>(INT8_C(8))) == static_cast<int>(INT8_C(0))),
+      "Error: The count type must be an unsigned integer with radix 2, that is 32 bits or wider, and having a multiple of 8 bits"
     );
 
-    virtual ~hash_base() = default;
+    ~hash_base() override = default;
 
-    virtual auto initialize() -> void
+    auto initialize() -> void override
     {
       message_index        = static_cast<std::uint_least32_t>(UINT8_C(0));
       message_length_total = static_cast<count_type>(UINT8_C(0));
@@ -44,7 +47,7 @@
       message_buffer.fill(static_cast<std::uint8_t>(UINT8_C(0)));
     }
 
-    virtual auto process(const std::uint8_t* message, const count_type count) -> void
+    auto process(const std::uint8_t* message, const count_type count) -> void override
     {
       auto process_index      = count_type { };
       auto process_chunk_size = count_type { };
@@ -70,7 +73,7 @@
       }
     }
 
-    virtual auto finalize() -> void
+    auto finalize() -> void override
     {
       // Create the padding. Begin by setting the leading padding byte to 0x80.
       message_buffer[static_cast<std::size_t>(message_index)] = static_cast<std::uint8_t>(UINT8_C(0x80));
@@ -147,7 +150,7 @@
     }
 
   protected:
-    using message_block_type = std::array<std::uint8_t, static_cast<std::size_t>(MessageBufferSize)>;
+    using message_block_type = std::array<std::uint8_t, static_cast<std::size_t>(MessageBlockBufferSize)>;
 
     using context_type = std::array<std::uint32_t, static_cast<std::size_t>(std::tuple_size<result_type>::value / sizeof(std::uint32_t))>;
 
@@ -175,7 +178,7 @@
       return
         static_cast<std::uint16_t>
         (
-          MessageLengthTotalBitCount / static_cast<std::uint16_t>(UINT8_C(8))
+          MessageBlockBitCount / static_cast<std::uint16_t>(UINT8_C(8))
         );
     }
 

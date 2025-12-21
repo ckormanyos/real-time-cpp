@@ -12,7 +12,7 @@
 #
 # If command
 #     /usr/bin/avr-g++
-# installed, e.g. via command  sudo apt-get install gcc-avr avr-libc
+# installed, e.g. via command sudo apt-get install gcc-avr avr-libc
 # then:
 # ./build.sh
 #

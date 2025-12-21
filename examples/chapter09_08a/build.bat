@@ -27,7 +27,7 @@
 @set TOOL_PATH=%1
 @set TOOL_PREFIX=%2
 
-@set CFLAGS=-Wall -Wextra -Wpedantic -O2 -mmcu=atmega328p -fsigned-char -fno-exceptions
+@set CFLAGS=-Wall -Wextra -Wpedantic -O2 -mmcu=atmega328p -fsigned-char -fno-exceptions -gdwarf-2
 @set CPPFLAGS=-std=c++14 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
 @set CINCLUDES=-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr
 

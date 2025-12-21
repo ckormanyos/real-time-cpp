@@ -36,7 +36,7 @@
       );
   }
 
-  inline auto convert_uint8_input_to_uint32_output(const std::uint8_t* in_begin, const std::uint8_t*  in_end, std::uint32_t* out_begin) -> void
+  constexpr auto convert_uint8_input_to_uint32_output(const std::uint8_t* in_begin, const std::uint8_t*  in_end, std::uint32_t* out_begin) -> void
   {
     // Decode the input uint8_t source into the output uint32_t destination.
     // This subroutine assumes that the length of the input is a multiple of 4.
@@ -60,7 +60,7 @@
     }
   }
 
-  inline auto convert_uint8_input_to_uint32_output_reverse(const std::uint8_t*  in_begin, const std::uint8_t*  in_end, std::uint32_t* out_begin) -> void
+  constexpr auto convert_uint8_input_to_uint32_output_reverse(const std::uint8_t*  in_begin, const std::uint8_t*  in_end, std::uint32_t* out_begin) -> void
   {
     // Decode the input uint8_t source into the output uint32_t destination.
     // This subroutine assumes that the length of the input is a multiple of 4.
@@ -84,7 +84,7 @@
     }
   }
 
-  inline auto convert_uint32_input_to_uint8_output(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t*  out_begin) -> void
+  constexpr auto convert_uint32_input_to_uint8_output(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t*  out_begin) -> void
   {
     // Encode the input uint32_t source into the output uint8_t destination.
     // This subroutine assumes that the length of the output is a multiple of 4.
@@ -104,7 +104,7 @@
     }
   }
 
-  inline auto convert_uint32_input_to_uint8_output_reverse(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t*  out_begin) -> void
+  constexpr auto convert_uint32_input_to_uint8_output_reverse(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t*  out_begin) -> void
   {
     // Encode the input uint32_t source into the output uint8_t destination.
     // This subroutine assumes that the length of the output is a multiple of 4.

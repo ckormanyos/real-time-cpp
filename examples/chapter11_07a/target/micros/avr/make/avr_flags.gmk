@@ -21,8 +21,7 @@ TGT_ALLFLAGS  = -O2                                                             
                 -mrelax                                                           \
                 -finline-functions                                                \
                 -finline-limit=256                                                \
-                -fsigned-char                                                     \
-                -DPI_CRUNCH_METAL_DISABLE_IOSTREAM
+                -fsigned-char
 
 ifeq ($(TYP_OS),WIN)
 

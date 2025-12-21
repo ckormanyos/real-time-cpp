@@ -85,7 +85,6 @@
   public:
     static constexpr std::uint32_t input_static_size { input_scale(result_digit()) };
 
-    [[nodiscard]]
     static constexpr auto get_input_static_size() -> std::uint32_t { return input_static_size; }
 
     constexpr pi_spigot() = default; // LCOV_EXCL_LINE
@@ -100,7 +99,6 @@
 
     constexpr auto operator=(pi_spigot&&) -> pi_spigot& = delete;
 
-    [[nodiscard]]
     constexpr auto get_operation_count() const -> std::uintmax_t
     {
       return my_operation_count;
@@ -309,10 +307,8 @@
       }
     }
 
-    [[nodiscard]]
     auto get_output_count() const noexcept -> std::uint32_t { return my_output_count; }
 
-    [[nodiscard]]
     static auto get_count_of_calculations() -> std::uint32_t { return my_count_of_calculations; }
 
   private:

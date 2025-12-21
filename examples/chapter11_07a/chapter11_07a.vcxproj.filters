@@ -703,5 +703,7 @@
     <None Include="readme.md">
       <Filter>_doc</Filter>
     </None>
+    <None Include="build.bat" />
+    <None Include="build.sh" />
   </ItemGroup>
 </Project>
