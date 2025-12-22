@@ -21,17 +21,3 @@ auto mcal::led::led0() -> led_base&
 
   return l0;
 }
-
-auto mcal::led::led1() -> led_base&
-{
-  using led1_port_type = mcal::port::port_pin<std::uint8_t,
-                                              std::uint8_t,
-                                              mcal::reg::portd,
-                                              UINT8_C(3)>;
-
-  using led1_led_type = mcal::led::led_port<led1_port_type>;
-
-  static led1_led_type l1;
-
-  return l1;
-}

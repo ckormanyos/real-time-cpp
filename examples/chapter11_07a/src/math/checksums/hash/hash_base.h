@@ -8,10 +8,13 @@
 #ifndef HASH_BASE_2013_09_05_H
   #define HASH_BASE_2013_09_05_H
 
-  #include <limits>
-
   #include <math/checksums/hash/hash_detail.h>
   #include <math/checksums/hash/hash_stream_base.h>
+
+  #include <array>
+  #include <cstddef>
+  #include <cstdint>
+  #include <limits>
 
   namespace math { namespace checksums { namespace hash {
 

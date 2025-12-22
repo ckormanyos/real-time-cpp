@@ -15,7 +15,6 @@
 
   #include <algorithm>
   #include <array>
-  #include <functional>
   #include <iterator>
   #include <type_traits>
 
@@ -45,28 +44,15 @@
   class pi_spigot
   {
   public:
-    static constexpr auto result_digit() -> std::uint32_t { return ResultDigit; }
-
     using unsigned_small_type = UnsignedSmallType;
     using unsigned_large_type = UnsignedLargeType;
 
   private:
+    using callback_type = void(*)(const std::uint32_t);
+
+    static constexpr auto result_digit() -> std::uint32_t { return ResultDigit; }
+
     static constexpr auto loop_digit() -> std::uint32_t { return LoopDigit; }
-
-    static_assert(loop_digit() <= static_cast<std::uint32_t>(std::numeric_limits<unsigned_small_type>::digits10),
-                  "Error: loop_digit exceeds the number of base-10 digits in its constituent unsigned_small_type");
-
-    static_assert(result_digit() <= static_cast<std::uint32_t>(UINT32_C(100001)),
-                  "Error: result_digit exceeds its limit of 100,001");
-
-    static_assert(std::numeric_limits<unsigned_small_type>::digits * 2 == std::numeric_limits<unsigned_large_type>::digits,
-                  "Error: unsigned_large_type must be exactly twice as wide as unsigned_small_type");
-
-    static_assert((!std::numeric_limits<unsigned_small_type>::is_signed),
-                  "Error: unsigned_small_type must be unsigned");
-
-    static_assert((!std::numeric_limits<unsigned_large_type>::is_signed),
-                  "Error: unsigned_large_type must be unsigned");
 
     static constexpr auto input_scale(std::uint32_t x) -> std::uint32_t
     {
@@ -83,9 +69,7 @@
     }
 
   public:
-    static constexpr std::uint32_t input_static_size { input_scale(result_digit()) };
-
-    static constexpr auto get_input_static_size() -> std::uint32_t { return input_static_size; }
+    static constexpr auto get_input_static_size() -> std::uint32_t { return input_scale(result_digit()); }
 
     constexpr pi_spigot() = default; // LCOV_EXCL_LINE
 
@@ -103,9 +87,6 @@
     {
       return my_operation_count;
     }
-
-    using callback_type = void(*)(const std::uint32_t);
-
 
     template<typename InputIteratorType>
     auto calculate(InputIteratorType my_pi_in,
@@ -126,13 +107,13 @@
       }
 
       using local_input_iterator_type = InputIteratorType;
-      using local_input_value_type    = typename std::iterator_traits<local_input_iterator_type>::value_type;
+      using local_input_value_type = typename std::iterator_traits<local_input_iterator_type>::value_type;
 
       // Invalidate the input container values at the first 32 indices.
       const std::uint32_t
         invalidate_size
         {
-          (std::min)(static_cast<std::uint32_t>(UINT8_C(32)), input_static_size)
+          (std::min)(std::uint32_t { UINT8_C(32) }, get_input_static_size())
         };
 
       std::fill(my_pi_in,
@@ -339,8 +320,22 @@
           pow10(loop_digit()) / static_cast<unsigned>(UINT8_C(5))
         );
     }
-  };
 
+    static_assert(loop_digit() <= static_cast<std::uint32_t>(std::numeric_limits<unsigned_small_type>::digits10),
+                  "Error: loop_digit exceeds the number of base-10 digits in its constituent unsigned_small_type");
+
+    static_assert(result_digit() <= static_cast<std::uint32_t>(UINT32_C(100001)),
+                  "Error: result_digit exceeds its limit of 100,001");
+
+    static_assert(std::numeric_limits<unsigned_small_type>::digits * 2 == std::numeric_limits<unsigned_large_type>::digits,
+                  "Error: unsigned_large_type must be exactly twice as wide as unsigned_small_type");
+
+    static_assert((!std::numeric_limits<unsigned_small_type>::is_signed),
+                  "Error: unsigned_small_type must be unsigned");
+
+    static_assert((!std::numeric_limits<unsigned_large_type>::is_signed),
+                  "Error: unsigned_large_type must be unsigned");
+  };
 
   template<const std::uint32_t ResultDigit,
            const std::uint32_t LoopDigit,

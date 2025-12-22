@@ -9,6 +9,7 @@
 
   #include <cstddef>
   #include <cstdint>
+  #include <limits>
 
   namespace math { namespace checksums { namespace hash { namespace detail {
 

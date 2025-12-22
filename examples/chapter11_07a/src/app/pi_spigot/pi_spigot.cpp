@@ -68,7 +68,7 @@ namespace local
   constexpr auto pi_spigot_input_start_address = static_cast<mcal_sram_uintptr_t>(UINT8_C(0));
 
   using pi_spigot_input_container_type = mcal::memory::sram::array<std::uint32_t,
-                                                                   pi_spigot_type::input_static_size,
+                                                                   pi_spigot_type::get_input_static_size(),
                                                                    pi_spigot_input_start_address>;
 
   auto pi_spigot_input() -> pi_spigot_input_container_type&;

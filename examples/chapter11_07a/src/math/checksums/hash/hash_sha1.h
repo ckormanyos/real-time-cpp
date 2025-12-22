@@ -10,11 +10,10 @@
 
   // See also: https://en.wikipedia.org/wiki/SHA-1
 
-  #include <algorithm>
-  #include <array>
-  #include <functional>
-
   #include <math/checksums/hash/hash_base.h>
+
+  #include <algorithm>
+  #include <functional>
 
   namespace math { namespace checksums { namespace hash {
 
@@ -31,6 +30,8 @@
                   "Error: The message  buffer size must exactly equal 64");
 
   public:
+    using transform_function_type = std::uint32_t(*)(const std::uint32_t*);
+
     hash_sha1() = default;
 
     hash_sha1(const hash_sha1&) = default;
@@ -53,8 +54,19 @@
     }
 
   private:
+    static const std::array<transform_function_type, static_cast<std::size_t>(UINT8_C(4))> transform_functions;
+
     auto perform_algorithm() -> void override;
   };
+
+  const std::array<hash_sha1::transform_function_type, static_cast<std::size_t>(UINT8_C(4))>
+    hash_sha1::transform_functions
+    {
+      [](const std::uint32_t* p) -> std::uint32_t { return (static_cast<std::uint32_t>(                           p[1U] & p[2U]) | static_cast<std::uint32_t>(static_cast<std::uint32_t>(~p[1U]) & p[3U])); },
+      [](const std::uint32_t* p) -> std::uint32_t { return  static_cast<std::uint32_t>(static_cast<std::uint32_t>(p[1U] ^ p[2U]) ^ p[3U]); },
+      [](const std::uint32_t* p) -> std::uint32_t { return  static_cast<std::uint32_t>(static_cast<std::uint32_t>(p[1U] & p[2U]) | static_cast<std::uint32_t>(p[1U] & p[3U]) | static_cast<std::uint32_t>(p[2U] & p[3U])); },
+      [](const std::uint32_t* p) -> std::uint32_t { return (static_cast<std::uint32_t>(                           p[1U] ^ p[2U]) ^ p[3U]); }
+    };
 
   auto hash_sha1::perform_algorithm() -> void
   {
@@ -81,17 +93,7 @@
       transform_block.data()
     );
 
-    using transform_function_type = std::uint32_t(*)(const std::uint32_t*);
-
-    const std::array<transform_function_type, static_cast<std::size_t>(UINT8_C(4))> transform_functions
-    {
-      [](const std::uint32_t* p) -> std::uint32_t { return (static_cast<std::uint32_t>(                           p[1U] & p[2U]) | static_cast<std::uint32_t>(static_cast<std::uint32_t>(~p[1U]) & p[3U])); },
-      [](const std::uint32_t* p) -> std::uint32_t { return  static_cast<std::uint32_t>(static_cast<std::uint32_t>(p[1U] ^ p[2U]) ^ p[3U]); },
-      [](const std::uint32_t* p) -> std::uint32_t { return  static_cast<std::uint32_t>(static_cast<std::uint32_t>(p[1U] & p[2U]) | static_cast<std::uint32_t>(p[1U] & p[3U]) | static_cast<std::uint32_t>(p[2U] & p[3U])); },
-      [](const std::uint32_t* p) -> std::uint32_t { return (static_cast<std::uint32_t>(                           p[1U] ^ p[2U]) ^ p[3U]); }
-    };
-
-    auto hash_tmp = base_class_type::transform_context;
+    context_type hash_tmp { base_class_type::transform_context };
 
     auto loop_index = static_cast<std::uint8_t>(UINT8_C(0));
 
@@ -110,7 +112,7 @@
             ^ transform_block[static_cast<std::size_t>(                          loop_counter                                           & static_cast<std::uint8_t>(UINT8_C(0x0F)))]
           );
 
-        const auto transform_block_index = static_cast<std::size_t>(loop_counter & std::uint8_t(UINT8_C(0x0F)));
+        const auto transform_block_index { static_cast<std::size_t>(loop_counter & std::uint8_t(UINT8_C(0x0F))) };
 
         transform_block[transform_block_index] = detail::circular_left_shift<static_cast<unsigned>(UINT8_C(1))>(the_dword);
 

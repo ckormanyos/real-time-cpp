@@ -10,11 +10,10 @@
 
   // See also: https://en.wikipedia.org/wiki/SHA-2
 
-  #include <algorithm>
-  #include <array>
-  #include <functional>
-
   #include <math/checksums/hash/hash_base.h>
+
+  #include <algorithm>
+  #include <functional>
 
   namespace math { namespace checksums { namespace hash {
 

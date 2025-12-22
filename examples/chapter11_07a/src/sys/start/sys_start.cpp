@@ -31,7 +31,7 @@ auto main() -> int
   // also setup the task static resources including the
   // task control block structures and task stacks.
 
-  OS_TASK_CREATE(app_led_task_background,  nullptr, 1U, 512U);
+  OS_TASK_CREATE(app_led_task_background,  nullptr, 1U, 384U);
   OS_TASK_CREATE(app_led_task_toggle_led0, nullptr, 3U,  64U);
 
   // Start the OS scheduler (and never return).
