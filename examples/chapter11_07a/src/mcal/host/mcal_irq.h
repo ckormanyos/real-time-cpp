@@ -16,8 +16,8 @@
 
       void init(const config_type*);
 
-      inline void enable_all () noexcept { }
-      inline void disable_all() noexcept { }
+      inline void enable_all () { }
+      inline void disable_all() { }
     }
   }
 

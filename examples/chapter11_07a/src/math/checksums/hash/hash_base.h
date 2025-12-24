@@ -170,13 +170,13 @@
     hash_base() = default;
 
     hash_base(const hash_base&) = default;
-    hash_base(hash_base&&) noexcept = default;
+    hash_base(hash_base&&) = default;
 
     auto operator=(const hash_base& other) -> hash_base& = default;
-    auto operator=(hash_base&& other) noexcept -> hash_base& = default;
+    auto operator=(hash_base&& other) -> hash_base& = default;
 
   private:
-    static constexpr auto message_length_total_width() noexcept -> std::uint16_t
+    static constexpr auto message_length_total_width() -> std::uint16_t
     {
       return
         static_cast<std::uint16_t>

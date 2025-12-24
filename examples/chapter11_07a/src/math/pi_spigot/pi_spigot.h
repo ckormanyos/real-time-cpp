@@ -141,7 +141,7 @@
       {
         unsigned_large_type val_d { static_cast<unsigned_large_type>(UINT8_C(0)) };
 
-        const auto ilim = input_scale(result_digit() - j);
+        const auto ilim { input_scale(result_digit() - j) };
 
         for(auto   i = static_cast<std::uint32_t>(UINT8_C(0));
                    i < ilim;
@@ -288,7 +288,7 @@
       }
     }
 
-    auto get_output_count() const noexcept -> std::uint32_t { return my_output_count; }
+    auto get_output_count() const -> std::uint32_t { return my_output_count; }
 
     static auto get_count_of_calculations() -> std::uint32_t { return my_count_of_calculations; }
 

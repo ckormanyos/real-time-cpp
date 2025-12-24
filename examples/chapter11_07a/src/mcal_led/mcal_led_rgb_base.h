@@ -50,7 +50,7 @@
       );
     }
 
-    constexpr auto get_color() const noexcept -> std::uint32_t
+    constexpr auto get_color() const -> std::uint32_t
     {
       return
         static_cast<std::uint32_t>
@@ -61,9 +61,9 @@
         );
     }
 
-    constexpr auto get_hue_r() const noexcept -> std::uint_fast8_t { return my_hue_r; }
-    constexpr auto get_hue_g() const noexcept -> std::uint_fast8_t { return my_hue_g; }
-    constexpr auto get_hue_b() const noexcept -> std::uint_fast8_t { return my_hue_b; }
+    constexpr auto get_hue_r() const -> std::uint_fast8_t { return my_hue_r; }
+    constexpr auto get_hue_g() const -> std::uint_fast8_t { return my_hue_g; }
+    constexpr auto get_hue_b() const -> std::uint_fast8_t { return my_hue_b; }
 
   protected:
     constexpr led_rgb_base() = default;

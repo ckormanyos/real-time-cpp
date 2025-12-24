@@ -8,21 +8,9 @@
 //                                                               //
 ///////////////////////////////////////////////////////////////////
 
-// pi_spigot.cpp
-
 // This program can be used to compute many thousands
 // of decimal digits of digits of pi. It uses a so-called
 // "spigot" algorithm having quadratic complexity.
-
-// In this embedded software adaptation of this work,
-// we limit the decimal digit count to about 100k or fewer.
-
-// cd /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Osek_pi_crunch_cm3
-// ./Build.sh
-
-// To build pi_spigot.cpp on LINUX host:
-// cd /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Osek_pi_crunch_cm3
-// g++ -std=c++20 -Werror -Wall -Wextra -Wpedantic -O3 -DPI_CRUNCH_METAL_STANDALONE_MAIN -DPI_CRUNCH_METAL_PI_SPIGOT_DIGITS=10000 -I./Application/ref_app/src -I./Application ./Application/pi_spigot/pi_spigot.cpp -o pi_spigot.exe
 
 #include <pi_calc_cfg.h>
 

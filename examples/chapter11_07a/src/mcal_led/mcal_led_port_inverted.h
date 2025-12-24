@@ -25,7 +25,7 @@
 
     ~led_port_inverted() override = default;
 
-    auto toggle() noexcept -> void override
+    auto toggle() -> void override
     {
       using base_class_type = led_boolean_state_base;
 

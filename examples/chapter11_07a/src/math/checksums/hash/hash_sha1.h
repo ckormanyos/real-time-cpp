@@ -35,12 +35,12 @@
     hash_sha1() = default;
 
     hash_sha1(const hash_sha1&) = default;
-    hash_sha1(hash_sha1&&) noexcept = default;
+    hash_sha1(hash_sha1&&) = default;
 
     ~hash_sha1() override = default;
 
     auto operator=(const hash_sha1&) -> hash_sha1& = default;
-    auto operator=(hash_sha1&&) noexcept -> hash_sha1& = default;
+    auto operator=(hash_sha1&&) -> hash_sha1& = default;
 
     auto initialize() -> void override
     {

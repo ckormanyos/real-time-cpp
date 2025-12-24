@@ -14,17 +14,17 @@
     {
       using config_type = void;
 
-      inline auto init(const config_type*) noexcept -> void { }
+      inline auto init(const config_type*) -> void { }
 
       class port_pin
       {
       public:
-        static auto set_direction_output() noexcept -> void { }
-        static auto set_direction_input () noexcept -> void { }
-        static auto set_pin_high        () noexcept -> void { }
-        static auto set_pin_low         () noexcept -> void { }
-        static auto read_input_value    () noexcept -> bool { return false; }
-        static auto toggle_pin          () noexcept -> void { }
+        static auto set_direction_output() -> void { }
+        static auto set_direction_input () -> void { }
+        static auto set_pin_high        () -> void { }
+        static auto set_pin_low         () -> void { }
+        static auto read_input_value    () -> bool { return false; }
+        static auto toggle_pin          () -> void { }
       };
     }
   }

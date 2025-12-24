@@ -39,9 +39,13 @@
            << " is "
            << (base_class_type::state_is_on() ? "on" : "off");
 
-      while(console_sync().test_and_set(std::memory_order_acquire)) { }
+      auto& console_sync_instance { console_sync() };
+
+      while(console_sync_instance.test_and_set(std::memory_order_acquire)) { }
+
       std::cout << strm.str() << std::endl;
-      console_sync().clear(std::memory_order_release);
+
+      console_sync_instance.clear(std::memory_order_release);
     }
 
   private:
