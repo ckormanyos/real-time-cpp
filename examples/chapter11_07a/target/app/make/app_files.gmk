@@ -1,0 +1,31 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2025.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# List of the source files in the project
+# ------------------------------------------------------------------------------
+
+FILES_CPP  = $(PATH_APP)/app/led/app_led                                      \
+             $(PATH_APP)/app/pi_spigot/pi_spigot                              \
+             $(PATH_APP)/app/pi_spigot/pi_spigot_callback                     \
+             $(PATH_APP)/mcal/$(TGT)/mcal_cpu                                 \
+             $(PATH_APP)/mcal/$(TGT)/mcal_dev                                 \
+             $(PATH_APP)/mcal/$(TGT)/mcal_gpt                                 \
+             $(PATH_APP)/mcal/$(TGT)/mcal_irq                                 \
+             $(PATH_APP)/mcal/$(TGT)/mcal_lcd                                 \
+             $(PATH_APP)/mcal/$(TGT)/mcal_led                                 \
+             $(PATH_APP)/mcal/$(TGT)/mcal_osc                                 \
+             $(PATH_APP)/mcal/$(TGT)/mcal_memory_sram                         \
+             $(PATH_APP)/mcal/$(TGT)/mcal_port                                \
+             $(PATH_APP)/mcal/$(TGT)/mcal_wdg                                 \
+             $(PATH_APP)/mcal/mcal                                            \
+             $(PATH_APP)/os/FreeRTOS/Source/application/application           \
+             $(PATH_APP)/os/FreeRTOS/Source/event_groups                      \
+             $(PATH_APP)/os/FreeRTOS/Source/list                              \
+             $(PATH_APP)/os/FreeRTOS/Source/queue                             \
+             $(PATH_APP)/os/FreeRTOS/Source/tasks                             \
+             $(PATH_APP)/sys/start/sys_start

@@ -39,7 +39,7 @@ auto app::led::task_func() -> void
     // Toggle the monochrome user LED at 1/2 Hz.
     mcal::led::led0().toggle();
 
-    // Start the next timer interval for the monochrome user LED.
+    // Start the next 1s timer interval for the monochrome user LED.
     app_led_monochrome_timer.start_interval(app_led_monochrome_timer_type::seconds(1U));
   }
 
@@ -54,7 +54,7 @@ auto app::led::task_func() -> void
     magenta_to_red
   };
 
-  using app_led_rgb_timer_type = util::timer<std::uint16_t>;
+  using app_led_rgb_timer_type = util::timer<std::uint32_t>;
 
   static app_led_rgb_timer_type app_led_rgb_timer { app_led_rgb_timer_type::milliseconds(UINT8_C(30)) };
 

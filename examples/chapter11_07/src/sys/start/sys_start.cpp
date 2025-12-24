@@ -10,10 +10,10 @@
 #include <os/os_task.h>
 
 #if defined(__AVR__)
-extern "C" int main(void) __attribute__((used, noinline));
+auto main(void) -> int __attribute__((used, noinline));
 #endif
 
-extern "C" int main(void)
+auto main(void) -> int
 {
   // Initialize the microcontroller abstraction layer.
   mcal::init();

@@ -54,7 +54,7 @@ auto app::led::task_func() -> void
     magenta_to_red
   };
 
-  using app_led_rgb_timer_type = util::timer<std::uint16_t>;
+  using app_led_rgb_timer_type = util::timer<std::uint32_t>;
 
   static app_led_rgb_timer_type app_led_rgb_timer { app_led_rgb_timer_type::milliseconds(UINT8_C(30)) };
 

@@ -108,6 +108,9 @@ to the powerful ARM(R)-based Raspberry Pi(R) single-board computer.
 Example ![chapter11_07](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter11_07) Preemptive Multitasking.\
 This example makes straightforward use of preemptive multitasking scheduling with a blinky-style application that features a main task and a low-priority background task.
 
+Example ![chapter11_07a](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter11_07a) Preemptive Multitasking and an Advanced, Memory-Intensive Mathematical Calculation.\
+In this example, advanced use of preemptive multitasking scheduling is used to combine a blinky-style application with a highly detailed and exciting calculation of the mathematical constant $\pi$ to high precision in the background task.
+
 Example ![chapter12_04](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter12_04) Benchmarking Floating-Point Calculations.\
 This example performs a variety of floating-point calculations of selected special functions of pure and applied mathematics.
 

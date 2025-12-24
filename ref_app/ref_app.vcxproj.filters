@@ -3027,6 +3027,21 @@
     <ClInclude Include="src\mcal\bl602_sifive_e24_riscv\mcal_benchmark.h">
       <Filter>src\mcal\bl602_sifive_e24_riscv</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_generic_device.h">
+      <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_serlcd_sparkfun.h">
+      <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_host.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_spi.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_types.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

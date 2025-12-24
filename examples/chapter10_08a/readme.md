@@ -189,10 +189,14 @@ read/write operations on the driver level.
 | 47                       | BYTE_NOT   | GND                     |
 | 48                       | A16        | Port Expander GPB_4     |
 
+### 2MB Setup
+
 The hardware setup with the $2~\text{MByte}$ SRAM brick
 is pictured in the image below.
 
 ![](./images/board10_08a_2MB.jpg)
+
+### 1MB Setup
 
 The hardware setup with the $1~\text{MByte}$ SRAM brick
 is pictured in the image below.

@@ -1,0 +1,63 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2025.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_TARGET    = avr
+GCC_PREFIX    = avr
+
+GCC_VERSION   = 15.1.0
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -O2                                                               \
+                -mmcu=atmega328p                                                  \
+                -mrelax                                                           \
+                -finline-functions                                                \
+                -finline-limit=256                                                \
+                -fsigned-char
+
+ifeq ($(TYP_OS),WIN)
+
+TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
+                -mdouble=64                                                       \
+                -mlong-double=64
+
+INC_PREFIX   := -isystem
+STD_C        := c11
+STD_CPP      := c++20
+
+else
+
+INC_PREFIX   := -I
+STD_C        := c99
+STD_CPP      := c++14
+
+endif
+
+TGT_CFLAGS    = -std=gnu11                                                        \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=$(STD_CPP)                                                   \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -I$(PATH_APP)/os/FreeRTOS/Source/include/cfg/GCC-ATMega328        \
+                -I$(PATH_APP)/os/FreeRTOS/Source/portable/GCC-ATmega328           \
+                -I$(PATH_APP)/os/FreeRTOS/Source/include                          \
+                -I$(PATH_APP)/app                                                 \
+                $(INC_PREFIX)$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
+                -T $(LINKER_DEFINITION_FILE)
+

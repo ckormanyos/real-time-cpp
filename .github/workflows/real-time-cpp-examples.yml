@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        example: [ chapter02_03, chapter02_03a, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter09_08a, chapter10_08, chapter10_08a, chapter11_07, chapter12_04, chapter16_08, chapter17_03, chapter17_03a ]
+        example: [ chapter02_03, chapter02_03a, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter09_08a, chapter10_08, chapter10_08a, chapter11_07, chapter11_07a, chapter12_04, chapter16_08, chapter17_03, chapter17_03a ]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -102,7 +102,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        example: [ chapter02_03, chapter02_03a, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter09_08a, chapter10_08, chapter10_08a, chapter10_09, chapter11_07, chapter12_04, chapter17_03, chapter17_03a ]
+        example: [ chapter02_03, chapter02_03a, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter09_08a, chapter10_08, chapter10_08a, chapter10_09, chapter11_07, chapter11_07a, chapter12_04, chapter17_03, chapter17_03a ]
     steps:
       - uses: actions/checkout@v4
         with:
