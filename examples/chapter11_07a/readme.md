@@ -16,7 +16,7 @@ of digits of the mathematical constant $\pi$.
 The spigot-type calculation that was introduced in earlier
 examples is used.
 
-The calculation requires significant RAM,
+The calculations requires considerable amounts of RAM,
 much more than is available on our target system with the $8$--bit microcontroller.
 For this purpose, a $4~\text{MByte}$ external serial SRAM is used.
 This simplifies the breadboard wiring significantly
@@ -29,10 +29,36 @@ An industry-standard display reports the
 progress of the running calculation and the number of
 completed computations in the current power-on cycle.
 
-
 ## Hardware Setup
 
-TODO: The pin connections
+An ARDUINO(R) board is used predominantly out-of-the-box,
+but it has been adapted with manually soldered-on pins allowing
+it to be fitted to the breadboard. The level-shifting is carried out with
+an industry-standard level shifter. The $4~\text{MByte}$ serial SRAM
+is controlled via an all-software SPI channel.
+The LCD display is controlled by a separate independent
+all-software SPI channel.
+
+The pin most important pin connections are shown in the tables below.
+
+### SRAM Connections
+
+| SRAM Pin        | Function   | ARDUINO(R) Connection   |
+| --------------- | ---------- | ----------------------- |
+| 1               | CSN        | portd.7                 |
+| 2               | MISO       | portd.6                 |
+| 6               | SCK        | portd.5                 |
+| 5               | MOSI       | portd.4                 |
+
+
+### LCD Connections
+
+| LCD        | ARDUINO(R) Connection   |
+| ---------- | ----------------------- |
+| CSN        | portb.2                 |
+| SDI        | portd.1                 |
+| SCK        | portd.0                 |
+
 
 TODO: The hardware setup with the $4~\text{MByte}$ serial SRAM
 is pictured in the image below.

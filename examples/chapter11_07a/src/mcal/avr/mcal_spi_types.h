@@ -9,6 +9,7 @@
   #define MCAL_SPI_TYPES_2024_12_07_H
 
   #include <mcal_port.h>
+  #include <mcal_port_pin_dummy.h>
   #include <mcal_reg.h>
   #include <mcal_spi/mcal_spi_software_port_driver.h>
 
@@ -57,10 +58,7 @@
                                                      mcal::reg::portb,
                                                      static_cast<std::uint32_t>(UINT32_C(2))>;
 
-  using port_pin_lcd_sdo_type = mcal::port::port_pin<std::uint32_t,
-                                                     std::uint32_t,
-                                                     mcal::reg::portb,
-                                                     static_cast<std::uint32_t>(UINT32_C(4))>;
+  using port_pin_lcd_sdo_type = mcal::port::port_pin_dummy;
 
   using port_pin_lcd_sdi_type = mcal::port::port_pin<std::uint32_t,
                                                      std::uint32_t,
