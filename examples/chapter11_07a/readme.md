@@ -7,7 +7,16 @@ and exciting calculation of the mathematical constant $\pi$
 to high precision. It uses a spigot-type calculation that is also
 combined with a blinky application. The $\pi$ calculation
 is performed perpetually and cyclically (and also numerically verified)
-in a low-priority background task.
+in the low-priority background task.
+
+The spigot-type calculation of the mathematical constant $\pi$
+in this example is essentially the same calculation as was used in
+the previous examples
+[chapter10_08](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter10_08),
+[chapter10_08a](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter10_08a)
+and
+[chapter10_09](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter10_09)
+(albeit with different hardware setups).
 
 ## Application Description
 
