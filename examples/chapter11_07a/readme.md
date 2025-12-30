@@ -71,8 +71,8 @@ The pin most important pin connections are shown in the tables below.
 
 The hardware setup with the $4~\text{MByte}$ serial SRAM
 is pictured in the image below. The scene shows the ARDUINO(R)
-with the external serial RAM executing cyclic, back-to-back $10,000$
-decimal digit $\pi$ calculations.
-One successful calculation is complete and the second one is well underway.
+with the external serial SRAM executing cyclic, back-to-back $10,001$
+decimal digit $\pi$ calculations. In this snapshot, one successful
+calculation is complete and the second one is well underway.
 
 ![](./images/board11_07a.jpg)
