@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2023.
+//  Copyright Christopher Kormanyos 2013 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +14,7 @@
 
 namespace
 {
-  using app_benchmark_hash_type = math::checksums::hash::hash_sha256<std::uint_fast16_t>;
+  using app_benchmark_hash_type = math::checksums::hash::hash_sha256;
 
   app_benchmark_hash_type app_benchmark_hash_object;
 
@@ -33,17 +33,19 @@ namespace
 
 auto app::benchmark::run_hash_sha256() -> bool
 {
-  static constexpr std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(3))> app_benchmark_hash_data =
+  using app_benchmark_msg_array_type = std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(3))>;
+
+  constexpr app_benchmark_msg_array_type app_benchmark_hash_msg =
   {
     static_cast<std::uint8_t>('a'),
     static_cast<std::uint8_t>('b'),
     static_cast<std::uint8_t>('c')
   };
 
-  app_benchmark_hash_object.hash(app_benchmark_hash_data.data(),
-                                 static_cast<app_benchmark_hash_count_type>(app_benchmark_hash_data.size()));
+  app_benchmark_hash_object.hash(app_benchmark_hash_msg.data(),
+                                 static_cast<app_benchmark_hash_count_type>(std::tuple_size<app_benchmark_msg_array_type>::value));
 
-  auto local_hash_result = app_benchmark_hash_result_type { };
+  app_benchmark_hash_result_type local_hash_result { };
 
   app_benchmark_hash_object.get_result(local_hash_result.data());
 
