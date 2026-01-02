@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2025.
+//  Copyright Christopher Kormanyos 2013 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,23 +10,19 @@
 
   // See also: https://en.wikipedia.org/wiki/SHA-1
 
-  #include <algorithm>
-  #include <array>
-  #include <functional>
-
   #include <math/checksums/hash/hash_base.h>
+
+  #include <algorithm>
+  #include <functional>
 
   namespace math { namespace checksums { namespace hash {
 
-  template<typename CountType>
-  class hash_sha1 : public hash_base<CountType,
-                                     static_cast<std::uint16_t>(UINT8_C(160)),
+  class hash_sha1 : public hash_base<static_cast<std::uint16_t>(UINT8_C(160)),
                                      static_cast<std::uint16_t>(UINT8_C(64)),
                                      static_cast<std::uint16_t>(UINT8_C(64))>
   {
   private:
-    using base_class_type = hash_base<CountType,
-                                      static_cast<std::uint16_t>(UINT8_C(160)),
+    using base_class_type = hash_base<static_cast<std::uint16_t>(UINT8_C(160)),
                                       static_cast<std::uint16_t>(UINT8_C(64)),
                                       static_cast<std::uint16_t>(UINT8_C(64))>;
 
@@ -34,33 +30,45 @@
                   "Error: The message  buffer size must exactly equal 64");
 
   public:
+    using transform_function_type = std::uint32_t(*)(const std::uint32_t*);
+
     hash_sha1() = default;
 
     hash_sha1(const hash_sha1&) = default;
-    hash_sha1(hash_sha1&&) noexcept = default;
+    hash_sha1(hash_sha1&&) = default;
 
     ~hash_sha1() override = default;
 
     auto operator=(const hash_sha1&) -> hash_sha1& = default;
-    auto operator=(hash_sha1&&) noexcept -> hash_sha1& = default;
+    auto operator=(hash_sha1&&) -> hash_sha1& = default;
 
     auto initialize() -> void override
     {
       base_class_type::initialize();
 
-      base_class_type::transform_context[static_cast<std::size_t>(UINT8_C(0))] = static_cast<std::uint32_t>(UINT32_C(0x67452301));
-      base_class_type::transform_context[static_cast<std::size_t>(UINT8_C(1))] = static_cast<std::uint32_t>(UINT32_C(0xEFCDAB89));
-      base_class_type::transform_context[static_cast<std::size_t>(UINT8_C(2))] = static_cast<std::uint32_t>(UINT32_C(0x98BADCFE));
-      base_class_type::transform_context[static_cast<std::size_t>(UINT8_C(3))] = static_cast<std::uint32_t>(UINT32_C(0x10325476));
-      base_class_type::transform_context[static_cast<std::size_t>(UINT8_C(4))] = static_cast<std::uint32_t>(UINT32_C(0xC3D2E1F0));
+      base_class_type::transform_context[std::size_t { UINT8_C(0) }] = std::uint32_t { UINT32_C(0x67452301) };
+      base_class_type::transform_context[std::size_t { UINT8_C(1) }] = std::uint32_t { UINT32_C(0xEFCDAB89) };
+      base_class_type::transform_context[std::size_t { UINT8_C(2) }] = std::uint32_t { UINT32_C(0x98BADCFE) };
+      base_class_type::transform_context[std::size_t { UINT8_C(3) }] = std::uint32_t { UINT32_C(0x10325476) };
+      base_class_type::transform_context[std::size_t { UINT8_C(4) }] = std::uint32_t { UINT32_C(0xC3D2E1F0) };
     }
 
   private:
-    auto perform_algorithm() -> void override;
+    static const std::array<transform_function_type, static_cast<std::size_t>(UINT8_C(4))> transform_functions;
+
+    auto my_perform_algorithm() -> void override;
   };
 
-  template <typename my_count_type>
-  auto hash_sha1<my_count_type>::perform_algorithm() -> void
+  const std::array<hash_sha1::transform_function_type, static_cast<std::size_t>(UINT8_C(4))>
+    hash_sha1::transform_functions
+    {
+      [](const std::uint32_t* p) -> std::uint32_t { return (static_cast<std::uint32_t>(                           p[1U] & p[2U]) | static_cast<std::uint32_t>(static_cast<std::uint32_t>(~p[1U]) & p[3U])); },
+      [](const std::uint32_t* p) -> std::uint32_t { return  static_cast<std::uint32_t>(static_cast<std::uint32_t>(p[1U] ^ p[2U]) ^ p[3U]); },
+      [](const std::uint32_t* p) -> std::uint32_t { return  static_cast<std::uint32_t>(static_cast<std::uint32_t>(p[1U] & p[2U]) | static_cast<std::uint32_t>(p[1U] & p[3U]) | static_cast<std::uint32_t>(p[2U] & p[3U])); },
+      [](const std::uint32_t* p) -> std::uint32_t { return (static_cast<std::uint32_t>(                           p[1U] ^ p[2U]) ^ p[3U]); }
+    };
+
+  auto hash_sha1::my_perform_algorithm() -> void
   {
     // Apply the hash transformation algorithm to a full data block.
 
@@ -68,10 +76,10 @@
 
     const transform_constants_array_type transform_constants
     {
-      static_cast<std::uint32_t>(UINT32_C(0x5A827999)),
-      static_cast<std::uint32_t>(UINT32_C(0x6ED9EBA1)),
-      static_cast<std::uint32_t>(UINT32_C(0x8F1BBCDC)),
-      static_cast<std::uint32_t>(UINT32_C(0xCA62C1D6))
+      std::uint32_t { UINT32_C(0x5A827999) },
+      std::uint32_t { UINT32_C(0x6ED9EBA1) },
+      std::uint32_t { UINT32_C(0x8F1BBCDC) },
+      std::uint32_t { UINT32_C(0xCA62C1D6) }
     };
 
     using transform_block_type = std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(16))>;
@@ -85,17 +93,7 @@
       transform_block.data()
     );
 
-    using transform_function_type = std::uint32_t(*)(const std::uint32_t*);
-
-    const std::array<transform_function_type, static_cast<std::size_t>(UINT8_C(4))> transform_functions
-    {
-      [](const std::uint32_t* p) -> std::uint32_t { return (static_cast<std::uint32_t>(                           p[1U] & p[2U]) | static_cast<std::uint32_t>(static_cast<std::uint32_t>(~p[1U]) & p[3U])); },
-      [](const std::uint32_t* p) -> std::uint32_t { return  static_cast<std::uint32_t>(static_cast<std::uint32_t>(p[1U] ^ p[2U]) ^ p[3U]); },
-      [](const std::uint32_t* p) -> std::uint32_t { return  static_cast<std::uint32_t>(static_cast<std::uint32_t>(p[1U] & p[2U]) | static_cast<std::uint32_t>(p[1U] & p[3U]) | static_cast<std::uint32_t>(p[2U] & p[3U])); },
-      [](const std::uint32_t* p) -> std::uint32_t { return (static_cast<std::uint32_t>(                           p[1U] ^ p[2U]) ^ p[3U]); }
-    };
-
-    auto hash_tmp = base_class_type::transform_context;
+    context_type hash_tmp { base_class_type::transform_context };
 
     auto loop_index = static_cast<std::uint8_t>(UINT8_C(0));
 
@@ -114,7 +112,7 @@
             ^ transform_block[static_cast<std::size_t>(                          loop_counter                                           & static_cast<std::uint8_t>(UINT8_C(0x0F)))]
           );
 
-        const auto transform_block_index = static_cast<std::size_t>(loop_counter & std::uint8_t(UINT8_C(0x0F)));
+        const auto transform_block_index { static_cast<std::size_t>(loop_counter & std::uint8_t(UINT8_C(0x0F))) };
 
         transform_block[transform_block_index] = detail::circular_left_shift<static_cast<unsigned>(UINT8_C(1))>(the_dword);
 
@@ -141,11 +139,14 @@
     }
 
     // Update the hash state with the transformation results.
-    std::transform(base_class_type::transform_context.cbegin(),
-                   base_class_type::transform_context.cend  (),
-                   hash_tmp.cbegin                          (),
-                   base_class_type::transform_context.begin (),
-                   std::plus<std::uint32_t>                 ());
+    std::transform
+    (
+      base_class_type::transform_context.cbegin(),
+      base_class_type::transform_context.cend(),
+      hash_tmp.cbegin(),
+      base_class_type::transform_context.begin(),
+      std::plus<std::uint32_t>()
+    );
   }
 
   } } } // namespace math::checksums::hash

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2025.
+//  Copyright Christopher Kormanyos 2013 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -63,7 +63,7 @@
 
         if(message_index == message_buffer_static_size())
         {
-          my_perform_algorithm();
+          perform_algorithm();
         }
 
         process_chunk_size = (std::min)(static_cast<count_type>(count - process_index),
@@ -95,7 +95,7 @@
 
       if(message_top > message_buffer_static_size())
       {
-        my_perform_algorithm();
+        perform_algorithm();
       }
 
       // Encode the total number of bits in the final transform buffer.
@@ -131,7 +131,7 @@
           );
       }
 
-      my_perform_algorithm();
+      perform_algorithm();
     }
 
     auto get_result(typename result_type::pointer result) -> void
@@ -185,15 +185,15 @@
         );
     }
 
-    virtual auto perform_algorithm() -> void = 0;
+    virtual auto my_perform_algorithm() -> void = 0;
 
-    auto my_perform_algorithm() -> void
+    auto perform_algorithm() -> void
     {
-      this->perform_algorithm();
+      this->my_perform_algorithm();
 
-      message_index = static_cast<std::uint_least32_t>(UINT8_C(0));
+      message_index = std::uint_least32_t { UINT8_C(0) };
 
-      message_buffer.fill(static_cast<std::uint8_t>(UINT8_C(0)));
+      message_buffer.fill(std::uint8_t { UINT8_C(0) });
     }
   };
 

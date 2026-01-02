@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////
 //                                                               //
 //  Copyright Iliass Mahjoub 2022.                               //
-//  Copyright Christopher Kormanyos 2019 - 2025.                 //
+//  Copyright Christopher Kormanyos 2019 - 2026.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -49,11 +49,11 @@ namespace local
     return instance;
   }
 
-  auto pi_output_digits10 = static_cast<std::uint32_t>(UINT8_C(0));
+  auto pi_output_digits10 = std::uint32_t { UINT8_C(0) };
 
   using benchmark_port_type = ::mcal::benchmark::benchmark_port_type;
 
-  constexpr auto pi_spigot_input_start_address = static_cast<mcal_sram_uintptr_t>(UINT8_C(0));
+  constexpr auto pi_spigot_input_start_address = mcal_sram_uintptr_t { UINT8_C(0) };
 
   using pi_spigot_input_container_type = mcal::memory::sram::array<std::uint32_t,
                                                                    pi_spigot_type::get_input_static_size(),

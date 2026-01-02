@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2023.
+//  Copyright Christopher Kormanyos 2013 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,19 +10,20 @@
 #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH_SHA256))
 
 #include <math/checksums/hash/hash_sha256.h>
-#include <mcal_memory/mcal_memory_progmem_array.h>
+
+#include <array>
 
 namespace
 {
-  using app_benchmark_hash_type = math::checksums::hash::hash_sha256<std::uint_fast16_t>;
+  using app_benchmark_hash_type = math::checksums::hash::hash_sha256;
 
   app_benchmark_hash_type app_benchmark_hash_object;
 
   using app_benchmark_hash_count_type  = typename app_benchmark_hash_type::count_type;
   using app_benchmark_hash_result_type = typename app_benchmark_hash_type::result_type;
 
-  const mcal::memory::progmem::array<std::uint8_t, std::tuple_size<app_benchmark_hash_result_type>::value>
-  app_benchmark_hash_ctrl MY_PROGMEM =
+  constexpr std::array<std::uint8_t, std::tuple_size<app_benchmark_hash_result_type>::value>
+  app_benchmark_hash_ctrl =
   {
     0xBAU, 0x78U, 0x16U, 0xBFU, 0x8FU, 0x01U, 0xCFU, 0xEAU,
     0x41U, 0x41U, 0x40U, 0xDEU, 0x5DU, 0xAEU, 0x22U, 0x23U,
@@ -33,17 +34,19 @@ namespace
 
 auto app::benchmark::run_hash_sha256() -> bool
 {
-  static constexpr std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(3))> app_benchmark_hash_data =
+  using app_benchmark_msg_array_type = std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(3))>;
+
+  constexpr app_benchmark_msg_array_type app_benchmark_hash_msg =
   {
     static_cast<std::uint8_t>('a'),
     static_cast<std::uint8_t>('b'),
     static_cast<std::uint8_t>('c')
   };
 
-  app_benchmark_hash_object.hash(app_benchmark_hash_data.data(),
-                                 static_cast<app_benchmark_hash_count_type>(app_benchmark_hash_data.size()));
+  app_benchmark_hash_object.hash(app_benchmark_hash_msg.data(),
+                                 static_cast<app_benchmark_hash_count_type>(std::tuple_size<app_benchmark_msg_array_type>::value));
 
-  auto local_hash_result = app_benchmark_hash_result_type { };
+  app_benchmark_hash_result_type local_hash_result { };
 
   app_benchmark_hash_object.get_result(local_hash_result.data());
 

@@ -1477,6 +1477,7 @@
     <ClInclude Include="src\math\checksums\hash\hash_detail.h" />
     <ClInclude Include="src\math\checksums\hash\hash_sha1.h" />
     <ClInclude Include="src\math\checksums\hash\hash_sha256.h" />
+    <ClInclude Include="src\math\checksums\hash\hash_stream_base.h" />
     <ClInclude Include="src\math\constants\constants.h" />
     <ClInclude Include="src\math\constants\constant_functions.h" />
     <ClInclude Include="src\math\constants\pi_spigot_base.h" />
