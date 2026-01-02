@@ -10,7 +10,8 @@
 #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH_SHA256))
 
 #include <math/checksums/hash/hash_sha256.h>
-#include <mcal_memory/mcal_memory_progmem_array.h>
+
+#include <array>
 
 namespace
 {
@@ -21,8 +22,8 @@ namespace
   using app_benchmark_hash_count_type  = typename app_benchmark_hash_type::count_type;
   using app_benchmark_hash_result_type = typename app_benchmark_hash_type::result_type;
 
-  const mcal::memory::progmem::array<std::uint8_t, std::tuple_size<app_benchmark_hash_result_type>::value>
-  app_benchmark_hash_ctrl MY_PROGMEM =
+  constexpr std::array<std::uint8_t, std::tuple_size<app_benchmark_hash_result_type>::value>
+  app_benchmark_hash_ctrl =
   {
     0xBAU, 0x78U, 0x16U, 0xBFU, 0x8FU, 0x01U, 0xCFU, 0xEAU,
     0x41U, 0x41U, 0x40U, 0xDEU, 0x5DU, 0xAEU, 0x22U, 0x23U,
