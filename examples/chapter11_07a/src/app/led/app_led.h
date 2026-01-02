@@ -13,7 +13,7 @@
   {
   #endif
 
-  void app_led_task_background (void* pv);
+  void app_led_task_background(void* pv);
   void app_led_task_toggle_led0(void* pv);
 
   #if defined(__cplusplus)

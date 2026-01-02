@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2025.
+#  Copyright Christopher Kormanyos 2007 - 2026.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,7 +12,7 @@
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
-GCC_VERSION   = 15.1.0
+GCC_VERSION   = 15.2.0
 
 TGT_SUFFIX    = elf
 
@@ -31,7 +31,7 @@ TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                 
 
 INC_PREFIX   := -isystem
 STD_C        := c11
-STD_CPP      := c++20
+STD_CPP      := c++23
 
 else
 

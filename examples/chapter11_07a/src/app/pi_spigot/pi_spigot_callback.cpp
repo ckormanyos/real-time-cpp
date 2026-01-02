@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////
 //                                                               //
-//  Copyright Christopher Kormanyos 2023 - 2025.                 //
+//  Copyright Christopher Kormanyos 2023 - 2026.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -18,7 +18,7 @@ auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void;
 
 auto pi_lcd_progress(const std::uint32_t pi_output_digits10) -> void
 {
-  char p_str[std::size_t { UINT8_C(20) }];
+  char p_str[std::size_t { UINT8_C(16) }];
 
   {
     std::fill(p_str, p_str + sizeof(p_str), char { INT8_C(0) });

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2023.
+//  Copyright Christopher Kormanyos 2013 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -20,7 +20,14 @@
     using count_type = std::uint32_t;
 
     hash_stream_base() = default;
+
+    hash_stream_base(const hash_stream_base&) = default;
+    hash_stream_base(hash_stream_base&&) = default;
+
     virtual ~hash_stream_base() = default;
+
+    auto operator=(const hash_stream_base&) -> hash_stream_base& = default;
+    auto operator=(hash_stream_base&&) -> hash_stream_base& = default;
 
     virtual auto initialize() -> void = 0;
 
