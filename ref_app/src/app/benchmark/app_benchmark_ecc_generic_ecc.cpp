@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2023.
+//  Copyright Christopher Kormanyos 2023 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -31,7 +31,7 @@ namespace curve_secp256k1
   constexpr char SubGroupOrderN      [] = "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141"; // NOLINT(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,cppcoreguidelines-pro-bounds-array-to-pointer-decay,modernize-avoid-c-arrays)
   constexpr auto SubGroupCoFactorH      = static_cast<int>(INT8_C(1));
 
-  using hash_type = math::checksums::hash::hash_sha256<std::uint16_t>;
+  using hash_type = math::checksums::hash::hash_sha256;
 }
 
 namespace local
@@ -41,7 +41,7 @@ namespace local
   // Declare the secp256k1 digital signature type.
 
   using digital_signature_secp256k1_type =
-    generic_ecc::digital_signature_generic_ecc<static_cast<unsigned>(UINT16_C(256)),
+    generic_ecc::digital_signature_generic_ecc<unsigned { UINT16_C(256) },
                                                std::uint32_t,
                                                curve_secp256k1::CurveName,            // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
                                                curve_secp256k1::FieldCharacteristicP, // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
