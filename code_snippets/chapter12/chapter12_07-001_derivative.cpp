@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2025.
+//  Copyright Christopher Kormanyos 2017 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <numbers>
 #include <sstream>
 
 template<typename ValueType,
@@ -44,12 +45,12 @@ constexpr auto derivative(ValueType x,
   return ((fifteen_m1 - six_m2) + m3) / ten_dx1;
 }
 
-const auto x = static_cast<float>(std::numbers::pi_v<float> / static_cast<float>(3.0L));
+constexpr float x { static_cast<float>(std::numbers::pi_v<float> / static_cast<float>(3.0L)) };
 
 // Should be very near 0.5.
-constexpr auto y =
+const auto y =
   derivative(x,
-             0.0F,
+             0.01F,
              [](float x) -> float
              {
                return std::sin(x);
