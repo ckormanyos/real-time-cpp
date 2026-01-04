@@ -45,11 +45,11 @@ constexpr auto derivative(ValueType x,
   return ((fifteen_m1 - six_m2) + m3) / ten_dx1;
 }
 
-constexpr float x { static_cast<float>(std::numbers::pi_v<float> / static_cast<float>(3.0L)) };
+constexpr float xval { static_cast<float>(std::numbers::pi_v<float> / static_cast<float>(3.0L)) };
 
 // Should be very near 0.5.
 const auto y =
-  derivative(x,
+  derivative(xval,
              0.01F,
              [](float x) -> float
              {

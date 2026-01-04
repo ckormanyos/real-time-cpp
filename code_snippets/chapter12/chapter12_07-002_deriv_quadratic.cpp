@@ -59,11 +59,11 @@ public:
   }
 };
 
-constexpr float x { 0.5F };
+constexpr float xval { 0.5F };
 
 // Should be very near 4.6.
 constexpr float y =
-  derivative(x,
+  derivative(xval,
              0.01F,
              quadratic(1.2F, 3.4F, 5.6F));
 
@@ -73,7 +73,7 @@ auto main() -> int
 {
   std::stringstream strm { };
 
-  // 4.6
+  // 4.600001
   strm << std::setprecision(std::numeric_limits<float>::digits10) << std::fixed << y << '\n';
 
   using std::fabs;
