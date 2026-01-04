@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2025.
+//  Copyright Christopher Kormanyos 2017 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,9 +15,10 @@
 
 template<typename ValueType,
          typename FunctionType>
-auto derivative(const ValueType x,
-                const ValueType dx,
-                FunctionType function) -> ValueType
+constexpr auto derivative(const ValueType x,
+                          const ValueType dx,
+                          FunctionType function)
+  -> ValueType
 {
   using value_type = ValueType;
 
@@ -49,25 +50,22 @@ public:
   const T b;
   const T c;
 
-  quadratic(const T& a_,
-            const T& b_,
-            const T& c_) : a(a_),
-                           b(b_),
-                           c(c_) { }
+ explicit constexpr quadratic(T a_, T b_, T c_)
+    : a(a_), b(b_), c(c_) { }
 
-  auto operator()(const T& x) const -> T
+  constexpr auto operator()(T x) const -> T
   {
     return ((a * x + b) * x) + c;
   }
 };
 
-const float x { 0.5F };
+constexpr float xval { 0.5F };
 
 // Should be very near 4.6.
-const float y =
-  derivative(x,
+constexpr float y =
+  derivative(xval,
              0.01F,
-             quadratic<float>(1.2F, 3.4F, 5.6F));
+             quadratic(1.2F, 3.4F, 5.6F));
 
 auto main() -> int;
 
@@ -75,8 +73,8 @@ auto main() -> int
 {
   std::stringstream strm { };
 
-  // 4.6
-  strm << std::setprecision(std::numeric_limits<float>::digits10) << y << '\n';
+  // 4.600001
+  strm << std::setprecision(std::numeric_limits<float>::digits10) << std::fixed << y << '\n';
 
   using std::fabs;
 

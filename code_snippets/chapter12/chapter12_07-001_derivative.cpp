@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2025.
+//  Copyright Christopher Kormanyos 2017 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,13 +13,15 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <numbers>
 #include <sstream>
 
 template<typename ValueType,
          typename FunctionType>
-auto derivative(const ValueType x,
-                const ValueType dx,
-                FunctionType function) -> ValueType
+constexpr auto derivative(ValueType x,
+                          ValueType dx,
+                          FunctionType function)
+  -> ValueType
 {
   using value_type = ValueType;
 
@@ -43,13 +45,13 @@ auto derivative(const ValueType x,
   return ((fifteen_m1 - six_m2) + m3) / ten_dx1;
 }
 
-const auto x = static_cast<float>(std::numbers::pi_v<float> / static_cast<float>(3.0L));
+constexpr float xval { static_cast<float>(std::numbers::pi_v<float> / static_cast<float>(3.0L)) };
 
 // Should be very near 0.5.
 const auto y =
-  derivative(x,
-             static_cast<float>(0.01L),
-             [](const float& x) -> float
+  derivative(xval,
+             0.01F,
+             [](float x) -> float
              {
                return std::sin(x);
              });
@@ -61,7 +63,7 @@ auto main() -> int
   std::stringstream strm { };
 
   // 0.500003
-  strm << std::setprecision(std::numeric_limits<float>::digits10) << y << '\n';
+  strm << std::setprecision(std::numeric_limits<float>::digits10) << std::fixed << y << '\n';
 
   using std::fabs;
 
