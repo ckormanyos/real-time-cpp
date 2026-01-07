@@ -22,14 +22,11 @@
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
 </p>
 
-This is the companion code
-for the book C.M. Kormanyos,
-[Real-Time C++](https://www.springer.com/de/book/9783662629956):
-Efficient Object-Oriented
-and Template Microcontroller Programming, Fourth Edition
-(Springer, Heidelberg, 2021) ISBN 9783662629956.
+This repository provides companion code for the book C.M. Kormanyos, _Real-Time_ _C++:_
+_Efficient_ _Object-Oriented_ _and_ _Template_ _Microcontroller_ _Programming_, _4_$^{th}$ _Edition_
+and is made available for educational and exploratory use.
 
-This repository has several main parts.
+The repository has several main parts.
   - Reference Application `ref_app` located in [ref_app](./ref_app). This also includes the [benchmarks](./ref_app/src/app/benchmark).
   - [Examples](./examples) from the book
   - [Code Snippets](./code_snippets) from the book
