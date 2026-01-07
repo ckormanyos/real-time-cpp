@@ -23,7 +23,7 @@
 </p>
 
 This repository provides companion code for the book C.M. Kormanyos, _Real-Time_ _C++:_
-_Efficient_ _Object-Oriented_ _and_ _Template_ _Microcontroller_ _Programming_, $4^{th}$ Edition
+_Efficient_ _Object-Oriented_ _and_ _Template_ _Microcontroller_ _Programming_, $\mbox{\textit{4}}^{th}$ _Edition_
 and is made available for educational and exploratory use.
 
 The repository has several main parts.
