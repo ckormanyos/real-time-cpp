@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-#  Copyright Christopher Kormanyos 2020 - 2025.
+#  Copyright Christopher Kormanyos 2020 - 2026.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -91,15 +91,6 @@ result_ls_wide_decimal=$?
 ls -la ./bin/app_benchmark_wide_integer.elf ./bin/app_benchmark_wide_integer.map
 result_ls_wide_integer=$?
 
-ls -la ./bin/app_benchmark_boost_math_cbrt_tgamma.elf ./bin/app_benchmark_boost_math_cbrt_tgamma.map
-result_ls_boost_math_cbrt_tgamma=$?
-
-ls -la ./bin/app_benchmark_boost_math_cyl_bessel_j.elf ./bin/app_benchmark_boost_math_cyl_bessel_j.map
-result_ls_boost_math_cyl_bessel_j=$?
-
-ls -la ./bin/app_benchmark_boost_multiprecision_cbrt.elf ./bin/app_benchmark_boost_multiprecision_cbrt.map
-result_ls_boost_multiprecision_cbrt=$?
-
 ls -la ./bin/app_benchmark_hash_sha256.elf ./bin/app_benchmark_hash_sha256.map
 result_ls_hash_sha256=$?
 
@@ -127,9 +118,6 @@ echo "result_ls_soft_double_h2f1          : "  "$result_ls_soft_double_h2f1"
 echo "result_ls_trapezoid_integral        : "  "$result_ls_trapezoid_integral"
 echo "result_ls_wide_decimal              : "  "$result_ls_wide_decimal"
 echo "result_ls_wide_integer              : "  "$result_ls_wide_integer"
-echo "result_ls_boost_math_cbrt_tgamma    : "  "$result_ls_boost_math_cbrt_tgamma"
-echo "result_ls_boost_math_cyl_bessel_j   : "  "$result_ls_boost_math_cyl_bessel_j"
-echo "result_ls_boost_multiprecision_cbrt : "  "$result_ls_boost_multiprecision_cbrt"
 echo "result_ls_hash_sha256               : "  "$result_ls_hash_sha256"
 echo "result_ls_ecc_generic_ecc           : "  "$result_ls_ecc_generic_ecc"
 echo "result_ls_non_std_decimal           : "  "$result_ls_non_std_decimal"
