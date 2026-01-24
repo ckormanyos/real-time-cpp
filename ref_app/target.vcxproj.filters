@@ -1154,7 +1154,7 @@
     <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\SysTickTimer.c">
       <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\clock.c">
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\clock.cpp">
       <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Startup\intvect.c">

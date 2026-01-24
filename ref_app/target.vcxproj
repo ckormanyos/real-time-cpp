@@ -1176,7 +1176,7 @@
     <ClCompile Include="target\micros\nxp_imxrt1062\startup\crt1.cpp" />
     <ClCompile Include="target\micros\nxp_imxrt1062\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Appli\main.c" />
-    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\clock.c" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\clock.cpp" />
     <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\SysTickTimer.c" />
     <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Startup\intvect.c" />
     <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Startup\Startup.c" />

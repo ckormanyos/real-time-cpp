@@ -63,6 +63,9 @@ int main(void)
   /* configure the pin as output */
   PFS->P111PFS.bit.PDR  = 1;
 
+  /* Set the LED on */
+  PFS->P111PFS.bit.PODR ^= 1;
+
   /* configure and start systick timer */
   SysTickTimer_Init();
   SysTickTimer_Start(SYS_TICK_MS(1));

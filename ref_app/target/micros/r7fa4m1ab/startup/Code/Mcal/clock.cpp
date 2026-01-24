@@ -35,6 +35,7 @@
 //-----------------------------------------------------------------------------------------
 // Function Prototypes
 //-----------------------------------------------------------------------------------------
+extern "C"
 void clock_init(void);
 
 //-----------------------------------------------------------------------------------------
@@ -44,9 +45,10 @@ void clock_init(void);
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
+extern "C"
 void clock_init(void)
 {
-  #define HOCOCR2   (*((volatile uint8_t*)(0x4001E037)))
+  constexpr uint32_t HOCOCR2 { UINT32_C(0x4001E037) };
 
   /* disable register write protection for clock module */
   SYSTEM->PRCR.reg = (uint16_t)((0xA5 << 8) | 1);
@@ -55,7 +57,7 @@ void clock_init(void)
   SYSTEM->SCKDIVCR.reg = 0;
 
   /* set the HOCO clock frequency to 48 MHz */
-  HOCOCR2 = (4 << 3);
+  *((volatile uint8_t*)HOCOCR2) = (4 << 3);
 
   /* switch sysclk to HOCO clock (48 MHz) */
   SYSTEM->OPCCR.bit.OPCM = 0;
