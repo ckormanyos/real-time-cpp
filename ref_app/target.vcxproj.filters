@@ -331,6 +331,30 @@
     <Filter Include="micros\bl602_sifive_e24_riscv\startup">
       <UniqueIdentifier>{d9d707dc-1ba0-4d0c-be67-fbb095f42986}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\r7fa4m1ab">
+      <UniqueIdentifier>{948b6687-16b7-4f6a-a6e7-4915281239ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\r7fa4m1ab\make">
+      <UniqueIdentifier>{7dc2c88c-840f-45b5-8b2c-c81ed3a81fe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\r7fa4m1ab\startup">
+      <UniqueIdentifier>{e85df680-7e70-4f5d-87c0-73dbb822c1ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\r7fa4m1ab\startup\Code">
+      <UniqueIdentifier>{5277a12a-a3ff-4acc-a906-1b44141211c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\r7fa4m1ab\startup\Code\Appli">
+      <UniqueIdentifier>{ef3d7af4-95fa-4075-a6f0-678b44bdb868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\r7fa4m1ab\startup\Code\Mcal">
+      <UniqueIdentifier>{e9f5404a-7f3f-4aff-bf36-630e2a2822c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\r7fa4m1ab\startup\Code\Startup">
+      <UniqueIdentifier>{4dfeed6a-2f54-40ad-a68f-9760ef18d457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\r7fa4m1ab\startup\Code\StdLib">
+      <UniqueIdentifier>{e5fcad2a-8f5e-4543-bd53-8ab67cf89154}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -762,6 +786,15 @@
     <None Include="target\micros\bl602_sifive_e24_riscv\startup\boot.s">
       <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
     </None>
+    <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab.ld">
+      <Filter>micros\r7fa4m1ab\make</Filter>
+    </None>
+    <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab_files.gmk">
+      <Filter>micros\r7fa4m1ab\make</Filter>
+    </None>
+    <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab_flags.gmk">
+      <Filter>micros\r7fa4m1ab\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -1103,6 +1136,36 @@
     <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\crt0_init_ram.cpp">
       <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
     </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\crt0.cpp">
+      <Filter>micros\r7fa4m1ab\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\crt0_init_ram.cpp">
+      <Filter>micros\r7fa4m1ab\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\crt1.cpp">
+      <Filter>micros\r7fa4m1ab\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\int_vect.cpp">
+      <Filter>micros\r7fa4m1ab\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Appli\main.c">
+      <Filter>micros\r7fa4m1ab\startup\Code\Appli</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\SysTickTimer.c">
+      <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\clock.c">
+      <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Startup\intvect.c">
+      <Filter>micros\r7fa4m1ab\startup\Code\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Startup\Startup.c">
+      <Filter>micros\r7fa4m1ab\startup\Code\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\StdLib\StdLib.c">
+      <Filter>micros\r7fa4m1ab\startup\Code\StdLib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">
@@ -1121,6 +1184,12 @@
     </ClInclude>
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h">
       <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\r7fa4m1ab\startup\Code\Mcal\R7FA4M1AB.h">
+      <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\r7fa4m1ab\startup\Code\Mcal\SysTickTimer.h">
+      <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

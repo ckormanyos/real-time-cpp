@@ -9,6 +9,10 @@
       <Configuration>target bl602_sifive_e24_riscv</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="target r7fa4m1ab|x64">
+      <Configuration>target r7fa4m1ab</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="target rpi_pico2_rp2350|x64">
       <Configuration>target rpi_pico2_rp2350</Configuration>
       <Platform>x64</Platform>
@@ -222,6 +226,12 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
@@ -388,6 +398,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -444,6 +457,7 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'">target\build\build.bat stm32f407</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'">target\build\build.bat x86_64-w64-mingw32</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'">target\build\build.bat stm32f446</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'">target\build\build.bat r7fa4m1ab</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'">target\build\build.bat stm32l432</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">target\build\build.bat nxp_imxrt1062</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">target\build\build.bat stm32h7a3</NMakeBuildCommandLine>
@@ -473,6 +487,7 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'">target\build\build.bat stm32f407 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'">target\build\build.bat x86_64-w64-mingw32 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'">target\build\build.bat stm32f446 rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'">target\build\build.bat r7fa4m1ab rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'">target\build\build.bat stm32l432 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">target\build\build.bat nxp_imxrt1062 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">target\build\build.bat stm32h7a3 rebuild</NMakeReBuildCommandLine>
@@ -503,6 +518,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'">target\build\build.bat stm32f407 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'">target\build\build.bat x86_64-w64-mingw32 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'">target\build\build.bat stm32f446 clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'">target\build\build.bat r7fa4m1ab clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'">target\build\build.bat stm32l432 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">target\build\build.bat nxp_imxrt1062 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">target\build\build.bat stm32h7a3 clean_all</NMakeCleanCommandLine>
@@ -533,6 +549,7 @@
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'">$(SolutionDir)bin\ref_app.exe</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
@@ -562,6 +579,7 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'" />
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'" />
@@ -592,6 +610,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f407</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)/src;$(SolutionDir)src\mcal\x86_64-w64-mingw32</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f446</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/r7fa4m1ab</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32l432</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f446</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f446</NMakeIncludeSearchPath>
@@ -621,6 +640,7 @@
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'" />
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'" />
@@ -650,6 +670,7 @@
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'" />
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'" />
@@ -679,6 +700,7 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'" />
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'" />
@@ -897,6 +919,11 @@
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target r7fa4m1ab|x64'">
+    <BuildLog>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target stm32l432|x64'">
     <BuildLog>
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
@@ -1020,6 +1047,9 @@
     <None Include="target\micros\nxp_imxrt1062\make\nxp_imxrt1062.ld" />
     <None Include="target\micros\nxp_imxrt1062\make\nxp_imxrt1062_files.gmk" />
     <None Include="target\micros\nxp_imxrt1062\make\nxp_imxrt1062_flags.gmk" />
+    <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab.ld" />
+    <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab_files.gmk" />
+    <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab_flags.gmk" />
     <None Include="target\micros\riscvfe310\make\riscvfe310.ld" />
     <None Include="target\micros\riscvfe310\make\riscvfe310_files.gmk" />
     <None Include="target\micros\riscvfe310\make\riscvfe310_flags.gmk" />
@@ -1145,6 +1175,16 @@
     <ClCompile Include="target\micros\nxp_imxrt1062\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\nxp_imxrt1062\startup\crt1.cpp" />
     <ClCompile Include="target\micros\nxp_imxrt1062\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Appli\main.c" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\clock.c" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\SysTickTimer.c" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Startup\intvect.c" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Startup\Startup.c" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\StdLib\StdLib.c" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\riscvfe310\startup\crt0.cpp" />
     <ClCompile Include="target\micros\riscvfe310\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\riscvfe310\startup\crt1.cpp" />
@@ -1234,6 +1274,8 @@
   <ItemGroup>
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\core_macros.h" />
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h" />
+    <ClInclude Include="target\micros\r7fa4m1ab\startup\Code\Mcal\R7FA4M1AB.h" />
+    <ClInclude Include="target\micros\r7fa4m1ab\startup\Code\Mcal\SysTickTimer.h" />
     <ClInclude Include="target\micros\xtensa_esp32_s3\startup\Std\core-isa.h" />
   </ItemGroup>
   <ItemGroup>

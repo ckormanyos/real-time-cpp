@@ -1,0 +1,85 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2026.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 15.2.1
+GCC_TARGET    = arm-none-eabi
+GCC_PREFIX    = arm-none-eabi
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -O2                                                               \
+                -mcpu=cortex-m4                                                   \
+                -mtune=cortex-m4                                                  \
+                -mthumb                                                           \
+                -mfloat-abi=hard                                                  \
+                -finline-functions                                                \
+                -finline-limit=128                                                \
+                -mno-unaligned-access                                             \
+                -mno-long-calls
+
+TGT_CFLAGS    = -std=c11                                                          \
+                -Wunsuffixed-float-constants                                      \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++14                                                        \
+                -Wno-psabi                                                        \
+                $(TGT_ALLFLAGS)
+
+INC_PREFIX   := -isystem
+
+SRC_DIR      := $(PATH_TGT)/startup/Code
+
+TGT_INCLUDES  = -I$(SRC_DIR)                                                      \
+                -I$(SRC_DIR)/Appli                                                \
+                -I$(SRC_DIR)/Mcal                                                 \
+                -I$(SRC_DIR)/Startup                                              \
+                -I$(SRC_DIR)/StdLib                                               \
+                $(INC_PREFIX)$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
+                -T $(LINKER_DEFINITION_FILE)
+
+
+ifeq ($(TYP_OS),WIN)
+
+FLASH_TOOL                   := $(CURDIR)/tools/renesas/flasher/rfp-cli.exe
+
+ESP32S3_ESP_TOOL_FLAGS_IMAG  := --chip esp32s3                                \
+                                elf2image                                     \
+                                --flash_mode dio                              \
+                                --flash_freq 80m                              \
+                                --flash_size 2MB                              \
+                                --min-rev-full 0                              \
+                                --max-rev-full 99                             \
+                                -o $(basename $(APP).$(TGT_SUFFIX)).bin       \
+                                $(APP).$(TGT_SUFFIX)
+
+#"C:\Program Files (x86)\Renesas Electronics\Programming Tools\Renesas Flash Programmer V3.22\rfp-cli.exe" -d RA -port COM4 -e
+#"C:\Program Files (x86)\Renesas Electronics\Programming Tools\Renesas Flash Programmer V3.22\rfp-cli.exe" -d RA -port COM4 -a .\baremetal_uno_r4_minima.hex
+
+FLASH_TOOL_FLAGS                 := -d RA -port COM4
+
+
+FLASH_TOOL_CMD_ECHO              :=    $(ECHO) echo off > $(subst /,\,$(CURDIR)/bin/flash.bat) \
+                                    && $(ECHO) echo. >> $(subst /,\,$(CURDIR)/bin/flash.bat) \
+                                    && $(ECHO) echo +++ programming chip >> $(subst /,\,$(CURDIR)/bin/flash.bat) \
+                                    && $(ECHO) $(FLASH_TOOL) $(FLASH_TOOL_FLAGS) -a $(CURDIR)/bin/$(notdir $(APP)).hex >> $(subst /,\,$(CURDIR)/bin/flash.bat) \
+                                    && $(ECHO) echo >> $(subst /,\,$(CURDIR)/bin/flash.bat) \
+                                    && $(ECHO) pause >> $(subst /,\,$(CURDIR)/bin/flash.bat)
+
+RULE_SPECIAL_MAKE_FLASH_BATCH    := $(FLASH_TOOL_CMD_ECHO)
+
+endif
