@@ -29,9 +29,17 @@
       constexpr std::uint32_t system_opccr        { system_base + UINT32_C(0x000000A0) };
       constexpr std::uint32_t system_prcr         { system_base + UINT32_C(0x000003FE) };
 
+      // Miscellaneous port control registers.
+      constexpr std::uint32_t pmisc_pwpr          { pmisc_base + UINT32_C(0x00000003) };
+
       // Port registers.
       constexpr std::uint32_t pfs_p001pfs_base    { pfs_base + UINT32_C(0x00000004) };
       constexpr std::uint32_t pfs_p010pfs_base    { pfs_base + UINT32_C(0x00000028) };
+      constexpr std::uint32_t pfs_p011pfs_base    { pfs_base + UINT32_C(0x0000002C) };
+      constexpr std::uint32_t pfs_p111pfs_base    { pfs_base + UINT32_C(0x0000006C) };
+      constexpr std::uint32_t pfs_p200pfs_base    { pfs_base + UINT32_C(0x00000080) };
+      constexpr std::uint32_t pfs_p300pfs_base    { pfs_base + UINT32_C(0x000000C0) };
+      constexpr std::uint32_t pfs_p400pfs_base    { pfs_base + UINT32_C(0x00000100) };
 
     } // namespace reg
   } // namespace mcal
