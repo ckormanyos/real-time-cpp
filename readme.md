@@ -78,6 +78,7 @@ The reference application supports the following targets (in alpha-numeric order
 | `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |               |
 | `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+          |               |
 | `nxp_imxrt1062`                        | Teensy 4.0 Board / NXP(R) iMXRT1062 ARM(R) Cortex(R)-M7     | X             |
+| `r7a4m1ab`                             | Renesas(R) R7FA4M1AB ARM(R) Cortex(R)-M4F                   | X             |
 | `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |               |
 | `rl78`                                 | Renesas(R) RL78/G13                                         |               |
 | `rpi_pico_rp2040`                      | RaspberryPi(R) Pico RP2040 with dual ARM(R) Cortex(R)-M0+   | X             |

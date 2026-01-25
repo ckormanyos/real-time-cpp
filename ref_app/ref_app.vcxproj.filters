@@ -3120,9 +3120,6 @@
     <ClInclude Include="src\mcal\r7fa4m1ab\mcal_benchmark.h">
       <Filter>src\mcal\r7fa4m1ab</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\r7fa4m1ab\R7FA4M1AB.h">
-      <Filter>src\mcal\r7fa4m1ab</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
