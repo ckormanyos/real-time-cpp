@@ -1342,6 +1342,33 @@
     <ClCompile Include="src\mcal\r7fa4m1ab\mcal_gpt.cpp">
       <Filter>src\mcal\r7fa4m1ab</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\r7fa4m1ab\mcal_osc.cpp">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\r7fa4m1ab\mcal_port.cpp">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\r7fa4m1ab\mcal_cpu.cpp">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\r7fa4m1ab\mcal_wdg.cpp">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\r7fa4m1ab\mcal_eep.cpp">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\r7fa4m1ab\mcal_irq.cpp">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\r7fa4m1ab\mcal_led.cpp">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\r7fa4m1ab\mcal_pwm.cpp">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\r7fa4m1ab\mcal_spi.cpp">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -3052,6 +3079,42 @@
       <Filter>src\math\checksums\hash</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\r7fa4m1ab\mcal_gpt.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_osc.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_port.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_wdg.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_cpu.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_eep.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_irq.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_led.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_memory_progmem.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_pwm.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_reg.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_ser.h">
+      <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\r7fa4m1ab\mcal_spi.h">
       <Filter>src\mcal\r7fa4m1ab</Filter>
     </ClInclude>
   </ItemGroup>

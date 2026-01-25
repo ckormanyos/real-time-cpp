@@ -5,25 +5,19 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_GPT_2011_10_20_H
-  #define MCAL_GPT_2011_10_20_H
+#ifndef MCAL_REG_2010_04_10_H
+  #define MCAL_REG_2010_04_10_H
 
   #include <cstdint>
 
   namespace mcal
   {
-    namespace gpt
+    namespace reg
     {
-      using config_type = void;
-      using value_type = std::uint64_t;
-
-      auto init(const config_type*) -> void;
-
-      struct secure final
-      {
-        static auto get_time_elapsed() -> value_type;
-      };
     }
   }
 
-#endif // MCAL_GPT_2011_10_20_H
+  #include <mcal/mcal_reg_access_dynamic.h>
+  #include <mcal/mcal_reg_access_static.h>
+
+#endif // MCAL_REG_2010_04_10_H

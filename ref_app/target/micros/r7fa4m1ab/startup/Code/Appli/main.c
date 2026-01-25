@@ -90,7 +90,7 @@ void SysTickTimer(void)
   SysTickCounter++;
   count++;
   SysTickTimer_Reload(SYS_TICK_MS(1));
-  if (count >= 500){
+  if (count >= 1000){
   PFS->P111PFS.bit.PODR ^= 1;
   count =0;
   }

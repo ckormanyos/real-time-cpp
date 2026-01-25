@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,6 +10,8 @@
 #include <mcal_cpu.h>
 
 extern "C" void __initial_stack_pointer();
+
+extern "C" void SysTickTimer(void);
 
 extern "C" void __my_startup         () noexcept __attribute__((used, noinline));
 extern "C" void __vector_unused_irq  () noexcept __attribute__((used, noinline));
@@ -62,7 +64,7 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __debug_mon_handler,       // 0x0030, debug monitor
   __vector_unused_irq,       // 0x0034, reserved
   __pend_sv_handler,         // 0x0038, pending svc
-  __sys_tick_handler,        // 0x003C, system tick handler
+  SysTickTimer,              // 0x003C, system tick handler
   __vector_unused_irq,       // 0x0040, window watchdog
   __vector_unused_irq,       // 0x0044, pvd through exti line detection
   __vector_unused_irq,       // 0x0048, tamp_stamp on exti line

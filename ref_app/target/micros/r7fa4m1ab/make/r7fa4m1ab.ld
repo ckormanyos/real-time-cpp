@@ -1,5 +1,5 @@
 /*
- Copyright Christopher Kormanyos 2026.
+ Copyright Christopher Kormanyos 2007 - 2026.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,43 +7,39 @@
 
 /* Linker script for Renesas R7FA4M1AB ARM(R) Cortex(R)-M4 MCU */
 
+ENTRY(__my_startup)
 
-/******************************************************************************************
- ELF Entrypoint
-******************************************************************************************/
-ENTRY(_start)
+INPUT(libc.a libm.a libgcc.a)
 
-/******************************************************************************************
- Globals
-******************************************************************************************/
-__STACK_SIZE = 1K;
+OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+OUTPUT_ARCH(arm)
 
-/******************************************************************************************
- Memory configuration
-******************************************************************************************/
+/* The beginning and end (i.e., the top) of the stack */
+/* Set up a stack with a size of 4K */
+
+__initial_stack_pointer = 0x20008000 - 4;
 
 MEMORY
 {
-  FLASH(rx)   : ORIGIN = 0x00000000, LENGTH = 256K
-  CONFIG(r)   : ORIGIN = 0x01010008, LENGTH = 44
-  RAM(rwx)    : ORIGIN = 0x20000000, LENGTH = 32K
+  VEC(rx)  : ORIGIN = 0x00000000, LENGTH = 0x300
+  FCG(rx)  : ORIGIN = 0x00000400, LENGTH = 16K - 1K
+  ROM(rx)  : ORIGIN = 0x00004000, LENGTH = 256K - 16K
+  CFG(r)   : ORIGIN = 0x01010008, LENGTH = 44
+  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x7000
 }
 
-/******************************************************************************************
- Sections definition
-******************************************************************************************/
 SECTIONS
 {
-  /* Program code (text) */
-  .text : ALIGN(4)
+  . = 0x00000000;
+  . = ALIGN(4);
+
+  /* ISR vectors */
+  .isr_vector :
   {
-    PROVIDE(__CODE_BASE_ADDRESS = .);
-    *(.intvect)
-    KEEP(*(.intvect))
-    *(.boot)
-    *(.text)
-    . = ALIGN(4);
-  } > FLASH
+    *(.isr_vector)
+    . = ALIGN(0x100);
+    KEEP(*(.isr_vector))
+  } > VEC = 0xAAAA
 
   .flash_config (0x00000400) : ALIGN(4)
   {
@@ -62,7 +58,7 @@ SECTIONS
     LONG(0xffffffff); /* SECMPU10 */
     LONG(0xffffffff); /* SECMPU11 */
     LONG(0xffffffff); /* SECMPU12 */
-  } > FLASH
+  } > FCG
 
   .flash_config_mirror (0x00002400) : ALIGN(4)
   {
@@ -81,95 +77,99 @@ SECTIONS
     LONG(0xffffffff); /* SECMPU10 */
     LONG(0xffffffff); /* SECMPU11 */
     LONG(0xffffffff); /* SECMPU12 */
-  } > FLASH
+  } > FCG
 
-  /* Read-only data (.rodata) */
-  .rodata : ALIGN(4)
+  /* startup */
+  .startup :
   {
-    PROVIDE(__RODATA_BASE_ADDRESS = .);
+    *(.startup)
+    . = ALIGN(0x10);
+    KEEP(*(.startup))
+  } > ROM = 0x5555
+
+  /* Program code (text), read-only data and static ctors */
+  .text :
+  {
+    . = ALIGN(4);
+    _ctors_begin = .;
+    KEEP(*(SORT(.init_array.*)))
+    KEEP(*(.init_array*))
+    _ctors_end = .;
+    . = ALIGN(4);
+    *(.boot)
+    . = ALIGN(4);
+    *(.progmem*)
+    . = ALIGN(4);
+    *(.text)
+    . = ALIGN(4);
+    *(.text*)
+    . = ALIGN(4);
     *(.rodata)
-  } > FLASH
-
- /* Section for constructors */
-  .ctors : ALIGN(4)
-  {
-    PROVIDE(__CTOR_LIST__  = .);
-    KEEP (*(SORT(.ctors.*)))
-    KEEP (*(.ctors))
-    KEEP (*(SORT(.init_array.*)))
-    KEEP (*(.init_array))
-    LONG(-1) ;
-    PROVIDE(__CTOR_END__  = .);
     . = ALIGN(4);
-  }  > FLASH
-
-
-  /* Section for destructors */
-  .dtors : ALIGN(4)
-  {
-    PROVIDE(__DTOR_LIST__  = .);
-    KEEP (*(SORT(.dtors.*)))
-    KEEP (*(.dtors))
-    KEEP (*(SORT(.fini_array.*)))
-    KEEP (*(.fini_array))
-    LONG(-1) ;
-    PROVIDE(__DTOR_END__  = .);
+    *(.rodata*)
     . = ALIGN(4);
-  } > FLASH
-
-  /* Runtime clear table */
-  .clear_sec : ALIGN(4)
-  {
-    PROVIDE(__RUNTIME_CLEAR_TABLE = .) ;
-    LONG(0 + ADDR(.bss));   LONG(SIZEOF(.bss));
-    LONG(-1);                 LONG(-1);
+    *(.glue_7)
     . = ALIGN(4);
-  } > FLASH
-
-  /* Runtime copy table */
-  .copy_sec : ALIGN(4)
-  {
-    PROVIDE(__RUNTIME_COPY_TABLE = .) ;
-    LONG(LOADADDR(.data));   LONG(0 + ADDR(.data));   LONG(SIZEOF(.data));
-    LONG(-1);                LONG(-1);                LONG(-1);
+    *(.glue_7t)
     . = ALIGN(4);
-    PROVIDE(__CODE_END_ADDRESS = .);
-  } > FLASH 
+  } > ROM
 
-  /* The ROM-to-RAM initialized data sections */
-  .data : ALIGN(4) 
+  .ARM.extab :
   {
+    . = ALIGN(4);
+    *(.ARM.extab)
+    *(.ARM.extab*)
+    *(.gnu.linkonce.armextab.*)
+    . = ALIGN(4);
+  } > ROM
+
+  .exidx :
+  {
+    . = ALIGN(4);
+    PROVIDE(__exidx_start = .);
+    *(.ARM.exidx*)
+    . = ALIGN(4);
+    PROVIDE(__exidx_end = .);
+  } > ROM
+
+  .ARM.attributes :
+  {
+    *(.ARM.attributes)
+  } > ROM
+
+  . = 0x20000000;
+  . = ALIGN(4);
+
+  /* The ROM-to-RAM initialized data section */
+  .data :
+  {
+    _data_begin = .;
     *(.data)
+    . = ALIGN(4);
+    KEEP (*(.data))
     *(.data*)
     . = ALIGN(4);
-  } > RAM  AT>FLASH
-  
-  .sdata : ALIGN(4) 
-  {
-    *(.sdata)
-    . = ALIGN(4);
-  } > RAM  AT>FLASH
+    KEEP (*(.data*))
+    _data_end = .;
+  } > RAM AT > ROM
 
-  /* The uninitialized (zero-cleared) data sections */
-  .bss : ALIGN(4)
+  /* The uninitialized (zero-cleared) data section */
+  .bss :
   {
+    _bss_begin = .;
     *(.bss)
+    . = ALIGN(4);
+    KEEP (*(.bss))
     *(.bss*)
     . = ALIGN(4);
-  } > RAM
-  
-  .sbss : ALIGN(4)
-  {
-    *(.sbss)
-    . = ALIGN(4);
+    KEEP (*(.bss*))
+    _bss_end = .;
   } > RAM
 
-  /* stack definition */
-  .stack :
-  {
-    . = ALIGN(MAX(__STACK_SIZE , .), 8);
-    PROVIDE(__STACK_TOP = .) ;
-  } > RAM
+  PROVIDE(end = .);
+  PROVIDE(_fini = .);
+
+  _rom_data_begin = LOADADDR(.data);
 
   /* configuration section for Renesas R7FA4M1AB */
   .config : ALIGN(4)
@@ -177,7 +177,7 @@ SECTIONS
     PROVIDE(__CONFIG_BASE_ADDRESS = .);
     *(.config)
     KEEP(*(.config))
-  } > CONFIG
+  } > CFG
 }
 
 _start = 4;
