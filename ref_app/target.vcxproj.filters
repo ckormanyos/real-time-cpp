@@ -349,12 +349,6 @@
     <Filter Include="micros\r7fa4m1ab\startup\Code\Mcal">
       <UniqueIdentifier>{e9f5404a-7f3f-4aff-bf36-630e2a2822c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\r7fa4m1ab\startup\Code\Startup">
-      <UniqueIdentifier>{4dfeed6a-2f54-40ad-a68f-9760ef18d457}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\r7fa4m1ab\startup\Code\StdLib">
-      <UniqueIdentifier>{e5fcad2a-8f5e-4543-bd53-8ab67cf89154}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -1148,23 +1142,11 @@
     <ClCompile Include="target\micros\r7fa4m1ab\startup\int_vect.cpp">
       <Filter>micros\r7fa4m1ab\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Appli\main.c">
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Appli\main.cpp">
       <Filter>micros\r7fa4m1ab\startup\Code\Appli</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\SysTickTimer.c">
-      <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Mcal\clock.cpp">
       <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Startup\intvect.c">
-      <Filter>micros\r7fa4m1ab\startup\Code\Startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\Startup\Startup.c">
-      <Filter>micros\r7fa4m1ab\startup\Code\Startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\r7fa4m1ab\startup\Code\StdLib\StdLib.c">
-      <Filter>micros\r7fa4m1ab\startup\Code\StdLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1186,9 +1168,6 @@
       <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
     </ClInclude>
     <ClInclude Include="target\micros\r7fa4m1ab\startup\Code\Mcal\R7FA4M1AB.h">
-      <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="target\micros\r7fa4m1ab\startup\Code\Mcal\SysTickTimer.h">
       <Filter>micros\r7fa4m1ab\startup\Code\Mcal</Filter>
     </ClInclude>
   </ItemGroup>
