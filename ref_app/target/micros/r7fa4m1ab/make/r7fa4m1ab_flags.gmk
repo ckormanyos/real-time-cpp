@@ -37,10 +37,7 @@ INC_PREFIX   := -isystem
 
 SRC_DIR      := $(PATH_TGT)/startup/Code
 
-TGT_INCLUDES  = -I$(SRC_DIR)                                                      \
-                -I$(SRC_DIR)/Appli                                                \
-                -I$(SRC_DIR)/Mcal                                                 \
-                $(INC_PREFIX)$(PATH_APP)/util/STL
+TGT_INCLUDES  = $(INC_PREFIX)$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 

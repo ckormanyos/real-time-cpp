@@ -5,10 +5,10 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "R7FA4M1AB.h"
-
 #include <mcal_led.h>
 #include <mcal_led/mcal_led_port.h>
+
+#include <R7FA4M1AB.h>
 
 class led_minima_blinky : public mcal::led::led_boolean_state_base
 {
