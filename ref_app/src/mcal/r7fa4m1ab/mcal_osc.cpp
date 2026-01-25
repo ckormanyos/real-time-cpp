@@ -9,8 +9,6 @@
 #include <mcal_osc.h>
 #include <mcal_reg.h>
 
-#include <cstddef>
-
 auto mcal::osc::init(const config_type*) -> void
 {
   // Disable register write protection for clock module.

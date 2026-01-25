@@ -10,8 +10,6 @@
 
   #define MY_PROGMEM
 
-  #include <cstdint>
-
   namespace mcal { namespace cpu {
 
   auto init() -> void;

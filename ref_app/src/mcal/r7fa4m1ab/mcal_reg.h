@@ -14,17 +14,25 @@
   {
     namespace reg
     {
-      // System registers.
-      constexpr std::uint32_t system_base       { UINT32_C(0x4001E000) };
-      constexpr std::uint32_t unknown_hococr2   { UINT32_C(0x4001E037) };
+      // Register bases.
+      constexpr std::uint32_t system_base         { UINT32_C(0x4001E000) };
+      constexpr std::uint32_t unknown_hococr2     { UINT32_C(0x4001E037) };
+      constexpr std::uint32_t pfs_base            { UINT32_C(0x40040800) };
+      constexpr std::uint32_t pmisc_base          { UINT32_C(0x40040D00) };
 
-      constexpr std::uint32_t system_sckdivcr   { system_base + UINT32_C(0x00000020) };
-      constexpr std::uint32_t system_sckscr     { system_base + UINT32_C(0x00000026) };
-      constexpr std::uint32_t system_memwait    { system_base + UINT32_C(0x00000031) };
-      constexpr std::uint32_t system_hococr     { system_base + UINT32_C(0x00000036) };
-      constexpr std::uint32_t system_oscsf      { system_base + UINT32_C(0x0000003C) };
-      constexpr std::uint32_t system_opccr      { system_base + UINT32_C(0x000000A0) };
-      constexpr std::uint32_t system_prcr       { system_base + UINT32_C(0x000003FE) };
+      // System registers.
+      constexpr std::uint32_t system_sckdivcr     { system_base + UINT32_C(0x00000020) };
+      constexpr std::uint32_t system_sckscr       { system_base + UINT32_C(0x00000026) };
+      constexpr std::uint32_t system_memwait      { system_base + UINT32_C(0x00000031) };
+      constexpr std::uint32_t system_hococr       { system_base + UINT32_C(0x00000036) };
+      constexpr std::uint32_t system_oscsf        { system_base + UINT32_C(0x0000003C) };
+      constexpr std::uint32_t system_opccr        { system_base + UINT32_C(0x000000A0) };
+      constexpr std::uint32_t system_prcr         { system_base + UINT32_C(0x000003FE) };
+
+      // Port registers.
+      constexpr std::uint32_t pfs_p001pfs_base    { pfs_base + UINT32_C(0x00000004) };
+      constexpr std::uint32_t pfs_p010pfs_base    { pfs_base + UINT32_C(0x00000028) };
+
     } // namespace reg
   } // namespace mcal
 
