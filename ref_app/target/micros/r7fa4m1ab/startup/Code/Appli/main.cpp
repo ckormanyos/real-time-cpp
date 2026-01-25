@@ -15,15 +15,10 @@
   
 ******************************************************************************************/
 
-//-----------------------------------------------------------------------------------------
-// Includes
-//-----------------------------------------------------------------------------------------
-#include <cstdint>
-
+#include <mcal_led.h>
 #include <util/utility/util_time.h>
 
-#include "R7FA4M1AB.h"
-
+#include <cstdint>
 
 extern "C" void mcal_gpt_init(void);
 
@@ -31,23 +26,11 @@ int main(void);
 
 int main(void)
 {
-  /* configure pin P111 as output */
-  /* disable register write protection for PFS*/
-  PMISC->PWPR.bit.B0WI  = 0;
-  PMISC->PWPR.bit.PFSWE = 1;
-
-  /* output low */
-  PFS->P111PFS.bit.PODR = 0;
-
-  /* configure the pin as output */
-  PFS->P111PFS.bit.PDR  = 1;
-
-  /* Set the LED on */
-  PFS->P111PFS.bit.PODR ^= 1;
-
   mcal_gpt_init();
 
   using local_timer_type = util::timer<std::uint32_t>;
+
+  mcal::led::led0().toggle();
 
   local_timer_type blinky_timer { local_timer_type::seconds(UINT8_C(1)) };
 
@@ -56,7 +39,7 @@ int main(void)
   {
     if(blinky_timer.timeout())
     {
-      PFS->P111PFS.bit.PODR ^= 1;
+      mcal::led::led0().toggle();
 
       blinky_timer.start_interval(local_timer_type::seconds(UINT8_C(1)));
     }
