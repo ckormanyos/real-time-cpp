@@ -331,6 +331,15 @@
     <Filter Include="micros\bl602_sifive_e24_riscv\startup">
       <UniqueIdentifier>{d9d707dc-1ba0-4d0c-be67-fbb095f42986}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\r7fa4m1ab">
+      <UniqueIdentifier>{948b6687-16b7-4f6a-a6e7-4915281239ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\r7fa4m1ab\make">
+      <UniqueIdentifier>{7dc2c88c-840f-45b5-8b2c-c81ed3a81fe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\r7fa4m1ab\startup">
+      <UniqueIdentifier>{e85df680-7e70-4f5d-87c0-73dbb822c1ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -762,6 +771,15 @@
     <None Include="target\micros\bl602_sifive_e24_riscv\startup\boot.s">
       <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
     </None>
+    <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab.ld">
+      <Filter>micros\r7fa4m1ab\make</Filter>
+    </None>
+    <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab_files.gmk">
+      <Filter>micros\r7fa4m1ab\make</Filter>
+    </None>
+    <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab_flags.gmk">
+      <Filter>micros\r7fa4m1ab\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -1102,6 +1120,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\bl602_sifive_e24_riscv\startup\crt0_init_ram.cpp">
       <Filter>micros\bl602_sifive_e24_riscv\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\crt0.cpp">
+      <Filter>micros\r7fa4m1ab\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\crt0_init_ram.cpp">
+      <Filter>micros\r7fa4m1ab\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\crt1.cpp">
+      <Filter>micros\r7fa4m1ab\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\r7fa4m1ab\startup\int_vect.cpp">
+      <Filter>micros\r7fa4m1ab\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

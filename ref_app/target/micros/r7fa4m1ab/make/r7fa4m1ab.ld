@@ -1,0 +1,183 @@
+/*
+ Copyright Christopher Kormanyos 2007 - 2026.
+ Distributed under the Boost Software License,
+ Version 1.0. (See accompanying file LICENSE_1_0.txt
+ or copy at http://www.boost.org/LICENSE_1_0.txt)
+*/
+
+/* Linker script for Renesas R7FA4M1AB ARM(R) Cortex(R)-M4 MCU */
+
+ENTRY(__my_startup)
+
+INPUT(libc.a libm.a libgcc.a)
+
+OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+OUTPUT_ARCH(arm)
+
+/* The beginning and end (i.e., the top) of the stack */
+/* Set up a stack with a size of 4K */
+
+__initial_stack_pointer = 0x20008000 - 4;
+
+MEMORY
+{
+  VEC(rx)  : ORIGIN = 0x00000000, LENGTH = 0x300
+  FCG(rx)  : ORIGIN = 0x00000400, LENGTH = 16K - 1K
+  ROM(rx)  : ORIGIN = 0x00004000, LENGTH = 256K - 16K
+  CFG(r)   : ORIGIN = 0x01010008, LENGTH = 44
+  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x7000
+}
+
+SECTIONS
+{
+  . = 0x00000000;
+  . = ALIGN(4);
+
+  /* ISR vectors */
+  .isr_vector :
+  {
+    *(.isr_vector)
+    . = ALIGN(0x100);
+    KEEP(*(.isr_vector))
+  } > VEC = 0xAAAA
+
+  .flash_config (0x00000400) : ALIGN(4)
+  {
+    LONG(0xffffffff); /* OFS0 */
+    LONG(0xffffcfff); /* OFS1 */
+    LONG(0xffffffff); /* SECMPU00 */
+    LONG(0xffffffff); /* SECMPU01 */
+    LONG(0xffffffff); /* SECMPU02 */
+    LONG(0xffffffff); /* SECMPU03 */
+    LONG(0xffffffff); /* SECMPU04 */
+    LONG(0xffffffff); /* SECMPU05 */
+    LONG(0xffffffff); /* SECMPU06 */
+    LONG(0xffffffff); /* SECMPU07 */
+    LONG(0xffffffff); /* SECMPU08 */
+    LONG(0xffffffff); /* SECMPU09 */
+    LONG(0xffffffff); /* SECMPU10 */
+    LONG(0xffffffff); /* SECMPU11 */
+    LONG(0xffffffff); /* SECMPU12 */
+  } > FCG
+
+  .flash_config_mirror (0x00002400) : ALIGN(4)
+  {
+    LONG(0xffffffff); /* OFS0 */
+    LONG(0xffffcfff); /* OFS1 */
+    LONG(0xffffffff); /* SECMPU00 */
+    LONG(0xffffffff); /* SECMPU01 */
+    LONG(0xffffffff); /* SECMPU02 */
+    LONG(0xffffffff); /* SECMPU03 */
+    LONG(0xffffffff); /* SECMPU04 */
+    LONG(0xffffffff); /* SECMPU05 */
+    LONG(0xffffffff); /* SECMPU06 */
+    LONG(0xffffffff); /* SECMPU07 */
+    LONG(0xffffffff); /* SECMPU08 */
+    LONG(0xffffffff); /* SECMPU09 */
+    LONG(0xffffffff); /* SECMPU10 */
+    LONG(0xffffffff); /* SECMPU11 */
+    LONG(0xffffffff); /* SECMPU12 */
+  } > FCG
+
+  /* startup */
+  .startup :
+  {
+    *(.startup)
+    . = ALIGN(0x10);
+    KEEP(*(.startup))
+  } > ROM = 0x5555
+
+  /* Program code (text), read-only data and static ctors */
+  .text :
+  {
+    . = ALIGN(4);
+    _ctors_begin = .;
+    KEEP(*(SORT(.init_array.*)))
+    KEEP(*(.init_array*))
+    _ctors_end = .;
+    . = ALIGN(4);
+    *(.boot)
+    . = ALIGN(4);
+    *(.progmem*)
+    . = ALIGN(4);
+    *(.text)
+    . = ALIGN(4);
+    *(.text*)
+    . = ALIGN(4);
+    *(.rodata)
+    . = ALIGN(4);
+    *(.rodata*)
+    . = ALIGN(4);
+    *(.glue_7)
+    . = ALIGN(4);
+    *(.glue_7t)
+    . = ALIGN(4);
+  } > ROM
+
+  .ARM.extab :
+  {
+    . = ALIGN(4);
+    *(.ARM.extab)
+    *(.ARM.extab*)
+    *(.gnu.linkonce.armextab.*)
+    . = ALIGN(4);
+  } > ROM
+
+  .exidx :
+  {
+    . = ALIGN(4);
+    PROVIDE(__exidx_start = .);
+    *(.ARM.exidx*)
+    . = ALIGN(4);
+    PROVIDE(__exidx_end = .);
+  } > ROM
+
+  .ARM.attributes :
+  {
+    *(.ARM.attributes)
+  } > ROM
+
+  . = 0x20000000;
+  . = ALIGN(4);
+
+  /* The ROM-to-RAM initialized data section */
+  .data :
+  {
+    _data_begin = .;
+    *(.data)
+    . = ALIGN(4);
+    KEEP (*(.data))
+    *(.data*)
+    . = ALIGN(4);
+    KEEP (*(.data*))
+    _data_end = .;
+  } > RAM AT > ROM
+
+  /* The uninitialized (zero-cleared) data section */
+  .bss :
+  {
+    _bss_begin = .;
+    *(.bss)
+    . = ALIGN(4);
+    KEEP (*(.bss))
+    *(.bss*)
+    . = ALIGN(4);
+    KEEP (*(.bss*))
+    _bss_end = .;
+  } > RAM
+
+  PROVIDE(end = .);
+  PROVIDE(_fini = .);
+
+  _rom_data_begin = LOADADDR(.data);
+
+  /* configuration section for Renesas R7FA4M1AB */
+  .config : ALIGN(4)
+  {
+    PROVIDE(__CONFIG_BASE_ADDRESS = .);
+    *(.config)
+    KEEP(*(.config))
+  } > CFG
+}
+
+_start = 4;
