@@ -44,7 +44,7 @@ initializes a skinny microcontroller abstraction layer (MCAL). Control is
 then passed to a simple multitasking scheduler that manages the
 LED application, calls a cyclic benchmark task and services the watchdog.
 
-The LED application toggles a user-LED with a frequency of $\frac{1}{2}~\text{Hz.}$
+The LED application toggles a user-LED with a frequency of $\frac{1}{2}~\text{Hz}$.
 The result is LED on for one second, LED off for one second.
 The LED application runs cyclically and perpetually
 without break or pause.
