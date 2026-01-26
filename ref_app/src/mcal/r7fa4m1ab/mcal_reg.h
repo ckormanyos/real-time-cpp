@@ -14,13 +14,22 @@
   {
     namespace reg
     {
-      // Register bases.
+      // Global base addresses.
+      constexpr std::uint32_t scs_base            { UINT32_C(0xE000E000) };
+
+      // Individual unit base addresses.
+      constexpr std::uint32_t scb_base            { scs_base + UINT32_C(0x00000D00) };
       constexpr std::uint32_t system_base         { UINT32_C(0x4001E000) };
       constexpr std::uint32_t unknown_hococr2     { UINT32_C(0x4001E037) };
       constexpr std::uint32_t pfs_base            { UINT32_C(0x40040800) };
       constexpr std::uint32_t pmisc_base          { UINT32_C(0x40040D00) };
 
-      // System registers.
+      // Core system registers.
+      constexpr std::uint32_t scb_cpacr           { scb_base + UINT32_C(0x00000088) };
+
+     static_assert(scb_cpacr == UINT32_C(0xE000ED88), "Error: wrong scb_cpacr register address)");
+
+      // System (system struct) registers.
       constexpr std::uint32_t system_sckdivcr     { system_base + UINT32_C(0x00000020) };
       constexpr std::uint32_t system_sckscr       { system_base + UINT32_C(0x00000026) };
       constexpr std::uint32_t system_memwait      { system_base + UINT32_C(0x00000031) };

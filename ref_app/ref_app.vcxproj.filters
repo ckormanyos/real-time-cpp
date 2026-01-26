@@ -3353,6 +3353,9 @@
     <None Include="tools\Util\msys64\usr\local\llvm-17.0.2-riscv32\COPYING">
       <Filter>tools\Util\msys64\usr\local\llvm-17.0.2-riscv32</Filter>
     </None>
+    <None Include="cmake\r7fa4m1ab.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
