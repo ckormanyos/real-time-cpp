@@ -1,0 +1,167 @@
+Archive member included to satisfy reference by file (symbol)
+
+./libpsram.a(psram.o)         /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o (psram_init)
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+HP_TCM           0x30100000         0x00002000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+LOAD ./libpsram.a
+
+.text           0x30100000     0x10b6
+ *(.boot)
+ .boot          0x30100000       0x6e /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+                0x30100000                _start
+ *(.rodata)
+ *fill*         0x3010006e        0x2 
+ .rodata        0x30100070       0x66 ./libpsram.a(psram.o)
+ .text          0x301000d6        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+ *fill*         0x301000d6        0x2 
+ .text          0x301000d8       0x96 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+                0x301000d8                mmu_init
+ *fill*         0x3010016e        0x2 
+ .text          0x30100170       0x8e /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+                0x30100170                ulp_boot
+ *fill*         0x301001fe        0x2 
+ .text          0x30100200       0xb0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+                0x30100200                clk_info
+                0x30100250                clock_init
+ .text          0x301002b0       0x46 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+                0x301002b0                wdt_disable_all_wdt
+ .text          0x301002f6      0xdc0 ./libpsram.a(psram.o)
+                0x301002f6                psram_init
+                0x40005000                        __app_entry_point = 0x40005000
+                0x40008000                        __ulp_entry_point = 0x40008000
+                0x5008e000                        SPIMEM2 = 0x5008e000
+                0x5008f000                        SPIMEM3 = 0x5008f000
+                0x50120000                        LPPERI = 0x50120000
+                0x500e6000                        HP_SYS_CLKRST = 0x500e6000
+                0x4fc00024                        ets_printf = 0x4fc00024
+                0x4fc00110                        esp_rom_spi_set_op_mode = 0x4fc00110
+                0x4fc00108                        esp_rom_spi_cmd_config = 0x4fc00108
+                0x4fc0010c                        esp_rom_spi_cmd_start = 0x4fc0010c
+                0x4fc0055c                        ets_clk_get_xtal_freq = 0x4fc0055c
+                0x4fc00560                        ets_clk_get_cpu_freq = 0x4fc00560
+OUTPUT(/mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/SBL.elf elf32-littleriscv)
+
+.rodata.str1.4  0x301010b8       0x2d
+ .rodata.str1.4
+                0x301010b8       0x2d /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+
+.rela.dyn       0x301010e8        0x0
+ .rela.text     0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+
+.data           0x301010e5        0x0
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .data          0x301010e5        0x0 ./libpsram.a(psram.o)
+
+.bss            0x301010e8        0x6
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .bss           0x301010e8        0x6 ./libpsram.a(psram.o)
+
+.riscv.attributes
+                0x00000000       0x59
+ .riscv.attributes
+                0x00000000       0x57 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+ .riscv.attributes
+                0x00000057       0x55 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .riscv.attributes
+                0x000000ac       0x55 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .riscv.attributes
+                0x00000101       0x55 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .riscv.attributes
+                0x00000156       0x55 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .riscv.attributes
+                0x000001ab       0x30 ./libpsram.a(psram.o)
+
+.comment        0x00000000       0x5f
+ .comment       0x00000000       0x5f /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+                                 0x30 (size before relaxing)
+ .comment       0x0000005f       0x30 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .comment       0x0000005f       0x30 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .comment       0x0000005f       0x30 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .comment       0x0000005f       0x31 ./libpsram.a(psram.o)
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .note.GNU-stack
+                0x00000000        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .note.GNU-stack
+                0x00000000        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .note.GNU-stack
+                0x00000000        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+
+.debug_info     0x00000000    0x16604
+ .debug_info    0x00000000       0xff /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_info    0x000000ff     0x5dd7 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_info    0x00005ed6      0xf17 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_info    0x00006ded      0xe4b /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_info    0x00007c38     0xe9cc ./libpsram.a(psram.o)
+
+.debug_abbrev   0x00000000      0x799
+ .debug_abbrev  0x00000000       0x78 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_abbrev  0x00000078      0x11b /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_abbrev  0x00000193      0x1a0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_abbrev  0x00000333       0xf7 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_abbrev  0x0000042a      0x36f ./libpsram.a(psram.o)
+
+.debug_loc      0x00000000       0x86
+ .debug_loc     0x00000000       0x86 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+
+.debug_aranges  0x00000000       0xa0
+ .debug_aranges
+                0x00000000       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_aranges
+                0x00000020       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_aranges
+                0x00000040       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_aranges
+                0x00000060       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_aranges
+                0x00000080       0x20 ./libpsram.a(psram.o)
+
+.debug_line     0x00000000     0x10ac
+ .debug_line    0x00000000      0x2e8 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_line    0x000002e8      0x21f /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_line    0x00000507      0x22f /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_line    0x00000736      0x1d5 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_line    0x0000090b      0x7a1 ./libpsram.a(psram.o)
+
+.debug_str      0x00000000     0xc770
+ .debug_str     0x00000000     0xc770 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+                                0x1a9 (size before relaxing)
+ .debug_str     0x0000c770     0x57db /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_str     0x0000c770     0x1361 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_str     0x0000c770      0x6d8 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_str     0x0000c770     0xc57c ./libpsram.a(psram.o)
+
+.debug_frame    0x00000000      0x1b0
+ .debug_frame   0x00000000       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_frame   0x00000020       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_frame   0x00000040       0x50 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_frame   0x00000090       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_frame   0x000000b0      0x100 ./libpsram.a(psram.o)
+
+.debug_ranges   0x00000000       0x30
+ .debug_ranges  0x00000000       0x30 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o

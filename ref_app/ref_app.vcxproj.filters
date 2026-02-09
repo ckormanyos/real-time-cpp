@@ -287,6 +287,9 @@
     <Filter Include="src\mcal\r7fa4m1ab">
       <UniqueIdentifier>{40be70da-9086-46f9-b158-4dc468860fc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\xtensa_esp32_p4">
+      <UniqueIdentifier>{cc6519dd-1588-4aed-9bd1-c4cc22a5e560}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -3364,6 +3367,9 @@
     </Text>
     <Text Include="tools\Util\msys64\usr\bin\README.md">
       <Filter>tools\Util\msys64\usr\bin</Filter>
+    </Text>
+    <Text Include="src\mcal\xtensa_esp32_p4\xtensa_esp32_p4.txt">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
     </Text>
   </ItemGroup>
 </Project>

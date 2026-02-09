@@ -3733,6 +3733,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Text>
+    <Text Include="src\mcal\xtensa_esp32_p4\xtensa_esp32_p4.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Text>
     <Text Include="tools\Util\msys64\usr\bin\README.md" />
     <Text Include="tools\Util\msys64\usr\local\gcc-13.2.0-x86_64-w64-mingw32\README_STL.txt" />
   </ItemGroup>
