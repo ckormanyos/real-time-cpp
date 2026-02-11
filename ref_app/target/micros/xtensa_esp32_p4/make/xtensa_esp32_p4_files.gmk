@@ -15,5 +15,4 @@ FILES_TGT      := $(PATH_TGT)/startup/Code/Appli/main                           
                   $(PATH_TGT)/startup/Code/Mcal/gpio                                      \
                   $(PATH_TGT)/startup/Code/Startup/boot                                   \
                   $(PATH_TGT)/startup/Code/Startup/intvect                                \
-                  $(PATH_TGT)/startup/Code/Startup/Startup                                \
-                  $(PATH_TGT)/startup/Code/StdLib/StdLib
+                  $(PATH_TGT)/startup/Code/Startup/Startup

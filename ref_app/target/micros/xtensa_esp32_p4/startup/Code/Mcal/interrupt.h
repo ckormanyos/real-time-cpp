@@ -20,6 +20,11 @@
 
 #include <stdint.h>
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
 typedef struct {
 
   uint8_t clicintip;   /* Interrupt pending register      */
@@ -81,5 +86,8 @@ typedef struct {
 #define EXT_INT30_ID  46
 #define EXT_INT31_ID  47
 
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* __INTERRUPT_H__ */

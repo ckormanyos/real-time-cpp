@@ -19,13 +19,23 @@
 //-----------------------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------------------
+
+#include <esp32p4.h>
+
 #include <stdio.h>
 #include <stdint.h>
-#include "esp32p4.h"
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
 
 void gpio_cfg_output(uint8_t pin);
 void gpio_set_output_level(uint8_t pin, uint8_t level);
 void gpio_toggle_output_level(uint8_t pin);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /*__GPIO_H__*/

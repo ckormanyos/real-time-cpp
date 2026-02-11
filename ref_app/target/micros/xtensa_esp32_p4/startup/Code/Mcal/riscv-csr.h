@@ -11,6 +11,11 @@
 
 #include <stdint.h>
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
 #if __riscv_xlen==32
 typedef uint32_t uint_xlen_t;
 typedef uint32_t uint_csr32_t;
@@ -3787,5 +3792,8 @@ static inline uint_xlen_t csr_read_write_mtval2(uint_xlen_t new_value) {
     return prev_value;
 }
 
+#if defined(__cplusplus)
+}
+#endif
 
 #endif // #define RISCV_CSR_H

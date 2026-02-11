@@ -56,7 +56,7 @@ static void Startup_InitMcuSystem(void);
 //=========================================================================================
 // Extern function prototype
 //=========================================================================================
-int main(void) __attribute__((weak));
+extern int main(void) __attribute__((used,noinline));
 
 //-----------------------------------------------------------------------------------------
 /// \brief  Startup_Init function

@@ -361,9 +361,6 @@
     <Filter Include="micros\xtensa_esp32_p4\startup\Code\Startup">
       <UniqueIdentifier>{17889d6f-9174-40cb-bcad-01e3995207e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa_esp32_p4\startup\StdLib">
-      <UniqueIdentifier>{509b8385-c65b-4236-9b5a-93e8cc7bf887}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -1169,7 +1166,7 @@
     <ClCompile Include="target\micros\r7fa4m1ab\startup\int_vect.cpp">
       <Filter>micros\r7fa4m1ab\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main.c">
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main.cpp">
       <Filter>micros\xtensa_esp32_p4\startup\Code\Appli</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\gpio.c">
@@ -1180,9 +1177,6 @@
     </ClCompile>
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\Startup.c">
       <Filter>micros\xtensa_esp32_p4\startup\Code\Startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\StdLib\StdLib.c">
-      <Filter>micros\xtensa_esp32_p4\startup\StdLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
