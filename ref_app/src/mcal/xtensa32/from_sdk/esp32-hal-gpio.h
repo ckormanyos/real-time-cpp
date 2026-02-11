@@ -28,7 +28,7 @@
 
   #include <stdint.h>
 
-  #ifdef __cplusplus
+  #if defined(__cplusplus)
   extern "C"
   {
   #endif
@@ -57,7 +57,7 @@
   void digitalWrite(const uint8_t pin, const uint8_t val);
   int  digitalRead (const uint8_t pin);
 
-  #ifdef __cplusplus
+  #if defined(__cplusplus)
   }
   #endif
 

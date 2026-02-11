@@ -56,6 +56,7 @@ SECTIONS
     PROVIDE(__CODE_BASE_ADDRESS = .);
     *(.boot)
     *(.text)
+    *(.text*)
     . = ALIGN(4);
   } > FLASH
 
@@ -64,6 +65,7 @@ SECTIONS
   {
     PROVIDE(__RODATA_BASE_ADDRESS = .);
     *(.rodata)
+    *(.rodata*)
   } > FLASH
 
  /* Section for constructors */

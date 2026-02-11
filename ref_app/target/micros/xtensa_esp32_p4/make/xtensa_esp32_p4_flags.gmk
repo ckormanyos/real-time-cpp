@@ -23,11 +23,12 @@ TGT_ALLFLAGS  = -O2                                                             
                 -msmall-data-limit=0                                              \
                 -ffreestanding                                                    \
                 -falign-functions=4                                               \
-                -fomit-frame-pointer
+                -fomit-frame-pointer                                              \
+                -fno-reorder-blocks-and-partition                                 \
+                -fno-reorder-functions                                            \
+                -DHP_CORES_SMP_MODE
 
-
-TGT_CFLAGS    = -std=c23                                                          \
-                -nostdlib                                                         \
+TGT_CFLAGS    = -std=c11                                                         \
                 $(TGT_ALLFLAGS)
 
 TGT_CXXFLAGS  = -std=c++23                                                        \

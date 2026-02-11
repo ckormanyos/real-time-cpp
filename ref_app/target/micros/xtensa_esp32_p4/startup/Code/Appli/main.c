@@ -55,9 +55,7 @@ void __attribute__((interrupt)) Isr_TIMER_Interrupt(void);
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
-int main(void);
-
-int main(void)
+void main(void)
 {
   osHwAcquireSpinLock(&sync_lock);
   /* output a text message on the uart console */
@@ -100,12 +98,10 @@ int main(void)
   CLINT_MTIMECTL |= (3ul << 4);
 
   /* set MTIME timeout to 500ms */
-  CLINT_MTIMECMP = (uint64_t)(CLINT_MTIME + (TIMEOUT_500MS + TIMEOUT_500MS));
+  CLINT_MTIMECMP = (uint64_t)(CLINT_MTIME + TIMEOUT_1S);
 
   /* endless loop */
   while(1);
-
-  return 0;
 }
 
 //-----------------------------------------------------------------------------------------
@@ -117,7 +113,7 @@ int main(void)
 //-----------------------------------------------------------------------------------------
 void Isr_TIMER_Interrupt(void)
 {
-  CLINT_MTIMECMP = (uint64_t)(CLINT_MTIME + (TIMEOUT_500MS + TIMEOUT_500MS));
+  CLINT_MTIMECMP = (uint64_t)(CLINT_MTIME + TIMEOUT_1S);
 
   if(0 == osGetActiveCore())
   {

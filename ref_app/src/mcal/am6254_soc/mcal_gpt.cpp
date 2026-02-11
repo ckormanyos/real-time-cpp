@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -32,7 +32,11 @@ auto mcal::gpt::secure::get_time_elapsed_core1() -> mcal::gpt::value_type_core1
   const value_type_core1 consistent_microsecond_tick = static_cast<value_type_core1>(ARM64_READ_SYSREG(CNTPCT_EL0));
 
   // Convert the consistent tick to microseconds.
-  return static_cast<value_type_core1>(static_cast<value_type_core1>(consistent_microsecond_tick + UINT64_C(100)) / UINT64_C(200));
+  return
+    static_cast<value_type_core1>
+    (
+      static_cast<value_type_core1>(consistent_microsecond_tick + UINT64_C(100)) / UINT64_C(200)
+    );
 }
 
 auto mcal::gpt::secure::get_time_elapsed_core2() -> mcal::gpt::value_type_core2
@@ -41,7 +45,11 @@ auto mcal::gpt::secure::get_time_elapsed_core2() -> mcal::gpt::value_type_core2
   const value_type_core2 consistent_microsecond_tick = static_cast<value_type_core2>(ARM64_READ_SYSREG(CNTPCT_EL0));
 
   // Convert the consistent tick to microseconds.
-  return static_cast<value_type_core2>(static_cast<value_type_core2>(consistent_microsecond_tick + UINT64_C(100)) / UINT64_C(200));
+  return
+    static_cast<value_type_core2>
+    (
+      static_cast<value_type_core2>(consistent_microsecond_tick + UINT64_C(100)) / UINT64_C(200)
+    );
 }
 
 auto mcal::gpt::secure::get_time_elapsed_core3() -> mcal::gpt::value_type_core3
@@ -50,5 +58,9 @@ auto mcal::gpt::secure::get_time_elapsed_core3() -> mcal::gpt::value_type_core3
   const value_type_core3 consistent_microsecond_tick = static_cast<value_type_core3>(ARM64_READ_SYSREG(CNTPCT_EL0));
 
   // Convert the consistent tick to microseconds.
-  return static_cast<value_type_core3>(static_cast<value_type_core3>(consistent_microsecond_tick + UINT64_C(100)) / UINT64_C(200));
+  return
+    static_cast<value_type_core3>
+    (
+      static_cast<value_type_core3>(consistent_microsecond_tick + UINT64_C(100)) / UINT64_C(200)
+    );
 }

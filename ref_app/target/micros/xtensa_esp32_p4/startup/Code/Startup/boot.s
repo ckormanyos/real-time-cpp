@@ -53,8 +53,8 @@ _start:
 
 .L_core1:
          /* note: - RISC-V has no WFE/SEV instructions to synchronize SMP system
-                       so I'm using CLINT to synchronize both HP cores on ESP32-P4.
-                  - Core0 will set the software interrupt pending flag in Core1's CLINT 
+                       so I am using CLINT to synchronize both HP cores on ESP32-P4.
+                  - Core0 will set the software interrupt pending flag in CLINT on Core1
                       once the runtime environment setup is complete.
           */
          li a5, msip
