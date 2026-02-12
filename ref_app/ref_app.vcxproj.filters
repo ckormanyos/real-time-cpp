@@ -287,6 +287,9 @@
     <Filter Include="src\mcal\r7fa4m1ab">
       <UniqueIdentifier>{40be70da-9086-46f9-b158-4dc468860fc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\xtensa_esp32_p4">
+      <UniqueIdentifier>{cc6519dd-1588-4aed-9bd1-c4cc22a5e560}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1368,6 +1371,36 @@
     </ClCompile>
     <ClCompile Include="src\mcal\r7fa4m1ab\mcal_spi.cpp">
       <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_gpt.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_wdg.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_eep.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_irq.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_led.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_osc.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_port.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_pwm.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_spi.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_cpu.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3119,6 +3152,48 @@
     </ClInclude>
     <ClInclude Include="src\mcal\r7fa4m1ab\mcal_benchmark.h">
       <Filter>src\mcal\r7fa4m1ab</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_reg.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_gpt.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_wdg.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_eep.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_irq.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_led.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_memory_progmem.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_osc.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_port.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_pwm.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_ser.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_spi.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_benchmark.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_cpu.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

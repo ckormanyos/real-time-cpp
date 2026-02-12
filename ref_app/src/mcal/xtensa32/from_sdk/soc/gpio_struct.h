@@ -27,7 +27,7 @@
 
 #include <stdint.h>
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -222,7 +222,7 @@ typedef struct gpio_dev_t
 
 extern gpio_dev_t GPIO;
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif
 

@@ -1,0 +1,1754 @@
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x30100000
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          159988 (bytes into file)
+  Flags:                             0x3, RVC, single-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         3
+  Size of section headers:           40 (bytes)
+  Number of section headers:         17
+  Section header string table index: 16
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        30100000 001000 0010b6 00  AX  0   0  4
+  [ 2] .rodata.str1.4    PROGBITS        301010b8 0020b8 00002d 01 AMS  0   0  4
+  [ 3] .bss              NOBITS          301010e8 0020e5 000006 00  WA  0   0  4
+  [ 4] .riscv.attributes RISCV_ATTRIBUTES 00000000 0020e5 000059 00      0   0  1
+  [ 5] .comment          PROGBITS        00000000 00213e 00005f 01  MS  0   0  1
+  [ 6] .debug_info       PROGBITS        00000000 00219d 016604 00      0   0  1
+  [ 7] .debug_abbrev     PROGBITS        00000000 0187a1 000799 00      0   0  1
+  [ 8] .debug_loc        PROGBITS        00000000 018f3a 000086 00      0   0  1
+  [ 9] .debug_aranges    PROGBITS        00000000 018fc0 0000a0 00      0   0  1
+  [10] .debug_line       PROGBITS        00000000 019060 0010ac 00      0   0  1
+  [11] .debug_str        PROGBITS        00000000 01a10c 00c770 01  MS  0   0  1
+  [12] .debug_frame      PROGBITS        00000000 02687c 0001b0 00      0   0  4
+  [13] .debug_ranges     PROGBITS        00000000 026a2c 000030 00      0   0  1
+  [14] .symtab           SYMTAB          00000000 026a5c 000370 10     15  36  4
+  [15] .strtab           STRTAB          00000000 026dcc 000270 00      0   0  1
+  [16] .shstrtab         STRTAB          00000000 02703c 0000b6 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), p (processor specific)
+Archive member included to satisfy reference by file (symbol)
+
+./libpsram.a(psram.o)         /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o (psram_init)
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+HP_TCM           0x30100000         0x00002000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+LOAD /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+LOAD ./libpsram.a
+
+.text           0x30100000     0x10b6
+ *(.boot)
+ .boot          0x30100000       0x6e /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+                0x30100000                _start
+ *(.rodata)
+ *fill*         0x3010006e        0x2 
+ .rodata        0x30100070       0x66 ./libpsram.a(psram.o)
+ .text          0x301000d6        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+ *fill*         0x301000d6        0x2 
+ .text          0x301000d8       0x96 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+                0x301000d8                mmu_init
+ *fill*         0x3010016e        0x2 
+ .text          0x30100170       0x8e /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+                0x30100170                ulp_boot
+ *fill*         0x301001fe        0x2 
+ .text          0x30100200       0xb0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+                0x30100200                clk_info
+                0x30100250                clock_init
+ .text          0x301002b0       0x46 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+                0x301002b0                wdt_disable_all_wdt
+ .text          0x301002f6      0xdc0 ./libpsram.a(psram.o)
+                0x301002f6                psram_init
+                0x40005000                        __app_entry_point = 0x40005000
+                0x40008000                        __ulp_entry_point = 0x40008000
+                0x5008e000                        SPIMEM2 = 0x5008e000
+                0x5008f000                        SPIMEM3 = 0x5008f000
+                0x50120000                        LPPERI = 0x50120000
+                0x500e6000                        HP_SYS_CLKRST = 0x500e6000
+                0x4fc00024                        ets_printf = 0x4fc00024
+                0x4fc00110                        esp_rom_spi_set_op_mode = 0x4fc00110
+                0x4fc00108                        esp_rom_spi_cmd_config = 0x4fc00108
+                0x4fc0010c                        esp_rom_spi_cmd_start = 0x4fc0010c
+                0x4fc0055c                        ets_clk_get_xtal_freq = 0x4fc0055c
+                0x4fc00560                        ets_clk_get_cpu_freq = 0x4fc00560
+OUTPUT(/mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/SBL.elf elf32-littleriscv)
+
+.rodata.str1.4  0x301010b8       0x2d
+ .rodata.str1.4
+                0x301010b8       0x2d /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+
+.rela.dyn       0x301010e8        0x0
+ .rela.text     0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+
+.data           0x301010e5        0x0
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .data          0x301010e5        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .data          0x301010e5        0x0 ./libpsram.a(psram.o)
+
+.bss            0x301010e8        0x6
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .bss           0x301010e8        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .bss           0x301010e8        0x6 ./libpsram.a(psram.o)
+
+.riscv.attributes
+                0x00000000       0x59
+ .riscv.attributes
+                0x00000000       0x57 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/boot.o
+ .riscv.attributes
+                0x00000057       0x55 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .riscv.attributes
+                0x000000ac       0x55 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .riscv.attributes
+                0x00000101       0x55 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .riscv.attributes
+                0x00000156       0x55 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .riscv.attributes
+                0x000001ab       0x30 ./libpsram.a(psram.o)
+
+.comment        0x00000000       0x5f
+ .comment       0x00000000       0x5f /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+                                 0x30 (size before relaxing)
+ .comment       0x0000005f       0x30 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .comment       0x0000005f       0x30 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .comment       0x0000005f       0x30 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .comment       0x0000005f       0x31 ./libpsram.a(psram.o)
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .note.GNU-stack
+                0x00000000        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .note.GNU-stack
+                0x00000000        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .note.GNU-stack
+                0x00000000        0x0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+
+.debug_info     0x00000000    0x16604
+ .debug_info    0x00000000       0xff /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_info    0x000000ff     0x5dd7 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_info    0x00005ed6      0xf17 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_info    0x00006ded      0xe4b /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_info    0x00007c38     0xe9cc ./libpsram.a(psram.o)
+
+.debug_abbrev   0x00000000      0x799
+ .debug_abbrev  0x00000000       0x78 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_abbrev  0x00000078      0x11b /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_abbrev  0x00000193      0x1a0 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_abbrev  0x00000333       0xf7 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_abbrev  0x0000042a      0x36f ./libpsram.a(psram.o)
+
+.debug_loc      0x00000000       0x86
+ .debug_loc     0x00000000       0x86 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+
+.debug_aranges  0x00000000       0xa0
+ .debug_aranges
+                0x00000000       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_aranges
+                0x00000020       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_aranges
+                0x00000040       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_aranges
+                0x00000060       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_aranges
+                0x00000080       0x20 ./libpsram.a(psram.o)
+
+.debug_line     0x00000000     0x10ac
+ .debug_line    0x00000000      0x2e8 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_line    0x000002e8      0x21f /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_line    0x00000507      0x22f /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_line    0x00000736      0x1d5 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_line    0x0000090b      0x7a1 ./libpsram.a(psram.o)
+
+.debug_str      0x00000000     0xc770
+ .debug_str     0x00000000     0xc770 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+                                0x1a9 (size before relaxing)
+ .debug_str     0x0000c770     0x57db /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_str     0x0000c770     0x1361 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_str     0x0000c770      0x6d8 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_str     0x0000c770     0xc57c ./libpsram.a(psram.o)
+
+.debug_frame    0x00000000      0x1b0
+ .debug_frame   0x00000000       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/mmu.o
+ .debug_frame   0x00000020       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/ulp.o
+ .debug_frame   0x00000040       0x50 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+ .debug_frame   0x00000090       0x20 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/wdt.o
+ .debug_frame   0x000000b0      0x100 ./libpsram.a(psram.o)
+
+.debug_ranges   0x00000000       0x30
+ .debug_ranges  0x00000000       0x30 /mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/obj/clock.o
+
+Symbol table '.symtab' contains 55 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 30100000     0 SECTION LOCAL  DEFAULT    1 .text
+     2: 301010b8     0 SECTION LOCAL  DEFAULT    2 .rodata.str1.4
+     3: 301010e8     0 SECTION LOCAL  DEFAULT    3 .bss
+     4: 00000000     0 SECTION LOCAL  DEFAULT    4 .riscv.attributes
+     5: 00000000     0 SECTION LOCAL  DEFAULT    5 .comment
+     6: 00000000     0 SECTION LOCAL  DEFAULT    6 .debug_info
+     7: 00000000     0 SECTION LOCAL  DEFAULT    7 .debug_abbrev
+     8: 00000000     0 SECTION LOCAL  DEFAULT    8 .debug_loc
+     9: 00000000     0 SECTION LOCAL  DEFAULT    9 .debug_aranges
+    10: 00000000     0 SECTION LOCAL  DEFAULT   10 .debug_line
+    11: 00000000     0 SECTION LOCAL  DEFAULT   11 .debug_str
+    12: 00000000     0 SECTION LOCAL  DEFAULT   12 .debug_frame
+    13: 00000000     0 SECTION LOCAL  DEFAULT   13 .debug_ranges
+    14: 00000000     0 FILE    LOCAL  DEFAULT  ABS boot.o
+    15: 50110164     0 NOTYPE  LOCAL  DEFAULT  ABS BOOT_ADDR_HP_CORE1
+    16: 50110028     0 NOTYPE  LOCAL  DEFAULT  ABS BOOT_ADDR_LP_CORE
+    17: 500e6014     0 NOTYPE  LOCAL  DEFAULT  ABS SOC_CLK_CTRL0
+    18: 500e60c0     0 NOTYPE  LOCAL  DEFAULT  ABS HP_RST_EN0
+    19: 500e5060     0 NOTYPE  LOCAL  DEFAULT  ABS L2_MEM_RAM_PWR_CTRL0_REG
+    20: 500e503c     0 NOTYPE  LOCAL  DEFAULT  ABS SCRATCHPAD_MEM_RAM_PWR_CTRL0_REG
+    21: 00000000     0 FILE    LOCAL  DEFAULT  ABS psram.c
+    22: 301010e8     6 OBJECT  LOCAL  DEFAULT    3 mode_reg.0
+    23: 30100c28   660 FUNC    LOCAL  DEFAULT    1 s_init_psram_mode_reg
+    24: 30100f7c   130 FUNC    LOCAL  DEFAULT    1 s_check_psram_connected
+    25: 30100ffe   184 FUNC    LOCAL  DEFAULT    1 s_get_psram_mode_reg
+    26: 30100780  1192 FUNC    LOCAL  DEFAULT    1 s_config_mspi_for_psram
+    27: 30100ebc   192 FUNC    LOCAL  DEFAULT    1 s_psram_common_transaction
+    28: 00000000     0 FILE    LOCAL  DEFAULT  ABS mmu.c
+    29: 301000d8     0 NOTYPE  LOCAL  DEFAULT    1 $xrv32i2p1_m2p0_a2p1_f2p2_c2p0_zicsr2p0_zmmul1p0_zaamo1p0_zalrsc1p0
+    30: 00000000     0 FILE    LOCAL  DEFAULT  ABS ulp.c
+    31: 30100170     0 NOTYPE  LOCAL  DEFAULT    1 $xrv32i2p1_m2p0_a2p1_f2p2_c2p0_zicsr2p0_zmmul1p0_zaamo1p0_zalrsc1p0
+    32: 00000000     0 FILE    LOCAL  DEFAULT  ABS clock.c
+    33: 30100200     0 NOTYPE  LOCAL  DEFAULT    1 $xrv32i2p1_m2p0_a2p1_f2p2_c2p0_zicsr2p0_zmmul1p0_zaamo1p0_zalrsc1p0
+    34: 00000000     0 FILE    LOCAL  DEFAULT  ABS wdt.c
+    35: 301002b0     0 NOTYPE  LOCAL  DEFAULT    1 $xrv32i2p1_m2p0_a2p1_f2p2_c2p0_zicsr2p0_zmmul1p0_zaamo1p0_zalrsc1p0
+    36: 40008000     0 NOTYPE  GLOBAL DEFAULT  ABS __ulp_entry_point
+    37: 5008e000     0 NOTYPE  GLOBAL DEFAULT  ABS SPIMEM2
+    38: 4fc0010c     0 NOTYPE  GLOBAL DEFAULT  ABS esp_rom_spi_cmd_start
+    39: 4fc00108     0 NOTYPE  GLOBAL DEFAULT  ABS esp_rom_spi_cmd_config
+    40: 50120000     0 NOTYPE  GLOBAL DEFAULT  ABS LPPERI
+    41: 301002f6  1162 FUNC    GLOBAL DEFAULT    1 psram_init
+    42: 4fc00560     0 NOTYPE  GLOBAL DEFAULT  ABS ets_clk_get_cpu_freq
+    43: 30100200    80 FUNC    GLOBAL DEFAULT    1 clk_info
+    44: 40005000     0 NOTYPE  GLOBAL DEFAULT  ABS __app_entry_point
+    45: 30100250    94 FUNC    GLOBAL DEFAULT    1 clock_init
+    46: 4fc0055c     0 NOTYPE  GLOBAL DEFAULT  ABS ets_clk_get_xtal_freq
+    47: 30100000   110 FUNC    GLOBAL DEFAULT    1 _start
+    48: 4fc00110     0 NOTYPE  GLOBAL DEFAULT  ABS esp_rom_spi_set_op_mode
+    49: 5008f000     0 NOTYPE  GLOBAL DEFAULT  ABS SPIMEM3
+    50: 30100170   142 FUNC    GLOBAL DEFAULT    1 ulp_boot
+    51: 301000d8   150 FUNC    GLOBAL DEFAULT    1 mmu_init
+    52: 4fc00024     0 NOTYPE  GLOBAL DEFAULT  ABS ets_printf
+    53: 301002b0    68 FUNC    GLOBAL DEFAULT    1 wdt_disable_all_wdt
+    54: 500e6000     0 NOTYPE  GLOBAL DEFAULT  ABS HP_SYS_CLKRST
+
+/mnt/c/Users/ckorm/Documents/Ks/uC_Software/Boards/Baremetal_esp32p4_nosdk/Code/SBL/Output/SBL.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+30100000 <_start>:
+30100000:	    f1402573          	csrr	a0,mhartid
+30100004:	,-- ed39                	bnez	a0,30100062 <_start+0x62>
+30100006:	|   500e57b7          	lui	a5,0x500e5
+3010000a:	|   06078793          	addi	a5,a5,96 # 500e5060 <L2_MEM_RAM_PWR_CTRL0_REG>
+3010000e:	|   500e5837          	lui	a6,0x500e5
+30100012:	|   03c80813          	addi	a6,a6,60 # 500e503c <SCRATCHPAD_MEM_RAM_PWR_CTRL0_REG>
+30100016:	|   4505                	li	a0,1
+30100018:	|   c388                	sw	a0,0(a5)
+3010001a:	|   00a82023          	sw	a0,0(a6)
+3010001e:	|   4ffa0137          	lui	sp,0x4ffa0
+30100022:	|   28e000ef          	jal	301002b0 <wdt_disable_all_wdt>
+30100026:	|   22a000ef          	jal	30100250 <clock_init>
+3010002a:	|   2cc000ef          	jal	301002f6 <psram_init>
+3010002e:	|   0aa000ef          	jal	301000d8 <mmu_init>
+30100032:	|   00000517          	auipc	a0,0x0
+30100036:	|   03050513          	addi	a0,a0,48 # 30100062 <_start+0x62>
+3010003a:	|   501107b7          	lui	a5,0x50110
+3010003e:	|   16478793          	addi	a5,a5,356 # 50110164 <BOOT_ADDR_HP_CORE1>
+30100042:	|   c388                	sw	a0,0(a5)
+30100044:	|   500e67b7          	lui	a5,0x500e6
+30100048:	|   07d1                	addi	a5,a5,20 # 500e6014 <SOC_CLK_CTRL0>
+3010004a:	|   4388                	lw	a0,0(a5)
+3010004c:	|   01056513          	ori	a0,a0,16
+30100050:	|   c388                	sw	a0,0(a5)
+30100052:	|   500e67b7          	lui	a5,0x500e6
+30100056:	|   0c078793          	addi	a5,a5,192 # 500e60c0 <HP_RST_EN0>
+3010005a:	|   4388                	lw	a0,0(a5)
+3010005c:	|   eff57513          	andi	a0,a0,-257
+30100060:	|   c388                	sw	a0,0(a5)
+30100062:	'-> 0ff05797          	auipc	a5,0xff05
+30100066:	    f9e78793          	addi	a5,a5,-98 # 40005000 <__app_entry_point>
+3010006a:	    8782                	jr	a5
+3010006c:	,-- a001                	j	3010006c <_start+0x6c>
+3010006e:	    0000                	unimp
+30100070:	    5350                	lw	a2,36(a4)
+30100072:	    4152                	lw	sp,20(sp)
+30100074:	    204d                	jal	30100116 <mmu_init+0x3e>
+30100076:	    70696863          	bltu	s2,t1,30100786 <s_config_mspi_for_psram+0x6>
+3010007a:	    6920                	flw	fs0,80(a0)
+3010007c:	    6f6e2073          	csrs	0x6f6,t3
+30100080:	    2074                	.insn	2, 0x2074
+30100082:	    6e6e6f63          	bltu	t3,t1,30100780 <s_config_mspi_for_psram>
+30100086:	    6365                	lui	t1,0x19
+30100088:	    6574                	flw	fa3,76(a0)
+3010008a:	    0a64                	addi	s1,sp,284
+3010008c:	    000d                	c.nop	3
+3010008e:	    0000                	unimp
+30100090:	    5350                	lw	a2,36(a4)
+30100092:	    4152                	lw	sp,20(sp)
+30100094:	    204d                	jal	30100136 <mmu_init+0x5e>
+30100096:	    4449                	li	s0,18
+30100098:	    7220                	flw	fs0,96(a2)
+3010009a:	    6165                	addi	sp,sp,112
+3010009c:	    2064                	.insn	2, 0x2064
+3010009e:	    7265                	lui	tp,0xffff9
+301000a0:	    6f72                	flw	ft10,28(sp)
+301000a2:	    3a72                	.insn	2, 0x3a72
+301000a4:	    3020                	.insn	2, 0x3020
+301000a6:	    2578                	.insn	2, 0x2578
+301000a8:	    3830                	.insn	2, 0x3830
+301000aa:	    2c78                	.insn	2, 0x2c78
+301000ac:	    6620                	flw	fs0,72(a2)
+301000ae:	    6c61                	lui	s8,0x18
+301000b0:	    626c                	flw	fa1,68(a2)
+301000b2:	    6361                	lui	t1,0x18
+301000b4:	    6f74206b          	.insn	4, 0x6f74206b
+301000b8:	    7520                	flw	fs0,104(a0)
+301000ba:	    64206573          	csrrsi	a0,0x642,0
+301000be:	    6665                	lui	a2,0x19
+301000c0:	    7561                	lui	a0,0xffff8
+301000c2:	    746c                	flw	fa1,108(s0)
+301000c4:	    6420                	flw	fs0,72(s0)
+301000c6:	    6972                	flw	fs2,28(sp)
+301000c8:	    6576                	flw	fa0,92(sp)
+301000ca:	    2072                	.insn	2, 0x2072
+301000cc:	    6170                	flw	fa2,68(a0)
+301000ce:	    7474                	flw	fa3,108(s0)
+301000d0:	    7265                	lui	tp,0xffff9
+301000d2:	    0a6e                	slli	s4,s4,0x1b
+301000d4:	    000d                	c.nop	3
+	...
+
+301000d8 <mmu_init>:
+301000d8:	    5008c6b7          	lui	a3,0x5008c
+301000dc:	    8736                	mv	a4,a3
+301000de:	    37c70713          	addi	a4,a4,892
+301000e2:	    38068693          	addi	a3,a3,896 # 5008c380 <ets_clk_get_cpu_freq+0x48be20>
+301000e6:	    4781                	li	a5,0
+301000e8:	    40000613          	li	a2,1024
+301000ec:	,-> c29c                	sw	a5,0(a3)
+301000ee:	|   00072023          	sw	zero,0(a4)
+301000f2:	|   0785                	addi	a5,a5,1
+301000f4:	'-- fec79ce3          	bne	a5,a2,301000ec <mmu_init+0x14>
+301000f8:	    5008c637          	lui	a2,0x5008c
+301000fc:	    86b2                	mv	a3,a2
+301000fe:	    37c68693          	addi	a3,a3,892
+30100102:	    38060613          	addi	a2,a2,896 # 5008c380 <ets_clk_get_cpu_freq+0x48be20>
+30100106:	    4781                	li	a5,0
+30100108:	    6505                	lui	a0,0x1
+3010010a:	    20000593          	li	a1,512
+3010010e:	,-> 01079713          	slli	a4,a5,0x10
+30100112:	|   8341                	srli	a4,a4,0x10
+30100114:	|   c21c                	sw	a5,0(a2)
+30100116:	|   8f49                	or	a4,a4,a0
+30100118:	|   0785                	addi	a5,a5,1
+3010011a:	|   c298                	sw	a4,0(a3)
+3010011c:	'-- feb799e3          	bne	a5,a1,3010010e <mmu_init+0x36>
+30100120:	    5008e6b7          	lui	a3,0x5008e
+30100124:	    8736                	mv	a4,a3
+30100126:	    37c70713          	addi	a4,a4,892
+3010012a:	    38068693          	addi	a3,a3,896 # 5008e380 <SPIMEM2+0x380>
+3010012e:	    4781                	li	a5,0
+30100130:	    40000613          	li	a2,1024
+30100134:	,-> c29c                	sw	a5,0(a3)
+30100136:	|   00072023          	sw	zero,0(a4)
+3010013a:	|   0785                	addi	a5,a5,1
+3010013c:	'-- fec79ce3          	bne	a5,a2,30100134 <mmu_init+0x5c>
+30100140:	    5008e5b7          	lui	a1,0x5008e
+30100144:	    86ae                	mv	a3,a1
+30100146:	    6605                	lui	a2,0x1
+30100148:	    38058593          	addi	a1,a1,896 # 5008e380 <SPIMEM2+0x380>
+3010014c:	    c0060613          	addi	a2,a2,-1024 # c00 <_start-0x300ff400>
+30100150:	    37c68693          	addi	a3,a3,892
+30100154:	    4781                	li	a5,0
+30100156:	    20000513          	li	a0,512
+3010015a:	,-> 01079713          	slli	a4,a5,0x10
+3010015e:	|   8341                	srli	a4,a4,0x10
+30100160:	|   c19c                	sw	a5,0(a1)
+30100162:	|   8f51                	or	a4,a4,a2
+30100164:	|   0785                	addi	a5,a5,1
+30100166:	|   c298                	sw	a4,0(a3)
+30100168:	'-- fea799e3          	bne	a5,a0,3010015a <mmu_init+0x82>
+3010016c:	    8082                	ret
+	...
+
+30100170 <ulp_boot>:
+30100170:	    40008737          	lui	a4,0x40008
+30100174:	    501107b7          	lui	a5,0x50110
+30100178:	    00070713          	mv	a4,a4
+3010017c:	    d798                	sw	a4,40(a5)
+3010017e:	    501157b7          	lui	a5,0x50115
+30100182:	    1847a703          	lw	a4,388(a5) # 50115184 <BOOT_ADDR_HP_CORE1+0x5020>
+30100186:	    200006b7          	lui	a3,0x20000
+3010018a:	    40000637          	lui	a2,0x40000
+3010018e:	    8f55                	or	a4,a4,a3
+30100190:	    18e7a223          	sw	a4,388(a5)
+30100194:	    1847a683          	lw	a3,388(a5)
+30100198:	    80000737          	lui	a4,0x80000
+3010019c:	    00400537          	lui	a0,0x400
+301001a0:	    8ed1                	or	a3,a3,a2
+301001a2:	    18d7a223          	sw	a3,388(a5)
+301001a6:	    1887a683          	lw	a3,392(a5)
+301001aa:	    50120637          	lui	a2,0x50120
+301001ae:	    501115b7          	lui	a1,0x50111
+301001b2:	    8ed9                	or	a3,a3,a4
+301001b4:	    18d7a423          	sw	a3,392(a5)
+301001b8:	    18c7a683          	lw	a3,396(a5)
+301001bc:	    8ef9                	and	a3,a3,a4
+301001be:	    8ec9                	or	a3,a3,a0
+301001c0:	    18d7a623          	sw	a3,396(a5)
+301001c4:	    4614                	lw	a3,8(a2)
+301001c6:	    8ed9                	or	a3,a3,a4
+301001c8:	    c614                	sw	a3,8(a2)
+301001ca:	    4194                	lw	a3,0(a1)
+301001cc:	    9acd                	andi	a3,a3,-13
+301001ce:	    c194                	sw	a3,0(a1)
+301001d0:	    4214                	lw	a3,0(a2)
+301001d2:	    8ed9                	or	a3,a3,a4
+301001d4:	    c214                	sw	a3,0(a2)
+301001d6:	    19c7a683          	lw	a3,412(a5)
+301001da:	    8f55                	or	a4,a4,a3
+301001dc:	    18e7ae23          	sw	a4,412(a5)
+301001e0:	,-> 1847a703          	lw	a4,388(a5)
+301001e4:	|   00b71693          	slli	a3,a4,0xb
+301001e8:	'-- fe06dce3          	bgez	a3,301001e0 <ulp_boot+0x70>
+301001ec:	    1847a703          	lw	a4,388(a5)
+301001f0:	    e00006b7          	lui	a3,0xe0000
+301001f4:	    16fd                	addi	a3,a3,-1 # dfffffff <LPPERI+0x8fedffff>
+301001f6:	    8f75                	and	a4,a4,a3
+301001f8:	    18e7a223          	sw	a4,388(a5)
+301001fc:	    8082                	ret
+	...
+
+30100200 <clk_info>:
+30100200:	1141                	addi	sp,sp,-16
+30100202:	c422                	sw	s0,8(sp)
+30100204:	431be437          	lui	s0,0x431be
+30100208:	c606                	sw	ra,12(sp)
+3010020a:	e8340413          	addi	s0,s0,-381 # 431bde83 <__ulp_entry_point+0x31b5e83>
+3010020e:	1fb00097          	auipc	ra,0x1fb00
+30100212:	34e080e7          	jalr	846(ra) # 4fc0055c <ets_clk_get_xtal_freq>
+30100216:	028535b3          	mulhu	a1,a0,s0
+3010021a:	30101537          	lui	a0,0x30101
+3010021e:	0b850513          	addi	a0,a0,184 # 301010b8 <s_get_psram_mode_reg+0xba>
+30100222:	81c9                	srli	a1,a1,0x12
+30100224:	1fb00097          	auipc	ra,0x1fb00
+30100228:	e00080e7          	jalr	-512(ra) # 4fc00024 <ets_printf>
+3010022c:	1fb00097          	auipc	ra,0x1fb00
+30100230:	334080e7          	jalr	820(ra) # 4fc00560 <ets_clk_get_cpu_freq>
+30100234:	028535b3          	mulhu	a1,a0,s0
+30100238:	4422                	lw	s0,8(sp)
+3010023a:	40b2                	lw	ra,12(sp)
+3010023c:	30101537          	lui	a0,0x30101
+30100240:	0d050513          	addi	a0,a0,208 # 301010d0 <s_get_psram_mode_reg+0xd2>
+30100244:	0141                	addi	sp,sp,16
+30100246:	81c9                	srli	a1,a1,0x12
+30100248:	1fb00317          	auipc	t1,0x1fb00
+3010024c:	ddc30067          	jr	-548(t1) # 4fc00024 <ets_printf>
+
+30100250 <clock_init>:
+30100250:	1141                	addi	sp,sp,-16
+30100252:	c606                	sw	ra,12(sp)
+30100254:	c422                	sw	s0,8(sp)
+30100256:	50111737          	lui	a4,0x50111
+3010025a:	433c                	lw	a5,64(a4)
+3010025c:	431be437          	lui	s0,0x431be
+30100260:	e8340413          	addi	s0,s0,-381 # 431bde83 <__ulp_entry_point+0x31b5e83>
+30100264:	9bf1                	andi	a5,a5,-4
+30100266:	0017e793          	ori	a5,a5,1
+3010026a:	c33c                	sw	a5,64(a4)
+3010026c:	1fb00097          	auipc	ra,0x1fb00
+30100270:	2f0080e7          	jalr	752(ra) # 4fc0055c <ets_clk_get_xtal_freq>
+30100274:	028535b3          	mulhu	a1,a0,s0
+30100278:	30101537          	lui	a0,0x30101
+3010027c:	0b850513          	addi	a0,a0,184 # 301010b8 <s_get_psram_mode_reg+0xba>
+30100280:	81c9                	srli	a1,a1,0x12
+30100282:	1fb00097          	auipc	ra,0x1fb00
+30100286:	da2080e7          	jalr	-606(ra) # 4fc00024 <ets_printf>
+3010028a:	1fb00097          	auipc	ra,0x1fb00
+3010028e:	2d6080e7          	jalr	726(ra) # 4fc00560 <ets_clk_get_cpu_freq>
+30100292:	028535b3          	mulhu	a1,a0,s0
+30100296:	4422                	lw	s0,8(sp)
+30100298:	40b2                	lw	ra,12(sp)
+3010029a:	30101537          	lui	a0,0x30101
+3010029e:	0d050513          	addi	a0,a0,208 # 301010d0 <s_get_psram_mode_reg+0xd2>
+301002a2:	0141                	addi	sp,sp,16
+301002a4:	81c9                	srli	a1,a1,0x12
+301002a6:	1fb00317          	auipc	t1,0x1fb00
+301002aa:	d7e30067          	jr	-642(t1) # 4fc00024 <ets_printf>
+	...
+
+301002b0 <wdt_disable_all_wdt>:
+301002b0:	50d84737          	lui	a4,0x50d84
+301002b4:	501167b7          	lui	a5,0x50116
+301002b8:	aa170713          	addi	a4,a4,-1375 # 50d83aa1 <LPPERI+0xc63aa1>
+301002bc:	cf98                	sw	a4,24(a5)
+301002be:	0007a023          	sw	zero,0(a5) # 50116000 <BOOT_ADDR_HP_CORE1+0x5e9c>
+301002c2:	0007ac23          	sw	zero,24(a5)
+301002c6:	d398                	sw	a4,32(a5)
+301002c8:	4fd0                	lw	a2,28(a5)
+301002ca:	400005b7          	lui	a1,0x40000
+301002ce:	500c26b7          	lui	a3,0x500c2
+301002d2:	8e4d                	or	a2,a2,a1
+301002d4:	cfd0                	sw	a2,28(a5)
+301002d6:	0207a023          	sw	zero,32(a5)
+301002da:	d2f8                	sw	a4,100(a3)
+301002dc:	0406a423          	sw	zero,72(a3) # 500c2048 <SPIMEM3+0x33048>
+301002e0:	0606a223          	sw	zero,100(a3)
+301002e4:	500c37b7          	lui	a5,0x500c3
+301002e8:	d3f8                	sw	a4,100(a5)
+301002ea:	0407a423          	sw	zero,72(a5) # 500c3048 <SPIMEM3+0x34048>
+301002ee:	0607a223          	sw	zero,100(a5)
+301002f2:	8082                	ret
+	...
+
+301002f6 <psram_init>:
+301002f6:	       1141                	addi	sp,sp,-16
+301002f8:	       c606                	sw	ra,12(sp)
+301002fa:	       c422                	sw	s0,8(sp)
+301002fc:	       0800                	addi	s0,sp,16
+301002fe:	       501157b7          	lui	a5,0x50115
+30100302:	       5f000737          	lui	a4,0x5f000
+30100306:	       1ce7aa23          	sw	a4,468(a5) # 501151d4 <BOOT_ADDR_HP_CORE1+0x5070>
+3010030a:	       501157b7          	lui	a5,0x50115
+3010030e:	       40200737          	lui	a4,0x40200
+30100312:	       08070713          	addi	a4,a4,128 # 40200080 <__ulp_entry_point+0x1f8080>
+30100316:	       1ce7a823          	sw	a4,464(a5) # 501151d0 <BOOT_ADDR_HP_CORE1+0x506c>
+3010031a:	       501157b7          	lui	a5,0x50115
+3010031e:	       1d07a703          	lw	a4,464(a5) # 501151d0 <BOOT_ADDR_HP_CORE1+0x506c>
+30100322:	       10076713          	ori	a4,a4,256
+30100326:	       1ce7a823          	sw	a4,464(a5)
+3010032a:	       501157b7          	lui	a5,0x50115
+3010032e:	       15c7a683          	lw	a3,348(a5) # 5011515c <BOOT_ADDR_HP_CORE1+0x4ff8>
+30100332:	       01000737          	lui	a4,0x1000
+30100336:	       8f55                	or	a4,a4,a3
+30100338:	       14e7ae23          	sw	a4,348(a5)
+3010033c:	       501117b7          	lui	a5,0x50111
+30100340:	       43b4                	lw	a3,64(a5)
+30100342:	       10000737          	lui	a4,0x10000
+30100346:	       8f55                	or	a4,a4,a3
+30100348:	       c3b8                	sw	a4,64(a5)
+3010034a:	       500e67b7          	lui	a5,0x500e6
+3010034e:	       5b94                	lw	a3,48(a5)
+30100350:	       7775                	lui	a4,0xffffd
+30100352:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+30100354:	       8ef9                	and	a3,a3,a4
+30100356:	       6705                	lui	a4,0x1
+30100358:	       8f55                	or	a4,a4,a3
+3010035a:	       db98                	sw	a4,48(a5)
+3010035c:	       500e17b7          	lui	a5,0x500e1
+30100360:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+30100364:	       4394                	lw	a3,0(a5)
+30100366:	       7775                	lui	a4,0xffffd
+30100368:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+3010036a:	       8ef9                	and	a3,a3,a4
+3010036c:	       6709                	lui	a4,0x2
+3010036e:	       8f55                	or	a4,a4,a3
+30100370:	       c398                	sw	a4,0(a5)
+30100372:	       500e17b7          	lui	a5,0x500e1
+30100376:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+3010037a:	       43d4                	lw	a3,4(a5)
+3010037c:	       7775                	lui	a4,0xffffd
+3010037e:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+30100380:	       8ef9                	and	a3,a3,a4
+30100382:	       6709                	lui	a4,0x2
+30100384:	       8f55                	or	a4,a4,a3
+30100386:	       c3d8                	sw	a4,4(a5)
+30100388:	       500e17b7          	lui	a5,0x500e1
+3010038c:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+30100390:	       4794                	lw	a3,8(a5)
+30100392:	       7775                	lui	a4,0xffffd
+30100394:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+30100396:	       8ef9                	and	a3,a3,a4
+30100398:	       6709                	lui	a4,0x2
+3010039a:	       8f55                	or	a4,a4,a3
+3010039c:	       c798                	sw	a4,8(a5)
+3010039e:	       500e17b7          	lui	a5,0x500e1
+301003a2:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+301003a6:	       47d4                	lw	a3,12(a5)
+301003a8:	       7775                	lui	a4,0xffffd
+301003aa:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+301003ac:	       8ef9                	and	a3,a3,a4
+301003ae:	       6709                	lui	a4,0x2
+301003b0:	       8f55                	or	a4,a4,a3
+301003b2:	       c7d8                	sw	a4,12(a5)
+301003b4:	       500e17b7          	lui	a5,0x500e1
+301003b8:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+301003bc:	       4b94                	lw	a3,16(a5)
+301003be:	       7775                	lui	a4,0xffffd
+301003c0:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+301003c2:	       8ef9                	and	a3,a3,a4
+301003c4:	       6709                	lui	a4,0x2
+301003c6:	       8f55                	or	a4,a4,a3
+301003c8:	       cb98                	sw	a4,16(a5)
+301003ca:	       500e17b7          	lui	a5,0x500e1
+301003ce:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+301003d2:	       4bd4                	lw	a3,20(a5)
+301003d4:	       7775                	lui	a4,0xffffd
+301003d6:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+301003d8:	       8ef9                	and	a3,a3,a4
+301003da:	       6709                	lui	a4,0x2
+301003dc:	       8f55                	or	a4,a4,a3
+301003de:	       cbd8                	sw	a4,20(a5)
+301003e0:	       500e17b7          	lui	a5,0x500e1
+301003e4:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+301003e8:	       4f94                	lw	a3,24(a5)
+301003ea:	       7775                	lui	a4,0xffffd
+301003ec:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+301003ee:	       8ef9                	and	a3,a3,a4
+301003f0:	       6709                	lui	a4,0x2
+301003f2:	       8f55                	or	a4,a4,a3
+301003f4:	       cf98                	sw	a4,24(a5)
+301003f6:	       500e17b7          	lui	a5,0x500e1
+301003fa:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+301003fe:	       4fd4                	lw	a3,28(a5)
+30100400:	       7775                	lui	a4,0xffffd
+30100402:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+30100404:	       8ef9                	and	a3,a3,a4
+30100406:	       6709                	lui	a4,0x2
+30100408:	       8f55                	or	a4,a4,a3
+3010040a:	       cfd8                	sw	a4,28(a5)
+3010040c:	       500e17b7          	lui	a5,0x500e1
+30100410:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+30100414:	       5394                	lw	a3,32(a5)
+30100416:	       7721                	lui	a4,0xfffe8
+30100418:	       177d                	addi	a4,a4,-1 # fffe7fff <LPPERI+0xafec7fff>
+3010041a:	       8ef9                	and	a3,a3,a4
+3010041c:	       6741                	lui	a4,0x10
+3010041e:	       8f55                	or	a4,a4,a3
+30100420:	       d398                	sw	a4,32(a5)
+30100422:	       500e17b7          	lui	a5,0x500e1
+30100426:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+3010042a:	       53d4                	lw	a3,36(a5)
+3010042c:	       7775                	lui	a4,0xffffd
+3010042e:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+30100430:	       8ef9                	and	a3,a3,a4
+30100432:	       6709                	lui	a4,0x2
+30100434:	       8f55                	or	a4,a4,a3
+30100436:	       d3d8                	sw	a4,36(a5)
+30100438:	       500e17b7          	lui	a5,0x500e1
+3010043c:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+30100440:	       5794                	lw	a3,40(a5)
+30100442:	       7775                	lui	a4,0xffffd
+30100444:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+30100446:	       8ef9                	and	a3,a3,a4
+30100448:	       6709                	lui	a4,0x2
+3010044a:	       8f55                	or	a4,a4,a3
+3010044c:	       d798                	sw	a4,40(a5)
+3010044e:	       500e17b7          	lui	a5,0x500e1
+30100452:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+30100456:	       57d4                	lw	a3,44(a5)
+30100458:	       7775                	lui	a4,0xffffd
+3010045a:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+3010045c:	       8ef9                	and	a3,a3,a4
+3010045e:	       6709                	lui	a4,0x2
+30100460:	       8f55                	or	a4,a4,a3
+30100462:	       d7d8                	sw	a4,44(a5)
+30100464:	       500e17b7          	lui	a5,0x500e1
+30100468:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+3010046c:	       5b94                	lw	a3,48(a5)
+3010046e:	       7775                	lui	a4,0xffffd
+30100470:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+30100472:	       8ef9                	and	a3,a3,a4
+30100474:	       6709                	lui	a4,0x2
+30100476:	       8f55                	or	a4,a4,a3
+30100478:	       db98                	sw	a4,48(a5)
+3010047a:	       500e17b7          	lui	a5,0x500e1
+3010047e:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+30100482:	       5bd4                	lw	a3,52(a5)
+30100484:	       7775                	lui	a4,0xffffd
+30100486:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+30100488:	       8ef9                	and	a3,a3,a4
+3010048a:	       6709                	lui	a4,0x2
+3010048c:	       8f55                	or	a4,a4,a3
+3010048e:	       dbd8                	sw	a4,52(a5)
+30100490:	       500e17b7          	lui	a5,0x500e1
+30100494:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+30100498:	       5f94                	lw	a3,56(a5)
+3010049a:	       7775                	lui	a4,0xffffd
+3010049c:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+3010049e:	       8ef9                	and	a3,a3,a4
+301004a0:	       6709                	lui	a4,0x2
+301004a2:	       8f55                	or	a4,a4,a3
+301004a4:	       df98                	sw	a4,56(a5)
+301004a6:	       500e17b7          	lui	a5,0x500e1
+301004aa:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+301004ae:	       5fd4                	lw	a3,60(a5)
+301004b0:	       7775                	lui	a4,0xffffd
+301004b2:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+301004b4:	       8ef9                	and	a3,a3,a4
+301004b6:	       6709                	lui	a4,0x2
+301004b8:	       8f55                	or	a4,a4,a3
+301004ba:	       dfd8                	sw	a4,60(a5)
+301004bc:	       500e17b7          	lui	a5,0x500e1
+301004c0:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+301004c4:	       43b4                	lw	a3,64(a5)
+301004c6:	       7775                	lui	a4,0xffffd
+301004c8:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+301004ca:	       8ef9                	and	a3,a3,a4
+301004cc:	       6709                	lui	a4,0x2
+301004ce:	       8f55                	or	a4,a4,a3
+301004d0:	       c3b8                	sw	a4,64(a5)
+301004d2:	       500e17b7          	lui	a5,0x500e1
+301004d6:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+301004da:	       43f4                	lw	a3,68(a5)
+301004dc:	       7775                	lui	a4,0xffffd
+301004de:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+301004e0:	       8ef9                	and	a3,a3,a4
+301004e2:	       6709                	lui	a4,0x2
+301004e4:	       8f55                	or	a4,a4,a3
+301004e6:	       c3f8                	sw	a4,68(a5)
+301004e8:	       500e17b7          	lui	a5,0x500e1
+301004ec:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+301004f0:	       47b4                	lw	a3,72(a5)
+301004f2:	       7775                	lui	a4,0xffffd
+301004f4:	       177d                	addi	a4,a4,-1 # ffffcfff <LPPERI+0xafedcfff>
+301004f6:	       8ef9                	and	a3,a3,a4
+301004f8:	       6709                	lui	a4,0x2
+301004fa:	       8f55                	or	a4,a4,a3
+301004fc:	       c7b8                	sw	a4,72(a5)
+301004fe:	       500e17b7          	lui	a5,0x500e1
+30100502:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+30100506:	       47f4                	lw	a3,76(a5)
+30100508:	       7721                	lui	a4,0xfffe8
+3010050a:	       177d                	addi	a4,a4,-1 # fffe7fff <LPPERI+0xafec7fff>
+3010050c:	       8ef9                	and	a3,a3,a4
+3010050e:	       6741                	lui	a4,0x10
+30100510:	       8f55                	or	a4,a4,a3
+30100512:	       c7f8                	sw	a4,76(a5)
+30100514:	       500e17b7          	lui	a5,0x500e1
+30100518:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+3010051c:	       5398                	lw	a4,32(a5)
+3010051e:	       00176713          	ori	a4,a4,1
+30100522:	       d398                	sw	a4,32(a5)
+30100524:	       500e17b7          	lui	a5,0x500e1
+30100528:	       21c78793          	addi	a5,a5,540 # 500e121c <SPIMEM3+0x5221c>
+3010052c:	       47f8                	lw	a4,76(a5)
+3010052e:	       00176713          	ori	a4,a4,1
+30100532:	       c7f8                	sw	a4,76(a5)
+30100534:	       5008e7b7          	lui	a5,0x5008e
+30100538:	       00078793          	mv	a5,a5
+3010053c:	       1a07a703          	lw	a4,416(a5) # 5008e1a0 <SPIMEM2+0x1a0>
+30100540:	       00176713          	ori	a4,a4,1
+30100544:	       1ae7a023          	sw	a4,416(a5)
+30100548:	       5008e7b7          	lui	a5,0x5008e
+3010054c:	       00078793          	mv	a5,a5
+30100550:	       1a07a703          	lw	a4,416(a5) # 5008e1a0 <SPIMEM2+0x1a0>
+30100554:	       f8377713          	andi	a4,a4,-125
+30100558:	       00c76713          	ori	a4,a4,12
+3010055c:	       1ae7a023          	sw	a4,416(a5)
+30100560:	       5008e7b7          	lui	a5,0x5008e
+30100564:	       00078793          	mv	a5,a5
+30100568:	       1a07a703          	lw	a4,416(a5) # 5008e1a0 <SPIMEM2+0x1a0>
+3010056c:	       00276713          	ori	a4,a4,2
+30100570:	       1ae7a023          	sw	a4,416(a5)
+30100574:	       5008e7b7          	lui	a5,0x5008e
+30100578:	       00078793          	mv	a5,a5
+3010057c:	       1a07a683          	lw	a3,416(a5) # 5008e1a0 <SPIMEM2+0x1a0>
+30100580:	       777d                	lui	a4,0xfffff
+30100582:	       07f70713          	addi	a4,a4,127 # fffff07f <LPPERI+0xafedf07f>
+30100586:	       8f75                	and	a4,a4,a3
+30100588:	       18076713          	ori	a4,a4,384
+3010058c:	       1ae7a023          	sw	a4,416(a5)
+30100590:	       5008e7b7          	lui	a5,0x5008e
+30100594:	       00078793          	mv	a5,a5
+30100598:	       1a07a683          	lw	a3,416(a5) # 5008e1a0 <SPIMEM2+0x1a0>
+3010059c:	       82000737          	lui	a4,0x82000
+301005a0:	       177d                	addi	a4,a4,-1 # 81ffffff <LPPERI+0x31edffff>
+301005a2:	       8ef9                	and	a3,a3,a4
+301005a4:	       04000737          	lui	a4,0x4000
+301005a8:	       8f55                	or	a4,a4,a3
+301005aa:	       1ae7a023          	sw	a4,416(a5)
+301005ae:	       5008e7b7          	lui	a5,0x5008e
+301005b2:	       00078793          	mv	a5,a5
+301005b6:	       1a07a683          	lw	a3,416(a5) # 5008e1a0 <SPIMEM2+0x1a0>
+301005ba:	       80000737          	lui	a4,0x80000
+301005be:	       8f55                	or	a4,a4,a3
+301005c0:	       1ae7a023          	sw	a4,416(a5)
+301005c4:	       5008e7b7          	lui	a5,0x5008e
+301005c8:	       00078793          	mv	a5,a5
+301005cc:	       1747a683          	lw	a3,372(a5) # 5008e174 <SPIMEM2+0x174>
+301005d0:	       000c0737          	lui	a4,0xc0
+301005d4:	       8f55                	or	a4,a4,a3
+301005d6:	       16e7aa23          	sw	a4,372(a5)
+301005da:	       5008e7b7          	lui	a5,0x5008e
+301005de:	       00078793          	mv	a5,a5
+301005e2:	       6741                	lui	a4,0x10
+301005e4:	       0705                	addi	a4,a4,1 # 10001 <_start-0x300effff>
+301005e6:	       cbb8                	sw	a4,80(a5)
+301005e8:	       5008f7b7          	lui	a5,0x5008f
+301005ec:	       00078793          	mv	a5,a5
+301005f0:	       6741                	lui	a4,0x10
+301005f2:	       0705                	addi	a4,a4,1 # 10001 <_start-0x300effff>
+301005f4:	       cbd8                	sw	a4,20(a5)
+301005f6:	       5008e7b7          	lui	a5,0x5008e
+301005fa:	       00078793          	mv	a5,a5
+301005fe:	       1907a703          	lw	a4,400(a5) # 5008e190 <SPIMEM2+0x190>
+30100602:	       02076713          	ori	a4,a4,32
+30100606:	       18e7a823          	sw	a4,400(a5)
+3010060a:	       5008e7b7          	lui	a5,0x5008e
+3010060e:	       00078793          	mv	a5,a5
+30100612:	       1807a703          	lw	a4,384(a5) # 5008e180 <SPIMEM2+0x180>
+30100616:	       02076713          	ori	a4,a4,32
+3010061a:	       18e7a023          	sw	a4,384(a5)
+3010061e:	       301017b7          	lui	a5,0x30101
+30100622:	       0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+30100626:	       0007c703          	lbu	a4,0(a5)
+3010062a:	       02076713          	ori	a4,a4,32
+3010062e:	       00e78023          	sb	a4,0(a5)
+30100632:	       301017b7          	lui	a5,0x30101
+30100636:	       0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+3010063a:	       0007c703          	lbu	a4,0(a5)
+3010063e:	       9b0d                	andi	a4,a4,-29
+30100640:	       01076713          	ori	a4,a4,16
+30100644:	       00e78023          	sb	a4,0(a5)
+30100648:	       301017b7          	lui	a5,0x30101
+3010064c:	       0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+30100650:	       0007c703          	lbu	a4,0(a5)
+30100654:	       9b71                	andi	a4,a4,-4
+30100656:	       00e78023          	sb	a4,0(a5)
+3010065a:	       301017b7          	lui	a5,0x30101
+3010065e:	       0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+30100662:	       0047c703          	lbu	a4,4(a5)
+30100666:	       8b7d                	andi	a4,a4,31
+30100668:	       02076713          	ori	a4,a4,32
+3010066c:	       00e78223          	sb	a4,4(a5)
+30100670:	       301017b7          	lui	a5,0x30101
+30100674:	       0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+30100678:	       0057c703          	lbu	a4,5(a5)
+3010067c:	       00376713          	ori	a4,a4,3
+30100680:	       00e782a3          	sb	a4,5(a5)
+30100684:	       301017b7          	lui	a5,0x30101
+30100688:	       0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+3010068c:	       0057c703          	lbu	a4,5(a5)
+30100690:	       9b6d                	andi	a4,a4,-5
+30100692:	       00e782a3          	sb	a4,5(a5)
+30100696:	       301017b7          	lui	a5,0x30101
+3010069a:	       0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+3010069e:	       0057c703          	lbu	a4,5(a5)
+301006a2:	       00876713          	ori	a4,a4,8
+301006a6:	       00e782a3          	sb	a4,5(a5)
+301006aa:	       301017b7          	lui	a5,0x30101
+301006ae:	       0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+301006b2:	       0057c703          	lbu	a4,5(a5)
+301006b6:	       04076713          	ori	a4,a4,64
+301006ba:	       00e782a3          	sb	a4,5(a5)
+301006be:	       301017b7          	lui	a5,0x30101
+301006c2:	       0e878593          	addi	a1,a5,232 # 301010e8 <mode_reg.0>
+301006c6:	       450d                	li	a0,3
+301006c8:	       2385                	jal	30100c28 <s_init_psram_mode_reg>
+301006ca:	       450d                	li	a0,3
+301006cc:	       0b1000ef          	jal	30100f7c <s_check_psram_connected>
+301006d0:	       87aa                	mv	a5,a0
+301006d2:	   ,-- cb99                	beqz	a5,301006e8 <psram_init+0x3f2>
+301006d4:	   |   301007b7          	lui	a5,0x30100
+301006d8:	   |   07078513          	addi	a0,a5,112 # 30100070 <_start+0x70>
+301006dc:	   |   1fb00097          	auipc	ra,0x1fb00
+301006e0:	   |   948080e7          	jalr	-1720(ra) # 4fc00024 <ets_printf>
+301006e4:	   |   57fd                	li	a5,-1
+301006e6:	,--|-- a841                	j	30100776 <psram_init+0x480>
+301006e8:	|  '-> 301017b7          	lui	a5,0x30101
+301006ec:	|      0e878593          	addi	a1,a5,232 # 301010e8 <mode_reg.0>
+301006f0:	|      450d                	li	a0,3
+301006f2:	|      10d000ef          	jal	30100ffe <s_get_psram_mode_reg>
+301006f6:	|      301017b7          	lui	a5,0x30101
+301006fa:	|      0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+301006fe:	|      0017c783          	lbu	a5,1(a5)
+30100702:	|      8bfd                	andi	a5,a5,31
+30100704:	|      0ff7f713          	zext.b	a4,a5
+30100708:	|      47b5                	li	a5,13
+3010070a:	|  ,-- 04f70063          	beq	a4,a5,3010074a <psram_init+0x454>
+3010070e:	|  |   301017b7          	lui	a5,0x30101
+30100712:	|  |   0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+30100716:	|  |   0017c783          	lbu	a5,1(a5)
+3010071a:	|  |   8bfd                	andi	a5,a5,31
+3010071c:	|  |   0ff7f713          	zext.b	a4,a5
+30100720:	|  |   47e9                	li	a5,26
+30100722:	|  +-- 02f70463          	beq	a4,a5,3010074a <psram_init+0x454>
+30100726:	|  |   301017b7          	lui	a5,0x30101
+3010072a:	|  |   0e878793          	addi	a5,a5,232 # 301010e8 <mode_reg.0>
+3010072e:	|  |   439c                	lw	a5,0(a5)
+30100730:	|  |   83a1                	srli	a5,a5,0x8
+30100732:	|  |   8bfd                	andi	a5,a5,31
+30100734:	|  |   0ff7f793          	zext.b	a5,a5
+30100738:	|  |   85be                	mv	a1,a5
+3010073a:	|  |   301007b7          	lui	a5,0x30100
+3010073e:	|  |   09078513          	addi	a0,a5,144 # 30100090 <_start+0x90>
+30100742:	|  |   1fb00097          	auipc	ra,0x1fb00
+30100746:	|  |   8e2080e7          	jalr	-1822(ra) # 4fc00024 <ets_printf>
+3010074a:	|  '-> 281d                	jal	30100780 <s_config_mspi_for_psram>
+3010074c:	|      5008e7b7          	lui	a5,0x5008e
+30100750:	|      00078793          	mv	a5,a5
+30100754:	|      0d87a703          	lw	a4,216(a5) # 5008e0d8 <SPIMEM2+0xd8>
+30100758:	|      00276713          	ori	a4,a4,2
+3010075c:	|      0ce7ac23          	sw	a4,216(a5)
+30100760:	|      5008f7b7          	lui	a5,0x5008f
+30100764:	|      00078793          	mv	a5,a5
+30100768:	|      0d47a703          	lw	a4,212(a5) # 5008f0d4 <SPIMEM3+0xd4>
+3010076c:	|      00276713          	ori	a4,a4,2
+30100770:	|      0ce7aa23          	sw	a4,212(a5)
+30100774:	|      4781                	li	a5,0
+30100776:	'----> 853e                	mv	a0,a5
+30100778:	       40b2                	lw	ra,12(sp)
+3010077a:	       4422                	lw	s0,8(sp)
+3010077c:	       0141                	addi	sp,sp,16
+3010077e:	       8082                	ret
+
+30100780 <s_config_mspi_for_psram>:
+30100780:	       7171                	addi	sp,sp,-176
+30100782:	       d722                	sw	s0,172(sp)
+30100784:	       1900                	addi	s0,sp,176
+30100786:	       4789                	li	a5,2
+30100788:	       f6f42623          	sw	a5,-148(s0)
+3010078c:	       47c1                	li	a5,16
+3010078e:	       f6f42423          	sw	a5,-152(s0)
+30100792:	       67a1                	lui	a5,0x8
+30100794:	       08078793          	addi	a5,a5,128 # 8080 <_start-0x300f7f80>
+30100798:	       f6f42223          	sw	a5,-156(s0)
+3010079c:	       5008e7b7          	lui	a5,0x5008e
+301007a0:	       00078793          	mv	a5,a5
+301007a4:	       43b4                	lw	a3,64(a5)
+301007a6:	       00100737          	lui	a4,0x100
+301007aa:	       8f55                	or	a4,a4,a3
+301007ac:	       c3b8                	sw	a4,64(a5)
+301007ae:	       f6842783          	lw	a5,-152(s0)
+301007b2:	       0ff7f793          	zext.b	a5,a5
+301007b6:	       17fd                	addi	a5,a5,-1 # 5008dfff <ets_clk_get_cpu_freq+0x48da9f>
+301007b8:	       0ff7f793          	zext.b	a5,a5
+301007bc:	       8bbd                	andi	a5,a5,15
+301007be:	       0ff7f713          	zext.b	a4,a5
+301007c2:	       5008e7b7          	lui	a5,0x5008e
+301007c6:	       00078793          	mv	a5,a5
+301007ca:	       0772                	slli	a4,a4,0x1c
+301007cc:	       47f0                	lw	a2,76(a5)
+301007ce:	       100006b7          	lui	a3,0x10000
+301007d2:	       16fd                	addi	a3,a3,-1 # fffffff <_start-0x20100001>
+301007d4:	       8ef1                	and	a3,a3,a2
+301007d6:	       8f55                	or	a4,a4,a3
+301007d8:	       c7f8                	sw	a4,76(a5)
+301007da:	       5008e7b7          	lui	a5,0x5008e
+301007de:	       00078793          	mv	a5,a5
+301007e2:	       47fc                	lw	a5,76(a5)
+301007e4:	       f6f42023          	sw	a5,-160(s0)
+301007e8:	       f6042783          	lw	a5,-160(s0)
+301007ec:	       f4f42e23          	sw	a5,-164(s0)
+301007f0:	       f6442783          	lw	a5,-156(s0)
+301007f4:	       07c2                	slli	a5,a5,0x10
+301007f6:	       83c1                	srli	a5,a5,0x10
+301007f8:	       f4f41e23          	sh	a5,-164(s0)
+301007fc:	       f5c42703          	lw	a4,-164(s0)
+30100800:	       5008e7b7          	lui	a5,0x5008e
+30100804:	       00078793          	mv	a5,a5
+30100808:	       c7f8                	sw	a4,76(a5)
+3010080a:	       0001                	nop
+3010080c:	       4789                	li	a5,2
+3010080e:	       f6f42e23          	sw	a5,-132(s0)
+30100812:	       47c1                	li	a5,16
+30100814:	       f6f42c23          	sw	a5,-136(s0)
+30100818:	       f6042a23          	sw	zero,-140(s0)
+3010081c:	       5008e7b7          	lui	a5,0x5008e
+30100820:	       00078793          	mv	a5,a5
+30100824:	       43b8                	lw	a4,64(a5)
+30100826:	       02076713          	ori	a4,a4,32
+3010082a:	       c3b8                	sw	a4,64(a5)
+3010082c:	       f7842783          	lw	a5,-136(s0)
+30100830:	       0ff7f793          	zext.b	a5,a5
+30100834:	       17fd                	addi	a5,a5,-1 # 5008dfff <ets_clk_get_cpu_freq+0x48da9f>
+30100836:	       0ff7f793          	zext.b	a5,a5
+3010083a:	       8bbd                	andi	a5,a5,15
+3010083c:	       0ff7f713          	zext.b	a4,a5
+30100840:	       5008e7b7          	lui	a5,0x5008e
+30100844:	       00078793          	mv	a5,a5
+30100848:	       0772                	slli	a4,a4,0x1c
+3010084a:	       47b0                	lw	a2,72(a5)
+3010084c:	       100006b7          	lui	a3,0x10000
+30100850:	       16fd                	addi	a3,a3,-1 # fffffff <_start-0x20100001>
+30100852:	       8ef1                	and	a3,a3,a2
+30100854:	       8f55                	or	a4,a4,a3
+30100856:	       c7b8                	sw	a4,72(a5)
+30100858:	       5008e7b7          	lui	a5,0x5008e
+3010085c:	       00078793          	mv	a5,a5
+30100860:	       47bc                	lw	a5,72(a5)
+30100862:	       f6f42823          	sw	a5,-144(s0)
+30100866:	       f7042783          	lw	a5,-144(s0)
+3010086a:	       f4f42c23          	sw	a5,-168(s0)
+3010086e:	       f7442783          	lw	a5,-140(s0)
+30100872:	       07c2                	slli	a5,a5,0x10
+30100874:	       83c1                	srli	a5,a5,0x10
+30100876:	       f4f41c23          	sh	a5,-168(s0)
+3010087a:	       f5842703          	lw	a4,-168(s0)
+3010087e:	       5008e7b7          	lui	a5,0x5008e
+30100882:	       00078793          	mv	a5,a5
+30100886:	       c7b8                	sw	a4,72(a5)
+30100888:	       0001                	nop
+3010088a:	       4789                	li	a5,2
+3010088c:	       f8f42223          	sw	a5,-124(s0)
+30100890:	       02000793          	li	a5,32
+30100894:	       f8f42023          	sw	a5,-128(s0)
+30100898:	       f8042783          	lw	a5,-128(s0)
+3010089c:	       0ff7f793          	zext.b	a5,a5
+301008a0:	       17fd                	addi	a5,a5,-1 # 5008dfff <ets_clk_get_cpu_freq+0x48da9f>
+301008a2:	       0ff7f793          	zext.b	a5,a5
+301008a6:	       03f7f793          	andi	a5,a5,63
+301008aa:	       0ff7f713          	zext.b	a4,a5
+301008ae:	       5008e7b7          	lui	a5,0x5008e
+301008b2:	       00078793          	mv	a5,a5
+301008b6:	       03f77713          	andi	a4,a4,63
+301008ba:	       073a                	slli	a4,a4,0xe
+301008bc:	       43b0                	lw	a2,64(a5)
+301008be:	       fff046b7          	lui	a3,0xfff04
+301008c2:	       16fd                	addi	a3,a3,-1 # fff03fff <LPPERI+0xafde3fff>
+301008c4:	       8ef1                	and	a3,a3,a2
+301008c6:	       8f55                	or	a4,a4,a3
+301008c8:	       c3b8                	sw	a4,64(a5)
+301008ca:	       0001                	nop
+301008cc:	       4789                	li	a5,2
+301008ce:	       f8f42623          	sw	a5,-116(s0)
+301008d2:	       4785                	li	a5,1
+301008d4:	       f8f405a3          	sb	a5,-117(s0)
+301008d8:	       5008e7b7          	lui	a5,0x5008e
+301008dc:	       00078793          	mv	a5,a5
+301008e0:	       f8b44703          	lbu	a4,-117(s0)
+301008e4:	       8b05                	andi	a4,a4,1
+301008e6:	       43b4                	lw	a3,64(a5)
+301008e8:	       9af9                	andi	a3,a3,-2
+301008ea:	       8f55                	or	a4,a4,a3
+301008ec:	       c3b8                	sw	a4,64(a5)
+301008ee:	       0001                	nop
+301008f0:	       4789                	li	a5,2
+301008f2:	       f8f42a23          	sw	a5,-108(s0)
+301008f6:	       47b1                	li	a5,12
+301008f8:	       f8f42823          	sw	a5,-112(s0)
+301008fc:	       5008e7b7          	lui	a5,0x5008e
+30100900:	       00078793          	mv	a5,a5
+30100904:	       43b8                	lw	a4,64(a5)
+30100906:	       00876713          	ori	a4,a4,8
+3010090a:	       c3b8                	sw	a4,64(a5)
+3010090c:	       f9042783          	lw	a5,-112(s0)
+30100910:	       0ff7f793          	zext.b	a5,a5
+30100914:	       17fd                	addi	a5,a5,-1 # 5008dfff <ets_clk_get_cpu_freq+0x48da9f>
+30100916:	       0ff7f793          	zext.b	a5,a5
+3010091a:	       03f7f793          	andi	a5,a5,63
+3010091e:	       0ff7f713          	zext.b	a4,a5
+30100922:	       5008e7b7          	lui	a5,0x5008e
+30100926:	       00078793          	mv	a5,a5
+3010092a:	       03f77713          	andi	a4,a4,63
+3010092e:	       075a                	slli	a4,a4,0x16
+30100930:	       43b0                	lw	a2,64(a5)
+30100932:	       f04006b7          	lui	a3,0xf0400
+30100936:	       16fd                	addi	a3,a3,-1 # f03fffff <LPPERI+0xa02dffff>
+30100938:	       8ef1                	and	a3,a3,a2
+3010093a:	       8f55                	or	a4,a4,a3
+3010093c:	       c3b8                	sw	a4,64(a5)
+3010093e:	       0001                	nop
+30100940:	       4789                	li	a5,2
+30100942:	       f8f42e23          	sw	a5,-100(s0)
+30100946:	       47e9                	li	a5,26
+30100948:	       f8f42c23          	sw	a5,-104(s0)
+3010094c:	       5008e7b7          	lui	a5,0x5008e
+30100950:	       00078793          	mv	a5,a5
+30100954:	       43b8                	lw	a4,64(a5)
+30100956:	       01076713          	ori	a4,a4,16
+3010095a:	       c3b8                	sw	a4,64(a5)
+3010095c:	       f9842783          	lw	a5,-104(s0)
+30100960:	       0ff7f793          	zext.b	a5,a5
+30100964:	       17fd                	addi	a5,a5,-1 # 5008dfff <ets_clk_get_cpu_freq+0x48da9f>
+30100966:	       0ff7f793          	zext.b	a5,a5
+3010096a:	       03f7f793          	andi	a5,a5,63
+3010096e:	       0ff7f713          	zext.b	a4,a5
+30100972:	       5008e7b7          	lui	a5,0x5008e
+30100976:	       00078793          	mv	a5,a5
+3010097a:	       03f77713          	andi	a4,a4,63
+3010097e:	       071a                	slli	a4,a4,0x6
+30100980:	       43b0                	lw	a2,64(a5)
+30100982:	       76fd                	lui	a3,0xfffff
+30100984:	       03f68693          	addi	a3,a3,63 # fffff03f <LPPERI+0xafedf03f>
+30100988:	       8ef1                	and	a3,a3,a2
+3010098a:	       8f55                	or	a4,a4,a3
+3010098c:	       c3b8                	sw	a4,64(a5)
+3010098e:	       0001                	nop
+30100990:	       4789                	li	a5,2
+30100992:	       faf42223          	sw	a5,-92(s0)
+30100996:	       4785                	li	a5,1
+30100998:	       faf401a3          	sb	a5,-93(s0)
+3010099c:	       fa442703          	lw	a4,-92(s0)
+301009a0:	       4789                	li	a5,2
+301009a2:	   ,-- 02f71163          	bne	a4,a5,301009c4 <s_config_mspi_for_psram+0x244>
+301009a6:	   |   5008e7b7          	lui	a5,0x5008e
+301009aa:	   |   00078793          	mv	a5,a5
+301009ae:	   |   fa344703          	lbu	a4,-93(s0)
+301009b2:	   |   8b05                	andi	a4,a4,1
+301009b4:	   |   0706                	slli	a4,a4,0x1
+301009b6:	   |   0d87a683          	lw	a3,216(a5) # 5008e0d8 <SPIMEM2+0xd8>
+301009ba:	   |   9af5                	andi	a3,a3,-3
+301009bc:	   |   8f55                	or	a4,a4,a3
+301009be:	   |   0ce7ac23          	sw	a4,216(a5)
+301009c2:	,--|-- a025                	j	301009ea <s_config_mspi_for_psram+0x26a>
+301009c4:	|  '-> fa442703          	lw	a4,-92(s0)
+301009c8:	|      478d                	li	a5,3
+301009ca:	+----- 02f71063          	bne	a4,a5,301009ea <s_config_mspi_for_psram+0x26a>
+301009ce:	|      5008f7b7          	lui	a5,0x5008f
+301009d2:	|      00078793          	mv	a5,a5
+301009d6:	|      fa344703          	lbu	a4,-93(s0)
+301009da:	|      8b05                	andi	a4,a4,1
+301009dc:	|      0706                	slli	a4,a4,0x1
+301009de:	|      0d47a683          	lw	a3,212(a5) # 5008f0d4 <SPIMEM3+0xd4>
+301009e2:	|      9af5                	andi	a3,a3,-3
+301009e4:	|      8f55                	or	a4,a4,a3
+301009e6:	|      0ce7aa23          	sw	a4,212(a5)
+301009ea:	'----> 0001                	nop
+301009ec:	       4789                	li	a5,2
+301009ee:	       faf42623          	sw	a5,-84(s0)
+301009f2:	       4785                	li	a5,1
+301009f4:	       faf405a3          	sb	a5,-85(s0)
+301009f8:	       5008e7b7          	lui	a5,0x5008e
+301009fc:	       00078793          	mv	a5,a5
+30100a00:	       fab44703          	lbu	a4,-85(s0)
+30100a04:	       8b05                	andi	a4,a4,1
+30100a06:	       075e                	slli	a4,a4,0x17
+30100a08:	       43f0                	lw	a2,68(a5)
+30100a0a:	       ff8006b7          	lui	a3,0xff800
+30100a0e:	       16fd                	addi	a3,a3,-1 # ff7fffff <LPPERI+0xaf6dffff>
+30100a10:	       8ef1                	and	a3,a3,a2
+30100a12:	       8f55                	or	a4,a4,a3
+30100a14:	       c3f8                	sw	a4,68(a5)
+30100a16:	       0001                	nop
+30100a18:	       4789                	li	a5,2
+30100a1a:	       faf42a23          	sw	a5,-76(s0)
+30100a1e:	       fa0409a3          	sb	zero,-77(s0)
+30100a22:	       5008e7b7          	lui	a5,0x5008e
+30100a26:	       00078793          	mv	a5,a5
+30100a2a:	       fb344703          	lbu	a4,-77(s0)
+30100a2e:	       8b05                	andi	a4,a4,1
+30100a30:	       070e                	slli	a4,a4,0x3
+30100a32:	       0d87a683          	lw	a3,216(a5) # 5008e0d8 <SPIMEM2+0xd8>
+30100a36:	       9add                	andi	a3,a3,-9
+30100a38:	       8f55                	or	a4,a4,a3
+30100a3a:	       0ce7ac23          	sw	a4,216(a5)
+30100a3e:	       0001                	nop
+30100a40:	       4789                	li	a5,2
+30100a42:	       faf42e23          	sw	a5,-68(s0)
+30100a46:	       fa040da3          	sb	zero,-69(s0)
+30100a4a:	       5008e7b7          	lui	a5,0x5008e
+30100a4e:	       00078793          	mv	a5,a5
+30100a52:	       fbb44703          	lbu	a4,-69(s0)
+30100a56:	       8b05                	andi	a4,a4,1
+30100a58:	       070a                	slli	a4,a4,0x2
+30100a5a:	       0d87a683          	lw	a3,216(a5) # 5008e0d8 <SPIMEM2+0xd8>
+30100a5e:	       9aed                	andi	a3,a3,-5
+30100a60:	       8f55                	or	a4,a4,a3
+30100a62:	       0ce7ac23          	sw	a4,216(a5)
+30100a66:	       0001                	nop
+30100a68:	       4789                	li	a5,2
+30100a6a:	       fcf42223          	sw	a5,-60(s0)
+30100a6e:	       4785                	li	a5,1
+30100a70:	       fcf401a3          	sb	a5,-61(s0)
+30100a74:	       5008e7b7          	lui	a5,0x5008e
+30100a78:	       00078793          	mv	a5,a5
+30100a7c:	       fc344703          	lbu	a4,-61(s0)
+30100a80:	       8b05                	andi	a4,a4,1
+30100a82:	       0d87a683          	lw	a3,216(a5) # 5008e0d8 <SPIMEM2+0xd8>
+30100a86:	       9af9                	andi	a3,a3,-2
+30100a88:	       8f55                	or	a4,a4,a3
+30100a8a:	       0ce7ac23          	sw	a4,216(a5)
+30100a8e:	       0001                	nop
+30100a90:	       4789                	li	a5,2
+30100a92:	       fcf42623          	sw	a5,-52(s0)
+30100a96:	       4785                	li	a5,1
+30100a98:	       fcf405a3          	sb	a5,-53(s0)
+30100a9c:	       5008e7b7          	lui	a5,0x5008e
+30100aa0:	       00078793          	mv	a5,a5
+30100aa4:	       fcb44703          	lbu	a4,-53(s0)
+30100aa8:	       8b05                	andi	a4,a4,1
+30100aaa:	       0756                	slli	a4,a4,0x15
+30100aac:	       43b0                	lw	a2,64(a5)
+30100aae:	       ffe006b7          	lui	a3,0xffe00
+30100ab2:	       16fd                	addi	a3,a3,-1 # ffdfffff <LPPERI+0xafcdffff>
+30100ab4:	       8ef1                	and	a3,a3,a2
+30100ab6:	       8f55                	or	a4,a4,a3
+30100ab8:	       c3b8                	sw	a4,64(a5)
+30100aba:	       5008e7b7          	lui	a5,0x5008e
+30100abe:	       00078793          	mv	a5,a5
+30100ac2:	       fcb44703          	lbu	a4,-53(s0)
+30100ac6:	       8b05                	andi	a4,a4,1
+30100ac8:	       0756                	slli	a4,a4,0x15
+30100aca:	       43f0                	lw	a2,68(a5)
+30100acc:	       ffe006b7          	lui	a3,0xffe00
+30100ad0:	       16fd                	addi	a3,a3,-1 # ffdfffff <LPPERI+0xafcdffff>
+30100ad2:	       8ef1                	and	a3,a3,a2
+30100ad4:	       8f55                	or	a4,a4,a3
+30100ad6:	       c3f8                	sw	a4,68(a5)
+30100ad8:	       5008e7b7          	lui	a5,0x5008e
+30100adc:	       00078793          	mv	a5,a5
+30100ae0:	       fcb44703          	lbu	a4,-53(s0)
+30100ae4:	       8b05                	andi	a4,a4,1
+30100ae6:	       0752                	slli	a4,a4,0x14
+30100ae8:	       43f0                	lw	a2,68(a5)
+30100aea:	       fff006b7          	lui	a3,0xfff00
+30100aee:	       16fd                	addi	a3,a3,-1 # ffefffff <LPPERI+0xafddffff>
+30100af0:	       8ef1                	and	a3,a3,a2
+30100af2:	       8f55                	or	a4,a4,a3
+30100af4:	       c3f8                	sw	a4,68(a5)
+30100af6:	       5008e7b7          	lui	a5,0x5008e
+30100afa:	       00078793          	mv	a5,a5
+30100afe:	       fcb44703          	lbu	a4,-53(s0)
+30100b02:	       8b05                	andi	a4,a4,1
+30100b04:	       074e                	slli	a4,a4,0x13
+30100b06:	       43f0                	lw	a2,68(a5)
+30100b08:	       fff806b7          	lui	a3,0xfff80
+30100b0c:	       16fd                	addi	a3,a3,-1 # fff7ffff <LPPERI+0xafe5ffff>
+30100b0e:	       8ef1                	and	a3,a3,a2
+30100b10:	       8f55                	or	a4,a4,a3
+30100b12:	       c3f8                	sw	a4,68(a5)
+30100b14:	       5008e7b7          	lui	a5,0x5008e
+30100b18:	       00078793          	mv	a5,a5
+30100b1c:	       fcb44703          	lbu	a4,-53(s0)
+30100b20:	       8b05                	andi	a4,a4,1
+30100b22:	       074a                	slli	a4,a4,0x12
+30100b24:	       43f0                	lw	a2,68(a5)
+30100b26:	       fffc06b7          	lui	a3,0xfffc0
+30100b2a:	       16fd                	addi	a3,a3,-1 # fffbffff <LPPERI+0xafe9ffff>
+30100b2c:	       8ef1                	and	a3,a3,a2
+30100b2e:	       8f55                	or	a4,a4,a3
+30100b30:	       c3f8                	sw	a4,68(a5)
+30100b32:	       0001                	nop
+30100b34:	       4789                	li	a5,2
+30100b36:	       fcf42a23          	sw	a5,-44(s0)
+30100b3a:	       4785                	li	a5,1
+30100b3c:	       fcf409a3          	sb	a5,-45(s0)
+30100b40:	       5008e7b7          	lui	a5,0x5008e
+30100b44:	       00078793          	mv	a5,a5
+30100b48:	       fd344703          	lbu	a4,-45(s0)
+30100b4c:	       8b05                	andi	a4,a4,1
+30100b4e:	       076a                	slli	a4,a4,0x1a
+30100b50:	       43f0                	lw	a2,68(a5)
+30100b52:	       fc0006b7          	lui	a3,0xfc000
+30100b56:	       16fd                	addi	a3,a3,-1 # fbffffff <LPPERI+0xabedffff>
+30100b58:	       8ef1                	and	a3,a3,a2
+30100b5a:	       8f55                	or	a4,a4,a3
+30100b5c:	       c3f8                	sw	a4,68(a5)
+30100b5e:	       5008e7b7          	lui	a5,0x5008e
+30100b62:	       00078793          	mv	a5,a5
+30100b66:	       fd344703          	lbu	a4,-45(s0)
+30100b6a:	       8b05                	andi	a4,a4,1
+30100b6c:	       076e                	slli	a4,a4,0x1b
+30100b6e:	       43f0                	lw	a2,68(a5)
+30100b70:	       f80006b7          	lui	a3,0xf8000
+30100b74:	       16fd                	addi	a3,a3,-1 # f7ffffff <LPPERI+0xa7edffff>
+30100b76:	       8ef1                	and	a3,a3,a2
+30100b78:	       8f55                	or	a4,a4,a3
+30100b7a:	       c3f8                	sw	a4,68(a5)
+30100b7c:	       0001                	nop
+30100b7e:	       4789                	li	a5,2
+30100b80:	       fcf42e23          	sw	a5,-36(s0)
+30100b84:	       4785                	li	a5,1
+30100b86:	       fcf40da3          	sb	a5,-37(s0)
+30100b8a:	       5008e7b7          	lui	a5,0x5008e
+30100b8e:	       00078793          	mv	a5,a5
+30100b92:	       fdb44703          	lbu	a4,-37(s0)
+30100b96:	       8b05                	andi	a4,a4,1
+30100b98:	       5fd4                	lw	a3,60(a5)
+30100b9a:	       9af9                	andi	a3,a3,-2
+30100b9c:	       8f55                	or	a4,a4,a3
+30100b9e:	       dfd8                	sw	a4,60(a5)
+30100ba0:	       fdb44783          	lbu	a5,-37(s0)
+30100ba4:	       0017c793          	xori	a5,a5,1
+30100ba8:	       0ff7f713          	zext.b	a4,a5
+30100bac:	       5008e7b7          	lui	a5,0x5008e
+30100bb0:	       00078793          	mv	a5,a5
+30100bb4:	       077e                	slli	a4,a4,0x1f
+30100bb6:	       5fd0                	lw	a2,60(a5)
+30100bb8:	       800006b7          	lui	a3,0x80000
+30100bbc:	       fff6c693          	not	a3,a3
+30100bc0:	       8ef1                	and	a3,a3,a2
+30100bc2:	       8f55                	or	a4,a4,a3
+30100bc4:	       dfd8                	sw	a4,60(a5)
+30100bc6:	       0001                	nop
+30100bc8:	       4789                	li	a5,2
+30100bca:	       fef42223          	sw	a5,-28(s0)
+30100bce:	       4785                	li	a5,1
+30100bd0:	       fef401a3          	sb	a5,-29(s0)
+30100bd4:	       5008e7b7          	lui	a5,0x5008e
+30100bd8:	       00078793          	mv	a5,a5
+30100bdc:	       fe344703          	lbu	a4,-29(s0)
+30100be0:	       8b05                	andi	a4,a4,1
+30100be2:	       076a                	slli	a4,a4,0x1a
+30100be4:	       47d0                	lw	a2,12(a5)
+30100be6:	       fc0006b7          	lui	a3,0xfc000
+30100bea:	       16fd                	addi	a3,a3,-1 # fbffffff <LPPERI+0xabedffff>
+30100bec:	       8ef1                	and	a3,a3,a2
+30100bee:	       8f55                	or	a4,a4,a3
+30100bf0:	       c7d8                	sw	a4,12(a5)
+30100bf2:	       0001                	nop
+30100bf4:	       4789                	li	a5,2
+30100bf6:	       fef42623          	sw	a5,-20(s0)
+30100bfa:	       4785                	li	a5,1
+30100bfc:	       fef405a3          	sb	a5,-21(s0)
+30100c00:	       5008e7b7          	lui	a5,0x5008e
+30100c04:	       00078793          	mv	a5,a5
+30100c08:	       feb44703          	lbu	a4,-21(s0)
+30100c0c:	       8b05                	andi	a4,a4,1
+30100c0e:	       0766                	slli	a4,a4,0x19
+30100c10:	       47d0                	lw	a2,12(a5)
+30100c12:	       fe0006b7          	lui	a3,0xfe000
+30100c16:	       16fd                	addi	a3,a3,-1 # fdffffff <LPPERI+0xadedffff>
+30100c18:	       8ef1                	and	a3,a3,a2
+30100c1a:	       8f55                	or	a4,a4,a3
+30100c1c:	       c7d8                	sw	a4,12(a5)
+30100c1e:	       0001                	nop
+30100c20:	       0001                	nop
+30100c22:	       543a                	lw	s0,172(sp)
+30100c24:	       614d                	addi	sp,sp,176
+30100c26:	       8082                	ret
+
+30100c28 <s_init_psram_mode_reg>:
+30100c28:	715d                	addi	sp,sp,-80
+30100c2a:	c686                	sw	ra,76(sp)
+30100c2c:	c4a2                	sw	s0,72(sp)
+30100c2e:	0880                	addi	s0,sp,80
+30100c30:	fca42623          	sw	a0,-52(s0)
+30100c34:	fcb42423          	sw	a1,-56(s0)
+30100c38:	47c1                	li	a5,16
+30100c3a:	fef42623          	sw	a5,-20(s0)
+30100c3e:	fe042423          	sw	zero,-24(s0)
+30100c42:	02000793          	li	a5,32
+30100c46:	fef42223          	sw	a5,-28(s0)
+30100c4a:	47b1                	li	a5,12
+30100c4c:	fef42023          	sw	a5,-32(s0)
+30100c50:	fc042a23          	sw	zero,-44(s0)
+30100c54:	fc041c23          	sh	zero,-40(s0)
+30100c58:	47c1                	li	a5,16
+30100c5a:	fcf42e23          	sw	a5,-36(s0)
+30100c5e:	fcc42503          	lw	a0,-52(s0)
+30100c62:	fec42603          	lw	a2,-20(s0)
+30100c66:	fe442703          	lw	a4,-28(s0)
+30100c6a:	fe042683          	lw	a3,-32(s0)
+30100c6e:	fdc42783          	lw	a5,-36(s0)
+30100c72:	c402                	sw	zero,8(sp)
+30100c74:	c23e                	sw	a5,4(sp)
+30100c76:	fd440793          	addi	a5,s0,-44
+30100c7a:	c03e                	sw	a5,0(sp)
+30100c7c:	4881                	li	a7,0
+30100c7e:	4801                	li	a6,0
+30100c80:	87b6                	mv	a5,a3
+30100c82:	fe842683          	lw	a3,-24(s0)
+30100c86:	6591                	lui	a1,0x4
+30100c88:	04058593          	addi	a1,a1,64 # 4040 <_start-0x300fbfc0>
+30100c8c:	2c05                	jal	30100ebc <s_psram_common_transaction>
+30100c8e:	4791                	li	a5,4
+30100c90:	fef42423          	sw	a5,-24(s0)
+30100c94:	fcc42503          	lw	a0,-52(s0)
+30100c98:	fec42603          	lw	a2,-20(s0)
+30100c9c:	fe442703          	lw	a4,-28(s0)
+30100ca0:	fe042683          	lw	a3,-32(s0)
+30100ca4:	fdc42783          	lw	a5,-36(s0)
+30100ca8:	c402                	sw	zero,8(sp)
+30100caa:	c23e                	sw	a5,4(sp)
+30100cac:	fd440793          	addi	a5,s0,-44
+30100cb0:	0791                	addi	a5,a5,4
+30100cb2:	c03e                	sw	a5,0(sp)
+30100cb4:	4881                	li	a7,0
+30100cb6:	4801                	li	a6,0
+30100cb8:	87b6                	mv	a5,a3
+30100cba:	fe842683          	lw	a3,-24(s0)
+30100cbe:	6591                	lui	a1,0x4
+30100cc0:	04058593          	addi	a1,a1,64 # 4040 <_start-0x300fbfc0>
+30100cc4:	2ae5                	jal	30100ebc <s_psram_common_transaction>
+30100cc6:	fc842783          	lw	a5,-56(s0)
+30100cca:	0007c783          	lbu	a5,0(a5)
+30100cce:	8395                	srli	a5,a5,0x5
+30100cd0:	8b85                	andi	a5,a5,1
+30100cd2:	0ff7f793          	zext.b	a5,a5
+30100cd6:	8b85                	andi	a5,a5,1
+30100cd8:	00579693          	slli	a3,a5,0x5
+30100cdc:	fd444783          	lbu	a5,-44(s0)
+30100ce0:	fdf7f793          	andi	a5,a5,-33
+30100ce4:	873e                	mv	a4,a5
+30100ce6:	87b6                	mv	a5,a3
+30100ce8:	8fd9                	or	a5,a5,a4
+30100cea:	fcf40a23          	sb	a5,-44(s0)
+30100cee:	fc842783          	lw	a5,-56(s0)
+30100cf2:	0007c783          	lbu	a5,0(a5)
+30100cf6:	8389                	srli	a5,a5,0x2
+30100cf8:	8b9d                	andi	a5,a5,7
+30100cfa:	0ff7f793          	zext.b	a5,a5
+30100cfe:	8b9d                	andi	a5,a5,7
+30100d00:	00279693          	slli	a3,a5,0x2
+30100d04:	fd444783          	lbu	a5,-44(s0)
+30100d08:	9b8d                	andi	a5,a5,-29
+30100d0a:	873e                	mv	a4,a5
+30100d0c:	87b6                	mv	a5,a3
+30100d0e:	8fd9                	or	a5,a5,a4
+30100d10:	fcf40a23          	sb	a5,-44(s0)
+30100d14:	fc842783          	lw	a5,-56(s0)
+30100d18:	0007c783          	lbu	a5,0(a5)
+30100d1c:	8b8d                	andi	a5,a5,3
+30100d1e:	0ff7f793          	zext.b	a5,a5
+30100d22:	0037f693          	andi	a3,a5,3
+30100d26:	fd444783          	lbu	a5,-44(s0)
+30100d2a:	9bf1                	andi	a5,a5,-4
+30100d2c:	873e                	mv	a4,a5
+30100d2e:	87b6                	mv	a5,a3
+30100d30:	8fd9                	or	a5,a5,a4
+30100d32:	fcf40a23          	sb	a5,-44(s0)
+30100d36:	fc842783          	lw	a5,-56(s0)
+30100d3a:	0047c783          	lbu	a5,4(a5)
+30100d3e:	8395                	srli	a5,a5,0x5
+30100d40:	0ff7f793          	zext.b	a5,a5
+30100d44:	00579693          	slli	a3,a5,0x5
+30100d48:	fd844783          	lbu	a5,-40(s0)
+30100d4c:	8bfd                	andi	a5,a5,31
+30100d4e:	873e                	mv	a4,a5
+30100d50:	87b6                	mv	a5,a3
+30100d52:	8fd9                	or	a5,a5,a4
+30100d54:	fcf40c23          	sb	a5,-40(s0)
+30100d58:	fe042423          	sw	zero,-24(s0)
+30100d5c:	fcc42503          	lw	a0,-52(s0)
+30100d60:	fec42603          	lw	a2,-20(s0)
+30100d64:	fe442703          	lw	a4,-28(s0)
+30100d68:	fd440793          	addi	a5,s0,-44
+30100d6c:	c402                	sw	zero,8(sp)
+30100d6e:	c202                	sw	zero,4(sp)
+30100d70:	c002                	sw	zero,0(sp)
+30100d72:	48c1                	li	a7,16
+30100d74:	883e                	mv	a6,a5
+30100d76:	4781                	li	a5,0
+30100d78:	fe842683          	lw	a3,-24(s0)
+30100d7c:	65b1                	lui	a1,0xc
+30100d7e:	0c058593          	addi	a1,a1,192 # c0c0 <_start-0x300f3f40>
+30100d82:	2a2d                	jal	30100ebc <s_psram_common_transaction>
+30100d84:	4791                	li	a5,4
+30100d86:	fef42423          	sw	a5,-24(s0)
+30100d8a:	fcc42503          	lw	a0,-52(s0)
+30100d8e:	fec42603          	lw	a2,-20(s0)
+30100d92:	fe442703          	lw	a4,-28(s0)
+30100d96:	fd440793          	addi	a5,s0,-44
+30100d9a:	0791                	addi	a5,a5,4
+30100d9c:	c402                	sw	zero,8(sp)
+30100d9e:	c202                	sw	zero,4(sp)
+30100da0:	c002                	sw	zero,0(sp)
+30100da2:	48c1                	li	a7,16
+30100da4:	883e                	mv	a6,a5
+30100da6:	4781                	li	a5,0
+30100da8:	fe842683          	lw	a3,-24(s0)
+30100dac:	65b1                	lui	a1,0xc
+30100dae:	0c058593          	addi	a1,a1,192 # c0c0 <_start-0x300f3f40>
+30100db2:	2229                	jal	30100ebc <s_psram_common_transaction>
+30100db4:	47a1                	li	a5,8
+30100db6:	fef42423          	sw	a5,-24(s0)
+30100dba:	47a1                	li	a5,8
+30100dbc:	fcf42e23          	sw	a5,-36(s0)
+30100dc0:	fcc42503          	lw	a0,-52(s0)
+30100dc4:	fec42603          	lw	a2,-20(s0)
+30100dc8:	fe442703          	lw	a4,-28(s0)
+30100dcc:	fe042683          	lw	a3,-32(s0)
+30100dd0:	fdc42783          	lw	a5,-36(s0)
+30100dd4:	c402                	sw	zero,8(sp)
+30100dd6:	c23e                	sw	a5,4(sp)
+30100dd8:	fd440793          	addi	a5,s0,-44
+30100ddc:	0795                	addi	a5,a5,5
+30100dde:	c03e                	sw	a5,0(sp)
+30100de0:	4881                	li	a7,0
+30100de2:	4801                	li	a6,0
+30100de4:	87b6                	mv	a5,a3
+30100de6:	fe842683          	lw	a3,-24(s0)
+30100dea:	6591                	lui	a1,0x4
+30100dec:	04058593          	addi	a1,a1,64 # 4040 <_start-0x300fbfc0>
+30100df0:	20f1                	jal	30100ebc <s_psram_common_transaction>
+30100df2:	fc842783          	lw	a5,-56(s0)
+30100df6:	0057c783          	lbu	a5,5(a5)
+30100dfa:	8389                	srli	a5,a5,0x2
+30100dfc:	8b85                	andi	a5,a5,1
+30100dfe:	0ff7f793          	zext.b	a5,a5
+30100e02:	8b85                	andi	a5,a5,1
+30100e04:	00279693          	slli	a3,a5,0x2
+30100e08:	fd944783          	lbu	a5,-39(s0)
+30100e0c:	9bed                	andi	a5,a5,-5
+30100e0e:	873e                	mv	a4,a5
+30100e10:	87b6                	mv	a5,a3
+30100e12:	8fd9                	or	a5,a5,a4
+30100e14:	fcf40ca3          	sb	a5,-39(s0)
+30100e18:	fc842783          	lw	a5,-56(s0)
+30100e1c:	0057c783          	lbu	a5,5(a5)
+30100e20:	8b8d                	andi	a5,a5,3
+30100e22:	0ff7f793          	zext.b	a5,a5
+30100e26:	0037f693          	andi	a3,a5,3
+30100e2a:	fd944783          	lbu	a5,-39(s0)
+30100e2e:	9bf1                	andi	a5,a5,-4
+30100e30:	873e                	mv	a4,a5
+30100e32:	87b6                	mv	a5,a3
+30100e34:	8fd9                	or	a5,a5,a4
+30100e36:	fcf40ca3          	sb	a5,-39(s0)
+30100e3a:	fc842783          	lw	a5,-56(s0)
+30100e3e:	0057c783          	lbu	a5,5(a5)
+30100e42:	838d                	srli	a5,a5,0x3
+30100e44:	8b85                	andi	a5,a5,1
+30100e46:	0ff7f793          	zext.b	a5,a5
+30100e4a:	8b85                	andi	a5,a5,1
+30100e4c:	00379693          	slli	a3,a5,0x3
+30100e50:	fd944783          	lbu	a5,-39(s0)
+30100e54:	9bdd                	andi	a5,a5,-9
+30100e56:	873e                	mv	a4,a5
+30100e58:	87b6                	mv	a5,a3
+30100e5a:	8fd9                	or	a5,a5,a4
+30100e5c:	fcf40ca3          	sb	a5,-39(s0)
+30100e60:	fc842783          	lw	a5,-56(s0)
+30100e64:	0057c783          	lbu	a5,5(a5)
+30100e68:	8399                	srli	a5,a5,0x6
+30100e6a:	8b85                	andi	a5,a5,1
+30100e6c:	0ff7f793          	zext.b	a5,a5
+30100e70:	8b85                	andi	a5,a5,1
+30100e72:	00679693          	slli	a3,a5,0x6
+30100e76:	fd944783          	lbu	a5,-39(s0)
+30100e7a:	fbf7f793          	andi	a5,a5,-65
+30100e7e:	873e                	mv	a4,a5
+30100e80:	87b6                	mv	a5,a3
+30100e82:	8fd9                	or	a5,a5,a4
+30100e84:	fcf40ca3          	sb	a5,-39(s0)
+30100e88:	fcc42503          	lw	a0,-52(s0)
+30100e8c:	fec42603          	lw	a2,-20(s0)
+30100e90:	fe442703          	lw	a4,-28(s0)
+30100e94:	fd440793          	addi	a5,s0,-44
+30100e98:	0795                	addi	a5,a5,5
+30100e9a:	c402                	sw	zero,8(sp)
+30100e9c:	c202                	sw	zero,4(sp)
+30100e9e:	c002                	sw	zero,0(sp)
+30100ea0:	48c1                	li	a7,16
+30100ea2:	883e                	mv	a6,a5
+30100ea4:	4781                	li	a5,0
+30100ea6:	fe842683          	lw	a3,-24(s0)
+30100eaa:	65b1                	lui	a1,0xc
+30100eac:	0c058593          	addi	a1,a1,192 # c0c0 <_start-0x300f3f40>
+30100eb0:	2031                	jal	30100ebc <s_psram_common_transaction>
+30100eb2:	0001                	nop
+30100eb4:	40b6                	lw	ra,76(sp)
+30100eb6:	4426                	lw	s0,72(sp)
+30100eb8:	6161                	addi	sp,sp,80
+30100eba:	8082                	ret
+
+30100ebc <s_psram_common_transaction>:
+30100ebc:	715d                	addi	sp,sp,-80
+30100ebe:	c686                	sw	ra,76(sp)
+30100ec0:	c4a2                	sw	s0,72(sp)
+30100ec2:	0880                	addi	s0,sp,80
+30100ec4:	fca42623          	sw	a0,-52(s0)
+30100ec8:	fcb42423          	sw	a1,-56(s0)
+30100ecc:	fcc42223          	sw	a2,-60(s0)
+30100ed0:	fcd42023          	sw	a3,-64(s0)
+30100ed4:	fae42e23          	sw	a4,-68(s0)
+30100ed8:	faf42c23          	sw	a5,-72(s0)
+30100edc:	fb042a23          	sw	a6,-76(s0)
+30100ee0:	fb142823          	sw	a7,-80(s0)
+30100ee4:	fcc42783          	lw	a5,-52(s0)
+30100ee8:	459d                	li	a1,7
+30100eea:	853e                	mv	a0,a5
+30100eec:	1faff097          	auipc	ra,0x1faff
+30100ef0:	224080e7          	jalr	548(ra) # 4fc00110 <esp_rom_spi_set_op_mode>
+30100ef4:	fc842783          	lw	a5,-56(s0)
+30100ef8:	07c2                	slli	a5,a5,0x10
+30100efa:	83c1                	srli	a5,a5,0x10
+30100efc:	fcf41823          	sh	a5,-48(s0)
+30100f00:	fc442783          	lw	a5,-60(s0)
+30100f04:	07c2                	slli	a5,a5,0x10
+30100f06:	83c1                	srli	a5,a5,0x10
+30100f08:	fcf41923          	sh	a5,-46(s0)
+30100f0c:	fc040793          	addi	a5,s0,-64
+30100f10:	fcf42a23          	sw	a5,-44(s0)
+30100f14:	fbc42783          	lw	a5,-68(s0)
+30100f18:	fcf42c23          	sw	a5,-40(s0)
+30100f1c:	fb442783          	lw	a5,-76(s0)
+30100f20:	fcf42e23          	sw	a5,-36(s0)
+30100f24:	fb042783          	lw	a5,-80(s0)
+30100f28:	fef42023          	sw	a5,-32(s0)
+30100f2c:	401c                	lw	a5,0(s0)
+30100f2e:	fef42223          	sw	a5,-28(s0)
+30100f32:	405c                	lw	a5,4(s0)
+30100f34:	fef42423          	sw	a5,-24(s0)
+30100f38:	fb842783          	lw	a5,-72(s0)
+30100f3c:	fef42623          	sw	a5,-20(s0)
+30100f40:	fcc42783          	lw	a5,-52(s0)
+30100f44:	fd040713          	addi	a4,s0,-48
+30100f48:	85ba                	mv	a1,a4
+30100f4a:	853e                	mv	a0,a5
+30100f4c:	1faff097          	auipc	ra,0x1faff
+30100f50:	1bc080e7          	jalr	444(ra) # 4fc00108 <esp_rom_spi_cmd_config>
+30100f54:	fcc42503          	lw	a0,-52(s0)
+30100f58:	405c                	lw	a5,4(s0)
+30100f5a:	838d                	srli	a5,a5,0x3
+30100f5c:	07c2                	slli	a5,a5,0x10
+30100f5e:	83c1                	srli	a5,a5,0x10
+30100f60:	00844703          	lbu	a4,8(s0)
+30100f64:	4689                	li	a3,2
+30100f66:	863e                	mv	a2,a5
+30100f68:	400c                	lw	a1,0(s0)
+30100f6a:	1faff097          	auipc	ra,0x1faff
+30100f6e:	1a2080e7          	jalr	418(ra) # 4fc0010c <esp_rom_spi_cmd_start>
+30100f72:	0001                	nop
+30100f74:	40b6                	lw	ra,76(sp)
+30100f76:	4426                	lw	s0,72(sp)
+30100f78:	6161                	addi	sp,sp,80
+30100f7a:	8082                	ret
+
+30100f7c <s_check_psram_connected>:
+30100f7c:	       7139                	addi	sp,sp,-64
+30100f7e:	       de06                	sw	ra,60(sp)
+30100f80:	       dc22                	sw	s0,56(sp)
+30100f82:	       0080                	addi	s0,sp,64
+30100f84:	       fca42e23          	sw	a0,-36(s0)
+30100f88:	       5a6b87b7          	lui	a5,0x5a6b8
+30100f8c:	       c8d78793          	addi	a5,a5,-883 # 5a6b7c8d <LPPERI+0xa597c8d>
+30100f90:	       fef42623          	sw	a5,-20(s0)
+30100f94:	       fe042423          	sw	zero,-24(s0)
+30100f98:	       fdc42503          	lw	a0,-36(s0)
+30100f9c:	       fec40793          	addi	a5,s0,-20
+30100fa0:	       c402                	sw	zero,8(sp)
+30100fa2:	       c202                	sw	zero,4(sp)
+30100fa4:	       c002                	sw	zero,0(sp)
+30100fa6:	       02000893          	li	a7,32
+30100faa:	       883e                	mv	a6,a5
+30100fac:	       47b1                	li	a5,12
+30100fae:	       02000713          	li	a4,32
+30100fb2:	       4681                	li	a3,0
+30100fb4:	       4641                	li	a2,16
+30100fb6:	       65a1                	lui	a1,0x8
+30100fb8:	       08058593          	addi	a1,a1,128 # 8080 <_start-0x300f7f80>
+30100fbc:	       3701                	jal	30100ebc <s_psram_common_transaction>
+30100fbe:	       fdc42503          	lw	a0,-36(s0)
+30100fc2:	       c402                	sw	zero,8(sp)
+30100fc4:	       02000793          	li	a5,32
+30100fc8:	       c23e                	sw	a5,4(sp)
+30100fca:	       fe840793          	addi	a5,s0,-24
+30100fce:	       c03e                	sw	a5,0(sp)
+30100fd0:	       4881                	li	a7,0
+30100fd2:	       4801                	li	a6,0
+30100fd4:	       47e9                	li	a5,26
+30100fd6:	       02000713          	li	a4,32
+30100fda:	       4681                	li	a3,0
+30100fdc:	       4641                	li	a2,16
+30100fde:	       4581                	li	a1,0
+30100fe0:	       3df1                	jal	30100ebc <s_psram_common_transaction>
+30100fe2:	       fe842703          	lw	a4,-24(s0)
+30100fe6:	       fec42783          	lw	a5,-20(s0)
+30100fea:	,----- 00f71463          	bne	a4,a5,30100ff2 <s_check_psram_connected+0x76>
+30100fee:	|      4781                	li	a5,0
+30100ff0:	|  ,-- a011                	j	30100ff4 <s_check_psram_connected+0x78>
+30100ff2:	'--|-> 57fd                	li	a5,-1
+30100ff4:	   '-> 853e                	mv	a0,a5
+30100ff6:	       50f2                	lw	ra,60(sp)
+30100ff8:	       5462                	lw	s0,56(sp)
+30100ffa:	       6121                	addi	sp,sp,64
+30100ffc:	       8082                	ret
+
+30100ffe <s_get_psram_mode_reg>:
+30100ffe:	7179                	addi	sp,sp,-48
+30101000:	d606                	sw	ra,44(sp)
+30101002:	d422                	sw	s0,40(sp)
+30101004:	1800                	addi	s0,sp,48
+30101006:	fea42623          	sw	a0,-20(s0)
+3010100a:	feb42423          	sw	a1,-24(s0)
+3010100e:	fec42503          	lw	a0,-20(s0)
+30101012:	fe842783          	lw	a5,-24(s0)
+30101016:	c402                	sw	zero,8(sp)
+30101018:	4741                	li	a4,16
+3010101a:	c23a                	sw	a4,4(sp)
+3010101c:	c03e                	sw	a5,0(sp)
+3010101e:	4881                	li	a7,0
+30101020:	4801                	li	a6,0
+30101022:	47b1                	li	a5,12
+30101024:	02000713          	li	a4,32
+30101028:	4681                	li	a3,0
+3010102a:	4641                	li	a2,16
+3010102c:	6591                	lui	a1,0x4
+3010102e:	04058593          	addi	a1,a1,64 # 4040 <_start-0x300fbfc0>
+30101032:	3569                	jal	30100ebc <s_psram_common_transaction>
+30101034:	fec42503          	lw	a0,-20(s0)
+30101038:	fe842783          	lw	a5,-24(s0)
+3010103c:	0789                	addi	a5,a5,2
+3010103e:	c402                	sw	zero,8(sp)
+30101040:	4741                	li	a4,16
+30101042:	c23a                	sw	a4,4(sp)
+30101044:	c03e                	sw	a5,0(sp)
+30101046:	4881                	li	a7,0
+30101048:	4801                	li	a6,0
+3010104a:	47b1                	li	a5,12
+3010104c:	02000713          	li	a4,32
+30101050:	4689                	li	a3,2
+30101052:	4641                	li	a2,16
+30101054:	6591                	lui	a1,0x4
+30101056:	04058593          	addi	a1,a1,64 # 4040 <_start-0x300fbfc0>
+3010105a:	358d                	jal	30100ebc <s_psram_common_transaction>
+3010105c:	fec42503          	lw	a0,-20(s0)
+30101060:	fe842783          	lw	a5,-24(s0)
+30101064:	0791                	addi	a5,a5,4
+30101066:	c402                	sw	zero,8(sp)
+30101068:	4721                	li	a4,8
+3010106a:	c23a                	sw	a4,4(sp)
+3010106c:	c03e                	sw	a5,0(sp)
+3010106e:	4881                	li	a7,0
+30101070:	4801                	li	a6,0
+30101072:	47b1                	li	a5,12
+30101074:	02000713          	li	a4,32
+30101078:	4691                	li	a3,4
+3010107a:	4641                	li	a2,16
+3010107c:	6591                	lui	a1,0x4
+3010107e:	04058593          	addi	a1,a1,64 # 4040 <_start-0x300fbfc0>
+30101082:	3d2d                	jal	30100ebc <s_psram_common_transaction>
+30101084:	fec42503          	lw	a0,-20(s0)
+30101088:	fe842783          	lw	a5,-24(s0)
+3010108c:	0795                	addi	a5,a5,5
+3010108e:	c402                	sw	zero,8(sp)
+30101090:	4721                	li	a4,8
+30101092:	c23a                	sw	a4,4(sp)
+30101094:	c03e                	sw	a5,0(sp)
+30101096:	4881                	li	a7,0
+30101098:	4801                	li	a6,0
+3010109a:	47b1                	li	a5,12
+3010109c:	02000713          	li	a4,32
+301010a0:	46a1                	li	a3,8
+301010a2:	4641                	li	a2,16
+301010a4:	6591                	lui	a1,0x4
+301010a6:	04058593          	addi	a1,a1,64 # 4040 <_start-0x300fbfc0>
+301010aa:	3d09                	jal	30100ebc <s_psram_common_transaction>
+301010ac:	0001                	nop
+301010ae:	50b2                	lw	ra,44(sp)
+301010b0:	5422                	lw	s0,40(sp)
+301010b2:	6145                	addi	sp,sp,48
+301010b4:	8082                	ret

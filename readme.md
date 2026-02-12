@@ -96,6 +96,7 @@ The reference application supports the following targets (in alpha-numeric order
 | `wch_ch32v307`                         | WCH CH32v307 RISC-V board                                   |               |
 | `wch_ch32v307_llvm`                    | WCH CH32v307 RISC-V board (but using an LLVM toolchain)     |               |
 | `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |               |
+| `xtensa_esp32_p4`                      | Espressif (XTENSA) ESP32-P4 multicore RISC-V SoC            | X             |
 | `xtensa_esp32_s3`                      | Espressif (XTENSA) NodeMCU ESP32-S3                         | X             |
 | `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            | X             |
 
