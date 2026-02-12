@@ -15,18 +15,11 @@
   
 ******************************************************************************************/
 
-#include <riscv-csr.h>
-#include <interrupt.h>
 #include <gpio.h>
 
 #include <mcal_gpt.h>
 
 #include <util/utility/util_time.h>
-
-#include <cstdint>
-
-constexpr unsigned TIMEOUT_500MS { 160000000u };
-constexpr unsigned TIMEOUT_1S    { 320000000u };
 
 extern "C"
 {
@@ -40,9 +33,9 @@ auto main(void) -> int __attribute__((used,noinline));
 
 auto main(void) -> int
 {
-  const std::uint32_t core_id { osGetActiveCore() };
+  const bool core_id_is_zero { (std::uint32_t { UINT8_C(0) } == osGetActiveCore()) };
 
-  if(std::uint32_t { UINT8_C(0) } == core_id)
+  if(core_id_is_zero)
   {
     gpio_cfg_output(7);
     gpio_cfg_output(8);
@@ -69,41 +62,52 @@ auto main(void) -> int
   }
 
   // Go to the core-specific main subroutines.
-  if(std::uint32_t { UINT8_C(0) } == core_id)
+  if(core_id_is_zero)
   {
-    mcal::gpt::init(nullptr);
-
     ::main_core0();
   }
   else
   {
-    mcal::gpt::init(nullptr);
-
     ::main_core1();
   }
 }
 
 namespace local
 {
+  struct timer_core1_backend
+  {
+    using tick_type = std::uint64_t;
+
+    static auto get_now() -> tick_type { return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core1()); }
+  };
+
   using timer_type = util::timer<std::uint64_t>;
 
-  using timer_core1_type = util::timer<std::uint64_t, mcal::gpt::timer_core1_backend>;
+  constexpr typename timer_type::tick_type
+    led_timeout
+    {
+      static_cast<typename timer_type::tick_type>(timer_type::seconds(UINT8_C(1)))
+    };
+
+  using timer_core1_type = util::timer<std::uint64_t, timer_core1_backend>;
 } // namespace local
 
 auto main_core0() -> void
 {
   gpio_toggle_output_level(54);
 
-  local::timer_type led_timer(local::timer_type::seconds(1U));
+  mcal::gpt::init(nullptr);
 
-  // Endless loop: Never return or break.
-  while(1)
+  local::timer_type local_led_timer(local::led_timeout);
+
+  // Endless LED tollge-loop: Never return or break.
+  for(;;)
   {
-    if(led_timer.timeout())
+    if(local_led_timer.timeout())
     {
       gpio_toggle_output_level(54);
 
-      led_timer.start_interval(local::timer_type::seconds(1U));
+      local_led_timer.start_interval(local::led_timeout);
     }
   }
 }
@@ -112,16 +116,18 @@ auto main_core1() -> void
 {
   gpio_toggle_output_level(19);
 
-  local::timer_core1_type led_timer(local::timer_type::seconds(1U));
+  mcal::gpt::init(nullptr);
 
-  // Endless loop: Never return or break.
-  while(1)
+  local::timer_core1_type local_led_timer(local::led_timeout);
+
+  // Endless LED tollge-loop: Never return or break.
+  for(;;)
   {
-    if(led_timer.timeout())
+    if(local_led_timer.timeout())
     {
       gpio_toggle_output_level(19);
 
-      led_timer.start_interval(local::timer_type::seconds(1U));
+      local_led_timer.start_interval(local::led_timeout);
     }
   }
 }

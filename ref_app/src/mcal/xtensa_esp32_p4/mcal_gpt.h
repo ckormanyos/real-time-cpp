@@ -24,13 +24,6 @@
         static auto get_time_elapsed() -> value_type;
         static auto get_time_elapsed_core1() -> value_type;
       };
-
-      struct timer_core1_backend
-      {
-        using tick_type = std::uint64_t;
-
-        static auto get_now() -> tick_type { return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core1()); }
-      };
     }
   }
 
