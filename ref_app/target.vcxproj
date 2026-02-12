@@ -1283,7 +1283,8 @@
     <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp" />
     <ClCompile Include="target\micros\xtensa32\startup\esp_stubs.cpp" />
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main.c" />
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main_cores.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\gpio.c" />
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\intvect.c" />
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\Startup.c" />

@@ -1166,7 +1166,7 @@
     <ClCompile Include="target\micros\r7fa4m1ab\startup\int_vect.cpp">
       <Filter>micros\r7fa4m1ab\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main.cpp">
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main.c">
       <Filter>micros\xtensa_esp32_p4\startup\Code\Appli</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\gpio.c">
@@ -1177,6 +1177,9 @@
     </ClCompile>
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\Startup.c">
       <Filter>micros\xtensa_esp32_p4\startup\Code\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main_cores.cpp">
+      <Filter>micros\xtensa_esp32_p4\startup\Code\Appli</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

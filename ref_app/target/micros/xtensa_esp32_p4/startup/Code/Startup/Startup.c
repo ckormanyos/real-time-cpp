@@ -58,7 +58,7 @@ static void Startup_InitMcuSystem(void);
 //=========================================================================================
 // Extern function prototype
 //=========================================================================================
-extern int main(void) __attribute__((used,noinline));
+extern int main_x(void) __attribute__((used,noinline));
 
 //-----------------------------------------------------------------------------------------
 /// \brief  Startup_Init function
@@ -148,7 +148,7 @@ static void Startup_InitCtors(void)
 static void Startup_RunApplication(void)
 {
   /* check the weak function */
-  if((unsigned int) &main != 0)
+  if((unsigned int) &main_x != 0)
   {
 #ifdef HP_CORES_SMP_MODE
      // note: RISC-V has no WFE/SEV instructions to synchronize SMP system
@@ -161,7 +161,7 @@ static void Startup_RunApplication(void)
 #endif
 
     // Call the main function.
-    main();
+    main_x();
   }
 
   // Catch unexpected exit from main or if main does not exist.

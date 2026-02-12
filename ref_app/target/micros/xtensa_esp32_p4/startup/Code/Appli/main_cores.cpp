@@ -23,54 +23,13 @@
 
 extern "C"
 {
-  uint32_t osGetActiveCore(void);
-}
+  extern auto osGetActiveCore(void) -> std::uint32_t;
 
-auto main_core0() -> void;
-auto main_core1() -> void;
+  auto main_core0() -> void;
+  auto main_core1() -> void;
+}
 
 auto main(void) -> int __attribute__((used,noinline));
-
-auto main(void) -> int
-{
-  const bool core_id_is_zero { (std::uint32_t { UINT8_C(0) } == osGetActiveCore()) };
-
-  if(core_id_is_zero)
-  {
-    gpio_cfg_output(7);
-    gpio_cfg_output(8);
-    gpio_cfg_output(24);
-    gpio_cfg_output(25);
-    gpio_cfg_output(46);
-    gpio_cfg_output(47);
-    gpio_cfg_output(48);
-    gpio_cfg_output(54);
-    gpio_cfg_output(20);
-    gpio_cfg_output(19);
-    gpio_cfg_output(18);
-    gpio_cfg_output(17);
-    gpio_cfg_output(16);
-    gpio_cfg_output(15);
-    gpio_cfg_output(14);
-    gpio_cfg_output(33);
-    gpio_cfg_output(32);
-    gpio_cfg_output(27);
-    gpio_cfg_output(26);
-    gpio_cfg_output(23);
-    gpio_cfg_output(32);
-    gpio_cfg_output(21);
-  }
-
-  // Go to the core-specific main subroutines.
-  if(core_id_is_zero)
-  {
-    ::main_core0();
-  }
-  else
-  {
-    ::main_core1();
-  }
-}
 
 namespace local
 {
@@ -92,6 +51,7 @@ namespace local
   using timer_core1_type = util::timer<std::uint64_t, timer_core1_backend>;
 } // namespace local
 
+extern "C"
 auto main_core0() -> void
 {
   gpio_toggle_output_level(54);
@@ -112,6 +72,7 @@ auto main_core0() -> void
   }
 }
 
+extern "C"
 auto main_core1() -> void
 {
   gpio_toggle_output_level(19);

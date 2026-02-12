@@ -14,6 +14,7 @@ FILES_CPP      :=
 FILES_TGT      := $(PATH_APP)/mcal/$(TGT)/mcal_gpt                                        \
                   $(PATH_APP)/mcal/$(TGT)/mcal_wdg                                        \
                   $(PATH_TGT)/startup/Code/Appli/main                                     \
+                  $(PATH_TGT)/startup/Code/Appli/main_cores                               \
                   $(PATH_TGT)/startup/Code/Mcal/gpio                                      \
                   $(PATH_TGT)/startup/Code/Startup/boot                                   \
                   $(PATH_TGT)/startup/Code/Startup/intvect                                \

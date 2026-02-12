@@ -26,6 +26,7 @@
 .type _start, @function
 .align 2
 .globl _start
+.extern main_x
 
 .set mtvt, 0x307
 .set msip, 0x20000000
@@ -63,7 +64,7 @@ _start:
          li a0, 0
          sw a0, 0(a5)
          la sp, __CORE1_STACK_TOP
-         jal main
+         jal main_x
          j .
 
 /*******************************************************************************************
