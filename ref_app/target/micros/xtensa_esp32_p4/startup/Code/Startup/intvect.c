@@ -27,7 +27,6 @@ static void UndefinedHandler(void);
 static void UndefinedHandler(void){ for(;;); }
 
 void Isr_SW_Interrupt      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIMER_Interrupt   (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_ExtInt00          (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_ExtInt01          (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_ExtInt02          (void) __attribute__((weak, alias("UndefinedHandler")));
@@ -75,7 +74,7 @@ const InterruptHandler __attribute__((aligned(64))) InterruptVectorTable[] =
     (InterruptHandler)&UndefinedHandler,      /* IRQ 04  Reserved  */
     (InterruptHandler)&UndefinedHandler,      /* IRQ 05  Reserved  */
     (InterruptHandler)&UndefinedHandler,      /* IRQ 06  Reserved  */
-    (InterruptHandler)&Isr_TIMER_Interrupt,   /* IRQ 07  M mode timer interrupt */
+    (InterruptHandler)&UndefinedHandler,      /* IRQ 07  M mode timer interrupt */
     (InterruptHandler)&UndefinedHandler,      /* IRQ 08  Reserved  */
     (InterruptHandler)&UndefinedHandler,      /* IRQ 09  Reserved  */
     (InterruptHandler)&UndefinedHandler,      /* IRQ 10  Reserved  */

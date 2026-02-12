@@ -1372,6 +1372,12 @@
     <ClCompile Include="src\mcal\r7fa4m1ab\mcal_spi.cpp">
       <Filter>src\mcal\r7fa4m1ab</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_gpt.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_wdg.cpp">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -3124,6 +3130,12 @@
       <Filter>src\mcal\r7fa4m1ab</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_reg.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_gpt.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_wdg.h">
       <Filter>src\mcal\xtensa_esp32_p4</Filter>
     </ClInclude>
   </ItemGroup>

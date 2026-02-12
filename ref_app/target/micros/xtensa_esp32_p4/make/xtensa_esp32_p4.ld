@@ -54,9 +54,19 @@ SECTIONS
   .text : ALIGN(4)
   {
     PROVIDE(__CODE_BASE_ADDRESS = .);
+    . = ALIGN(4);
     *(.boot)
+    . = ALIGN(4);
+    *(.progmem*)
+    . = ALIGN(4);
     *(.text)
+    . = ALIGN(4);
     *(.text*)
+    . = ALIGN(4);
+    *(.glue_7)
+    . = ALIGN(4);
+    *(.glue_7t)
+    . = ALIGN(4);
     . = ALIGN(4);
   } > FLASH
 
@@ -64,8 +74,14 @@ SECTIONS
   .rodata : ALIGN(4)
   {
     PROVIDE(__RODATA_BASE_ADDRESS = .);
+    . = ALIGN(4);
     *(.rodata)
+    . = ALIGN(4);
     *(.rodata*)
+    . = ALIGN(4);
+    *(.srodata)
+    . = ALIGN(4);
+    *(.srodata*)
   } > FLASH
 
  /* Section for constructors */
@@ -114,6 +130,29 @@ SECTIONS
     PROVIDE(__CODE_END_ADDRESS = .);
   } > FLASH
 
+  .riscv.extab :
+  {
+    . = ALIGN(4);
+    *(.riscv.extab)
+    *(.gnu.linkonce.riscvextab.*)
+    . = ALIGN(4);
+  } > FLASH
+
+  .exidx :
+  {
+    . = ALIGN(4);
+    PROVIDE(__exidx_start = .);
+    *(.riscv.exidx*)
+    . = ALIGN(4);
+    PROVIDE(__exidx_end = .);
+  } > FLASH
+
+  .riscv.attributes : ALIGN(4)
+  {
+    *(.riscv.attributes)
+    . = ALIGN(4);
+  } > FLASH
+
   /* The ROM-to-RAM initialized data sections */
   .data : ALIGN(4) 
   {
@@ -129,6 +168,9 @@ SECTIONS
     *(.bss*)
     . = ALIGN(4);
   } > RAM
+
+  PROVIDE(end = .);
+  PROVIDE(_fini = .);
 
   /* stack definition */
   .stack_core0 :
@@ -149,5 +191,4 @@ SECTIONS
 
   /* ROM APIs */
   printf = 0x4fc00024;
-
 }

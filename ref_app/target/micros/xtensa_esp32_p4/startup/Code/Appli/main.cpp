@@ -16,9 +16,12 @@
 ******************************************************************************************/
 
 #include <riscv-csr.h>
-#include <esp32p4.h>
 #include <interrupt.h>
 #include <gpio.h>
+
+#include <mcal_gpt.h>
+
+#include <util/utility/util_time.h>
 
 #include <cstdint>
 
@@ -28,14 +31,18 @@ constexpr unsigned TIMEOUT_1S    { 320000000u };
 extern "C"
 {
   uint32_t osGetActiveCore(void);
-  void __attribute__((interrupt)) Isr_TIMER_Interrupt(void);
 }
+
+auto main_core0() -> void;
+auto main_core1() -> void;
 
 auto main(void) -> int __attribute__((used,noinline));
 
 auto main(void) -> int
 {
-  if(0 == osGetActiveCore())
+  const std::uint32_t core_id { osGetActiveCore() };
+
+  if(std::uint32_t { UINT8_C(0) } == core_id)
   {
     gpio_cfg_output(7);
     gpio_cfg_output(8);
@@ -61,38 +68,60 @@ auto main(void) -> int
     gpio_cfg_output(21);
   }
 
-  // Set the timer interrupt as hardware vectored in the CLIC.
-  CLIC->interrupt[INT_TIMER_ID].clicintattr = 1;
+  // Go to the core-specific main subroutines.
+  if(std::uint32_t { UINT8_C(0) } == core_id)
+  {
+    mcal::gpt::init(nullptr);
 
-  // Enable the timer machine interrupt in the CLIC.
-  CLIC->interrupt[INT_TIMER_ID].clicintie   = 1;
+    ::main_core0();
+  }
+  else
+  {
+    mcal::gpt::init(nullptr);
 
-  // Configure the sampling mode of MTIME.
-  CLINT_MTIMECTL |= (3ul << 4);
+    ::main_core1();
+  }
+}
 
-  // Set the MTIME timeout.
-  CLINT_MTIMECMP = (uint64_t)(CLINT_MTIME + TIMEOUT_1S);
+namespace local
+{
+  using timer_type = util::timer<std::uint64_t>;
+
+  using timer_core1_type = util::timer<std::uint64_t, mcal::gpt::timer_core1_backend>;
+} // namespace local
+
+auto main_core0() -> void
+{
+  gpio_toggle_output_level(54);
+
+  local::timer_type led_timer(local::timer_type::seconds(1U));
 
   // Endless loop: Never return or break.
   while(1)
   {
-    asm volatile("nop");
+    if(led_timer.timeout())
+    {
+      gpio_toggle_output_level(54);
+
+      led_timer.start_interval(local::timer_type::seconds(1U));
+    }
   }
 }
 
-extern "C"
-void Isr_TIMER_Interrupt(void)
+auto main_core1() -> void
 {
-  CLINT_MTIMECMP = (uint64_t)(CLINT_MTIME + TIMEOUT_1S);
+  gpio_toggle_output_level(19);
 
-  const std::uint32_t core_id { osGetActiveCore() };
+  local::timer_core1_type led_timer(local::timer_type::seconds(1U));
 
-  if(std::uint32_t { UINT8_C(0) } == core_id)
+  // Endless loop: Never return or break.
+  while(1)
   {
-    gpio_toggle_output_level(54);
-  }
-  else if(std::uint32_t { UINT8_C(1) } == core_id)
-  {
-    gpio_toggle_output_level(19);
+    if(led_timer.timeout())
+    {
+      gpio_toggle_output_level(19);
+
+      led_timer.start_interval(local::timer_type::seconds(1U));
+    }
   }
 }

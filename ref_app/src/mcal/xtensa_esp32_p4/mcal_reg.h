@@ -14,7 +14,7 @@
   {
     namespace reg
     {
-      constexpr std::uint32_t clint_base        { UINT32_C(0x02000000) };
+      constexpr std::uint32_t clint_base        { UINT32_C(0x20000000) };
       constexpr std::uint32_t clint_mtime       { clint_base + static_cast<std::uint32_t>(UINT32_C(0x0000BFF8)) };
       constexpr std::uint32_t clint_mtimeh      { clint_base + static_cast<std::uint32_t>(UINT32_C(0x0000BFFC)) };
       constexpr std::uint32_t clint_mtimecmp    { clint_base + static_cast<std::uint32_t>(UINT32_C(0x00004000)) };
