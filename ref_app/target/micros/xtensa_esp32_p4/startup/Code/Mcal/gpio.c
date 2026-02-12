@@ -1,3 +1,12 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2026.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
+
 /******************************************************************************************
   Filename    : gpio.c
   
@@ -15,15 +24,17 @@
   
 ******************************************************************************************/
 
-//-----------------------------------------------------------------------------------------
-// Includes
-//-----------------------------------------------------------------------------------------
 #include <gpio.h>
 
+#include <stdint.h>
 
-//-----------------------------------------------------------------------------------------
-// Types
-//-----------------------------------------------------------------------------------------
+#define __IM   volatile const      /*! Defines 'read only' structure member permissions */
+#define __OM   volatile            /*! Defines 'write only' structure member permissions */
+#define __IOM  volatile            /*! Defines 'read / write' structure member permissions */
+
+#define GPIO_BASE                   0x500E0000UL
+#define LP_IO_MUX_BASE              0x5012B000UL
+#define IO_MUX_BASE                 0x500E1000UL
 
 typedef union
 {

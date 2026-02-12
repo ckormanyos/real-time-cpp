@@ -1,3 +1,12 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2026.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
+
 /******************************************************************************************
   Filename    : main.c
   
@@ -15,9 +24,8 @@
   
 ******************************************************************************************/
 
-#include <gpio.h>
-
 #include <stdbool.h>
+#include <stdint.h>
 
 extern uint32_t osGetActiveCore(void);
 
@@ -30,32 +38,6 @@ void main_x(void)
 {
   const bool core_id_is_zero = ((uint32_t) UINT8_C(0) == osGetActiveCore());
 
-  if(core_id_is_zero)
-  {
-    gpio_cfg_output(7);
-    gpio_cfg_output(8);
-    gpio_cfg_output(24);
-    gpio_cfg_output(25);
-    gpio_cfg_output(46);
-    gpio_cfg_output(47);
-    gpio_cfg_output(48);
-    gpio_cfg_output(54);
-    gpio_cfg_output(20);
-    gpio_cfg_output(19);
-    gpio_cfg_output(18);
-    gpio_cfg_output(17);
-    gpio_cfg_output(16);
-    gpio_cfg_output(15);
-    gpio_cfg_output(14);
-    gpio_cfg_output(33);
-    gpio_cfg_output(32);
-    gpio_cfg_output(27);
-    gpio_cfg_output(26);
-    gpio_cfg_output(23);
-    gpio_cfg_output(32);
-    gpio_cfg_output(21);
-  }
-
   // Go to the core-specific main subroutines.
   if(core_id_is_zero)
   {
@@ -65,4 +47,13 @@ void main_x(void)
   {
     main_core1();
   }
+}
+
+int main(void) __attribute__((used,noinline));
+
+void main_caller();
+
+void main_caller()
+{
+  (void) main();
 }

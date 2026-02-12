@@ -1,23 +1,15 @@
-/******************************************************************************************
-  Filename    : main.c
-  
-  Core        : RISC-V
-  
-  MCU         : ESP32-P4
-    
-  Author      : Chalandi Amine
- 
-  Owner       : Chalandi Amine
-  
-  Date        : 25.01.2026
-  
-  Description : Application main function
-  
-******************************************************************************************/
-
-#include <gpio.h>
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2026.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
 
 #include <mcal_gpt.h>
+#include <mcal_led.h>
+#include <mcal_osc.h>
+#include <mcal_port.h>
+#include <mcal_wdg.h>
 
 #include <util/utility/util_time.h>
 
@@ -27,6 +19,7 @@ extern "C"
 
   auto main_core0() -> void;
   auto main_core1() -> void;
+  auto main_caller() -> void;
 }
 
 auto main(void) -> int __attribute__((used,noinline));
@@ -54,39 +47,34 @@ namespace local
 extern "C"
 auto main_core0() -> void
 {
-  gpio_toggle_output_level(54);
+  mcal::wdg::init(nullptr);
+  mcal::osc::init(nullptr);
 
-  mcal::gpt::init(nullptr);
+  mcal::port::init(nullptr);
 
-  local::timer_type local_led_timer(local::led_timeout);
-
-  // Endless LED tollge-loop: Never return or break.
-  for(;;)
-  {
-    if(local_led_timer.timeout())
-    {
-      gpio_toggle_output_level(54);
-
-      local_led_timer.start_interval(local::led_timeout);
-    }
-  }
+  ::main_caller();
 }
 
 extern "C"
 auto main_core1() -> void
 {
-  gpio_toggle_output_level(19);
+  mcal::wdg::init(nullptr);
+  mcal::osc::init(nullptr);
 
   mcal::gpt::init(nullptr);
 
   local::timer_core1_type local_led_timer(local::led_timeout);
 
-  // Endless LED tollge-loop: Never return or break.
+  auto& my_led1_ref { mcal::led::led1() };
+
+  my_led1_ref.toggle();
+
+  // Endless LED1 togglee-loop: Never return or break.
   for(;;)
   {
     if(local_led_timer.timeout())
     {
-      gpio_toggle_output_level(19);
+      my_led1_ref.toggle();
 
       local_led_timer.start_interval(local::led_timeout);
     }

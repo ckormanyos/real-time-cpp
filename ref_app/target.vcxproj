@@ -1304,10 +1304,7 @@
   <ItemGroup>
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\core_macros.h" />
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h" />
-    <ClInclude Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\esp32p4.h" />
     <ClInclude Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\gpio.h" />
-    <ClInclude Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\interrupt.h" />
-    <ClInclude Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\riscv-csr.h" />
     <ClInclude Include="target\micros\xtensa_esp32_s3\startup\Std\core-isa.h" />
   </ItemGroup>
   <ItemGroup>

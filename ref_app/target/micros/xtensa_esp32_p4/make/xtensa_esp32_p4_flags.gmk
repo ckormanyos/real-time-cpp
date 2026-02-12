@@ -21,7 +21,6 @@ TGT_ALLFLAGS  = -O2                                                             
                 -march=rv32imafc_zicsr_zifencei_xesppie                           \
                 -mabi=ilp32f                                                      \
                 -msmall-data-limit=0                                              \
-                -ffreestanding                                                    \
                 -falign-functions=4                                               \
                 -fomit-frame-pointer                                              \
                 -fno-reorder-blocks-and-partition                                 \
