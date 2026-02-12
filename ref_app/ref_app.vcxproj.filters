@@ -3123,6 +3123,9 @@
     <ClInclude Include="src\mcal\r7fa4m1ab\mcal_benchmark.h">
       <Filter>src\mcal\r7fa4m1ab</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_reg.h">
+      <Filter>src\mcal\xtensa_esp32_p4</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -3367,9 +3370,6 @@
     </Text>
     <Text Include="tools\Util\msys64\usr\bin\README.md">
       <Filter>tools\Util\msys64\usr\bin</Filter>
-    </Text>
-    <Text Include="src\mcal\xtensa_esp32_p4\xtensa_esp32_p4.txt">
-      <Filter>src\mcal\xtensa_esp32_p4</Filter>
     </Text>
   </ItemGroup>
 </Project>

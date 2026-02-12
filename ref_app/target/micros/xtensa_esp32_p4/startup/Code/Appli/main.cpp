@@ -20,7 +20,6 @@
 #include <interrupt.h>
 #include <gpio.h>
 
-#include <cstdio>
 #include <cstdint>
 
 constexpr unsigned TIMEOUT_500MS { 160000000u };
@@ -28,10 +27,6 @@ constexpr unsigned TIMEOUT_1S    { 320000000u };
 
 extern "C"
 {
-  uint32_t sync_lock;
-
-  void osHwAcquireSpinLock(uint32_t* lock);
-  void osHwReleaseSpinLock(uint32_t* lock);
   uint32_t osGetActiveCore(void);
   void __attribute__((interrupt)) Isr_TIMER_Interrupt(void);
 }
@@ -40,11 +35,6 @@ auto main(void) -> int __attribute__((used,noinline));
 
 auto main(void) -> int
 {
-  osHwAcquireSpinLock(&sync_lock);
-  /* output a text message on the uart console */
-  printf("BareMetal ESP32-P4 SW is Alive on HP core%ld!\n\r", osGetActiveCore());
-  osHwReleaseSpinLock(&sync_lock);
-
   if(0 == osGetActiveCore())
   {
     gpio_cfg_output(7);
@@ -71,19 +61,19 @@ auto main(void) -> int
     gpio_cfg_output(21);
   }
 
-  /* set the timer interrupt as hardware vectored in the CLIC */
+  // Set the timer interrupt as hardware vectored in the CLIC.
   CLIC->interrupt[INT_TIMER_ID].clicintattr = 1;
 
-  /* enable timer machine interrupt in the CLIC */
+  // Enable the timer machine interrupt in the CLIC.
   CLIC->interrupt[INT_TIMER_ID].clicintie   = 1;
 
-  /* configure the sampling mode of MTIME */
+  // Configure the sampling mode of MTIME.
   CLINT_MTIMECTL |= (3ul << 4);
 
-  /* set MTIME timeout to 500ms */
+  // Set the MTIME timeout.
   CLINT_MTIMECMP = (uint64_t)(CLINT_MTIME + TIMEOUT_1S);
 
-  /* endless loop */
+  // Endless loop: Never return or break.
   while(1)
   {
     asm volatile("nop");
@@ -95,11 +85,13 @@ void Isr_TIMER_Interrupt(void)
 {
   CLINT_MTIMECMP = (uint64_t)(CLINT_MTIME + TIMEOUT_1S);
 
-  if(0 == osGetActiveCore())
+  const std::uint32_t core_id { osGetActiveCore() };
+
+  if(std::uint32_t { UINT8_C(0) } == core_id)
   {
     gpio_toggle_output_level(54);
   }
-  else
+  else if(std::uint32_t { UINT8_C(1) } == core_id)
   {
     gpio_toggle_output_level(19);
   }

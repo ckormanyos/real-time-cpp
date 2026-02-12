@@ -87,18 +87,18 @@ void mcal::gpt::init(const config_type*)
     using clint_mtimecmp_reg_address_type = std::uint32_t;
     using clint_mtimecmp_reg_value_type   = std::uint64_t;
 
-    using clint_mtimecmp_reg_access_type =
+    using clint_mtimecmp_reg_set_type =
       mcal::reg::reg_access_static<clint_mtimecmp_reg_address_type,
                                    clint_mtimecmp_reg_value_type,
                                    mcal::reg::clint_mtimecmp,
                                    (std::numeric_limits<clint_mtimecmp_reg_value_type>::max)()>;
 
-    static_assert(std::is_same<typename clint_mtimecmp_reg_access_type::register_value_type, clint_mtimecmp_reg_value_type>::value,
+    static_assert(std::is_same<typename clint_mtimecmp_reg_set_type::register_value_type, clint_mtimecmp_reg_value_type>::value,
                   "Error: Unexpected clint_mtimecmp register value type");
 
     // Set the 64-bit mtimer compare register to its maximum value.
     // This results in an essentially infinite timeout.
-    clint_mtimecmp_reg_access_type::reg_set();
+    clint_mtimecmp_reg_set_type::reg_set();
 
     gpt_is_initialized() = true;
   }

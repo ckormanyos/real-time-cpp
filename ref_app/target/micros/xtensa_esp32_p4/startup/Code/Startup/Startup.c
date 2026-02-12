@@ -21,13 +21,15 @@ typedef struct
   unsigned long  sourceAddr;  /* Source Address (section in ROM memory) */
   unsigned long  targetAddr;  /* Target Address (section in RAM memory) */
   unsigned long  size;        /* length of section (bytes)              */
-} runtimeCopyTable_t;
+}
+runtimeCopyTable_t;
 
 typedef struct
 {
   unsigned long  addr;  /* Source Address (section in RAM memory) */
   unsigned long  size;  /* Length of section (bytes)              */
-} runtimeClearTable_t;
+}
+runtimeClearTable_t;
 
 //=========================================================================================
 // Linker variables
@@ -69,16 +71,15 @@ void Startup_Init(void)
 {
   /* Initialize the MCU system */
   Startup_InitMcuSystem();
-  
+
   /* Initialize the RAM memory */
   Startup_InitRam();
-  
+
   /* Initialize the non-local C++ objects */
   Startup_InitCtors();
-  
+
   /* Run the main application */
   Startup_RunApplication();
-
 }
 
 //-----------------------------------------------------------------------------------------
@@ -150,16 +151,20 @@ static void Startup_RunApplication(void)
   if((unsigned int) &main != 0)
   {
 #ifdef HP_CORES_SMP_MODE
-     /* note: RISC-V has no WFE/SEV instructions to synchronize SMP system
-              so I'm using CLINT to synchronize both HP cores on ESP32-P4 */
-    /* notify core1 that the setup of the runtime environment is done (by setting the SW interrupt pending bit on the core1's CLINT) */
+     // note: RISC-V has no WFE/SEV instructions to synchronize SMP system
+     //       so I am using CLINT to synchronize both HP cores on ESP32-P4
+
+     // Notify core1 that the setup of the runtime environment is done
+     // by setting the SW interrupt pending bit in CLINT on core1.
+
     *(volatile uint32_t*)0x20010000 = 1;
 #endif
-    /* Call the main function */
+
+    // Call the main function.
     main();
   }
 
-  /* Catch unexpected exit from main or if main does not exist */
+  // Catch unexpected exit from main or if main does not exist.
   Startup_Unexpected_Exit();
 }
 
@@ -174,6 +179,7 @@ static void Startup_Unexpected_Exit(void)
 {
   for(;;);
 }
+
 //-----------------------------------------------------------------------------------------
 /// \brief  Startup_InitMcuSystem function
 ///
@@ -183,5 +189,5 @@ static void Startup_Unexpected_Exit(void)
 //-----------------------------------------------------------------------------------------
 static void Startup_InitMcuSystem(void)
 {
-  /* system clock is set by the SBL */
+  // The system clock is set by the SBL.
 }

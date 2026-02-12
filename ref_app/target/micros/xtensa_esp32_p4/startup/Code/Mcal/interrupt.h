@@ -25,21 +25,24 @@ extern "C"
 {
 #endif
 
-typedef struct {
+typedef struct
+{
 
   uint8_t clicintip;   /* Interrupt pending register      */
   uint8_t clicintie;   /* Interrupt enable register       */
   uint8_t clicintattr; /* Interrupt attribute register    */
   uint8_t clicintct;   /* Interrupt level control register*/
-}clicint_t;
+}
+clicint_t;
 
-typedef struct {
-
+typedef struct
+{
   uint32_t mcliccfg;                                       /* CLIC machine mode global configuration register */
   uint32_t clicinfo;                                       /* CLIC information register                       */
   uint32_t mintthresh;                                     /* CLIC machine mode interrupt threshold register  */
  clicint_t interrupt[48] __attribute__((aligned(0x1000))); /* CLIC interrupt configuration registers          */
-}clic_t;
+}
+clic_t;
 
 #define CLIC_BASE   0x20800000ul
 #define CLIC        ((volatile clic_t*)(CLIC_BASE))

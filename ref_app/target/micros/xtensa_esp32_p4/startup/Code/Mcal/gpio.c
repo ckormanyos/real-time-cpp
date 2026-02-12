@@ -18,17 +18,19 @@
 //-----------------------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------------------
-#include "gpio.h"
+#include <gpio.h>
 
 
 //-----------------------------------------------------------------------------------------
 // Types
 //-----------------------------------------------------------------------------------------
 
-typedef union {
+typedef union
+{
   volatile uint32_t reg;
- 
-  struct {
+
+  struct
+  {
     volatile uint32_t MCU_OE     : 1;
     volatile uint32_t SLP_SEL    : 1;
     volatile uint32_t MCU_WPD    : 1;
@@ -42,25 +44,33 @@ typedef union {
     volatile uint32_t MCU_SEL    : 3;
     volatile uint32_t FILTER_EN  : 1;
              uint32_t            : 16;
-  } bit;
-} IO_MUX_GPIO;
+  }
+  bit;
+}
+IO_MUX_GPIO;
 
-typedef union {
+typedef union
+{
   __IOM uint32_t reg;
-    
-  struct {
+
+  struct
+  {
     __IOM uint32_t OUT_SEL     : 9;
     __IOM uint32_t INV_SEL     : 1;
     __IOM uint32_t OEN_SEL     : 1;
     __IOM uint32_t OEN_INV_SEL : 1;
           uint32_t             : 20;
-  } bit;
-} GPIO_FUNC_OUT_SEL_CFG;
+  }
+  bit;
+}
+GPIO_FUNC_OUT_SEL_CFG;
 
-typedef union {
+typedef union
+{
   __IOM uint32_t reg;
-  
-  struct {
+
+  struct
+  {
     __IOM uint32_t REG_PAD_DRV       : 2;
     __IOM uint32_t REG_PAD_RDE       : 1;
     __IOM uint32_t REG_PAD_RUE       : 1;
@@ -72,8 +82,10 @@ typedef union {
     __IOM uint32_t REG_PAD_FUN_IE    : 1;
     __IOM uint32_t REG_PAD_FILTER_EN : 1;
           uint32_t                   : 20;
-  } bit;
-} LP_IO_MUX_GPIO;
+  }
+  bit;
+}
+LP_IO_MUX_GPIO;
 
 //-----------------------------------------------------------------------------------------
 /// \brief  
@@ -84,14 +96,16 @@ typedef union {
 //-----------------------------------------------------------------------------------------
 void gpio_cfg_output(uint8_t pin)
 {
-  if(pin > 54)
-     return;
-  
-  volatile IO_MUX_GPIO* pIO_MUX_GPIO = (volatile IO_MUX_GPIO*)(IO_MUX_BASE + 4ul + 4ul*pin);
-  volatile GPIO_FUNC_OUT_SEL_CFG* pGPIO_FUNC_OUT_SEL_CFG = (volatile GPIO_FUNC_OUT_SEL_CFG*)(GPIO_BASE + 0x558ul + 4ul*pin);
-  volatile LP_IO_MUX_GPIO* pLP_IO_MUX_GPIO = (volatile LP_IO_MUX_GPIO*)(LP_IO_MUX_BASE + 8ul + 4ul*pin);
-  volatile uint32_t* pGPIO_OUTx_W1TC     = (volatile uint32_t*)(GPIO_BASE + ((pin < 32u) ? (0x0Cul) : (0x18ul)));
-  volatile uint32_t* pGPIO_ENABLE1x_W1TS = (volatile uint32_t*)(GPIO_BASE + ((pin < 32u) ? (0x24ul) : (0x30ul)));
+  if((unsigned) pin > 54u)
+  {
+    return;
+  }
+
+  volatile IO_MUX_GPIO* pIO_MUX_GPIO = (volatile IO_MUX_GPIO*)(IO_MUX_BASE + 4u + 4u * (unsigned) pin);
+  volatile GPIO_FUNC_OUT_SEL_CFG* pGPIO_FUNC_OUT_SEL_CFG = (volatile GPIO_FUNC_OUT_SEL_CFG*)(GPIO_BASE + 0x558ul + 4u * (unsigned) pin);
+  volatile LP_IO_MUX_GPIO* pLP_IO_MUX_GPIO = (volatile LP_IO_MUX_GPIO*)(LP_IO_MUX_BASE + 8u + 4u * (unsigned) pin);
+  volatile uint32_t* pGPIO_OUTx_W1TC     = (volatile uint32_t*)(GPIO_BASE + (((unsigned) pin < 32u) ? 0x0Cu : 0x18u));
+  volatile uint32_t* pGPIO_ENABLE1x_W1TS = (volatile uint32_t*)(GPIO_BASE + (((unsigned) pin < 32u) ? 0x24u : 0x30u));
 
   /* configure the pinmux */
   pIO_MUX_GPIO->bit.FUN_DRV = 2;
@@ -109,8 +123,8 @@ void gpio_cfg_output(uint8_t pin)
   }
   
   /* drive the IO output low */
-  *pGPIO_OUTx_W1TC     = (uint32_t)(1ul << ((pin < 32ul) ? (pin) : (pin - 32ul)));
-  *pGPIO_ENABLE1x_W1TS = (uint32_t)(1ul << ((pin < 32ul) ? (pin) : (pin - 32ul)));
+  *pGPIO_OUTx_W1TC     = (uint32_t)(1u << (((unsigned) pin < 32u) ? (unsigned) pin : ((unsigned) pin - 32u)));
+  *pGPIO_ENABLE1x_W1TS = (uint32_t)(1u << (((unsigned) pin < 32u) ? (unsigned) pin : ((unsigned) pin - 32u)));
 }
 
 //-----------------------------------------------------------------------------------------
@@ -122,12 +136,14 @@ void gpio_cfg_output(uint8_t pin)
 //-----------------------------------------------------------------------------------------
 void gpio_set_output_level(uint8_t pin, uint8_t level)
 {
-  volatile uint32_t* pGPIO_OUT_W1Tx = (volatile uint32_t*)(GPIO_BASE + ((pin < 32u) ? (8ul) : (0x14ul)) + ((level == 1u) ? (0ul) : (4ul)));
+  volatile uint32_t* pGPIO_OUT_W1Tx = (volatile uint32_t*)(GPIO_BASE + (((unsigned) pin < 32u) ? 8u : 0x14u) + (((unsigned) level == 1u) ? (0u) : (4u)));
 
-  if((pin > 54) && (level > 1))
+  if(((unsigned) pin > 54u) || ((unsigned) level > 1u))
+  {
     return;
+  }
 
-  *pGPIO_OUT_W1Tx = (uint32_t)(1ul << ((pin < 32ul) ? (pin) : (pin - 32ul)));
+  *pGPIO_OUT_W1Tx = (uint32_t)(1u << (((unsigned) pin < 32u) ? (unsigned) pin : ((unsigned) pin - 32u)));
 }
 
 //-----------------------------------------------------------------------------------------
@@ -139,10 +155,12 @@ void gpio_set_output_level(uint8_t pin, uint8_t level)
 //-----------------------------------------------------------------------------------------
 void gpio_toggle_output_level(uint8_t pin)
 {
-  volatile uint32_t* pGPIO_OUT = (volatile uint32_t*)(GPIO_BASE + 4ul + ((pin < 32u) ? 0ul : 0xcul));
+  volatile uint32_t* pGPIO_OUT = (volatile uint32_t*)(GPIO_BASE + 4u + (((unsigned) pin < 32u) ? 0u : 0xCu));
 
-  if(pin > 54)
+  if((unsigned) pin > 54u)
+  {
     return;
+  }
 
-  *pGPIO_OUT ^= (uint32_t)(1ul << ((pin < 32u) ? (pin) : (pin - 32u)));
+  *pGPIO_OUT ^= (uint32_t)(1u << (((unsigned) pin < 32u) ? (unsigned) pin : ((unsigned) pin - 32u)));
 }
