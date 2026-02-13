@@ -1402,9 +1402,6 @@
     <ClCompile Include="src\mcal\xtensa_esp32_p4\mcal_cpu.cpp">
       <Filter>src\mcal\xtensa_esp32_p4</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\xtensa_esp32_p4\gpio.c">
-      <Filter>src\mcal\xtensa_esp32_p4</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -3196,9 +3193,6 @@
       <Filter>src\mcal\xtensa_esp32_p4</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\xtensa_esp32_p4\mcal_cpu.h">
-      <Filter>src\mcal\xtensa_esp32_p4</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa_esp32_p4\gpio.h">
       <Filter>src\mcal\xtensa_esp32_p4</Filter>
     </ClInclude>
   </ItemGroup>

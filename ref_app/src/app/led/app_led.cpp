@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -29,24 +29,25 @@ namespace local
 
 auto local::app_led_timer() noexcept -> app_led_timer_type&
 {
-  static app_led_timer_type local_app_led_timer
-  {
-    local::app_led_delay
-  };
+  static app_led_timer_type local_app_led_timer { };
 
   return local_app_led_timer;
 }
 
 auto app::led::task_init() -> void
 {
+  local::app_led_timer().start_interval(local::app_led_delay);
+
   mcal::led::led0().toggle();
 }
 
 auto app::led::task_func() -> void
 {
-  if(local::app_led_timer().timeout())
+  auto& my_app_led_timer { local::app_led_timer() };
+
+  if(my_app_led_timer.timeout())
   {
-    local::app_led_timer().start_interval(local::app_led_delay);
+    my_app_led_timer.start_interval(local::app_led_delay);
 
     mcal::led::led0().toggle();
   }

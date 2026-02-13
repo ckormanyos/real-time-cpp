@@ -35,7 +35,6 @@ TGT_CXXFLAGS  = -std=c++23                                                      
 
 TGT_INCLUDES  = -I$(PATH_TGT)/startup/Code                                        \
                 -I$(PATH_TGT)/startup/Code/Appli                                  \
-                -I$(PATH_TGT)/startup/Code/Mcal                                   \
                 -I$(PATH_TGT)/startup/Code/Startup
 
 
