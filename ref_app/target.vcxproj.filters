@@ -358,6 +358,9 @@
     <Filter Include="micros\xtensa_esp32_p4\startup\Code\Startup">
       <UniqueIdentifier>{17889d6f-9174-40cb-bcad-01e3995207e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\xtensa_esp32_p4\startup\Code\StdLib">
+      <UniqueIdentifier>{65c5c603-a019-41d0-8a19-3cadaca7fd3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -1174,6 +1177,15 @@
     </ClCompile>
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main_cores.cpp">
       <Filter>micros\xtensa_esp32_p4\startup\Code\Appli</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\crt1.cpp">
+      <Filter>micros\xtensa_esp32_p4\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\crt0_init_ram.cpp">
+      <Filter>micros\xtensa_esp32_p4\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\StdLib\StdLib.cpp">
+      <Filter>micros\xtensa_esp32_p4\startup\Code\StdLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

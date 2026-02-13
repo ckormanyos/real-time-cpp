@@ -85,6 +85,7 @@ The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
 |---------------------------|-----------------|------------|
 | `am6254_soc`              |  0.37           |    1.0     |
 | `am335x`                  |  1.5            |    4.1     |
+| `xtensa_esp32_p4`         |  2.5            |    6.8     |
 | `stm32f446`               |  5.1            |    14      |
 | `rpi_pico2_rp2350`        |  6.3            |    17      |
 | `wch_ch32v307`            |  8.0            |    22      |
@@ -121,6 +122,9 @@ running the benchmark in about $10~{\text{ms}}$.
 Running on only one core (core0) of the $32$-bit
 controller of the `xtensa_esp32_s3` board results in
 a runtime of $9.1~{\text{ms}}$ for the calculation.
+The next generation `xtensa_esp32_p4` with a dual RISC-V core
+architecture is significantly faster coming in at $2.5~{\text{ms}}$
+(running the benchmark on one core).
 
 Using only one core (core1) on the $32$-bit ARM(R) Cortex(R) M0+
 controller of the `rpi_pico_rp2040` board results in a calculation

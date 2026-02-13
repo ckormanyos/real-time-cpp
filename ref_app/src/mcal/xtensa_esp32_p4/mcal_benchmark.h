@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_BENCHMARK_2014_04_16_H_
-  #define MCAL_BENCHMARK_2014_04_16_H_
+#ifndef MCAL_BENCHMARK_2014_04_16_H
+  #define MCAL_BENCHMARK_2014_04_16_H
 
   #include <mcal_port.h>
   #include <mcal_reg.h>
@@ -17,8 +17,8 @@
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin<UINT32_C(8)> benchmark_port_type;
+      typedef mcal::port::port_pin<unsigned { UINT8_C(18) }> benchmark_port_type;
     }
   }
 
-#endif // MCAL_BENCHMARK_2014_04_16_H_
+#endif // MCAL_BENCHMARK_2014_04_16_H

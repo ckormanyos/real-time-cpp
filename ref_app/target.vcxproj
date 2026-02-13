@@ -1287,6 +1287,9 @@
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main_cores.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\intvect.c" />
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\Startup.c" />
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\StdLib\StdLib.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\crt1.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt0.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt1.cpp" />

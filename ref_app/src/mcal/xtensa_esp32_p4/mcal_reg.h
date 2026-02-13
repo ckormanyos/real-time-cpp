@@ -21,6 +21,10 @@
       constexpr std::uint32_t clint_mtimecmph   { clint_base + static_cast<std::uint32_t>(UINT32_C(0x00004004)) };
 
       constexpr std::uint32_t clic_base         { UINT32_C(0x20800000) };
+
+      constexpr std::uint32_t gpio_base         { UINT32_C(0x500E0000) };
+      constexpr std::uint32_t lp_io_mux_base    { UINT32_C(0x5012B000) };
+      constexpr std::uint32_t io_mux_base       { UINT32_C(0x500E1000) };
     }
   }
 
