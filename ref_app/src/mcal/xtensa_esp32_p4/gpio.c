@@ -26,15 +26,15 @@
 
 #include <gpio.h>
 
-#include <stdint.h>
+#include <stddef.h>
 
 #define __IM   volatile const      /*! Defines 'read only' structure member permissions */
 #define __OM   volatile            /*! Defines 'write only' structure member permissions */
 #define __IOM  volatile            /*! Defines 'read / write' structure member permissions */
 
-#define GPIO_BASE                   0x500E0000UL
-#define LP_IO_MUX_BASE              0x5012B000UL
-#define IO_MUX_BASE                 0x500E1000UL
+constexpr uintptr_t GPIO_BASE      = (uintptr_t) 0x500E0000UL;
+constexpr uintptr_t LP_IO_MUX_BASE = (uintptr_t) 0x5012B000UL;
+constexpr uintptr_t IO_MUX_BASE    = (uintptr_t) 0x500E1000UL;
 
 typedef union
 {
@@ -105,7 +105,7 @@ LP_IO_MUX_GPIO;
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
-void gpio_cfg_output(uint8_t pin)
+void gpio_cfg_output(const uint8_t pin)
 {
   if((unsigned) pin > 54u)
   {
@@ -145,7 +145,7 @@ void gpio_cfg_output(uint8_t pin)
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
-void gpio_set_output_level(uint8_t pin, uint8_t level)
+void gpio_set_output_level(const uint8_t pin, const uint8_t level)
 {
   volatile uint32_t* pGPIO_OUT_W1Tx = (volatile uint32_t*)(GPIO_BASE + (((unsigned) pin < 32u) ? 8u : 0x14u) + (((unsigned) level == 1u) ? (0u) : (4u)));
 
@@ -164,7 +164,7 @@ void gpio_set_output_level(uint8_t pin, uint8_t level)
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
-void gpio_toggle_output_level(uint8_t pin)
+void gpio_toggle_output_level(const uint8_t pin)
 {
   volatile uint32_t* pGPIO_OUT = (volatile uint32_t*)(GPIO_BASE + 4u + (((unsigned) pin < 32u) ? 0u : 0xCu));
 

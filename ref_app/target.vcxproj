@@ -1285,7 +1285,6 @@
     <ClCompile Include="target\micros\xtensa32\startup\esp_stubs.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main.c" />
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main_cores.cpp" />
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\gpio.c" />
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\intvect.c" />
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\Startup.c" />
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt0.cpp" />
@@ -1304,7 +1303,6 @@
   <ItemGroup>
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\core_macros.h" />
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h" />
-    <ClInclude Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\gpio.h" />
     <ClInclude Include="target\micros\xtensa_esp32_s3\startup\Std\core-isa.h" />
   </ItemGroup>
   <ItemGroup>

@@ -10,9 +10,9 @@
 # ------------------------------------------------------------------------------
 
 FILES_TGT      := $(PATH_APP)/mcal/mcal_gcc_cxx_completion                                \
+                  $(PATH_APP)/mcal/$(TGT)/gpio                                            \
                   $(PATH_TGT)/startup/Code/Appli/main                                     \
                   $(PATH_TGT)/startup/Code/Appli/main_cores                               \
-                  $(PATH_TGT)/startup/Code/Mcal/gpio                                      \
                   $(PATH_TGT)/startup/Code/Startup/boot                                   \
                   $(PATH_TGT)/startup/Code/Startup/intvect                                \
                   $(PATH_TGT)/startup/Code/Startup/Startup
