@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2025.
+//  Copyright Christopher Kormanyos 2025 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,19 +8,15 @@
 // Originally from (but strongly modified from):
 /******************************************************************************************
   Filename    : StdLib.c
-
-  Core        : Xtensa LX7
-
-  MCU         : ESP32-S3
-
+    
   Author      : Chalandi Amine
-
+ 
   Owner       : Chalandi Amine
-
+  
   Date        : 22.02.2025
-
-  Description : Hand-written StdLib functions
-
+  
+  Description : Handwritten StdLib functions
+  
 ******************************************************************************************/
 
 #include <cstddef>
@@ -28,108 +24,6 @@
 #include <cstring>
 
 extern "C" {
-
-using DItype  =   signed long long;
-using UDItype = unsigned long long;
-using USItype = unsigned int;
-
-extern auto __builtin_clzll(unsigned long long) -> int;
-
-using DWtype  = DItype;
-using UDWtype = UDItype;
-using UWtype  = USItype;
-
-auto __udivdi3    (UDWtype n, UDWtype d)              -> UDWtype;
-auto __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp) -> UDWtype;
-auto __umoddi3    (UDWtype u, UDWtype v)              -> UDWtype;
-
-auto __udivdi3 (UDWtype n, UDWtype d) -> UDWtype
-{
-  return __udivmoddi4 (n, d, (UDWtype *) 0);
-}
-
-auto __umoddi3 (UDWtype u, UDWtype v) -> UDWtype
-{
-  UDWtype w;
-
-  (void) __udivmoddi4 (u, v, &w);
-
-  return w;
-}
-
-auto __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp) -> UDWtype
-{
-  UDWtype q = 0, r = n, y = d;
-  UWtype lz1, lz2, i, k;
-
-  // Implements align divisor shift dividend method. This algorithm
-  // aligns the divisor under the dividend and then perform number of
-  // test-subtract iterations which shift the dividend left. Number of
-  // iterations is k + 1 where k is the number of bit positions the
-  // divisor must be shifted left to align it under the dividend.
-  // quotient bits can be saved in the rightmost positions of the dividend
-  // as it shifts left on each test-subtract iteration.
-
-  if (y <= r)
-  {
-    lz1 = static_cast<USItype>(__builtin_clzll(static_cast<unsigned long long>(d)));
-    lz2 = static_cast<USItype>(__builtin_clzll(static_cast<unsigned long long>(n)));
-
-    k = lz1 - lz2;
-    y = (y << k);
-
-    // Dividend can exceed 2 ^ (width - 1) - 1 but still be less than the
-    // aligned divisor. Normal iteration can drops the high order bit
-    // of the dividend. Therefore, first test-subtract iteration is a
-    // special case, saving its quotient bit in a separate location and
-    // not shifting the dividend.
-
-    if (r >= y)
-    {
-      r = r - y;
-      q =  (1ULL << k);
-    }
-    
-    if (k > 0)
-    {
-      y = y >> 1;
-
-      // k additional iterations where k regular test subtract shift
-      // dividend iterations are done.
-
-      i = k;
-
-      do
-      {
-        if (r >= y)
-        {
-          r = ((r - y) << 1) + 1;
-        }
-        else
-        {
-          r =  (r << 1);
-        }
-
-        i = i - 1;
-      }
-      while (i != 0);
-
-      // First quotient bit is combined with the quotient bits resulting
-      // from the k regular iterations.
-
-      q = q + r;
-      r = r >> k;
-      q = q - (r << k);
-    }
-  }
-
-  if (rp)
-  {
-    *rp = r;
-  }
-
-  return q;
-}
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push

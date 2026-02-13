@@ -68,6 +68,8 @@ void Startup_Init(void)
 //-----------------------------------------------------------------------------------------
 static void Startup_InitRam(void)
 {
+  // Use my own standard static RAM initialization.
+
   extern void crt_init_ram(void);
 
   crt_init_ram();
@@ -82,6 +84,8 @@ static void Startup_InitRam(void)
 //-----------------------------------------------------------------------------------------
 static void Startup_InitCtors(void)
 {
+  // Use my own standard static constructor initialization.
+
   extern void crt_init_ctors();
 
   crt_init_ctors();
