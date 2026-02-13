@@ -355,9 +355,6 @@
     <Filter Include="micros\xtensa_esp32_p4\startup\Code\Appli">
       <UniqueIdentifier>{a4e34517-143d-491c-925b-5d3e7d7bd195}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa_esp32_p4\startup\Code\Mcal">
-      <UniqueIdentifier>{98fa75e2-bb60-4a37-9e72-f609821f0859}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\xtensa_esp32_p4\startup\Code\Startup">
       <UniqueIdentifier>{17889d6f-9174-40cb-bcad-01e3995207e5}</UniqueIdentifier>
     </Filter>
@@ -1169,9 +1166,6 @@
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main.c">
       <Filter>micros\xtensa_esp32_p4\startup\Code\Appli</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\gpio.c">
-      <Filter>micros\xtensa_esp32_p4\startup\Code\Mcal</Filter>
-    </ClCompile>
     <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\intvect.c">
       <Filter>micros\xtensa_esp32_p4\startup\Code\Startup</Filter>
     </ClCompile>
@@ -1199,9 +1193,6 @@
     </ClInclude>
     <ClInclude Include="target\micros\am6254_soc\Code\Startup\Core\a53\gic-500.h">
       <Filter>micros\am6254_soc\Code\Startup\Core\a53</Filter>
-    </ClInclude>
-    <ClInclude Include="target\micros\xtensa_esp32_p4\startup\Code\Mcal\gpio.h">
-      <Filter>micros\xtensa_esp32_p4\startup\Code\Mcal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

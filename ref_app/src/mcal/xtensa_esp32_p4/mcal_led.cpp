@@ -5,55 +5,28 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <gpio.h>
-
 #include <mcal_led.h>
 #include <mcal_led/mcal_led_port.h>
 #include <mcal_port.h>
-#include <mcal_reg.h>
 
-namespace local
+auto mcal::led::led0() -> mcal::led::led_base&
 {
-  class led_port54 : public mcal::led::led_boolean_state_base
-  {
-  public:
-    led_port54() noexcept
-    {
-      gpio_cfg_output(54);
-    }
+  using led0_port_type = mcal::port::port_pin<unsigned { UINT8_C(54) }>;
 
-    ~led_port54() override = default;
+  using led0_led_type = mcal::led::led_port<led0_port_type>;
 
-    auto toggle() noexcept -> void override
-    {
-      using base_class_type = led_boolean_state_base;
+  static led0_led_type l0;
 
-      gpio_toggle_output_level(54);
+  return l0;
+}
 
-      base_class_type::toggle();
-    }
-  };
+auto mcal::led::led1() -> mcal::led::led_base&
+{
+  using led1_port_type = mcal::port::port_pin<unsigned { UINT8_C(19) }>;
 
-  class led_port19 : public mcal::led::led_boolean_state_base
-  {
-  public:
-    led_port19() noexcept
-    {
-      gpio_cfg_output(19);
-    }
+  using led1_led_type = mcal::led::led_port<led1_port_type>;
 
-    ~led_port19() override = default;
+  static led1_led_type l1;
 
-    auto toggle() noexcept -> void override
-    {
-      using base_class_type = led_boolean_state_base;
-
-      gpio_toggle_output_level(19);
-
-      base_class_type::toggle();
-    }
-  };
-} // namespace local
-
-auto mcal::led::led0() -> mcal::led::led_base& { static local::led_port54 my_led { }; return my_led; }
-auto mcal::led::led1() -> mcal::led::led_base& { static local::led_port19 my_led { }; return my_led; }
+  return l1;
+}

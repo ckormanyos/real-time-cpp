@@ -27,7 +27,7 @@ TGT_ALLFLAGS  = -O2                                                             
                 -fno-reorder-functions                                            \
                 -DHP_CORES_SMP_MODE
 
-TGT_CFLAGS    = -std=c11                                                         \
+TGT_CFLAGS    = -std=c23                                                          \
                 $(TGT_ALLFLAGS)
 
 TGT_CXXFLAGS  = -std=c++23                                                        \
