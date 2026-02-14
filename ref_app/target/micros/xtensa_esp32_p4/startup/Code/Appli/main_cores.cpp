@@ -16,10 +16,10 @@
 extern "C"
 {
   extern auto osGetActiveCore(void) -> std::uint32_t;
+  extern auto main_caller(void) -> void;
 
   auto main_core0() -> void;
   auto main_core1() -> void;
-  auto main_caller() -> void;
 }
 
 auto main(void) -> int __attribute__((used,noinline));

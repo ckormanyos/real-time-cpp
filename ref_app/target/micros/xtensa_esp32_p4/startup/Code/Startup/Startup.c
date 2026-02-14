@@ -36,6 +36,8 @@ static void Startup_InitMcuSystem(void);
 // Extern function prototype
 //=========================================================================================
 extern int main_x(void) __attribute__((used,noinline));
+extern void crt_init_ram(void);
+extern void crt_init_ctors(void);
 
 //-----------------------------------------------------------------------------------------
 /// \brief  Startup_Init function
@@ -68,9 +70,7 @@ void Startup_Init(void)
 //-----------------------------------------------------------------------------------------
 static void Startup_InitRam(void)
 {
-  // Use my own standard static RAM initialization.
-
-  extern void crt_init_ram(void);
+  // Use the ref_app's standard static RAM initialization.
 
   crt_init_ram();
 }
@@ -84,9 +84,7 @@ static void Startup_InitRam(void)
 //-----------------------------------------------------------------------------------------
 static void Startup_InitCtors(void)
 {
-  // Use my own standard static constructor initialization.
-
-  extern void crt_init_ctors();
+  // Use the ref_app's standard static constructor initialization.
 
   crt_init_ctors();
 }
@@ -100,22 +98,18 @@ static void Startup_InitCtors(void)
 //-----------------------------------------------------------------------------------------
 static void Startup_RunApplication(void)
 {
-  /* check the weak function */
-  if((unsigned int) &main_x != 0)
-  {
-#ifdef HP_CORES_SMP_MODE
-     // note: RISC-V has no WFE/SEV instructions to synchronize SMP system
-     //       so I am using CLINT to synchronize both HP cores on ESP32-P4
+  #if defined(HP_CORES_SMP_MODE)
+  // note: RISC-V has no WFE/SEV instructions to synchronize SMP system
+  //       so I am using CLINT to synchronize both HP cores on ESP32-P4
 
-     // Notify core1 that the setup of the runtime environment is done
-     // by setting the SW interrupt pending bit in CLINT on core1.
+  // Notify core1 that the setup of the runtime environment is done
+  // by setting the SW interrupt pending bit in CLINT on core1.
 
-    *(volatile uint32_t*)0x20010000 = 1;
-#endif
+  *(volatile uint32_t*)0x20010000 = 1;
+  #endif
 
-    // Call the main function.
-    main_x();
-  }
+  // Call the main function.
+  main_x();
 
   // Catch unexpected exit from main or if main does not exist.
   Startup_Unexpected_Exit();

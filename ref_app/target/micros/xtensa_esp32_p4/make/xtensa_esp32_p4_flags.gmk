@@ -20,11 +20,9 @@ WARN_FLAGS   :=
 TGT_ALLFLAGS  = -O2                                                               \
                 -march=rv32imafc_zicsr_zifencei_xesppie                           \
                 -mabi=ilp32f                                                      \
-                -msmall-data-limit=0                                              \
+                -msmall-data-limit=32                                             \
                 -falign-functions=4                                               \
                 -fomit-frame-pointer                                              \
-                -fno-reorder-blocks-and-partition                                 \
-                -fno-reorder-functions                                            \
                 -DHP_CORES_SMP_MODE
 
 TGT_CFLAGS    = -std=c23                                                          \
@@ -51,35 +49,23 @@ TGT_LDFLAGS   = -nostdlib                                                       
 
 
 # ------------------------------------------------------------------------------
-# Rule to assemble source file (*.S) to object file (*.o).
-# ------------------------------------------------------------------------------
-
-ifeq ($(TYP_OS),WIN)
-TGT_GCC := $(PATH_TOOLS_CC)/$(GCC_PREFIX)-gcc.exe
-TGT_GCC := $(subst /,\,$(TGT_GCC))
-else
-TGT_GCC := $(GCC_PREFIX)-gcc
-endif
-
-
-# ------------------------------------------------------------------------------
 # Image file and flash batch file.
 # ------------------------------------------------------------------------------
 
-RULE_SPECIAL_MAKE_IMAGE_FILE :=
+RULE_SPECIAL_MAKE_IMAGE_FILE     :=
 
 ifeq ($(TYP_OS),WIN)
 
 ESP32S3_ESP_TOOL_DIR             := $(PATH_TOOLS)/espressif/esptool-v4.11.0-windows-amd64
 
-ESP32S3_ESP_TOOL_FLAGS_PROG      := --chip esp32p4                                          \
-                                    -p COM5 -b 460800                                       \
-                                    --before=default_reset                                  \
-                                    --after=hard_reset write_flash                          \
-                                    --flash_mode dio                                        \
-                                    --flash_freq 80m                                        \
-                                    --flash_size 32MB                                       \
-                                    0x2000 $(CURDIR)/$(PATH_TGT)/startup/Code/SBL/Output/SBL.bin      \
+ESP32S3_ESP_TOOL_FLAGS_PROG      := --chip esp32p4                                                  \
+                                    -p COM5 -b 460800                                               \
+                                    --before=default_reset                                          \
+                                    --after=hard_reset write_flash                                  \
+                                    --flash_mode dio                                                \
+                                    --flash_freq 80m                                                \
+                                    --flash_size 32MB                                               \
+                                    0x2000 $(CURDIR)/$(PATH_TGT)/startup/Code/SBL/Output/SBL.bin    \
                                     0x5000 $(CURDIR)/$(basename $(APP).$(TGT_SUFFIX)).bin
 
 
