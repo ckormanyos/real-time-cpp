@@ -20,11 +20,9 @@ WARN_FLAGS   :=
 TGT_ALLFLAGS  = -O2                                                               \
                 -march=rv32imafc_zicsr_zifencei_xesppie                           \
                 -mabi=ilp32f                                                      \
-                -msmall-data-limit=0                                              \
+                -msmall-data-limit=32                                             \
                 -falign-functions=4                                               \
                 -fomit-frame-pointer                                              \
-                -fno-reorder-blocks-and-partition                                 \
-                -fno-reorder-functions                                            \
                 -DHP_CORES_SMP_MODE
 
 TGT_CFLAGS    = -std=c23                                                          \

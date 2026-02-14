@@ -36,8 +36,8 @@ INPUT(libc.a libm.a libgcc.a)
 /******************************************************************************************
  Globals
 ******************************************************************************************/
-__STACK_SIZE_CORE0 = 1K;
-__STACK_SIZE_CORE1 = 1K;
+__STACK_SIZE_CORE0 = 4K;
+__STACK_SIZE_CORE1 = 4K;
 
 /******************************************************************************************
  Memory configuration
@@ -122,9 +122,15 @@ SECTIONS
     *(.data*)
     . = ALIGN(4);
     KEEP (*(.data*))
+    *(.sdata)
+    . = ALIGN(4);
+    KEEP (*(.sdata))
+    *(.sdata*)
+    . = ALIGN(4);
+    KEEP (*(.sdata*))
     _data_end = .;
   } > RAM  AT>FLASH
-  
+
   /* The uninitialized (zero-cleared) data sections */
   .bss : ALIGN(4)
   {
@@ -135,6 +141,12 @@ SECTIONS
     *(.bss*)
     . = ALIGN(4);
     KEEP (*(.bss*))
+    *(.sbss)
+    . = ALIGN(4);
+    KEEP (*(.sbss))
+    *(.sbss*)
+    . = ALIGN(4);
+    KEEP (*(.sbss*))
     _bss_end = .;
   } > RAM
 
