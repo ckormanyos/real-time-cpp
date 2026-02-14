@@ -61,7 +61,7 @@ static void Startup_Unexpected_Exit(void);
 static void Startup_InitSystemClock(void);
 static void Startup_InitSystemPeripheral(void);
 
-extern void main_x(void) ATTRIBUTE(used);
+extern void main_x(void) ATTRIBUTE(used,noinline);
 
 void Startup_Init(void)
 {

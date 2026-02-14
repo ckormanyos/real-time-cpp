@@ -17,7 +17,7 @@
 
 extern uint32_t GetActiveCoreId(void);
 
-extern int main(void) ATTRIBUTE(used);
+extern int main(void) ATTRIBUTE(used,noinline);
 
 //extern void main_core0(void);
 extern void main_core1(void);
@@ -25,9 +25,9 @@ extern void main_core2(void);
 extern void main_core3(void);
 extern void main_core0_init(void);
 
-void timer_isr(void) ATTRIBUTE(used);
-void main_x(void) ATTRIBUTE(used);
-static void main_init(const uint32_t ActiveCore) ATTRIBUTE(used);
+void timer_isr(void) ATTRIBUTE(used,noinline);
+void main_x(void) ATTRIBUTE(used,noinline);
+static void main_init(const uint32_t ActiveCore) ATTRIBUTE(used,noinline);
 
 void main_x(void)
 {

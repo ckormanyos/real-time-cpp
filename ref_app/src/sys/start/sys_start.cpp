@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,9 +11,9 @@
 #include <util/utility/util_attribute.h>
 
 #if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
-extern "C" auto app_main_loop() -> int ATTRIBUTE(used);
+extern "C" auto app_main_loop() -> int ATTRIBUTE(used, noinline);
 #else
-ATTRIBUTE(used) auto main() -> int;
+ATTRIBUTE(used, noinline) auto main() -> int;
 #endif
 
 #if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))

@@ -31,7 +31,7 @@
 
 #include <array>
 
-auto main() -> int ATTRIBUTE(used);
+auto main() -> int ATTRIBUTE(used,noinline);
 
 namespace
 {
