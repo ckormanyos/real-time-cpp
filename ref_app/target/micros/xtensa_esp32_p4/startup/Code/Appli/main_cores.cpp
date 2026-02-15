@@ -22,8 +22,6 @@ extern "C"
   auto main_core1() -> void;
 }
 
-auto main(void) -> int __attribute__((used,noinline));
-
 namespace local
 {
   struct timer_core1_backend
@@ -32,16 +30,6 @@ namespace local
 
     static auto get_now() -> tick_type { return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed_core1()); }
   };
-
-  using timer_type = util::timer<std::uint64_t>;
-
-  constexpr typename timer_type::tick_type
-    led_timeout
-    {
-      static_cast<typename timer_type::tick_type>(timer_type::seconds(UINT8_C(1)))
-    };
-
-  using timer_core1_type = util::timer<std::uint64_t, timer_core1_backend>;
 } // namespace local
 
 extern "C"
@@ -63,20 +51,30 @@ auto main_core1() -> void
 
   mcal::gpt::init(nullptr);
 
-  local::timer_core1_type local_led_timer(local::led_timeout);
+  using timer_core1_type = util::timer<std::uint64_t, local::timer_core1_backend>;
 
-  auto& my_led1_ref { mcal::led::led1() };
+  constexpr typename timer_core1_type::tick_type
+    led_core1_timeout
+    {
+      static_cast<typename timer_core1_type::tick_type>(timer_core1_type::seconds(UINT8_C(1)))
+    };
 
-  my_led1_ref.toggle();
+  timer_core1_type led_core1_timer(led_core1_timeout);
 
-  // Endless LED1 togglee-loop: Never return or break.
+  auto& my_led1_core1_ref { mcal::led::led1() };
+
+  my_led1_core1_ref.toggle();
+
+  // Enter an endless LED1 toggle-loop.
+  // Never return or break.
+
   for(;;)
   {
-    if(local_led_timer.timeout())
+    if(led_core1_timer.timeout())
     {
-      my_led1_ref.toggle();
+      my_led1_core1_ref.toggle();
 
-      local_led_timer.start_interval(local::led_timeout);
+      led_core1_timer.start_interval(led_core1_timeout);
     }
   }
 }
