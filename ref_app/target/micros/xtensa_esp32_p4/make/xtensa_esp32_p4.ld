@@ -122,6 +122,7 @@ SECTIONS
     *(.data*)
     . = ALIGN(4);
     KEEP (*(.data*))
+    _small_ram_begin = .;
     *(.sdata)
     . = ALIGN(4);
     KEEP (*(.sdata))
@@ -135,18 +136,19 @@ SECTIONS
   .bss : ALIGN(4)
   {
     _bss_begin = .;
-    *(.bss)
-    . = ALIGN(4);
-    KEEP (*(.bss))
-    *(.bss*)
-    . = ALIGN(4);
-    KEEP (*(.bss*))
     *(.sbss)
     . = ALIGN(4);
     KEEP (*(.sbss))
     *(.sbss*)
     . = ALIGN(4);
     KEEP (*(.sbss*))
+    _small_ram_end = .;
+    *(.bss)
+    . = ALIGN(4);
+    KEEP (*(.bss))
+    *(.bss*)
+    . = ALIGN(4);
+    KEEP (*(.bss*))
     _bss_end = .;
   } > RAM
 
@@ -174,4 +176,6 @@ SECTIONS
   printf = 0x4fc00024;
 
   _rom_data_begin = LOADADDR(.data);
+
+  _global_pointer = _small_ram_begin + (_small_ram_end - _small_ram_begin) / 2;
 }

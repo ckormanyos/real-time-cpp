@@ -21,6 +21,9 @@ TGT_ALLFLAGS  = -O2                                                             
                 -march=rv32imafc_zicsr_zifencei_xesppie                           \
                 -mabi=ilp32f                                                      \
                 -msmall-data-limit=32                                             \
+                -mrelax                                                           \
+                -mrelax                                                           \
+                -fno-common                                                       \
                 -falign-functions=4                                               \
                 -fomit-frame-pointer                                              \
                 -DHP_CORES_SMP_MODE
@@ -40,6 +43,7 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                                         \
                 -nostartfiles                                                     \
+                $(TGT_ALLFLAGS)                                                   \
                 -Wl,--no-warn-rwx-segments                                        \
                 -Wl,-z,max-page-size=4096                                         \
                 -Wl,-Map,$(APP).map                                               \

@@ -38,6 +38,7 @@
 .align 2
 .globl _start
 .extern main_x
+.extern _global_pointer
 
 .set mtvt, 0x307
 .set msip, 0x20000000
@@ -55,6 +56,9 @@ _start:
         li t0, 0x00006000
         csrs mstatus, t0
         fscsr x0
+
+        /* Set/enable the global pointer for small ram */
+        la gp, _global_pointer
 
          /* Read machine hart ID */
          csrr a0, mhartid
