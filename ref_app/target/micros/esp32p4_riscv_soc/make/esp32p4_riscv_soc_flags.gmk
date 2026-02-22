@@ -20,7 +20,7 @@ WARN_FLAGS   :=
 TGT_ALLFLAGS  = -O2                                                               \
                 -march=rv32imafc_zicsr_zifencei_xesppie                           \
                 -mabi=ilp32f                                                      \
-                -msmall-data-limit=32                                             \
+                -msmall-data-limit=64                                             \
                 -mrelax                                                           \
                 -mrelax                                                           \
                 -fno-common                                                       \

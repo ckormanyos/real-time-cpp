@@ -340,25 +340,25 @@
     <Filter Include="micros\r7fa4m1ab\startup">
       <UniqueIdentifier>{e85df680-7e70-4f5d-87c0-73dbb822c1ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa_esp32_p4">
+    <Filter Include="micros\esp32p4_riscv_soc">
       <UniqueIdentifier>{4ce9fafb-0c5d-4593-b8f8-c16c3fc11c9c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa_esp32_p4\make">
+    <Filter Include="micros\esp32p4_riscv_soc\make">
       <UniqueIdentifier>{c72d0dcc-9b1a-4a96-b2e4-0d2f5b65711c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa_esp32_p4\startup">
+    <Filter Include="micros\esp32p4_riscv_soc\startup">
       <UniqueIdentifier>{cdb1aef0-d686-4790-8231-17b7cd6185cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa_esp32_p4\startup\Code">
+    <Filter Include="micros\esp32p4_riscv_soc\startup\Code">
       <UniqueIdentifier>{b2aaad4e-1735-4de1-a6dc-ac965b62d05e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa_esp32_p4\startup\Code\Appli">
+    <Filter Include="micros\esp32p4_riscv_soc\startup\Code\Appli">
       <UniqueIdentifier>{a4e34517-143d-491c-925b-5d3e7d7bd195}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa_esp32_p4\startup\Code\Startup">
+    <Filter Include="micros\esp32p4_riscv_soc\startup\Code\Startup">
       <UniqueIdentifier>{17889d6f-9174-40cb-bcad-01e3995207e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa_esp32_p4\startup\Code\StdLib">
+    <Filter Include="micros\esp32p4_riscv_soc\startup\Code\StdLib">
       <UniqueIdentifier>{65c5c603-a019-41d0-8a19-3cadaca7fd3c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -801,17 +801,17 @@
     <None Include="target\micros\r7fa4m1ab\make\r7fa4m1ab_flags.gmk">
       <Filter>micros\r7fa4m1ab\make</Filter>
     </None>
-    <None Include="target\micros\xtensa_esp32_p4\make\xtensa_esp32_p4.ld">
-      <Filter>micros\xtensa_esp32_p4\make</Filter>
+    <None Include="target\micros\esp32p4_riscv_soc\make\esp32p4_riscv_soc.ld">
+      <Filter>micros\esp32p4_riscv_soc\make</Filter>
     </None>
-    <None Include="target\micros\xtensa_esp32_p4\make\xtensa_esp32_p4_files.gmk">
-      <Filter>micros\xtensa_esp32_p4\make</Filter>
+    <None Include="target\micros\esp32p4_riscv_soc\make\esp32p4_riscv_soc_files.gmk">
+      <Filter>micros\esp32p4_riscv_soc\make</Filter>
     </None>
-    <None Include="target\micros\xtensa_esp32_p4\make\xtensa_esp32_p4_flags.gmk">
-      <Filter>micros\xtensa_esp32_p4\make</Filter>
+    <None Include="target\micros\esp32p4_riscv_soc\make\esp32p4_riscv_soc_flags.gmk">
+      <Filter>micros\esp32p4_riscv_soc\make</Filter>
     </None>
-    <None Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\boot.s">
-      <Filter>micros\xtensa_esp32_p4\startup\Code\Startup</Filter>
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\Startup\boot.s">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\Startup</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1166,26 +1166,26 @@
     <ClCompile Include="target\micros\r7fa4m1ab\startup\int_vect.cpp">
       <Filter>micros\r7fa4m1ab\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main.c">
-      <Filter>micros\xtensa_esp32_p4\startup\Code\Appli</Filter>
+    <ClCompile Include="target\micros\esp32p4_riscv_soc\startup\crt0_init_ram.cpp">
+      <Filter>micros\esp32p4_riscv_soc\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\intvect.c">
-      <Filter>micros\xtensa_esp32_p4\startup\Code\Startup</Filter>
+    <ClCompile Include="target\micros\esp32p4_riscv_soc\startup\crt1.cpp">
+      <Filter>micros\esp32p4_riscv_soc\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Startup\Startup.c">
-      <Filter>micros\xtensa_esp32_p4\startup\Code\Startup</Filter>
+    <ClCompile Include="target\micros\esp32p4_riscv_soc\startup\Code\Appli\main.c">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\Appli</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\Appli\main_cores.cpp">
-      <Filter>micros\xtensa_esp32_p4\startup\Code\Appli</Filter>
+    <ClCompile Include="target\micros\esp32p4_riscv_soc\startup\Code\Appli\main_cores.cpp">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\Appli</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\crt1.cpp">
-      <Filter>micros\xtensa_esp32_p4\startup</Filter>
+    <ClCompile Include="target\micros\esp32p4_riscv_soc\startup\Code\Startup\intvect.c">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\Startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\crt0_init_ram.cpp">
-      <Filter>micros\xtensa_esp32_p4\startup</Filter>
+    <ClCompile Include="target\micros\esp32p4_riscv_soc\startup\Code\Startup\Startup.c">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\Startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_p4\startup\Code\StdLib\StdLib.cpp">
-      <Filter>micros\xtensa_esp32_p4\startup\Code\StdLib</Filter>
+    <ClCompile Include="target\micros\esp32p4_riscv_soc\startup\Code\StdLib\StdLib.cpp">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\StdLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

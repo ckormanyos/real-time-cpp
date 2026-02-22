@@ -75,6 +75,7 @@ The reference application supports the following targets (in alpha-numeric order
 | `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   | X             |
 | `bl602_sifive_e24_riscv`               | BL602 single-core RISC-V (SiFive E24)                       | X             |
 | `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |               |
+| `esp32p4_riscv_soc`                    | Espressif ESP32-P4 multicore RISC-V SoC                     | X             |
 | `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |               |
 | `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+          |               |
 | `nxp_imxrt1062`                        | Teensy 4.0 Board / NXP(R) iMXRT1062 ARM(R) Cortex(R)-M7     | X             |
@@ -96,7 +97,6 @@ The reference application supports the following targets (in alpha-numeric order
 | `wch_ch32v307`                         | WCH CH32v307 RISC-V board                                   |               |
 | `wch_ch32v307_llvm`                    | WCH CH32v307 RISC-V board (but using an LLVM toolchain)     |               |
 | `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |               |
-| `xtensa_esp32_p4`                      | Espressif (XTENSA) ESP32-P4 multicore RISC-V SoC            | X             |
 | `xtensa_esp32_s3`                      | Espressif (XTENSA) NodeMCU ESP32-S3                         | X             |
 | `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            | X             |
 
