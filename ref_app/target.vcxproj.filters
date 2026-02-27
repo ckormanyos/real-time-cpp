@@ -361,6 +361,12 @@
     <Filter Include="micros\esp32p4_riscv_soc\startup\Code\StdLib">
       <UniqueIdentifier>{65c5c603-a019-41d0-8a19-3cadaca7fd3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\esp32p4_riscv_soc\startup\Code\SBL">
+      <UniqueIdentifier>{78721b7f-e97c-4ac7-906a-a571af4377b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\esp32p4_riscv_soc\startup\Code\SBL\Output">
+      <UniqueIdentifier>{154f1c39-5085-471e-a5c9-444517255025}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -812,6 +818,24 @@
     </None>
     <None Include="target\micros\esp32p4_riscv_soc\startup\Code\Startup\boot.s">
       <Filter>micros\esp32p4_riscv_soc\startup\Code\Startup</Filter>
+    </None>
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\readme.md">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\SBL</Filter>
+    </None>
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.bin">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\SBL\Output</Filter>
+    </None>
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.elf">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\SBL\Output</Filter>
+    </None>
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.hex">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\SBL\Output</Filter>
+    </None>
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.map">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\SBL\Output</Filter>
+    </None>
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.readelf">
+      <Filter>micros\esp32p4_riscv_soc\startup\Code\SBL\Output</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

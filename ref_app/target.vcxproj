@@ -1071,6 +1071,12 @@
     <None Include="target\micros\esp32p4_riscv_soc\make\esp32p4_riscv_soc.ld" />
     <None Include="target\micros\esp32p4_riscv_soc\make\esp32p4_riscv_soc_files.gmk" />
     <None Include="target\micros\esp32p4_riscv_soc\make\esp32p4_riscv_soc_flags.gmk" />
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.bin" />
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.elf" />
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.hex" />
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.map" />
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.readelf" />
+    <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\readme.md" />
     <None Include="target\micros\esp32p4_riscv_soc\startup\Code\Startup\boot.s" />
     <None Include="target\micros\lpc11c24\make\lpc11c24.ld" />
     <None Include="target\micros\lpc11c24\make\lpc11c24_files.gmk" />
