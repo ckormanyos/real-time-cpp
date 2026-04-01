@@ -33,7 +33,7 @@ The steps of the build include the following.
 - <code>Assemble : crt0.s  to bin/crt0.o</code>
 - <code>Compile  : led.cpp to bin/led.o</code>
 - <code>Link     : objects to the absolute object file bin/led.elf</code>
-- <code>Extract  : executalbe hex file      : from bin/led.elf</code>
+- <code>Extract  : executable hex file      : from bin/led.elf</code>
 - <code>Extract  : assembly list file       : from bin/led.elf</code>
 - <code>Extract  : size information         : from bin/led.elf</code>
 - <code>Extract  : symbol name information  : from bin/led.elf</code>
@@ -105,8 +105,8 @@ namespace
 
 Use the commented out loop in the program to slow down
 the blinking for easier observation. The commented out
-loop is reproduced below within its contect in `main`.
-It is the line starting with `for(volatile std::uint8_t delay`...).
+loop is reproduced below within its context in `main`.
+It is the line starting with `for(volatile std::uint8_t delay...)`.
 
 ```cpp
 auto main() -> int
@@ -129,8 +129,8 @@ The `Win*` batch file searches for a pre-installed instance
 of the avr-g++ tool chain. 
 
 When in `Win*`, building the Example chapter02_02 project can
-accomplished in a cmd window. Use a command command such as
-shown below, where the full path of the pre-installed 
+accomplished in a cmd window. Use a command such as
+shown below, where the full path of the pre-installed
 gcc-avr is listed in its entirety.
 
 ```DOS
@@ -172,5 +172,6 @@ to [godbolt](https://godbolt.org). Upon close investigation,
 the bit-_clear_ and bit-_set_ opcodes (`cbi` and `sbi`)
 can be recognized.
 
-These opcodes are responsible for actually toggling the mocrocontroller's
+These opcodes are responsible for actually toggling the
+microcontroller's
 port pin `portb.5`.
