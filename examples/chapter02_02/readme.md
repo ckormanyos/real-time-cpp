@@ -1,9 +1,11 @@
 # Example chapter02_02
+
 ## The LED program
 
 <p align="center">
-    <a href="https://godbolt.org/z/fxWzb6h6f" alt="godbolt">
-        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+    <a href="https://godbolt.org/z/fxWzb6h6f">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt" />
+    </a>
 </p>
 
 This example implements the LED program (blinky) for the
@@ -47,7 +49,8 @@ frequency will be as fast as the microcontroller can execute
 the given toggle code, which will be too fast to resolve.
 
 The core of the LED program is listed below.
-  - Note: The program listing here has been slightly _modernized_ compared to the program listing in the book.
+
+- Note: The program listing here has been slightly _modernized_ compared to the program listing in the book.
 
 ```cpp
 #include <cstdint>
@@ -125,8 +128,9 @@ auto main() -> int
 ```
 
 ## In `Win*`
+
 The `Win*` batch file searches for a pre-installed instance
-of the avr-g++ tool chain. 
+of the avr-g++ tool chain.
 
 When in `Win*`, building the Example chapter02_02 project can
 accomplished in a cmd window. Use a command such as
