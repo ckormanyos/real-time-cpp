@@ -26,7 +26,7 @@ Consider, for instance,
 It employs a self-fitted DIY custom breadboard.
 Other examples use even higher levels of customization such as
 [example chapter10_08a](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter10_08a)
-which requires sophistocated breadboard and laboratory techniques,
+which requires sophisticated breadboard and laboratory techniques,
 providing a DIY challenge at an advanced level.
 
 ## Summary of the Examples
@@ -45,7 +45,7 @@ This example implements the LED program with a template LED class for the target
 
 Example ![chapter03_02](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter03_02) Integer Types Having Fixed Widths and Prime Numbers.\
 This example focuses on integer types having fixed widths using a fascinating calculation
-of prime numbers that is simultaneously intended to emphasize the usefullness and portability
+of prime numbers that is simultaneously intended to emphasize the usefulness and portability
 of fixed-width integer types.
 
 Example ![chapter04_04](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter04_04) LED Objects and Polymorphism.\
@@ -57,7 +57,7 @@ Example ![chapter04_04a](https://github.com/ckormanyos/real-time-cpp/tree/master
 This example exhibits object oriented polymorphism in essentially the same
 way as in example chapter04_04. In example chapter04_04a, however, we use base class
 references instead of base class pointers stored in an `std::array`
-in order to utilitze object oriented polymorphism.
+in order to utilize object oriented polymorphism.
 
 Example ![chapter06_01](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter06_01) A CRC Benchmark.\
 This example illustrates certain optimization techniques through the calculation
@@ -136,7 +136,7 @@ over multitasking using time slices.
 
 ## Further Information on the Examples
 
-For further informatin on the examples, see the readme notes
+For further information on the examples, see the readme notes
 in each individual example directory.
 
 ## Try it at _godbolt_
