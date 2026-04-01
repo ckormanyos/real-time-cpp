@@ -6,8 +6,8 @@ Real-Time-C++ - Examples
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-examples.yml/badge.svg" alt="Build Examples"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
-    <a href="https://godbolt.org/z/fxWzb6h6f" alt="godbolt">
-        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+    <a href="https://godbolt.org/z/fxWzb6h6f">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt"></a>
 </p>
 
 ﻿These examples are motivated by the book
@@ -142,8 +142,8 @@ in each individual example directory.
 ## Try it at _godbolt_
 
 <p align="center">
-    <a href="https://godbolt.org/z/fxWzb6h6f" alt="godbolt">
-        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+    <a href="https://godbolt.org/z/fxWzb6h6f">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt"></a>
 </p>
 
 Use this [short link](https://godbolt.org/z/fxWzb6h6f)
