@@ -1,4 +1,5 @@
 ﻿# Example Chapter04_04
+
 ## LED Objects and Polymorphism
 
 Example chapter04_04 uses an intuitive LED class hierarchy
@@ -109,7 +110,7 @@ as shown in the following table.
 | LED4       | port expander pin `GPA2`    | port toggle high/low, SPI software drive, $750~\Omega$   |
 
 In this example, we use ports from both the microcontroller as well
-as an external port expander chip. Hardware adressing is used
+as an external port expander chip. Hardware addressing is used
 on the port expander chip. The port expander address is
 hard-wired to the value 7 via connecting each of the three
 pins `A0` ... `A2` to $+{5}~\text{V}$.
@@ -134,4 +135,4 @@ The connections of the port expander chip are tabulated below.
 
 The hardware setup is pictured in the image below.
 
-![](./images/board4.jpg)
+![hardware setup](./images/board4.jpg)
