@@ -1,9 +1,10 @@
 # Example Chapter06_01
+
 ## A CRC Benchmark
 
 <p align="center">
-    <a href="https://godbolt.org/z/ssTK8TjWj" alt="godbolt">
-        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+    <a href="https://godbolt.org/z/ssTK8TjWj">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt" /></a>
 </p>
 
 Example chapter06_01 illustrates certain optimization
@@ -73,8 +74,7 @@ std::uint32_t crc32_mpeg2(input_iterator first,
 ## Application Description
 
 One of the standard tests of a CRC is to compute the checksum
-of the digits
-<img src="https://render.githubusercontent.com/render/math?math=1{\ldots}9">.
+of the digits $1 \ldots 9$.
 Please note here that the digits are not decimal values.
 They are the ASCII representations instead. In other words,
 the standard CRC test computes the checksum of a byte array such as
@@ -101,7 +101,7 @@ of the the expected result.
 The benchmark port pin `portd.3` is toggled high
 prior to the CRC calculation and low following the calculation.
 This provides a time pulse that can easily be measured
-on the oscilloscpoe. For the 8-bit target, expect
+on the oscilloscope. For the 8-bit target, expect
 a CRC runtime of approximately $300~{\mu}\text{s}$.
 
 The benchmark port definition can be located in the file
