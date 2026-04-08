@@ -1,4 +1,5 @@
 # Example chapter02_03
+
 ## The LED program with timing
 
 This example implements the LED program (with timing) for the
@@ -12,7 +13,7 @@ Building the example can be done with GNUmake
 in the command batch or shell script.
 The results of the build will be stored in the `bin`
 directory. After successful build, files such as the HEX-file
-`led.hex` and othe name and map files can be found in `bin`.
+`led.hex` and the name and map files can be found in `bin`.
 
 ## With `GNUmake`
 
@@ -38,9 +39,9 @@ VC as well as Atmel Studio.
 
 In the LED program with timing, the blinking is controlled directly
 from the `main` subroutine of the program. The blinking
-frequency is approximately 1/2Hz, controlled by a timer dely.
+frequency is approximately 1/2Hz, controlled by a timer delay.
 The blinking loop can be found in the file `sys_start.cpp`.
-It is reproduced below within its contect in `main`.
+It is reproduced below within its context in `main`.
 Please note the MCAL initialization, which is essential
 for initializing clocks and interrupts. It is this layer
 that needs to be modified when porting to other microcontroller

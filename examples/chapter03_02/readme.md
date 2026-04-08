@@ -1,14 +1,15 @@
 # Example Chapter03_02
+
 ## Integer Types Having Fixed Widths and Prime Numbers
 
 <p align="center">
-    <a href="https://godbolt.org/z/dPbM7v4ff" alt="godbolt">
-        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+    <a href="https://godbolt.org/z/dPbM7v4ff">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt" /></a>
 </p>
 
 Example chapter03_02 focuses on integer types having fixed widths.
 The example gets into a fascinating calculation of prime numbers
-that is simultaneously intended to emphasize the usefullness
+that is simultaneously intended to emphasize the usefulness
 and portability of fixed-width integer types.
 
 ## Fixed-Width Integer Types
@@ -50,7 +51,7 @@ with the input `Prime[100]`.
 
 The example begins by querying the number of entries required
 in the sieve to calculate the prime 541. For this, a simple divergent
-asymptotic series approximation of the lograithmic integral function is used.
+asymptotic series approximation of the logarithmic integral function is used.
 Instead of 100, the approximation returns 108, which is
 adequately close to the desired limit and large enough.
 
@@ -70,17 +71,17 @@ The approximate runtime of each task call required for the
 entire sieve calculation of $100$ prime numbers is approximately $5\text{ms}$.
 
 A debug port, in this case `portd.3` is toggled high and low
-just prior to and after the call of the prime sieve cacle task.
-A straightofrward digital oscilloscope measurement provides
+just prior to and after the call of the prime sieve cycle task.
+A straightforward digital oscilloscope measurement provides
 a timing indication for the runtime of the prime sieve cycle task.
 
 A running hardware setup is shown in the picture below.
 
-![](./images/board03_02.jpg)
+![running hardware setup](./images/board03_02.jpg)
 
 The runtime of the prime sieve cycle task is depicted below.
 
-![](./images/scope03_02.jpg)
+![runtime curve on oscilloscope](./images/scope03_02.jpg)
 
 ## A PC-Based example
 
@@ -124,7 +125,7 @@ at this numerical point?
 
 Consider the following input.
 
-```
+```text
 N[(LogIntegral[10006721] - LogIntegral[2])/664999, 20]
 ```
 

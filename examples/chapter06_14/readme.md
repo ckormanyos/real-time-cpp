@@ -1,4 +1,5 @@
 # Example Chapter06_14
+
 ## A CRC Benchmark with ROM-based Table and Data
 
 Example chapter06_14 has essentially the same functionality
@@ -39,7 +40,7 @@ The partial image of a memory map file from example chapter06_14 for
 the 8-bit target shows us that the data objects mentioned above have,
 in fact, been _ROM_'ed.
 
-![](./images/romdata.jpg)
+![snippet from map file](./images/romdata.jpg)
 
 The objects in the map-snippet above are in ROM.
 
@@ -47,5 +48,5 @@ The objects in the map-snippet above are in ROM.
 
 The same standard CRC checksum and verification
 is carried out in the `app::benchmark::task_func`
-function. Slight sylistic differences between the algorithms in
+function. Slight stylistic differences between the algorithms in
 example06_01 and example06_14 reflect no functional change.

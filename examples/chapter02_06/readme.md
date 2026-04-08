@@ -1,4 +1,5 @@
 # Example chapter02_06
+
 ## The Led Program (with template LED class)
 
 This example implements the LED program with a template
@@ -24,15 +25,15 @@ to capture the runtime of the port toggle.
 The toggle signal has a width of approximately
 $310~\text{ns}$, which agrees well with the claim in the book.
 
-![](./images/2020-01-12.pdf)
+![port signal measured on oscilloscope](./images/2020-01-12.png)
 
 The toggle signal having a width of approximately $310~\text{ns}$
 captured by a digital oscilloscope is shown.
 
 Manually measuring the toggle signal with a _scope_ might require laboratory skill,
-as shown in the next two pictures featuring a hand-help oscilloscope
+as shown in the next two pictures featuring a hand-held oscilloscope
 probe measurement on one of our self-made Arduino-like boards.
 
-![](./images/measurement.pdf)
+![hand-held measurement with oscilloscope](./images/measurement.png)
 
-![](./images/measurement2.pdf)
+![closer view of oscilloscope measurement](./images/measurement2-cropped.png)
