@@ -19,10 +19,10 @@
     {
       template<const std::uint8_t port_addr,
                const std::uint8_t port_bpos>
-      class led_momochrome_board final : public util::device::led_monochrome
+      class led_monochrome_board final : public util::device::led_monochrome
       {
       public:
-        led_momochrome_board()
+        led_monochrome_board()
         {
           // Set the port pin value to low.
           port_pin_type::set_pin_low();
@@ -31,7 +31,7 @@
           port_pin_type::set_direction_output();
         }
 
-        ~led_momochrome_board() override = default;
+        ~led_monochrome_board() override = default;
 
         auto my_on() -> void override
         {

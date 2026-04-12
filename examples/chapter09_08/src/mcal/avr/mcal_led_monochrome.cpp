@@ -12,10 +12,10 @@
 
 util::device::led_monochrome& mcal::led::led_monochrome0()
 {
-  using local_led_mponochrome_type =
-    mcal::led::led_momochrome_board<mcal::reg::portb, UINT8_C(5)>;
+  using local_led_monochrome_type =
+    mcal::led::led_monochrome_board<mcal::reg::portb, UINT8_C(5)>;
 
-  static local_led_mponochrome_type the_led { };
+  static local_led_monochrome_type the_led { };
 
   return the_led;
 }
