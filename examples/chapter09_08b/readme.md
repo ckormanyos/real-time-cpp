@@ -1,4 +1,5 @@
 # Example Chapter09_08b (variation 32-bit microcontroller)
+
 ## Controlling an RGB LED of type ws2812
 
 Example chapter09_08b utilizes essentially the same techniques
@@ -20,7 +21,7 @@ A logic-AND gate shifts the microcontroller pin's voltage level.
 The microcontroller is clocked at $24~\text{MHz}$.
 
 The hardware setup with the RGB LED in action is pictured
-in the image below. The pictures depicts a pink hue eminating
+in the image below. The pictures depicts a pink hue emanating
 from the bright RGB LED of type ws2812B.
 
-![](./images/board09_08b.jpg)
+![Hardware setup - pink hue emanating from LED](./images/board09_08b.jpg)

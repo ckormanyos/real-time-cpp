@@ -1,4 +1,5 @@
 # Example Chapter09_07
+
 ## Controlling a Seven Segment Display
 
 Example chapter09_07 makes use of object oriented
@@ -8,20 +9,20 @@ programming methods to control a seven segment display.
 
 In this example, port pins are used to control a
 seven segment single-character display. As in most other examples,
-both a hardware version for the target system as well as a simlulated
+both a hardware version for the target system as well as a simulated
 PC version are available. The PC version writes its
 character to the output console.
 
 ## Application Description
 
-The sixteen hexadecimal digits <img src="https://render.githubusercontent.com/render/math?math=0123456789\text{AbCdEF}">
+The sixteen hexadecimal digits $0123456789AbCdEF$
 are displayed sequentially, one digit per second.
 The dot (_i_._e_., period or decimal point) is toggled
 on and off for successive groups of 16 hexadecimal digits.
 The user LED is simultaneously toggled at the usual $\frac{1}{2}~\text{Hz}$.
 
 The application task is intuitive and easy to understand.
-The followind code snippet from the application task
+The following code snippet from the application task
 `app::display::task_func`, for instance, depicts the control
 responsible for writing the character digit and decimal
 point on the seven segment display. The user LED is simultaneously
@@ -70,10 +71,10 @@ portable application layer code.
 The screenshot below shows the PC simulation
 of the display application task running in a console.
 
-![](./images/seven_segment.pdf)
+![screenshot of PC simulation](./images/seven_segment.png)
 
 ## Hardware Setup
 
 The hardware setup is shown in the image below.
 
-![](./images/board7.jpg)
+![hardware setup](./images/board7.jpg)
