@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2025.                 //
+//  Copyright Christopher Kormanyos 1999 - 2026.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -8,12 +8,27 @@
 #ifndef UINTWIDE_T_2018_10_02_H // NOLINT(llvm-header-guard)
   #define UINTWIDE_T_2018_10_02_H
 
-  #if defined(__GNUC__)
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wmissing-declarations"
+  #if defined(_MSC_VER)
+  #define WIDE_INTEGER_MSVC  _MSC_VER         // NOLINT(cppcoreguidelines-macro-usage)
+  #elif defined(__clang__)
+  #define WIDE_INTEGER_CLANG __clang_major__  // NOLINT(cppcoreguidelines-macro-usage)
+  #elif defined(__GNUC__)
+  #define WIDE_INTEGER_GCC   __GNUC__         // NOLINT(cppcoreguidelines-macro-usage)
   #endif
 
-  #if ((__cplusplus < 202100L) || (defined(__GNUC__) && defined(__AVR__)))
+  #if defined(__APPLE__)
+  #define WIDE_INTEGER_APPLE __APPLE__        // NOLINT(cppcoreguidelines-macro-usage)
+  #endif
+
+  #if defined(__AVR__)
+  #define WIDE_INTEGER_AVR   __AVR__          // NOLINT(cppcoreguidelines-macro-usage)
+  #endif
+
+  #if defined(WIDE_INTEGER_MSVC) && defined(WIDE_INTEGER_HAS_LIMB_TYPE_UINT64)
+  #include <__msvc_int128.hpp>
+  #endif
+
+  #if ((__cplusplus < 202002L) || (defined(WIDE_INTEGER_GCC) && defined(WIDE_INTEGER_AVR)))
   #include <ciso646>
   #else
   #include <version>
@@ -52,14 +67,14 @@
   #include <type_traits>
   #include <utility>
 
-  #if (defined(__clang__) && (__clang_major__ <= 9))
+  #if (defined(WIDE_INTEGER_CLANG) && (WIDE_INTEGER_CLANG <= 9))
   #define WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE struct // NOLINT(cppcoreguidelines-macro-usage)
   #else
   #define WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE class  // NOLINT(cppcoreguidelines-macro-usage)
   #endif
 
-  #if (defined(_MSC_VER) && (!defined(__GNUC__) && !defined(__clang__)))
-    #if ((_MSC_VER >= 1900) && (defined(_HAS_CXX20) && (_HAS_CXX20 != 0)))
+  #if (defined(WIDE_INTEGER_MSVC) && (!defined(WIDE_INTEGER_CLANG) && !defined(WIDE_INTEGER_GCC)))
+    #if ((WIDE_INTEGER_MSVC >= 1900) && (defined(_HAS_CXX20) && (_HAS_CXX20 != 0)))
       #define WIDE_INTEGER_NODISCARD [[nodiscard]]     // NOLINT(cppcoreguidelines-macro-usage)
     #else
       #define WIDE_INTEGER_NODISCARD
@@ -257,14 +272,14 @@
     while(first != last)
     {
       using local_destination_value_type = typename iterator_detail::iterator_traits<DestinationIterator>::value_type;
-      #if (defined(__GNUC__) && (__GNUC__ > 9))
+      #if (defined(WIDE_INTEGER_GCC) && (WIDE_INTEGER_GCC > 9))
       #pragma GCC diagnostic ignored "-Wstringop-overflow"
       #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
       #endif
 
       *dest++ = static_cast<local_destination_value_type>(*first++);
 
-      #if (defined(__GNUC__) && (__GNUC__ > 9))
+      #if (defined(WIDE_INTEGER_GCC) && (WIDE_INTEGER_GCC > 9))
       #pragma GCC diagnostic pop
       #pragma GCC diagnostic pop
       #endif
@@ -311,50 +326,6 @@
     }
 
     return last; // LCOV_EXCL_LINE
-  }
-
-  template<typename ForwardIt, typename T>
-  constexpr auto lower_bound_unsafe(ForwardIt first, ForwardIt last, const T& value) -> ForwardIt
-  {
-    using local_iterator_type = ForwardIt;
-
-    using local_difference_type = typename iterator_detail::iterator_traits<ForwardIt>::difference_type;
-
-    local_difference_type step { };
-
-    auto count = static_cast<local_difference_type>(last - first); // NOLINT(altera-id-dependent-backward-branch)
-
-    local_iterator_type itr { };
-
-    while(count > static_cast<local_difference_type>(INT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
-    {
-      itr = first;
-
-      step = static_cast<local_difference_type>(count / static_cast<local_difference_type>(INT8_C(2)));
-
-      itr += step;
- 
-      if (*itr < value)
-      {
-        first = ++itr;
-
-        count -= static_cast<local_difference_type>(step + static_cast<local_difference_type>(INT8_C(1)));
-      }
-      else
-      {
-        count = step;
-      }
-    }
-
-    return first;
-  }
-
-  template<class ForwardIt, class T>
-  constexpr auto binary_search_unsafe(ForwardIt first, ForwardIt last, const T& value) -> bool
-  {
-    first = lower_bound_unsafe(first, last, value);
-
-    return ((!(first == last)) && (!(value < *first)));
   }
 
   namespace distance_detail
@@ -438,14 +409,13 @@
   }
 
   template <class UnsignedIntegralType>
-  constexpr auto clz_unsafe(UnsignedIntegralType v) noexcept -> std::enable_if_t<(   std::is_integral<UnsignedIntegralType>::value
-                                                                                  && std::is_unsigned<UnsignedIntegralType>::value), unsigned>
+  constexpr auto clz_unsafe(UnsignedIntegralType v) noexcept -> unsigned
   {
     using local_unsigned_integral_type = UnsignedIntegralType;
 
     local_unsigned_integral_type yy_val { local_unsigned_integral_type { UINT8_C(0) } };
 
-    unsigned nn_val { static_cast<unsigned>(std::numeric_limits<local_unsigned_integral_type>::digits) };
+    unsigned nn_val { static_cast<unsigned>(sizeof(local_unsigned_integral_type) * std::size_t { UINT8_C(8) }) };
 
     auto cc_val = // NOLINT(altera-id-dependent-backward-branch)
       static_cast<unsigned>
@@ -476,12 +446,11 @@
   }
 
   template<typename UnsignedIntegralType>
-  constexpr auto ctz_unsafe(const UnsignedIntegralType v) noexcept -> std::enable_if_t<(   std::is_integral<UnsignedIntegralType>::value
-                                                                                        && std::is_unsigned<UnsignedIntegralType>::value), unsigned>
+  constexpr auto ctz_unsafe(const UnsignedIntegralType v) noexcept -> unsigned
   {
     using local_unsigned_integral_type = UnsignedIntegralType;
 
-    constexpr auto local_digits = static_cast<unsigned>(std::numeric_limits<local_unsigned_integral_type>::digits);
+    constexpr auto local_digits = static_cast<unsigned>(sizeof(local_unsigned_integral_type) * std::size_t { UINT8_C(8) });
 
     const auto clz_mask =
       static_cast<local_unsigned_integral_type>
@@ -494,8 +463,7 @@
   }
 
   template<typename UnsignedIntegralType>
-  constexpr auto gcd_unsafe(UnsignedIntegralType u, UnsignedIntegralType v) -> std::enable_if_t<(   std::is_integral<UnsignedIntegralType>::value // NOLINT(altera-id-dependent-backward-branch)
-                                                                                                 && std::is_unsigned<UnsignedIntegralType>::value), UnsignedIntegralType>
+  constexpr auto gcd_unsafe(UnsignedIntegralType u, UnsignedIntegralType v) -> UnsignedIntegralType
   {
     using local_unsigned_integral_type = UnsignedIntegralType;
 
@@ -1057,6 +1025,11 @@
 
   using size_t    = std::uint32_t;
   using ptrdiff_t = std::int32_t;
+  #if defined(WIDE_INTEGER_HAS_LIMB_TYPE_UINT64)
+  using uint_defaultlimb_t = std::uint64_t;
+  #else
+  using uint_defaultlimb_t = std::uint32_t;
+  #endif
 
   static_assert((   (std::numeric_limits<size_t>::digits        >= std::numeric_limits<std::uint16_t>::digits)
                  && (std::numeric_limits<ptrdiff_t>::digits + 1 >= std::numeric_limits<std::uint16_t>::digits)),
@@ -1106,13 +1079,17 @@
   template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(17))) && (BitCount <= static_cast<size_t>(UINT8_C( 32)))>> { using exact_unsigned_type = std::uint32_t;     using exact_signed_type = std::int32_t;    using fast_unsigned_type = std::uint_fast32_t; using fast_signed_type = std::int_fast32_t; };
   template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(33))) && (BitCount <= static_cast<size_t>(UINT8_C( 64)))>> { using exact_unsigned_type = std::uint64_t;     using exact_signed_type = std::int64_t;    using fast_unsigned_type = std::uint_fast64_t; using fast_signed_type = std::int_fast64_t; };
   #if defined(WIDE_INTEGER_HAS_LIMB_TYPE_UINT64)
-  #if (defined(__GNUC__) && !defined(__clang__))
+  #if defined(WIDE_INTEGER_MSVC)
+  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(65))) && (BitCount <= static_cast<size_t>(UINT8_C(128)))>> { using exact_unsigned_type = std::_Unsigned128; using exact_signed_type = std::_Signed128; using fast_unsigned_type = std::_Unsigned128;  using fast_signed_type = std::_Signed128; };
+  #else
+  #if defined(WIDE_INTEGER_GCC)
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wpedantic"
   #endif
-  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(65))) && (BitCount <= static_cast<size_t>(UINT8_C(128)))>> { using exact_unsigned_type = unsigned __int128; using exact_signed_type = signed __int128; using fast_unsigned_type = unsigned __int128;  using fast_signed_type = signed __int128;   };
-  #if (defined(__GNUC__) && !defined(__clang__))
+  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(65))) && (BitCount <= static_cast<size_t>(UINT8_C(128)))>> { using exact_unsigned_type = unsigned __int128; using exact_signed_type = __int128; using fast_unsigned_type = unsigned __int128;  using fast_signed_type = __int128; };
+  #if defined(WIDE_INTEGER_GCC)
   #pragma GCC diagnostic pop
+  #endif
   #endif
   #endif
 
@@ -1227,10 +1204,11 @@
   using detail::ptrdiff_t;
   using detail::unsigned_fast_type;
   using detail::signed_fast_type;
+  using detail::uint_defaultlimb_t;
 
   // Forward declaration of the uintwide_t template class.
   template<const size_t Width2,
-           typename LimbType = std::uint32_t,
+           typename LimbType = uint_defaultlimb_t,
            typename AllocatorType = void,
            const bool IsSigned = false>
   class uintwide_t;
@@ -1474,13 +1452,13 @@
                         std::enable_if_t<(IsSignedLeft || IsSignedRight), int>* p_nullparam = nullptr) -> std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>;
 
   template<const size_t Width2,
-           typename LimbType = std::uint32_t,
+           typename LimbType = uint_defaultlimb_t,
            typename AllocatorType = void,
            const bool IsSigned = false>
   class default_random_engine;
 
   template<const size_t Width2,
-           typename LimbType = std::uint32_t,
+           typename LimbType = uint_defaultlimb_t,
            typename AllocatorType = void,
            const bool IsSigned = false>
   class uniform_int_distribution;
@@ -1544,25 +1522,27 @@
            const size_t Width2,
            typename LimbType,
            typename AllocatorType,
+           const bool IsSigned,
            std::enable_if_t<std::numeric_limits<typename detail::iterator_detail::iterator_traits<ForwardIterator>::value_type>::digits == std::numeric_limits<LimbType>::digits> const* = nullptr>
   constexpr
-  auto import_bits(uintwide_t<Width2, LimbType, AllocatorType, false>& val,
+  auto import_bits(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& val,
                    ForwardIterator first,
                    ForwardIterator last,
                    unsigned        chunk_size = static_cast<unsigned>(UINT8_C(0)),
-                   bool            msv_first  = true) -> uintwide_t<Width2, LimbType, AllocatorType, false>&;
+                   bool            msv_first  = true) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>&;
 
   template<typename ForwardIterator,
            const size_t Width2,
            typename LimbType,
            typename AllocatorType,
+           const bool IsSigned,
            std::enable_if_t<!(std::numeric_limits<typename detail::iterator_detail::iterator_traits<ForwardIterator>::value_type>::digits == std::numeric_limits<LimbType>::digits)> const* = nullptr>
   constexpr
-  auto import_bits(uintwide_t<Width2, LimbType, AllocatorType, false>& val,
+  auto import_bits(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& val,
                    ForwardIterator first,
                    ForwardIterator last,
                    unsigned        chunk_size = static_cast<unsigned>(UINT8_C(0)),
-                   bool            msv_first  = true) -> uintwide_t<Width2, LimbType, AllocatorType, false>&;
+                   bool            msv_first  = true) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>&;
 
   template<typename OutputIterator,
            const size_t Width2,
@@ -2456,7 +2436,7 @@
     WIDE_INTEGER_NODISCARD constexpr auto  representation() const -> const representation_type& { return values; }
     WIDE_INTEGER_NODISCARD constexpr auto crepresentation() const -> const representation_type& { return values; }
 
-    // Unary operators: not, plus and minus.
+    // Unary operators plus and minus.
     constexpr auto operator+() const -> const uintwide_t& { return *this; }
     constexpr auto operator-() const ->       uintwide_t  { uintwide_t tmp(*this); tmp.negate(); return tmp; }
 
@@ -2464,12 +2444,10 @@
     {
       if(this == &other)
       {
-        const uintwide_t self(other); // NOLINT(performance-unnecessary-copy-initialization)
-
         // Unary addition function.
         const auto carry = eval_add_n(values.begin(), // LCOV_EXCL_LINE
                                       values.cbegin(),
-                                      self.values.cbegin(),
+                                      other.values.cbegin(),
                                       static_cast<unsigned_fast_type>(number_of_limbs),
                                       static_cast<limb_type>(UINT8_C(0)));
 
@@ -2515,9 +2493,7 @@
     {
       if(this == &other)
       {
-        const uintwide_t other_as_self_copy(other); // NOLINT(performance-unnecessary-copy-initialization)
-
-        eval_mul_unary(*this, other_as_self_copy);
+        eval_mul_unary(*this, uintwide_t(other)); // NOLINT(performance-unnecessary-copy-initialization)
       }
       else
       {
@@ -5082,15 +5058,41 @@
           // expression [(u[uj] * b + u[uj - 1] - q_hat * v[vj0 - 1]) * b]
           // exceeds the range of uintwide_t.
 
-          for(auto t = static_cast<double_limb_type>(u_j_j1 - static_cast<double_limb_type>(q_hat * static_cast<double_limb_type>(vv_at_vj0)));
-                     ;
-                   t = static_cast<double_limb_type>(t + vv_at_vj0), --q_hat)
           {
-            if(   (detail::make_hi<limb_type>(t) != static_cast<limb_type>(UINT8_C(0)))
-               || (   static_cast<double_limb_type>(static_cast<double_limb_type>(vv_at_vj0_minus_one) * q_hat)
-                   <= static_cast<double_limb_type>(static_cast<double_limb_type>(t << static_cast<unsigned>(std::numeric_limits<limb_type>::digits)) + *detail::advance_and_point(uu.cbegin(), static_cast<size_t>(uj - 2U)))))
+            const auto u_j_minus_2 =
+              *detail::advance_and_point(uu.cbegin(), static_cast<size_t>(uj - 2U));
+
+            auto t =
+              static_cast<double_limb_type>
+              (
+                u_j_j1 - static_cast<double_limb_type>(q_hat * static_cast<double_limb_type>(vv_at_vj0))
+              );
+
+            while(true)
             {
-              break;
+              const bool t_overflow =
+                (detail::make_hi<limb_type>(t) != static_cast<limb_type>(UINT8_C(0)));
+
+              const auto lhs =
+                static_cast<double_limb_type>
+                (
+                  static_cast<double_limb_type>(vv_at_vj0_minus_one) * q_hat
+                );
+
+              const auto rhs =
+                static_cast<double_limb_type>
+                (
+                  static_cast<double_limb_type>(t << static_cast<unsigned>(std::numeric_limits<limb_type>::digits))
+                  + u_j_minus_2
+                );
+
+              if(t_overflow || (lhs <= rhs))
+              {
+                break;
+              }
+
+              t = static_cast<double_limb_type>(t + vv_at_vj0);
+              --q_hat;
             }
           }
 
@@ -5535,7 +5537,33 @@
   };
 
   // Define some convenient unsigned wide integer types.
-  using uint64_t    = uintwide_t<static_cast<size_t>(UINT32_C(   64)), std::uint16_t>;
+  using uint64_t    = uintwide_t<static_cast<size_t>(UINT32_C(   64)), std::uint32_t>;
+  using  int64_t    = uintwide_t<static_cast<size_t>(UINT32_C(   64)), std::uint16_t, void, true>;
+  #if defined(WIDE_INTEGER_HAS_LIMB_TYPE_UINT64)
+  using uint128_t   = uintwide_t<static_cast<size_t>(UINT32_C(  128)), std::uint64_t>;
+  using uint256_t   = uintwide_t<static_cast<size_t>(UINT32_C(  256)), std::uint64_t>;
+  using uint512_t   = uintwide_t<static_cast<size_t>(UINT32_C(  512)), std::uint64_t>;
+  using uint1024_t  = uintwide_t<static_cast<size_t>(UINT32_C( 1024)), std::uint64_t>;
+  using uint2048_t  = uintwide_t<static_cast<size_t>(UINT32_C( 2048)), std::uint64_t>;
+  using uint4096_t  = uintwide_t<static_cast<size_t>(UINT32_C( 4096)), std::uint64_t>;
+  using uint8192_t  = uintwide_t<static_cast<size_t>(UINT32_C( 8192)), std::uint64_t>;
+  using uint16384_t = uintwide_t<static_cast<size_t>(UINT32_C(16384)), std::uint64_t>;
+  using uint32768_t = uintwide_t<static_cast<size_t>(UINT32_C(32768)), std::uint64_t>;
+  using uint65536_t = uintwide_t<static_cast<size_t>(UINT32_C(65536)), std::uint64_t>;
+
+  using  int128_t   = uintwide_t<static_cast<size_t>(UINT32_C(  128)), std::uint64_t, void, true>;
+  using  int256_t   = uintwide_t<static_cast<size_t>(UINT32_C(  256)), std::uint64_t, void, true>;
+  using  int512_t   = uintwide_t<static_cast<size_t>(UINT32_C(  512)), std::uint64_t, void, true>;
+  using  int1024_t  = uintwide_t<static_cast<size_t>(UINT32_C( 1024)), std::uint64_t, void, true>;
+  using  int2048_t  = uintwide_t<static_cast<size_t>(UINT32_C( 2048)), std::uint64_t, void, true>;
+  using  int4096_t  = uintwide_t<static_cast<size_t>(UINT32_C( 4096)), std::uint64_t, void, true>;
+  using  int8192_t  = uintwide_t<static_cast<size_t>(UINT32_C( 8192)), std::uint64_t, void, true>;
+  using  int16384_t = uintwide_t<static_cast<size_t>(UINT32_C(16384)), std::uint64_t, void, true>;
+  using  int32768_t = uintwide_t<static_cast<size_t>(UINT32_C(32768)), std::uint64_t, void, true>;
+  using  int65536_t = uintwide_t<static_cast<size_t>(UINT32_C(65536)), std::uint64_t, void, true>;
+
+  #else
+
   using uint128_t   = uintwide_t<static_cast<size_t>(UINT32_C(  128)), std::uint32_t>;
   using uint256_t   = uintwide_t<static_cast<size_t>(UINT32_C(  256)), std::uint32_t>;
   using uint512_t   = uintwide_t<static_cast<size_t>(UINT32_C(  512)), std::uint32_t>;
@@ -5546,6 +5574,19 @@
   using uint16384_t = uintwide_t<static_cast<size_t>(UINT32_C(16384)), std::uint32_t>;
   using uint32768_t = uintwide_t<static_cast<size_t>(UINT32_C(32768)), std::uint32_t>;
   using uint65536_t = uintwide_t<static_cast<size_t>(UINT32_C(65536)), std::uint32_t>;
+
+  using  int128_t   = uintwide_t<static_cast<size_t>(UINT32_C(  128)), std::uint32_t, void, true>;
+  using  int256_t   = uintwide_t<static_cast<size_t>(UINT32_C(  256)), std::uint32_t, void, true>;
+  using  int512_t   = uintwide_t<static_cast<size_t>(UINT32_C(  512)), std::uint32_t, void, true>;
+  using  int1024_t  = uintwide_t<static_cast<size_t>(UINT32_C( 1024)), std::uint32_t, void, true>;
+  using  int2048_t  = uintwide_t<static_cast<size_t>(UINT32_C( 2048)), std::uint32_t, void, true>;
+  using  int4096_t  = uintwide_t<static_cast<size_t>(UINT32_C( 4096)), std::uint32_t, void, true>;
+  using  int8192_t  = uintwide_t<static_cast<size_t>(UINT32_C( 8192)), std::uint32_t, void, true>;
+  using  int16384_t = uintwide_t<static_cast<size_t>(UINT32_C(16384)), std::uint32_t, void, true>;
+  using  int32768_t = uintwide_t<static_cast<size_t>(UINT32_C(32768)), std::uint32_t, void, true>;
+  using  int65536_t = uintwide_t<static_cast<size_t>(UINT32_C(65536)), std::uint32_t, void, true>;
+
+  #endif
 
   #if !defined(WIDE_INTEGER_DISABLE_TRIVIAL_COPY_AND_STD_LAYOUT_CHECKS)
   static_assert(std::is_trivially_copyable<uint64_t   >::value, "uintwide_t must be trivially copyable.");
@@ -5572,18 +5613,6 @@
   static_assert(std::is_standard_layout<uint32768_t>::value, "uintwide_t must have standard layout.");
   static_assert(std::is_standard_layout<uint65536_t>::value, "uintwide_t must have standard layout.");
   #endif
-
-  using  int64_t    = uintwide_t<static_cast<size_t>(UINT32_C(   64)), std::uint16_t, void, true>;
-  using  int128_t   = uintwide_t<static_cast<size_t>(UINT32_C(  128)), std::uint32_t, void, true>;
-  using  int256_t   = uintwide_t<static_cast<size_t>(UINT32_C(  256)), std::uint32_t, void, true>;
-  using  int512_t   = uintwide_t<static_cast<size_t>(UINT32_C(  512)), std::uint32_t, void, true>;
-  using  int1024_t  = uintwide_t<static_cast<size_t>(UINT32_C( 1024)), std::uint32_t, void, true>;
-  using  int2048_t  = uintwide_t<static_cast<size_t>(UINT32_C( 2048)), std::uint32_t, void, true>;
-  using  int4096_t  = uintwide_t<static_cast<size_t>(UINT32_C( 4096)), std::uint32_t, void, true>;
-  using  int8192_t  = uintwide_t<static_cast<size_t>(UINT32_C( 8192)), std::uint32_t, void, true>;
-  using  int16384_t = uintwide_t<static_cast<size_t>(UINT32_C(16384)), std::uint32_t, void, true>;
-  using  int32768_t = uintwide_t<static_cast<size_t>(UINT32_C(32768)), std::uint32_t, void, true>;
-  using  int65536_t = uintwide_t<static_cast<size_t>(UINT32_C(65536)), std::uint32_t, void, true>;
 
   #if !defined(WIDE_INTEGER_DISABLE_TRIVIAL_COPY_AND_STD_LAYOUT_CHECKS)
   static_assert(std::is_trivially_copyable<int64_t   >::value, "uintwide_t must be trivially copyable.");
@@ -5707,7 +5736,7 @@
     const auto show_base    = ((my_flags & std::ios::showbase)  == std::ios::showbase);
     const auto is_uppercase = ((my_flags & std::ios::uppercase) == std::ios::uppercase);
 
-    auto base_rep = std::uint_fast8_t { };
+    std::uint_fast8_t base_rep { };
 
     if     ((my_flags & std::ios::oct) == std::ios::oct) { base_rep = static_cast<std::uint_fast8_t>(UINT8_C( 8)); }
     else if((my_flags & std::ios::hex) == std::ios::hex) { base_rep = static_cast<std::uint_fast8_t>(UINT8_C(16)); }
@@ -5800,7 +5829,7 @@
   auto operator>>(std::basic_istream<char_type, traits_type>& in,
                   uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x) -> std::basic_istream<char_type, traits_type>&
   {
-    std::string str_in;
+    std::string str_in { };
 
     in >> str_in;
 
@@ -5837,11 +5866,11 @@
   {
     using local_floating_point_type = FloatingPointType;
 
-    const auto x_is_neg = (x < static_cast<local_floating_point_type>(0.0L));
+    const bool x_is_neg { (x < static_cast<local_floating_point_type>(0.0L)) };
 
     local_floating_point_type f = (x_is_neg ? -x : x); // NOLINT(altera-id-dependent-backward-branch)
 
-    auto e2 = static_cast<int>(INT8_C(0));
+    int e2 { static_cast<int>(INT8_C(0)) };
 
     constexpr auto two_pow32 =
       static_cast<long double>
@@ -5888,7 +5917,7 @@
   {
     using local_floating_point_type = FloatingPointType;
 
-    auto x_is_finite = true;
+    bool x_is_finite { true };
 
     const auto x_is_nan = (x != x);
 
@@ -6141,7 +6170,7 @@
 
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
 
-    local_wide_integer_type s;
+    local_wide_integer_type s { };
 
     if(m.is_zero() || local_wide_integer_type::is_neg(m))
     {
@@ -6350,8 +6379,8 @@
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
     using local_limb_type         = typename local_wide_integer_type::limb_type;
 
-    local_wide_integer_type result;
-    auto p0 = static_cast<local_limb_type>(p);
+    local_wide_integer_type result { };
+    local_limb_type p0 { static_cast<local_limb_type>(p) };
 
     if((p0 == static_cast<local_limb_type>(UINT8_C(0))) && (p == static_cast<OtherIntegralTypeP>(0)))
     {
@@ -6370,8 +6399,8 @@
     {
       result = local_wide_integer_type(static_cast<std::uint8_t>(UINT8_C(1)));
 
-      local_wide_integer_type y      (b);
-      local_wide_integer_type p_local(p);
+      local_wide_integer_type y       { b };
+      local_wide_integer_type p_local { p };
 
       while(((p0 = static_cast<local_limb_type>(p_local)) != static_cast<local_limb_type>(UINT8_C(0))) || (p_local != static_cast<local_wide_integer_type>(UINT8_C(0)))) // NOLINT(altera-id-dependent-backward-branch)
       {
@@ -6405,11 +6434,11 @@
     using local_double_width_type = typename local_normal_width_type::double_width_type;
     using local_limb_type         = typename local_normal_width_type::limb_type;
 
-          local_normal_width_type result;
-          local_double_width_type y      (b);
-    const local_double_width_type m_local(m);
+          local_normal_width_type result  { };
+          local_double_width_type y       { b };
+    const local_double_width_type m_local { m };
 
-    auto p0 = static_cast<local_limb_type>(p); // NOLINT(altera-id-dependent-backward-branch)
+    local_limb_type p0 { static_cast<local_limb_type>(p) }; // NOLINT(altera-id-dependent-backward-branch)
 
     if((p0 == static_cast<local_limb_type>(UINT8_C(0))) && (p == static_cast<OtherIntegralTypeP>(static_cast<int>(INT8_C(0)))))
     {
@@ -6458,11 +6487,7 @@
   template<typename UnsignedShortType>
   constexpr auto integer_gcd_reduce(UnsignedShortType u, UnsignedShortType v) -> UnsignedShortType
   {
-    #if (defined(__cpp_lib_gcd_lcm) && (__cpp_lib_gcd_lcm >= 201606L))
-    return std::gcd(u, v);
-    #else
     return detail::gcd_unsafe(u, v);
-    #endif
   }
 
   } // namespace detail
@@ -6536,7 +6561,11 @@
           swap(u, v);
         }
 
-        if(v <= (std::numeric_limits<local_ularge_type>::max)())
+        constexpr unsigned local_ularge_bits { static_cast<unsigned>(sizeof(local_ularge_type) * std::size_t { UINT8_C(8) }) };
+
+        const local_wide_integer_type ularge_type_max { (local_wide_integer_type{1} << local_ularge_bits) - 1U };
+
+        if(v <= ularge_type_max)
         {
           const auto my_v_hi =
             static_cast<local_ushort_type>
@@ -6557,7 +6586,24 @@
           const local_ularge_type v_large = detail::make_large(*v.crepresentation().cbegin(), my_v_hi);
           const local_ularge_type u_large = detail::make_large(*u.crepresentation().cbegin(), my_u_hi);
 
-          u = detail::integer_gcd_reduce(v_large, u_large);
+          const local_ularge_type
+            gcd_reduce_value
+            {
+              detail::integer_gcd_reduce
+              (
+                v_large,
+                u_large
+              )
+            };
+
+          const local_ushort_type u_lo { detail::make_lo<local_ushort_type>(gcd_reduce_value) };
+          const local_ushort_type u_hi { detail::make_hi<local_ushort_type>(gcd_reduce_value) };
+
+          u = local_wide_integer_type { u_hi };
+
+          u <<= static_cast<unsigned>(sizeof(local_ushort_type) * std::size_t { UINT8_C(8) });
+
+          u |= u_lo;
 
           break;
         }
@@ -6693,8 +6739,8 @@
     using divmod_result_pair_type =
       std::pair<local_unknown_signedness_left_type, local_unknown_signedness_right_type>;
 
-    auto result =
-      divmod_result_pair_type
+    divmod_result_pair_type
+      result
       {
         local_unknown_signedness_left_type  { },
         local_unknown_signedness_right_type { }
@@ -6799,7 +6845,7 @@
         const result_type& p_b = (std::numeric_limits<result_type>::max)()
       ) : my_params(p_a, p_b) { }
 
-    explicit constexpr uniform_int_distribution(const param_type& other_params)
+    explicit constexpr uniform_int_distribution(const param_type& other_params) // NOLINT(modernize-pass-by-value)
       : my_params(other_params) { }
 
     constexpr uniform_int_distribution(const uniform_int_distribution& other) : my_params(other.my_params) { }
@@ -6957,17 +7003,40 @@
     // This Miller-Rabin primality test is loosely based on
     // an adaptation of some code from Boost.Multiprecision.
     // The Boost.Multiprecision code can be found here:
-    // https://www.boost.org/doc/libs/1_89_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
+    // https://www.boost.org/doc/libs/1_90_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
 
     // Note: Some comments in this subroutine use the Wolfram Language(TM).
-    // These can be exercised at the web links to WolframAlpha(R) provided
+    // These can be exercised at the web links to WolframAlpha(R) provided.
 
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
     using local_limb_type         = typename local_wide_integer_type::limb_type;
 
     const local_wide_integer_type np((!local_wide_integer_type::is_neg(n)) ? n : -n);
 
+    // Table[Prime[i], {i, 2, 49, 1}] =
+    // {
+    //     3,   5,   7,  11,  13,  17,  19,  23,
+    //    29,  31,  37,  41,  43,  47,  53,  59,
+    //    61,  67,  71,  73,  79,  83,  89,  97,
+    //   101, 103, 107, 109, 113, 127, 131, 137,
+    //   139, 149, 151, 157, 163, 167, 173, 179,
+    //   181, 191, 193, 197, 199, 211, 223, 227
+    // }
+    // See also:
+    // https://www.wolframalpha.com/input/?i=Table%5BPrime%5Bi%5D%2C+%7Bi%2C+2%2C+49%7D%5D
+
+    constexpr detail::array_detail::array<local_limb_type, static_cast<std::size_t>(UINT8_C(48))> small_primes =
     {
+      static_cast<local_limb_type>(UINT8_C(  3)), static_cast<local_limb_type>(UINT8_C(  5)), static_cast<local_limb_type>(UINT8_C(  7)), static_cast<local_limb_type>(UINT8_C( 11)), static_cast<local_limb_type>(UINT8_C( 13)), static_cast<local_limb_type>(UINT8_C( 17)), static_cast<local_limb_type>(UINT8_C( 19)), static_cast<local_limb_type>(UINT8_C( 23)),
+      static_cast<local_limb_type>(UINT8_C( 29)), static_cast<local_limb_type>(UINT8_C( 31)), static_cast<local_limb_type>(UINT8_C( 37)), static_cast<local_limb_type>(UINT8_C( 41)), static_cast<local_limb_type>(UINT8_C( 43)), static_cast<local_limb_type>(UINT8_C( 47)), static_cast<local_limb_type>(UINT8_C( 53)), static_cast<local_limb_type>(UINT8_C( 59)),
+      static_cast<local_limb_type>(UINT8_C( 61)), static_cast<local_limb_type>(UINT8_C( 67)), static_cast<local_limb_type>(UINT8_C( 71)), static_cast<local_limb_type>(UINT8_C( 73)), static_cast<local_limb_type>(UINT8_C( 79)), static_cast<local_limb_type>(UINT8_C( 83)), static_cast<local_limb_type>(UINT8_C( 89)), static_cast<local_limb_type>(UINT8_C( 97)),
+      static_cast<local_limb_type>(UINT8_C(101)), static_cast<local_limb_type>(UINT8_C(103)), static_cast<local_limb_type>(UINT8_C(107)), static_cast<local_limb_type>(UINT8_C(109)), static_cast<local_limb_type>(UINT8_C(113)), static_cast<local_limb_type>(UINT8_C(127)), static_cast<local_limb_type>(UINT8_C(131)), static_cast<local_limb_type>(UINT8_C(137)),
+      static_cast<local_limb_type>(UINT8_C(139)), static_cast<local_limb_type>(UINT8_C(149)), static_cast<local_limb_type>(UINT8_C(151)), static_cast<local_limb_type>(UINT8_C(157)), static_cast<local_limb_type>(UINT8_C(163)), static_cast<local_limb_type>(UINT8_C(167)), static_cast<local_limb_type>(UINT8_C(173)), static_cast<local_limb_type>(UINT8_C(179)),
+      static_cast<local_limb_type>(UINT8_C(181)), static_cast<local_limb_type>(UINT8_C(191)), static_cast<local_limb_type>(UINT8_C(193)), static_cast<local_limb_type>(UINT8_C(197)), static_cast<local_limb_type>(UINT8_C(199)), static_cast<local_limb_type>(UINT8_C(211)), static_cast<local_limb_type>(UINT8_C(223)), static_cast<local_limb_type>(UINT8_C(227))
+    };
+
+    {
+      // Handle even numbers.
       const auto n0 = static_cast<local_limb_type>(np);
 
       const auto n_is_even =
@@ -6975,126 +7044,74 @@
 
       if(n_is_even)
       {
-        // The prime candidate is not prime because n is even.
-        // Also handle the trivial special case of (n = 2).
+        // If true:
+        // Handle the trivial special case of 2, which is prime.
 
-        const auto n_is_two =
-          ((n0 == static_cast<local_limb_type>(UINT8_C(2))) && (np == static_cast<local_limb_type>(UINT8_C(2))));
+        // If false:
+        // The prime candidate is not prime because it is either
+        // even and larger than 2 or equal to zero. Herewith, we
+        // handle non-prime even numbers and the non-primality of 0.
+        const bool
+          is_prime_two_or_is_non_prime_even
+          {
+            ((n0 == static_cast<local_limb_type>(UINT8_C(2))) && (np == unsigned { UINT8_C(2) }))
+          };
 
-        return n_is_two;
+        return is_prime_two_or_is_non_prime_even;
       }
 
-      if((n0 <= static_cast<local_limb_type>(UINT8_C(227))) && (np <= static_cast<local_limb_type>(UINT8_C(227))))
+      if((n0 <= small_primes.back()) && (np <= small_primes.back()))
       {
         // This handles the trivial special case of the (non-primality) of 1.
-        const auto n_is_one =
-          ((n0 == static_cast<local_limb_type>(UINT8_C(1))) && (np == static_cast<local_limb_type>(UINT8_C(1))));
-
-        if(n_is_one)
+        if(n0 == static_cast<local_limb_type>(UINT8_C(1)))
         {
           return false;
         }
 
-        // Exclude pure small primes from 3...227.
-        // Table[Prime[i], {i, 2, 49}] =
-        // {
-        //     3,   5,   7,  11,  13,  17,  19,  23,
-        //    29,  31,  37,  41,  43,  47,  53,  59,
-        //    61,  67,  71,  73,  79,  83,  89,  97,
-        //   101, 103, 107, 109, 113, 127, 131, 137,
-        //   139, 149, 151, 157, 163, 167, 173, 179,
-        //   181, 191, 193, 197, 199, 211, 223, 227
-        // }
-        // See also:
-        // https://www.wolframalpha.com/input/?i=Table%5BPrime%5Bi%5D%2C+%7Bi%2C+2%2C+49%7D%5D
+        // Exclude pure small primes from the small_primes table.
+        // We are already restricted to np <= small_primes.back()
+        // via the query above. So it is sufficient to test only
+        // the lowest limb.
+        bool is_small_prime { false };
 
-        constexpr detail::array_detail::array<local_limb_type, static_cast<std::size_t>(UINT8_C(48))> small_primes =
+        for(const auto& small_p : small_primes)
         {
-          static_cast<local_limb_type>(UINT8_C(  3)), static_cast<local_limb_type>(UINT8_C(  5)), static_cast<local_limb_type>(UINT8_C(  7)), static_cast<local_limb_type>(UINT8_C( 11)), static_cast<local_limb_type>(UINT8_C( 13)), static_cast<local_limb_type>(UINT8_C( 17)), static_cast<local_limb_type>(UINT8_C( 19)), static_cast<local_limb_type>(UINT8_C( 23)),
-          static_cast<local_limb_type>(UINT8_C( 29)), static_cast<local_limb_type>(UINT8_C( 31)), static_cast<local_limb_type>(UINT8_C( 37)), static_cast<local_limb_type>(UINT8_C( 41)), static_cast<local_limb_type>(UINT8_C( 43)), static_cast<local_limb_type>(UINT8_C( 47)), static_cast<local_limb_type>(UINT8_C( 53)), static_cast<local_limb_type>(UINT8_C( 59)),
-          static_cast<local_limb_type>(UINT8_C( 61)), static_cast<local_limb_type>(UINT8_C( 67)), static_cast<local_limb_type>(UINT8_C( 71)), static_cast<local_limb_type>(UINT8_C( 73)), static_cast<local_limb_type>(UINT8_C( 79)), static_cast<local_limb_type>(UINT8_C( 83)), static_cast<local_limb_type>(UINT8_C( 89)), static_cast<local_limb_type>(UINT8_C( 97)),
-          static_cast<local_limb_type>(UINT8_C(101)), static_cast<local_limb_type>(UINT8_C(103)), static_cast<local_limb_type>(UINT8_C(107)), static_cast<local_limb_type>(UINT8_C(109)), static_cast<local_limb_type>(UINT8_C(113)), static_cast<local_limb_type>(UINT8_C(127)), static_cast<local_limb_type>(UINT8_C(131)), static_cast<local_limb_type>(UINT8_C(137)),
-          static_cast<local_limb_type>(UINT8_C(139)), static_cast<local_limb_type>(UINT8_C(149)), static_cast<local_limb_type>(UINT8_C(151)), static_cast<local_limb_type>(UINT8_C(157)), static_cast<local_limb_type>(UINT8_C(163)), static_cast<local_limb_type>(UINT8_C(167)), static_cast<local_limb_type>(UINT8_C(173)), static_cast<local_limb_type>(UINT8_C(179)),
-          static_cast<local_limb_type>(UINT8_C(181)), static_cast<local_limb_type>(UINT8_C(191)), static_cast<local_limb_type>(UINT8_C(193)), static_cast<local_limb_type>(UINT8_C(197)), static_cast<local_limb_type>(UINT8_C(199)), static_cast<local_limb_type>(UINT8_C(211)), static_cast<local_limb_type>(UINT8_C(223)), static_cast<local_limb_type>(UINT8_C(227))
-        };
+          if(static_cast<local_limb_type>(n0 == small_p))
+          {
+            is_small_prime = true;
 
-        return detail::binary_search_unsafe(small_primes.cbegin(), small_primes.cend(), n0);
+            break;
+          }
+        }
+
+        if(is_small_prime)
+        {
+          return true;
+        }
       }
-    }
 
-    // Check small factors.
+      // Handle numbers divisible by small primes in the small_primes table.
+      bool is_small_prime_divisible { false };
 
-    // Exclude small prime factors from { 3 ...  53 }.
-    // Product[Prime[i], {i, 2, 16}] = 16294579238595022365
-    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+2%2C+16%7D%5D
-    {
-      constexpr std::uint64_t pp0 = UINT64_C(16294579238595022365);
+      for(const auto& small_p : small_primes)
+      {
+        // The following test does not include the secondary query
+        // if (np == small_p). This is OK here because exact small
+        // primes have already been filtered out above.
 
-      const auto m0 = static_cast<std::uint64_t>(np % pp0);
+        if(static_cast<local_limb_type>(np % small_p) == static_cast<local_limb_type>(UINT8_C(0)))
+        {
+          is_small_prime_divisible = true;
 
-      if((m0 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m0, pp0) != static_cast<std::uint64_t>(UINT8_C(1))))
+          break;
+        }
+      }
+
+      if(is_small_prime_divisible)
       {
         return false;
       }
     }
-
-    // Exclude small prime factors from { 59 ... 101 }.
-    // Product[Prime[i], {i, 17, 26}] = 7145393598349078859
-    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+17%2C+26%7D%5D
-    {
-      constexpr std::uint64_t pp1 = UINT64_C(7145393598349078859);
-
-      const auto m1 = static_cast<std::uint64_t>(np % pp1);
-
-      if((m1 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m1, pp1) != static_cast<std::uint64_t>(UINT8_C(1))))
-      {
-        return false;
-      }
-    }
-
-    // Exclude small prime factors from { 103 ... 149 }.
-    // Product[Prime[i], {i, 27, 35}] = 6408001374760705163
-    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+27%2C+35%7D%5D
-    {
-      constexpr std::uint64_t pp2 = UINT64_C(6408001374760705163);
-
-      const auto m2 = static_cast<std::uint64_t>(np % pp2);
-
-      if((m2 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m2, pp2) != static_cast<std::uint64_t>(UINT8_C(1))))
-      {
-        return false;
-      }
-    }
-
-    // Exclude small prime factors from { 151 ... 191 }.
-    // Product[Prime[i], {i, 36, 43}] = 690862709424854779
-    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+36%2C+43%7D%5D
-    {
-      constexpr std::uint64_t pp3 = UINT64_C(690862709424854779);
-
-      const auto m3 = static_cast<std::uint64_t>(np % pp3);
-
-      if((m3 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m3, pp3) != static_cast<std::uint64_t>(UINT8_C(1))))
-      {
-        return false;
-      }
-    }
-
-    // Exclude small prime factors from { 193 ... 227 }.
-    // Product[Prime[i], {i, 44, 49}] = 80814592450549
-    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+44%2C+49%7D%5D
-    {
-      constexpr std::uint64_t pp4 = UINT64_C(80814592450549);
-
-      const auto m4 = static_cast<std::uint64_t>(np % pp4);
-
-      if((m4 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m4, pp4) != static_cast<std::uint64_t>(UINT8_C(1))))
-      {
-        return false;
-      }
-    }
-
-    const local_wide_integer_type nm1 { np - static_cast<unsigned>(UINT8_C(1)) };
 
     auto
       local_functor_isone
@@ -7103,20 +7120,24 @@
         {
           return
           (
-               (static_cast<local_limb_type>(t1) == local_limb_type { UINT8_C(1) })
+               (static_cast<local_limb_type>(t1) == static_cast<local_limb_type>(UINT8_C(1)))
             && (t1 == unsigned { UINT8_C(1) })
           );
         }
       };
 
+    const local_wide_integer_type nm1 { np - static_cast<unsigned>(UINT8_C(1)) };
+
     // Since we have already excluded all small factors
-    // up to and including 227, n is greater than 227.
+    // up to and including small_primes.back(), which is 227,
+    // it is known at this point in the subroutine that np
+    // is greater than 227.
 
     {
       // Perform a single Fermat test which will
       // exclude many non-prime candidates.
 
-      const local_wide_integer_type fn { powm(local_wide_integer_type(static_cast<local_limb_type>(228U)), nm1, np) };
+      const local_wide_integer_type fn { powm(local_wide_integer_type(small_primes.back()), nm1, np) };
 
       if(!local_functor_isone(fn))
       {
@@ -7126,7 +7147,7 @@
 
     const unsigned k { static_cast<unsigned>(lsb(nm1)) };
 
-    const local_wide_integer_type q { nm1 >> k };
+    const local_wide_integer_type q { nm1 >> k }; // NOLINT(altera-id-dependent-backward-branch)
 
     using local_param_type = typename DistributionType::param_type;
 
@@ -7140,56 +7161,58 @@
     // Assume the test will pass, even though it usually does not pass.
     bool result_candidate_is_prime { true };
 
-    ::std::size_t idx { UINT8_C(0) };
-
     using local_double_width_type = typename local_wide_integer_type::double_width_type;
 
     const local_double_width_type np_dbl { np };
 
-    // Loop over the trials to perform the primality testing.
-    do
+    // We will now run the trials.
+    for(std::size_t   trial { std::size_t { UINT8_C(0) } };
+                    ((trial < number_of_trials) && result_candidate_is_prime);
+                    ++trial)
     {
       local_wide_integer_type y { powm(distribution(generator, params), q, np) };
 
-      ::std::size_t jdx { UINT8_C(0) };
-
-      // Continue while y is not nm1, and while y is not 1,
-      // and while the result is true.
-
-      while((y != nm1) && (!local_functor_isone(y)) && result_candidate_is_prime) // NOLINT(altera-id-dependent-backward-branch)
+      for(auto   j = std::size_t { UINT8_C(0) };
+               ((j < static_cast<std::size_t>(k)) && result_candidate_is_prime); // NOLINT(altera-id-dependent-backward-branch)
+               ++j)
       {
-        ++jdx;
-
-        if(jdx == static_cast<std::size_t>(k))
+        if (y == nm1)
         {
-          // Mark failure if max iterations reached.
+          // This trial passes and the candidate is very probably prime
+          // within the limits of Miller-Rabin.
+
+          break;
+        }
+
+        if(local_functor_isone(y))
+        {
+          // Failure and the candidate is not prime, but only if this is
+          // not the first step.
+
+          if(j != std::size_t { UINT8_C(0) })
+          {
+            result_candidate_is_prime = false;
+          }
+
+          break;
+        }
+
+        // Compute y = y^2 mod np.
+        {
+          const local_double_width_type y_dbl { static_cast<local_double_width_type>(y) };
+
+          y = static_cast<local_wide_integer_type>((y_dbl * y_dbl) % np_dbl);
+        }
+
+        // If we reach the final iteration without hitting nm1,
+        // then the candidate is not prime.
+
+        if(static_cast<unsigned>(j + std::size_t { UINT8_C(1) }) == k)
+        {
           result_candidate_is_prime = false;
         }
-        else
-        {
-          // Continue with the next value of y.
-
-          // Manually calculate: y-squared-mod-np;
-
-          local_double_width_type yd { y };
-
-          yd *= yd;
-          yd %= np_dbl;
-
-          y = local_wide_integer_type { yd };
-        }
       }
-
-      // Check for (y == 1) after the loop.
-      if(local_functor_isone(y) && (jdx != ::std::size_t { UINT8_C(0) }))
-      {
-        // Mark failure if (y == 1) and (jdx != 0).
-        result_candidate_is_prime = false;
-      }
-
-      ++idx;
     }
-    while((idx < number_of_trials) && result_candidate_is_prime);
 
     return result_candidate_is_prime;
   }
@@ -7471,13 +7494,14 @@
            const size_t Width2,
            typename LimbType,
            typename AllocatorType,
+           const bool IsSigned,
            std::enable_if_t<std::numeric_limits<typename detail::iterator_detail::iterator_traits<ForwardIterator>::value_type>::digits == std::numeric_limits<LimbType>::digits> const*>
   constexpr
-  auto import_bits(uintwide_t<Width2, LimbType, AllocatorType, false>& val,
+  auto import_bits(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& val,
                    ForwardIterator first,
                    ForwardIterator last,
                    unsigned        chunk_size,
-                   bool            msv_first) -> uintwide_t<Width2, LimbType, AllocatorType, false>&
+                   bool            msv_first) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>&
   {
     // This subroutine implements limb-by-limb import of bit-chunks.
     // This template specialization is intended for full chunk sizes,
@@ -7596,13 +7620,14 @@
            const size_t Width2,
            typename LimbType,
            typename AllocatorType,
+           const bool IsSigned,
            std::enable_if_t<!(std::numeric_limits<typename detail::iterator_detail::iterator_traits<ForwardIterator>::value_type>::digits == std::numeric_limits<LimbType>::digits)> const*>
   constexpr
-  auto import_bits(uintwide_t<Width2, LimbType, AllocatorType, false>& val,
+  auto import_bits(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& val,
                    ForwardIterator first,
                    ForwardIterator last,
                    unsigned        chunk_size,
-                   bool            msv_first) -> uintwide_t<Width2, LimbType, AllocatorType, false>&
+                   bool            msv_first) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>&
   {
     // This subroutine implements limb-by-limb import of bit-chunks.
     // This template specialization is intended for non-full chunk sizes,
@@ -7915,9 +7940,5 @@
   #endif
 
   WIDE_INTEGER_NAMESPACE_END
-
-  #if defined(__GNUC__)
-  #pragma GCC diagnostic pop
-  #endif
 
 #endif // UINTWIDE_T_2018_10_02_H
