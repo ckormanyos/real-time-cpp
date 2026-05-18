@@ -63,7 +63,7 @@ ifeq ($(TYP_OS),WIN)
 ESP32S3_ESP_TOOL_DIR             := $(PATH_TOOLS)/espressif/esptool-v4.11.0-windows-amd64
 
 ESP32S3_ESP_TOOL_FLAGS_PROG      := --chip esp32p4                                                  \
-                                    -p COM5 -b 460800                                               \
+                                    -p COM3 -b 460800                                               \
                                     --before=default_reset                                          \
                                     --after=hard_reset write_flash                                  \
                                     --flash_mode dio                                                \

@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,40 +8,12 @@
 #include <mcal_cpu.h>
 #include <mcal_gpt.h>
 
-#include <chrono>
 #include <cstddef>
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #endif
-
-// Implement std::chrono::high_resolution_clock::now()
-// for the standard library's high-resolution clock.
-namespace std
-{
-  namespace chrono
-  {
-    high_resolution_clock::time_point high_resolution_clock::now() noexcept
-    {
-       // The source of the high-resolution clock is microseconds.
-       using microsecond_time_point_type =
-         std::chrono::time_point<high_resolution_clock,
-                                 std::chrono::microseconds>;
-
-       // Get the consistent system tick (having microsecond resolution).
-       const mcal::gpt::value_type microsecond_tick =
-         mcal::gpt::secure::get_time_elapsed();
-
-       // Obtain a time-point with microsecond resolution.
-       const auto time_point_in_microseconds =
-         microsecond_time_point_type(std::chrono::microseconds(microsecond_tick));
-
-       // And return the corresponding duration with microsecond resolution.
-       return time_point_cast<duration>(time_point_in_microseconds);
-    }
-  }
-}
 
 void* operator new(std::size_t size)
 {

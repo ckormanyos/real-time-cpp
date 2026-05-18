@@ -1,5 +1,5 @@
 /*
- Copyright Christopher Kormanyos 2007 - 2025.
+ Copyright Christopher Kormanyos 2007 - 2026.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,8 +13,8 @@ OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
 /* The beginning and end (i.e., top) of the stack */
-/* Set up a stack with a size of 0x180=(3/8)K */
-_stack_begin = 0x00800780;
+/* Set up a stack with a size of 0x100=(1/4)K */
+_stack_begin = 0x00800800;
 _stack_end   = 0x00800900;
 
 /* The initial stack pointer (top of stack) is at the top of the 2K RAM */
@@ -24,7 +24,7 @@ MEMORY
 {
   VEC(rx)  : ORIGIN = 0x00000000, LENGTH = 0x00000080
   ROM(rx)  : ORIGIN = 0x00000080, LENGTH = 32K - 0x00000080
-  RAM(rwx) : ORIGIN = 0x00800100, LENGTH = 0x00000780 - 0x00000100
+  RAM(rwx) : ORIGIN = 0x00800000, LENGTH = 0x00000800
 }
 
 SECTIONS
@@ -71,7 +71,7 @@ SECTIONS
     . = ALIGN(2);
   } > ROM
 
-  . = 0x00800100;
+  . = 0x00800000;
   . = ALIGN(2);
 
   /* The ROM-to-RAM initialized data section */
