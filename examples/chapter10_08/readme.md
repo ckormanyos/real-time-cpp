@@ -1,9 +1,10 @@
 # Example Chapter10_08 (advanced level)
+
 ## External SPI RAM and Computing 10,001 Digits of Pi
 
 <p align="center">
-    <a href="https://godbolt.org/z/EMx88ocxn" alt="godbolt">
-        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+    <a href="https://godbolt.org/z/EMx88ocxn">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt" /></a>
 </p>
 
 This advanced example extends available RAM via SPI SRAM chips.
@@ -134,7 +135,7 @@ These 8-pin SRAM chips are straightforward to use.
 They are controlled with easy-to-understand commands
 that execute read/write operations in either single byte sequences
 or small page bursts. A lightweight communication class
-called `mcal::memroy::sram::memory_sram_microchip_23lc1024`
+called `mcal::memory::sram::memory_sram_microchip_23lc1024`
 that is used to control the SRAM chips can be found
 in the file
 [mcal_memory_sram_microchip_23lc1024.h](./src/mcal/avr/mcal_memory_sram_microchip_23lc1024.h)
@@ -165,9 +166,9 @@ Pinning in this example is summarized in the table below.
 The hardware setup is pictured in the image below with an oscilloscope measurement
 in action.
 
-![](./images/board10_08.jpg)
+![Hardware Setup](./images/board10_08.jpg)
 
 The PWM signal representing calculation progress is shown below.
 The PWM signal has a frequency of approximately $2~\text{kHz}$.
 
-![](./images/scope10_08.jpg)
+![View of PWM signal on oscilloscope](./images/scope10_08.jpg)

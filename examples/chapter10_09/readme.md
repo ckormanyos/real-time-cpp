@@ -1,4 +1,5 @@
 # Example Chapter10_09 (advanced level)
+
 ## 100,001 Digits of Pi on Raspberry Pi(R)
 
 This advanced example ports the Pi Spigot
@@ -21,7 +22,7 @@ in this example. It can be found in identically the same form
 as that which has been used in Examples Chapter10_08 and 10_08a.
 The single-board computer is operated
 OS-less in _bare-metal_ mode with no input or output device.
-Real-time afficionados will relish the eloquent, efficient, terse,
+Real-time aficionados will relish the eloquent, efficient, terse,
 manually-written startup sequence and memory-access optimization code.
 A skinny MCAL layer provides the needed peripheral abstractions
 for timer, port I/O driver, etc.
@@ -220,7 +221,7 @@ are used to connect the single-board computer to power, ground
 and the necessary logic peripherals. Power and ground lines have
 double and quadruple strands of skinny wire
 in order to reduce parasitic dissipation
-in the currrent-carrying lines.
+in the current-carrying lines.
 
 The logic gate sharpens port output signal edges
 and performs the conversion from $3.3~\text{V}$ CMOS to $5~\text{V}$ TTL.
@@ -256,8 +257,7 @@ Pinning in this example is summarized in the table below.
 | 27             | GPA_6        | LCD R/W                                        |
 | 28             | GPA_7        | LCD E                                          |
 
-
 The hardware setup with the RpiZero in action calculating
-$100,001$ decimal digits of  $\pi$ is pictured in the image below.
+$100,001$ decimal digits of $\pi$ is pictured in the image below.
 
-![](./images/board10_09.jpg)
+![Hardware Setup with RpiZero](./images/board10_09.jpg)
