@@ -1,4 +1,5 @@
 # Example Chapter10_08a (advanced level)
+
 ## Parallel SRAM and Computing 100,001 Digits of Pi
 
 This advanced example picks up on the idea of the previous Example Chapter10_08
@@ -30,12 +31,12 @@ Care needs to be taken to wire the parallel SRAM brick properly
 (as shown below). When the hardware setup is correct,
 however, it is actually relatively straightforward
 (although definitely requires careful attention to detail)
-to write a prallel SRAM driver for the 8-bit MCU.
+to write a parallel SRAM driver for the 8-bit MCU.
 The results of these activities
 are expressed in the template classes
-`mcal::memroy::sram::memory_sram_parallel_cypress_cy62158e`
+`mcal::memory::sram::memory_sram_parallel_cypress_cy62158e`
 and
-`mcal::memroy::sram::memory_sram_parallel_cypress_cy62167gn`
+`mcal::memory::sram::memory_sram_parallel_cypress_cy62167gn`
 found in the files
 [mcal_memory_sram_parallel_cypress_cy62158e.h](./src/mcal/avr/mcal_memory_sram_parallel_cypress_cy62158e.h)
 and
@@ -89,7 +90,7 @@ This increases quadratically with increasing number
 of decimal digits targeted in a given calculation.
 
 Although we're not intending to break any super-computing
-performace or speed records with the 8-bit MCU hooked up
+performance or speed records with the 8-bit MCU hooked up
 to external parallel SRAM, the advantage of parallel port access
 can be noticed.
 Indeed, in this setup, the $1,001$
@@ -130,7 +131,7 @@ or the $2~\text{MByte}$ brick.
 
 The pin connections of the $2~\text{MByte}$ memory brick
 of type Cypress(R) MoBL(R) CY62167GN in 48-pin TSOP
-are shown in the table below. The pinnning has
+are shown in the table below. The pinning has
 been selected with certain considerations in mind that
 make the software driver for the memory brick
 more straightforward and less complicated to write.
@@ -194,11 +195,11 @@ read/write operations on the driver level.
 The hardware setup with the $2~\text{MByte}$ SRAM brick
 is pictured in the image below.
 
-![](./images/board10_08a_2MB.jpg)
+![2MByte Hardware Setup](./images/board10_08a_2MB.jpg)
 
 ### 1MB Setup
 
 The hardware setup with the $1~\text{MByte}$ SRAM brick
 is pictured in the image below.
 
-![](./images/board10_08a_1MB.jpg)
+![1MByte Hardware Setup](./images/board10_08a_1MB.jpg)
