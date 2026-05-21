@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2025.
+//  Copyright Christopher Kormanyos 2014 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -161,7 +161,7 @@
         T x_pow_n_div_n_fact(x);
 
         // Define an allocator type for use in the containers below.
-        using allocator_type = util::ring_allocator<T>;
+        using allocator_type = util::ring_allocator<T, std::uint_fast32_t { UINT8_C(64) }>;
 
         // Define a container type for the upcoming calculation.
         using container_type = util::dynamic_array<T, allocator_type>;

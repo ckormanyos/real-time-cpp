@@ -1,5 +1,5 @@
 ##############################################################################
-#  Copyright Christopher Kormanyos 2021 - 2025.
+#  Copyright Christopher Kormanyos 2021 - 2026.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -243,7 +243,7 @@ jobs:
       - name: benchmark_single-stm32f446
         run: |
           mkdir -p bin
-          arm-none-eabi-g++ -std=c++20 -Wall -Wextra -Wpedantic -O2 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f446/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f446/make/stm32f446.ld -o ./bin/app_benchmark_crc.elf
+          arm-none-eabi-g++ -std=c++20 -Wall -Wextra -Wpedantic -O2 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./src/mcal/mcal_gcc_cxx_completion.cpp ./target/micros/stm32f446/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f446/make/stm32f446.ld -o ./bin/app_benchmark_crc.elf
           arm-none-eabi-objcopy ./bin/app_benchmark_crc.elf -O ihex ./bin/app_benchmark_crc.hex
           ls -la ./bin/app_benchmark_crc.elf ./bin/app_benchmark_crc.hex ./bin/app_benchmark_crc.map
         working-directory: ./ref_app/
@@ -286,20 +286,20 @@ jobs:
           wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libncursesw5_6.3-2ubuntu0.1_amd64.deb
           sudo apt install ./libncursesw5_6.3-2ubuntu0.1_amd64.deb
           mkdir -p emu_env && cd emu_env
-          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
-          tar -xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/14.3.rel1/binrel/arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi.tar.xz
+          tar -xf arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi.tar.xz
           wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v8.2.6-1/xpack-qemu-arm-8.2.6-1-linux-x64.tar.gz
           tar -xzf xpack-qemu-arm-8.2.6-1-linux-x64.tar.gz
         working-directory: ./ref_app/
       - name: build benchmark_single-stm32f429
         run: |
-          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
           echo 'Query arm-none-eabi-g++ version'
           echo
           arm-none-eabi-g++ -v
           echo
           mkdir -p bin
-          arm-none-eabi-g++ -std=c++20 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -O2 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -nostdlib -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f429/make/stm32f429.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_crc.elf
+          arm-none-eabi-g++ -std=c++23 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -O2 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./src/mcal/mcal_gcc_cxx_completion.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -nostdlib -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f429/make/stm32f429.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_crc.elf
           arm-none-eabi-objcopy ./bin/app_benchmark_crc.elf -O ihex ./bin/app_benchmark_crc.hex
           ls -la ./bin/app_benchmark_crc.elf ./bin/app_benchmark_crc.hex ./bin/app_benchmark_crc.map
         working-directory: ./ref_app/
@@ -312,7 +312,7 @@ jobs:
       - name: run-test-on-target
         run: |
           sleep 2
-          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
           echo 'Run test on target'
           echo
           arm-none-eabi-gdb ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.gdb > ./app_benchmark_crc.txt
@@ -320,4 +320,60 @@ jobs:
           echo
           echo 'We will now grep for the right answer...'
           grep 'value 0xF00DCAFE' ./app_benchmark_crc.txt
+        working-directory: ./ref_app/
+  benchmark_single-stm32f429-qemu-std-big-int:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: |
+          sudo apt update
+          wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          sudo apt install ./libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libncursesw5_6.3-2ubuntu0.1_amd64.deb
+          sudo apt install ./libncursesw5_6.3-2ubuntu0.1_amd64.deb
+          mkdir -p emu_env && cd emu_env
+          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/14.3.rel1/binrel/arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi.tar.xz
+          tar -xf arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi.tar.xz
+          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v8.2.6-1/xpack-qemu-arm-8.2.6-1-linux-x64.tar.gz
+          tar -xzf xpack-qemu-arm-8.2.6-1-linux-x64.tar.gz
+        working-directory: ./ref_app/
+      - name: clone-eisenwave-std-big-int
+        run: |
+          git clone -b main --depth 1 https://github.com/eisenwave/std-big-int.git ../../std-big-int-root
+        working-directory: ./ref_app/
+      - name: build benchmark_single-stm32f429
+        run: |
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
+          echo 'Query arm-none-eabi-g++ version'
+          echo
+          arm-none-eabi-g++ -v
+          echo
+          mkdir -p bin
+          arm-none-eabi-g++ -std=c++23 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -O2 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -I../../std-big-int-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_STD_BIG_INT -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_std_big_int.cpp ./src/mcal/mcal_gcc_cxx_completion.cpp ../../std-big-int-root/src/karatsuba.cpp ../../std-big-int-root/src/toom_cook_3.cpp ../../std-big-int-root/src/toom_cook_4.cpp ../../std-big-int-root/src/toom_cook_6_5.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -nostdlib -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_std_big_int.map -T ./target/micros/stm32f429/make/stm32f429.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_std_big_int.elf
+          arm-none-eabi-objcopy ./bin/app_benchmark_std_big_int.elf -O ihex ./bin/app_benchmark_std_big_int.hex
+          ls -la ./bin/app_benchmark_std_big_int.elf ./bin/app_benchmark_std_big_int.hex ./bin/app_benchmark_std_big_int.map
+        working-directory: ./ref_app/
+      - name: emulate-target stm32f429
+        run: |
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/xpack-qemu-arm-8.2.6-1/bin:$PATH"
+          qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
+          sleep 2
+        working-directory: ./ref_app/
+      - name: run-test-on-target
+        run: |
+          sleep 2
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
+          echo 'Run test on target'
+          echo
+          arm-none-eabi-gdb ./bin/app_benchmark_std_big_int.elf -x ./target/build/test_app_benchmarks_emulator.gdb > ./app_benchmark_std_big_int.txt
+          cat ./app_benchmark_std_big_int.txt
+          echo
+          echo 'We will now grep for the right answer...'
+          grep 'value 0xF00DCAFE' ./app_benchmark_std_big_int.txt
         working-directory: ./ref_app/

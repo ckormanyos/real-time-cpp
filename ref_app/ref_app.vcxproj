@@ -79,7 +79,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4646;4996</DisableSpecificWarnings>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>
@@ -104,7 +104,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4646;4996</DisableSpecificWarnings>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>
@@ -208,6 +208,7 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_agm.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot_single.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_std_big_int.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_trapezoid_integral.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_decimal.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_integer.cpp" />

@@ -318,7 +318,7 @@ jobs:
           fetch-depth: '0'
       - uses: ilammy/msvc-dev-cmd@v1
         with:
-          toolset: 14.2
+          toolset: 14.4
       - name: msvc-msbuild-${{ matrix.suite }}
         run: |
           MSBuild -m ref_app.sln -p:Configuration=${{ matrix.suite }} -p:Platform=x64 /t:Rebuild

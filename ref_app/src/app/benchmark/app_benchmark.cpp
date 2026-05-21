@@ -124,6 +124,10 @@ auto app::benchmark::task_func() -> void
 
   const bool result_is_ok = app::benchmark::run_boost_crypt_hasher();
 
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_STD_BIG_INT))
+
+  const bool result_is_ok = app::benchmark::run_std_big_int();
+
   #endif
 
   // Set the benchmark port pin level to low.

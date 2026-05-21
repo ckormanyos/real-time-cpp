@@ -594,9 +594,6 @@
     <None Include="target\build\test_app_benchmarks_stm32f446.sh">
       <Filter>build</Filter>
     </None>
-    <None Include="target\micros\stm32f446\make\stm32f446_with_stdlib.ld">
-      <Filter>micros\stm32f446\make</Filter>
-    </None>
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_with_stdlib.ld">
       <Filter>micros\bcm2835_raspi_b\make</Filter>
     </None>
@@ -638,9 +635,6 @@
     </None>
     <None Include="target\micros\stm32h7a3\make\stm32h7a3_with_stdlib.ld">
       <Filter>micros\stm32h7a3\make</Filter>
-    </None>
-    <None Include="target\micros\stm32f429\make\stm32f429_with_stdlib.ld">
-      <Filter>micros\stm32f429\make</Filter>
     </None>
     <None Include="target\micros\nxp_imxrt1062\make\nxp_imxrt1062.ld">
       <Filter>micros\nxp_imxrt1062\make</Filter>
