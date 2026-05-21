@@ -61,10 +61,6 @@ void __my_startup()
   // TBD: Nothing on return from main.
 }
 
-extern "C" void _exit (int);
-
-extern "C" void _exit (int) { }
-
 extern "C"
 {
   extern std::uintptr_t _rom_data_begin; // Start address for the initialization values of the rom-to-ram section.
