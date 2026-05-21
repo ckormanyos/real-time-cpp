@@ -54,12 +54,19 @@ void operator delete(void*, std::size_t) noexcept { }
 
 extern "C"
 {
+  typedef struct file_tag
+  {
+    void* file_dummy;
+  }
+  FILE;
+
   // Declarations of patched functions.
 
   // Provide stubbed copies of certain functions declared in <stdlib.h> and <cstdlib>.
   // Also provide stubbed copies of certain empirically found library functions
   // and objects.
 
+  int         fprintf             (FILE*, const char*, ... );
   void        abort               ()                        __attribute__((noreturn));
   int         atexit              (void (*)());
   int         at_quick_exit       (void (*)());
@@ -82,6 +89,7 @@ extern "C"
 
   // Implementations of patched functions.
 
+  int         fprintf             (FILE*, const char*, ... )          { return -1; }
   void        abort               ()                                  { for(;;) { mcal::cpu::nop(); } }
   int         atexit              (void (*)())                        { return 0; }
   int         at_quick_exit       (void (*)())                        { return 0; }
@@ -133,6 +141,10 @@ namespace std
 {
   [[noreturn]]
   void __throw_out_of_range_fmt(char const*, ...)  { for(;;) { ; } }
+
+  using ::fprintf;
+
+  using ::atexit;
 }
 
 #if defined(__GNUC__)
