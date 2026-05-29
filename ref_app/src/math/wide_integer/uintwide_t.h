@@ -1741,6 +1741,9 @@
   constexpr auto msb_helper(const UnsignedIntegralType& u) -> unsigned_fast_type;
 
   template<>
+  constexpr auto msb_helper<std::uint64_t>(const std::uint64_t& u) -> unsigned_fast_type;
+
+  template<>
   constexpr auto msb_helper<std::uint32_t>(const std::uint32_t& u) -> unsigned_fast_type;
 
   template<>
@@ -2425,28 +2428,14 @@
 
     constexpr auto operator+=(const uintwide_t& other) -> uintwide_t&
     {
-      if(this == &other)
-      {
-        // Unary addition function.
-        const auto carry = eval_add_n(values.begin(), // LCOV_EXCL_LINE
-                                      values.cbegin(),
-                                      other.values.cbegin(),
-                                      static_cast<unsigned_fast_type>(number_of_limbs),
-                                      static_cast<limb_type>(UINT8_C(0)));
+      // Unary addition function.
+      const auto carry = eval_add_n(values.begin(),
+                                    values.cbegin(),
+                                    other.values.cbegin(),
+                                    static_cast<unsigned_fast_type>(number_of_limbs),
+                                    static_cast<limb_type>(UINT8_C(0)));
 
-        static_cast<void>(carry);
-      }
-      else
-      {
-        // Unary addition function.
-        const auto carry = eval_add_n(values.begin(),
-                                      values.cbegin(),
-                                      other.values.cbegin(),
-                                      static_cast<unsigned_fast_type>(number_of_limbs),
-                                      static_cast<limb_type>(UINT8_C(0)));
-
-        static_cast<void>(carry);
-      }
+      static_cast<void>(carry);
 
       return *this;
     }
@@ -5980,6 +5969,18 @@
   }
 
   template<>
+  constexpr auto msb_helper<std::uint64_t>(const std::uint64_t& u) -> unsigned_fast_type
+  {
+    constexpr unsigned thirty_two { unsigned { UINT8_C(32) } };
+
+    const std::uint32_t hi_dword { static_cast<std::uint32_t>(u >> thirty_two) };
+
+    const bool hi_dword_is_nonzero { (hi_dword != std::uint32_t { UINT8_C(0) }) };
+
+    return (hi_dword_is_nonzero ? static_cast<unsigned_fast_type>(msb_helper(hi_dword) + thirty_two) : msb_helper(static_cast<std::uint32_t>(u)));
+  }
+
+  template<>
   constexpr auto msb_helper<std::uint32_t>(const std::uint32_t& u) -> unsigned_fast_type
   {
     auto r = static_cast<unsigned_fast_type>(UINT8_C(0));
@@ -6711,7 +6712,12 @@
 
     if(numer_was_neg == denom_was_neg)
     {
-      result = divmod_result_pair_type { ua, ur };
+      result =
+        divmod_result_pair_type
+        {
+          local_unknown_signedness_left_type(ua),
+          local_unknown_signedness_right_type(ur)
+        };
 
       if(numer_was_neg) { result.second.negate(); }
     }
