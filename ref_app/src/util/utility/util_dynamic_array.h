@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2012 - 2025.
+//  Copyright Christopher Kormanyos 2012 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -46,74 +46,71 @@
     using const_reverse_iterator =       std::reverse_iterator<const_iterator>;
 
     // Constructors.
-    explicit constexpr dynamic_array(      size_type       count = static_cast<size_type>(UINT8_C(0)),
-                                           const_reference v     = value_type(),
-                                     const allocator_type& a     = allocator_type())
-      : elem_count(count)
+    constexpr dynamic_array() = delete;
+
+    explicit constexpr dynamic_array(size_type count_in,
+                                     const_reference value_in = value_type(),
+                                     const allocator_type& alloc_in = allocator_type())
+      : elem_count(count_in),
+        my_alloc(alloc_in)
     {
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        allocator_type my_a(a);
-
-        elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
         iterator it = begin();
 
         while(it != end())
         {
-          std::allocator_traits<allocator_type>::construct(my_a, it, v);
-
-          ++it;
+          *it++ = value_in;
         }
       }
     }
 
     constexpr dynamic_array(const dynamic_array& other)
-      : elem_count(other.size())
+      : elem_count(other.elem_count),
+        my_alloc(other.my_alloc)
     {
-      allocator_type my_a;
-
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
-      }
+        elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
-      std::copy(other.elems, other.elems + elem_count, elems);
+        std::copy(other.elems, other.elems + elem_count, elems);
+      }
     }
 
     template<typename input_iterator>
     constexpr dynamic_array(input_iterator first,
                             input_iterator last,
-                            const allocator_type& a = allocator_type())
-      : elem_count(static_cast<size_type>(std::distance(first, last)))
+                            const allocator_type& alloc_in = allocator_type())
+      : elem_count(static_cast<size_type>(std::distance(first, last))),
+        my_alloc(alloc_in)
     {
-      allocator_type my_a(a);
-
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
-      }
+        elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
-      std::copy(first, last, elems);
+        std::copy(first, last, elems);
+      }
     }
 
     constexpr dynamic_array(std::initializer_list<value_type> lst,
-                            const allocator_type& a = allocator_type())
-      : elem_count(lst.size())
+                            const allocator_type& alloc_in = allocator_type())
+      : elem_count(lst.size()),
+        my_alloc(alloc_in)
     {
-      allocator_type my_a(a);
-
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
-      }
+        elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
-      std::copy(lst.begin(), lst.end(), elems);
+        std::copy(lst.begin(), lst.end(), elems);
+      }
     }
 
     // Move constructor.
     constexpr dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
-                                                              elems     (other.elems)
+                                                              elems     (other.elems),
+                                                              my_alloc  (std::move(other.my_alloc))
     {
       other.elem_count = static_cast<size_type>(UINT8_C(0));
       other.elems      = nullptr;
@@ -122,12 +119,16 @@
     // Destructor.
     virtual ~dynamic_array() // LCOV_EXCL_LINE
     {
-      using local_allocator_traits_type = std::allocator_traits<allocator_type>;
+      if(!empty())
+      {
+        using local_allocator_traits_type = std::allocator_traits<allocator_type>;
 
-      allocator_type my_a;
+        // Deallocate the range of *this.
+        local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
 
-      // Destroy the elements and deallocate the range.
-      local_allocator_traits_type::deallocate(my_a, elems, elem_count);
+        elem_count = static_cast<size_type>(UINT8_C(0));
+        elems      = nullptr;
+      }
     }
 
     // Assignment operator.
@@ -203,54 +204,36 @@
       }
     }
 
-    constexpr auto swap(dynamic_array&& other) noexcept -> void
+  private:
+    size_type      elem_count { static_cast<size_type>(UINT8_C(0)) }; // NOLINT(readability-identifier-naming)
+    pointer        elems      { nullptr };                            // NOLINT(readability-identifier-naming,altera-id-dependent-backward-branch)
+    allocator_type my_alloc;                                          // NOLINT(readability-identifier-naming)
+
+    friend constexpr auto operator==(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
     {
-      elems      = std::move(other.elems);
-      elem_count = std::move(other.elem_count);
+      bool left_and_right_are_equal = false;
+
+      if(lhs.size() == rhs.size())
+      {
+        using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
+
+        const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(UINT8_C(0)));
+
+        left_and_right_are_equal =
+          (size_of_left_is_zero || std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin()));
+
+        return left_and_right_are_equal;
+      }
     }
 
-  private:
-    size_type elem_count;        // NOLINT(readability-identifier-naming)
-    pointer   elems { nullptr }; // NOLINT(readability-identifier-naming,altera-id-dependent-backward-branch)
-  };
-
-  template<typename ValueType, typename AllocatorType>
-  auto operator==(const dynamic_array<ValueType, AllocatorType>& lhs,
-                  const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
-  {
-    bool left_and_right_are_equal = false;
-
-    if(lhs.size() == rhs.size())
+    friend constexpr auto operator<(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
     {
       using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
 
       const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(UINT8_C(0)));
 
-      left_and_right_are_equal =
-        (size_of_left_is_zero || std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin()));
-    }
+      bool b_result { };
 
-    return left_and_right_are_equal;
-  }
-
-  template<typename ValueType, typename AllocatorType>
-  auto operator<(const dynamic_array<ValueType, AllocatorType>& lhs,
-                 const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
-  {
-    using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
-
-    const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(UINT8_C(0)));
-
-    bool b_result { };
-
-    if(size_of_left_is_zero)
-    {
-      const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(UINT8_C(0)));
-
-      b_result = (!size_of_right_is_zero);
-    }
-    else
-    {
       if(size_of_left_is_zero)
       {
         const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(UINT8_C(0)));
@@ -259,49 +242,35 @@
       }
       else
       {
-        const size_type count = (std::min)(lhs.size(), rhs.size());
+        if(size_of_left_is_zero)
+        {
+          const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(UINT8_C(0)));
 
-        b_result= std::lexicographical_compare(lhs.cbegin(),
-                                               lhs.cbegin() + count,
-                                               rhs.cbegin(),
-                                               rhs.cbegin() + count);
+          b_result = (!size_of_right_is_zero);
+        }
+        else
+        {
+          const size_type count = (std::min)(lhs.size(), rhs.size());
+
+          b_result= std::lexicographical_compare(lhs.cbegin(),
+                                                 lhs.cbegin() + count,
+                                                 rhs.cbegin(),
+                                                 rhs.cbegin() + count);
+        }
       }
+
+      return b_result;
     }
 
-    return b_result;
-  }
+    friend constexpr auto operator!=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(lhs == rhs)); }
+    friend constexpr auto operator> (const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (rhs < lhs); }
+    friend constexpr auto operator>=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(lhs < rhs)); }
+    friend constexpr auto operator<=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(rhs < lhs)); }
+  };
 
   template<typename ValueType, typename AllocatorType>
-  auto operator!=(const dynamic_array<ValueType, AllocatorType>& lhs,
-                  const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
-  {
-    return (!(lhs == rhs));
-  }
-
-  template<typename ValueType, typename AllocatorType>
-  auto operator>(const dynamic_array<ValueType, AllocatorType>& lhs,
-                 const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
-  {
-    return (rhs < lhs);
-  }
-
-  template<typename ValueType, typename AllocatorType>
-  auto operator>=(const dynamic_array<ValueType, AllocatorType>& lhs,
-                  const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
-  {
-    return (!(lhs < rhs));
-  }
-
-  template<typename ValueType, typename AllocatorType>
-  auto operator<=(const dynamic_array<ValueType, AllocatorType>& lhs,
-                  const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
-  {
-    return (!(rhs < lhs));
-  }
-
-  template<typename ValueType, typename AllocatorType>
-  auto swap(dynamic_array<ValueType, AllocatorType>& x,
-            dynamic_array<ValueType, AllocatorType>& y) noexcept -> void
+  constexpr auto swap(dynamic_array<ValueType, AllocatorType>& x,
+                      dynamic_array<ValueType, AllocatorType>& y) noexcept -> void
   {
     x.swap(y);
   }

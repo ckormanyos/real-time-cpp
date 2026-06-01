@@ -690,32 +690,28 @@
     explicit constexpr dynamic_array(size_type count_in,
                                      const_reference value_in = value_type(),
                                      const allocator_type& alloc_in = allocator_type())
-      : elem_count(count_in)
+      : elem_count(count_in),
+        my_alloc(alloc_in)
     {
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        allocator_type my_alloc(alloc_in);
-
         elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
         iterator it = begin();
 
         while(it != end())
         {
-          std::allocator_traits<allocator_type>::construct(my_alloc, it, value_in);
-
-          ++it;
+          *it++ = value_in;
         }
       }
     }
 
     constexpr dynamic_array(const dynamic_array& other)
-      : elem_count(other.size())
+      : elem_count(other.elem_count),
+        my_alloc(other.my_alloc)
     {
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        allocator_type my_alloc;
-
         elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
         #if defined(WIDE_INTEGER_NAMESPACE)
@@ -730,12 +726,11 @@
     constexpr dynamic_array(input_iterator first,
                             input_iterator last,
                             const allocator_type& alloc_in = allocator_type())
-      : elem_count(static_cast<size_type>(last - first))
+      : elem_count(static_cast<size_type>(last - first)),
+        my_alloc(alloc_in)
     {
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        allocator_type my_alloc(alloc_in);
-
         elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
         #if defined(WIDE_INTEGER_NAMESPACE)
@@ -748,12 +743,11 @@
 
     constexpr dynamic_array(std::initializer_list<value_type> lst,
                             const allocator_type& alloc_in = allocator_type())
-      : elem_count(lst.size())
+      : elem_count(lst.size()),
+        my_alloc(alloc_in)
     {
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        allocator_type my_alloc(alloc_in);
-
         elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
         #if defined(WIDE_INTEGER_NAMESPACE)
@@ -766,21 +760,19 @@
 
     // Move constructor.
     constexpr dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
-                                                              elems     (other.elems)
+                                                              elems     (other.elems),
+                                                              my_alloc  (std::move(other.my_alloc))
     {
       other.elem_count = static_cast<size_type>(UINT8_C(0));
       other.elems      = nullptr;
     }
 
     // Destructor.
-    //constexpr
     virtual ~dynamic_array()
     {
       if(!empty())
       {
         using local_allocator_traits_type = std::allocator_traits<allocator_type>;
-
-        allocator_type my_alloc { };
 
         // Deallocate the range of *this.
         local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
@@ -820,60 +812,61 @@
     // Move assignment operator.
     constexpr auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
     {
-      if(!empty())
+      if(this != &other)
       {
-        using local_allocator_traits_type = std::allocator_traits<allocator_type>;
+        if(!empty())
+        {
+          using local_allocator_traits_type = std::allocator_traits<allocator_type>;
 
-        allocator_type my_alloc { };
+          // Deallocate the range of *this.
+          local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
+        }
 
-        // Deallocate the range of *this.
-        local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
+        elem_count = other.elem_count;
+        elems      = other.elems;
+
+        other.elem_count = static_cast<size_type>(UINT8_C(0));
+        other.elems      = nullptr;
       }
-
-      elem_count = other.elem_count;
-      elems      = other.elems;
-
-      other.elem_count = static_cast<size_type>(UINT8_C(0));
-      other.elems      = nullptr;
 
       return *this;
     }
 
     // Iterator members:
-    constexpr auto begin  ()       -> iterator               { return elems; }
-    constexpr auto end    ()       -> iterator               { return elems + elem_count; }
-    constexpr auto begin  () const -> const_iterator         { return elems; }
-    constexpr auto end    () const -> const_iterator         { return elems + elem_count; }
-    constexpr auto cbegin () const -> const_iterator         { return elems; }
-    constexpr auto cend   () const -> const_iterator         { return elems + elem_count; }
-    constexpr auto rbegin ()       -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
-    constexpr auto rend   ()       -> reverse_iterator       { return reverse_iterator(elems); }
-    constexpr auto rbegin () const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    constexpr auto rend   () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
-    constexpr auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    constexpr auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    WIDE_INTEGER_NODISCARD constexpr auto begin  ()       -> iterator               { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto end    ()       -> iterator               { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto begin  () const -> const_iterator         { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto end    () const -> const_iterator         { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto cbegin () const -> const_iterator         { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto cend   () const -> const_iterator         { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto rbegin ()       -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto rend   ()       -> reverse_iterator       { return reverse_iterator(elems); }
+    WIDE_INTEGER_NODISCARD constexpr auto rbegin () const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto rend   () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    WIDE_INTEGER_NODISCARD constexpr auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
 
     // Raw pointer access.
-    constexpr auto data()       -> pointer       { return elems; }
-    constexpr auto data() const -> const_pointer { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto data()       -> pointer       { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto data() const -> const_pointer { return elems; }
 
     // Size and capacity.
-    constexpr auto size    () const noexcept -> size_type { return  elem_count; }
-    constexpr auto max_size() const noexcept -> size_type { return  elem_count; }
-    constexpr auto empty   () const noexcept -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
+    WIDE_INTEGER_NODISCARD constexpr auto size    () const noexcept -> size_type { return  elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto max_size() const noexcept -> size_type { return  elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto empty   () const noexcept -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
 
     // Element access members.
-    constexpr auto operator[](const size_type i)       -> reference       { return elems[i]; }
-    constexpr auto operator[](const size_type i) const -> const_reference { return elems[i]; }
+    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i)       -> reference       { return elems[i]; }
+    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i) const -> const_reference { return elems[i]; }
 
-    constexpr auto front()       -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
-    constexpr auto front() const -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    WIDE_INTEGER_NODISCARD constexpr auto front()       -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    WIDE_INTEGER_NODISCARD constexpr auto front() const -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
 
-    constexpr auto back()       -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    constexpr auto back() const -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto back()       -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto back() const -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
-    constexpr auto at(const size_type i)       -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    constexpr auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i)       -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
     // Element manipulation members.
     constexpr auto fill(const value_type& value_in) -> void
@@ -892,24 +885,19 @@
         #if defined(WIDE_INTEGER_NAMESPACE)
         WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(elems, other.elems);
         WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(elem_count, other.elem_count);
+        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(my_alloc, other.my_alloc);
         #else
         ::math::wide_integer::detail::swap_unsafe(elems, other.elems);
         ::math::wide_integer::detail::swap_unsafe(elem_count, other.elem_count);
+        ::math::wide_integer::detail::swap_unsafe(my_alloc, other.my_alloc);
         #endif
       }
     }
 
-    constexpr auto swap(dynamic_array&& other) noexcept -> void
-    {
-      dynamic_array tmp { std::move(*this) };
-
-      *this = std::move(static_cast<dynamic_array&&>(other));
-      other = std::move(static_cast<dynamic_array&&>(tmp));
-    }
-
   private:
-    mutable size_type elem_count;        // NOLINT(readability-identifier-naming)
-    pointer           elems { nullptr }; // NOLINT(readability-identifier-naming,altera-id-dependent-backward-branch)
+    size_type      elem_count { static_cast<size_type>(UINT8_C(0)) }; // NOLINT(readability-identifier-naming)
+    pointer        elems      { nullptr };                            // NOLINT(readability-identifier-naming,altera-id-dependent-backward-branch)
+    allocator_type my_alloc;                                          // NOLINT(readability-identifier-naming)
 
     friend constexpr auto operator==(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
     {
