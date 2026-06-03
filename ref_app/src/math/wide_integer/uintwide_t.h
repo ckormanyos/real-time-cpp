@@ -504,7 +504,7 @@
 
   namespace array_detail {
 
-  template<typename T, ::std::size_t N>
+  template<typename T, const ::std::size_t N>
   class array
   {
   public:
@@ -605,26 +605,25 @@
     friend constexpr auto operator> (const array& left, const array& right) -> bool { return (right < left); }
     friend constexpr auto operator>=(const array& left, const array& right) -> bool { return (!(left < right)); }
     friend constexpr auto operator<=(const array& left, const array& right) -> bool { return (!(right < left)); }
-  };
 
-  template<typename T, size_t N >
-  constexpr auto swap(array<T, N>& x, array<T, N>& y) noexcept -> void
-  {
-    swap_ranges_unsafe(x.begin(), x.end(), y.begin());
-  }
+    friend constexpr auto swap(array& x, array& y) noexcept -> void
+    {
+      swap_ranges_unsafe(x.begin(), x.end(), y.begin());
+    }
+  };
 
   template<typename T>
   class tuple_size;
 
-  template<typename T, typename ::std::size_t N>
+  template<typename T, const ::std::size_t N>
   class tuple_size<array<T, N>> : public std::integral_constant<std::size_t, N> { };
 
   template<const ::std::size_t N, typename T>
   class tuple_element;
 
   template<const ::std::size_t I,
-            typename T,
-            const ::std::size_t N>
+           typename T,
+           const ::std::size_t N>
   class tuple_element<I, array<T, N> >
   {
     static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
@@ -662,7 +661,7 @@
            typename DiffType>
   class dynamic_array
   {
-  public:
+  protected:
     // Type definitions.
     using allocator_type         = typename std::allocator_traits<AllocatorType>::template rebind_alloc<ValueType>;
     using value_type             = typename allocator_type::value_type;
@@ -675,18 +674,98 @@
     using size_type              =       SizeType;
     using difference_type        =       DiffType;
     #if defined(WIDE_INTEGER_NAMESPACE)
-    using reverse_iterator       =       WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::iterator_detail::reverse_iterator<      value_type*>;
-    using const_reverse_iterator =       WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::iterator_detail::reverse_iterator<const value_type*>;
+    using reverse_iterator       =       WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::iterator_detail::reverse_iterator<iterator>;
+    using const_reverse_iterator =       WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::iterator_detail::reverse_iterator<const_iterator>;
     #else
-    using reverse_iterator       =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<      value_type*>;
-    using const_reverse_iterator =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<const value_type*>;
+    using reverse_iterator       =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<iterator>;
+    using const_reverse_iterator =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<const_iterator>;
     #endif
 
+  public:
     static_assert(std::is_integral<value_type>::value, "Error: the value_type of dynamic_array must be a built-in integral");
 
-    // Constructors.
+    // Deleted default constructor.
     constexpr dynamic_array() = delete;
 
+    // Destructor.
+    virtual ~dynamic_array()
+    {
+      if(!empty())
+      {
+        using local_allocator_traits_type = std::allocator_traits<allocator_type>;
+
+        // Deallocate the range of *this.
+        local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
+
+        elem_count = static_cast<size_type>(UINT8_C(0));
+        elems      = nullptr;
+      }
+    }
+
+    // Iterator members:
+    WIDE_INTEGER_NODISCARD constexpr auto begin  ()       -> iterator               { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto end    ()       -> iterator               { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto begin  () const -> const_iterator         { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto end    () const -> const_iterator         { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto cbegin () const -> const_iterator         { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto cend   () const -> const_iterator         { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto rbegin ()       -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto rend   ()       -> reverse_iterator       { return reverse_iterator(elems); }
+    WIDE_INTEGER_NODISCARD constexpr auto rbegin () const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto rend   () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    WIDE_INTEGER_NODISCARD constexpr auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
+
+    // Raw pointer access.
+    WIDE_INTEGER_NODISCARD constexpr auto data()       -> pointer       { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto data() const -> const_pointer { return elems; }
+
+    // Size and capacity.
+    WIDE_INTEGER_NODISCARD constexpr auto size    () const noexcept -> size_type { return  elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto max_size() const noexcept -> size_type { return  elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto empty   () const noexcept -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
+
+    // Element access members.
+    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i)       -> reference       { return elems[i]; }
+    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i) const -> const_reference { return elems[i]; }
+
+    WIDE_INTEGER_NODISCARD constexpr auto front()       -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    WIDE_INTEGER_NODISCARD constexpr auto front() const -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
+
+    WIDE_INTEGER_NODISCARD constexpr auto back()       -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto back() const -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+
+    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i)       -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+
+    // Element manipulation members.
+    constexpr auto fill(const value_type& value_in) -> void
+    {
+      #if defined(WIDE_INTEGER_NAMESPACE)
+      WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::fill_unsafe(begin(), begin() + elem_count, value_in);
+      #else
+      ::math::wide_integer::detail::fill_unsafe(begin(), begin() + elem_count, value_in);
+      #endif
+    }
+
+    constexpr auto swap(dynamic_array& other) noexcept -> void
+    {
+      if(this != &other)
+      {
+        #if defined(WIDE_INTEGER_NAMESPACE)
+        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(elems, other.elems);
+        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(elem_count, other.elem_count);
+        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(my_alloc, other.my_alloc);
+        #else
+        ::math::wide_integer::detail::swap_unsafe(elems, other.elems);
+        ::math::wide_integer::detail::swap_unsafe(elem_count, other.elem_count);
+        ::math::wide_integer::detail::swap_unsafe(my_alloc, other.my_alloc);
+        #endif
+      }
+    }
+
+  protected:
+    // Constructors.
     explicit constexpr dynamic_array(size_type count_in,
                                      const_reference value_in = value_type(),
                                      const allocator_type& alloc_in = allocator_type())
@@ -761,25 +840,10 @@
     // Move constructor.
     constexpr dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
                                                               elems     (other.elems),
-                                                              my_alloc  (std::move(other.my_alloc))
+                                                              my_alloc  (std::move(static_cast<allocator_type&&>(other.my_alloc)))
     {
       other.elem_count = static_cast<size_type>(UINT8_C(0));
       other.elems      = nullptr;
-    }
-
-    // Destructor.
-    virtual ~dynamic_array()
-    {
-      if(!empty())
-      {
-        using local_allocator_traits_type = std::allocator_traits<allocator_type>;
-
-        // Deallocate the range of *this.
-        local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
-
-        elem_count = static_cast<size_type>(UINT8_C(0));
-        elems      = nullptr;
-      }
     }
 
     // Assignment operator.
@@ -832,68 +896,6 @@
       return *this;
     }
 
-    // Iterator members:
-    WIDE_INTEGER_NODISCARD constexpr auto begin  ()       -> iterator               { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto end    ()       -> iterator               { return elems + elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto begin  () const -> const_iterator         { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto end    () const -> const_iterator         { return elems + elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto cbegin () const -> const_iterator         { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto cend   () const -> const_iterator         { return elems + elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto rbegin ()       -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
-    WIDE_INTEGER_NODISCARD constexpr auto rend   ()       -> reverse_iterator       { return reverse_iterator(elems); }
-    WIDE_INTEGER_NODISCARD constexpr auto rbegin () const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    WIDE_INTEGER_NODISCARD constexpr auto rend   () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
-    WIDE_INTEGER_NODISCARD constexpr auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    WIDE_INTEGER_NODISCARD constexpr auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
-
-    // Raw pointer access.
-    WIDE_INTEGER_NODISCARD constexpr auto data()       -> pointer       { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto data() const -> const_pointer { return elems; }
-
-    // Size and capacity.
-    WIDE_INTEGER_NODISCARD constexpr auto size    () const noexcept -> size_type { return  elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto max_size() const noexcept -> size_type { return  elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto empty   () const noexcept -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
-
-    // Element access members.
-    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i)       -> reference       { return elems[i]; }
-    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i) const -> const_reference { return elems[i]; }
-
-    WIDE_INTEGER_NODISCARD constexpr auto front()       -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
-    WIDE_INTEGER_NODISCARD constexpr auto front() const -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
-
-    WIDE_INTEGER_NODISCARD constexpr auto back()       -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    WIDE_INTEGER_NODISCARD constexpr auto back() const -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
-
-    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i)       -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
-
-    // Element manipulation members.
-    constexpr auto fill(const value_type& value_in) -> void
-    {
-      #if defined(WIDE_INTEGER_NAMESPACE)
-      WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::fill_unsafe(begin(), begin() + elem_count, value_in);
-      #else
-      ::math::wide_integer::detail::fill_unsafe(begin(), begin() + elem_count, value_in);
-      #endif
-    }
-
-    constexpr auto swap(dynamic_array& other) noexcept -> void
-    {
-      if(this != &other)
-      {
-        #if defined(WIDE_INTEGER_NAMESPACE)
-        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(elems, other.elems);
-        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(elem_count, other.elem_count);
-        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(my_alloc, other.my_alloc);
-        #else
-        ::math::wide_integer::detail::swap_unsafe(elems, other.elems);
-        ::math::wide_integer::detail::swap_unsafe(elem_count, other.elem_count);
-        ::math::wide_integer::detail::swap_unsafe(my_alloc, other.my_alloc);
-        #endif
-      }
-    }
-
   private:
     size_type      elem_count { static_cast<size_type>(UINT8_C(0)) }; // NOLINT(readability-identifier-naming)
     pointer        elems      { nullptr };                            // NOLINT(readability-identifier-naming,altera-id-dependent-backward-branch)
@@ -901,46 +903,40 @@
 
     friend constexpr auto operator==(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
     {
-      return
-      (
-           (lhs.size() == rhs.size())
-        && (
-                lhs.empty()
-             #if defined(WIDE_INTEGER_NAMESPACE)
-             || WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::equal_unsafe(lhs.cbegin(), lhs.cend(), rhs.cbegin())
-             #else
-             || ::math::wide_integer::detail::equal_unsafe(lhs.cbegin(), lhs.cend(), rhs.cbegin())
-             #endif
-           )
-      );
+      bool left_and_right_are_equal { };
+
+      if(lhs.size() == rhs.size())
+      {
+        #if defined(WIDE_INTEGER_NAMESPACE)
+        left_and_right_are_equal = WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::equal_unsafe(lhs.cbegin(), lhs.cend(), rhs.cbegin());
+        #else
+        left_and_right_are_equal = ::math::wide_integer::detail::equal_unsafe(lhs.cbegin(), lhs.cend(), rhs.cbegin());
+        #endif
+      }
+
+      return left_and_right_are_equal;
     }
 
     friend constexpr auto operator<(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
     {
-      bool b_result { };
+      #if defined(WIDE_INTEGER_NAMESPACE)
+      const typename dynamic_array::size_type count { WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::min_unsafe(lhs.size(), rhs.size()) };
+      #else
+      const typename dynamic_array::size_type count { ::math::wide_integer::detail::min_unsafe(lhs.size(), rhs.size()) };
+      #endif
 
-      if(lhs.empty())
-      {
-        b_result = (!rhs.empty());
-      }
-      else
-      {
-        // Note: Use lexicographical_compare here. If the dynamic arrays
-        // have unequal sizes, then simply ignore the size differences.
-
-        b_result =
-          #if defined(WIDE_INTEGER_NAMESPACE)
-          WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::lexicographical_compare_unsafe
-          #else
-          ::math::wide_integer::detail::lexicographical_compare_unsafe
-          #endif
-          (
-            lhs.cbegin(),
-            lhs.cend(),
-            rhs.cbegin(),
-            rhs.cend()
-          );
-      }
+      const bool b_result =
+        #if defined(WIDE_INTEGER_NAMESPACE)
+        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::lexicographical_compare_unsafe
+        #else
+        ::math::wide_integer::detail::lexicographical_compare_unsafe
+        #endif
+        (
+          lhs.cbegin(),
+          lhs.cbegin() + count,
+          rhs.cbegin(),
+          rhs.cbegin() + count
+        );
 
       return b_result;
     }
@@ -949,14 +945,9 @@
     friend constexpr auto operator> (const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (rhs < lhs); }
     friend constexpr auto operator>=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(lhs < rhs)); }
     friend constexpr auto operator<=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(rhs < lhs)); }
-  };
 
-  template<typename ValueType, typename AllocatorType>
-  constexpr auto swap(dynamic_array<ValueType, AllocatorType>& x,
-                      dynamic_array<ValueType, AllocatorType>& y) noexcept -> void
-  {
-    x.swap(y);
-  }
+    friend constexpr auto swap(dynamic_array& x, dynamic_array& y) noexcept -> void { x.swap(y); }
+  };
 
   } // namespace util
 
@@ -1588,21 +1579,40 @@
   namespace math { namespace wide_integer { namespace detail { // NOLINT(modernize-concat-nested-namespaces)
   #endif
 
-  template<typename MyType,
+  template<typename ValueType,
            const size_t MySize,
-           typename MyAlloc>
-  class fixed_dynamic_array final : public detail::dynamic_array<MyType, MyAlloc, size_t, ptrdiff_t> // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
+           typename AllocatorType = ::std::allocator<ValueType>>
+  class fixed_dynamic_array;
+
+  template<typename ValueType,
+           const size_t MySize,
+           typename AllocatorType>
+  class fixed_dynamic_array final : public detail::dynamic_array<ValueType, AllocatorType, size_t, ptrdiff_t> // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   private:
-    using base_class_type = detail::dynamic_array<MyType, MyAlloc, size_t, ptrdiff_t>;
+    using base_class_type = detail::dynamic_array<ValueType, AllocatorType, size_t, ptrdiff_t>;
 
   public:
-    static constexpr auto static_size() -> typename base_class_type::size_type { return MySize; }
+    // Type definitions.
+    using typename base_class_type::allocator_type;
+    using typename base_class_type::value_type;
+    using typename base_class_type::reference;
+    using typename base_class_type::const_reference;
+    using typename base_class_type::iterator;
+    using typename base_class_type::const_iterator;
+    using typename base_class_type::pointer;
+    using typename base_class_type::const_pointer;
+    using typename base_class_type::size_type;
+    using typename base_class_type::difference_type;
+    using typename base_class_type::reverse_iterator;
+    using typename base_class_type::const_reverse_iterator;
 
-    explicit constexpr fixed_dynamic_array(const typename base_class_type::size_type       size_in  = MySize,
-                                           const typename base_class_type::value_type&     value_in = typename base_class_type::value_type(),
-                                           const typename base_class_type::allocator_type& alloc_in = typename base_class_type::allocator_type())
-      : base_class_type(MySize, value_in, alloc_in)
+    static constexpr auto static_size() -> size_type { return MySize; }
+
+    explicit constexpr fixed_dynamic_array(const size_type       size_in  = static_size(),
+                                           const value_type&     value_in = value_type(),
+                                           const allocator_type& alloc_in = allocator_type())
+      : base_class_type(static_size(), value_in, alloc_in)
     {
       static_cast<void>(size_in);
     }
@@ -1611,11 +1621,11 @@
 
     constexpr fixed_dynamic_array(fixed_dynamic_array&&) noexcept = default;
 
-    constexpr fixed_dynamic_array(std::initializer_list<typename base_class_type::value_type> lst)
+    constexpr fixed_dynamic_array(std::initializer_list<value_type> lst, const allocator_type& alloc_in  = allocator_type())
       : base_class_type(lst.begin(),
-                        lst.begin() + (detail::min_unsafe)(static_cast<typename base_class_type::size_type>(lst.size()), MySize)) { }
+                        lst.begin() + (detail::min_unsafe)(static_cast<size_type>(lst.size()), static_size()),
+                        alloc_in) { }
 
-    //constexpt
     ~fixed_dynamic_array() override = default;
 
     constexpr auto operator=(const fixed_dynamic_array&) -> fixed_dynamic_array& = default;
@@ -1623,12 +1633,20 @@
     constexpr auto operator=(fixed_dynamic_array&&) noexcept -> fixed_dynamic_array& = default;
   };
 
-  template<typename MyType,
+  template<typename T>
+  class tuple_size;
+
+  template<typename ValueType,
+           const size_t MySize,
+           typename AllocatorType>
+  class tuple_size<fixed_dynamic_array<ValueType, MySize, AllocatorType>> : public ::std::integral_constant<size_t, MySize> { };
+
+  template<typename ValueType,
            const size_t MySize>
-  class fixed_static_array final : public detail::array_detail::array<MyType, static_cast<std::size_t>(MySize)>
+  class fixed_static_array final : public detail::array_detail::array<ValueType, static_cast<::std::size_t>(MySize)>
   {
   private:
-    using base_class_type = detail::array_detail::array<MyType, static_cast<std::size_t>(MySize)>;
+    using base_class_type = detail::array_detail::array<ValueType, static_cast<::std::size_t>(MySize)>;
 
     struct allocator_dummy_unsafe
     {
@@ -1690,7 +1708,6 @@
       }
     }
 
-    //constexpr
     ~fixed_static_array() = default;
 
     constexpr auto operator=(const fixed_static_array& other_array) -> fixed_static_array& = default;
@@ -1699,6 +1716,10 @@
     constexpr auto operator[](const size_type i)       -> typename base_class_type::reference       { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
     constexpr auto operator[](const size_type i) const -> typename base_class_type::const_reference { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
   };
+
+  template<typename ValueType,
+           const size_t MySize>
+  class tuple_size<fixed_static_array<ValueType, MySize>> : public ::std::integral_constant<size_t, MySize> { };
 
   template<const size_t Width2> struct verify_power_of_two_times_granularity_one_sixty_fourth // NOLINT(altera-struct-pack-align)
   {
