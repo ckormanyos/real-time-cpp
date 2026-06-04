@@ -160,11 +160,13 @@
 
         T x_pow_n_div_n_fact(x);
 
+        constexpr std::size_t local_buffer_size { std::size_t { UINT8_C(64) } };
+
         // Define an allocator type for use in the containers below.
-        using allocator_type = util::ring_allocator<T, std::uint_fast32_t { UINT8_C(64) }>;
+        using allocator_type = util::ring_allocator<T, local_buffer_size>;
 
         // Define a container type for the upcoming calculation.
-        using container_type = util::dynamic_array<T, allocator_type>;
+        using container_type = util::fixed_dynamic_array<T, local_buffer_size / sizeof(T), allocator_type>;
 
         // The pochhammer symbols for the multiplications in the series expansion
         // will be stored in non-constant STL vectors.

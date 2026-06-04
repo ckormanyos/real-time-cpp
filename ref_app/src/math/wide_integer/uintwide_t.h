@@ -114,6 +114,14 @@
   namespace math { namespace wide_integer { namespace detail { // NOLINT(modernize-concat-nested-namespaces)
   #endif
 
+  using size_t    = std::uint32_t;
+  using ptrdiff_t = std::int32_t;
+  #if defined(WIDE_INTEGER_HAS_LIMB_TYPE_UINT64)
+  using uint_defaultlimb_t = std::uint64_t;
+  #else
+  using uint_defaultlimb_t = std::uint32_t;
+  #endif
+
   namespace iterator_detail {
 
   class input_iterator_tag { };
@@ -374,7 +382,7 @@
   template<class InputIt1, class InputIt2>
   constexpr auto lexicographical_compare_unsafe(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2) -> bool
   {
-    for( ; (first1 != last1) && (first2 != last2); static_cast<void>(++first1), static_cast<void>(++first2))
+    for( ; (first1 != last1) && (first2 != last2); ++first1, static_cast<void>(++first2))
     {
       if(*first1 < *first2)
       {
@@ -504,13 +512,25 @@
 
   namespace array_detail {
 
-  template<typename T, ::std::size_t N>
+
+  template<typename T,
+           #if defined(WIDE_INTEGER_NAMESPACE)
+           const WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::size_t N
+           #else
+           const ::math::wide_integer::detail::size_t N
+           #endif
+          >
   class array
   {
   public:
     // Standard container-local type definitions.
-    using size_type              = ::std::size_t;
-    using difference_type        = ::std::ptrdiff_t;
+    #if defined(WIDE_INTEGER_NAMESPACE)
+    using size_type              = WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::size_t;
+    using difference_type        = WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::ptrdiff_t;
+    #else
+    using size_type              = ::math::wide_integer::detail::size_t;
+    using difference_type        = ::math::wide_integer::detail::ptrdiff_t;
+    #endif
     using value_type             = T;
     using pointer                = T*;
     using const_pointer          = const T*;
@@ -605,26 +625,25 @@
     friend constexpr auto operator> (const array& left, const array& right) -> bool { return (right < left); }
     friend constexpr auto operator>=(const array& left, const array& right) -> bool { return (!(left < right)); }
     friend constexpr auto operator<=(const array& left, const array& right) -> bool { return (!(right < left)); }
-  };
 
-  template<typename T, size_t N >
-  constexpr auto swap(array<T, N>& x, array<T, N>& y) noexcept -> void
-  {
-    swap_ranges_unsafe(x.begin(), x.end(), y.begin());
-  }
+    friend constexpr auto swap(array& x, array& y) noexcept -> void
+    {
+      swap_ranges_unsafe(x.begin(), x.end(), y.begin());
+    }
+  };
 
   template<typename T>
   class tuple_size;
 
-  template<typename T, typename ::std::size_t N>
-  class tuple_size<array<T, N>> : public std::integral_constant<std::size_t, N> { };
+  template<typename T, const size_t N>
+  class tuple_size<array<T, N>> : public std::integral_constant<size_t, N> { };
 
-  template<const ::std::size_t N, typename T>
+  template<const size_t N, typename T>
   class tuple_element;
 
-  template<const ::std::size_t I,
-            typename T,
-            const ::std::size_t N>
+  template<const size_t I,
+           typename T,
+           const size_t N>
   class tuple_element<I, array<T, N> >
   {
     static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
@@ -675,19 +694,17 @@
     using size_type              =       SizeType;
     using difference_type        =       DiffType;
     #if defined(WIDE_INTEGER_NAMESPACE)
-    using reverse_iterator       =       WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::iterator_detail::reverse_iterator<      value_type*>;
-    using const_reverse_iterator =       WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::iterator_detail::reverse_iterator<const value_type*>;
+    using reverse_iterator       =       WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::iterator_detail::reverse_iterator<iterator>;
+    using const_reverse_iterator =       WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::iterator_detail::reverse_iterator<const_iterator>;
     #else
-    using reverse_iterator       =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<      value_type*>;
-    using const_reverse_iterator =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<const value_type*>;
+    using reverse_iterator       =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<iterator>;
+    using const_reverse_iterator =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<const_iterator>;
     #endif
 
     static_assert(std::is_integral<value_type>::value, "Error: the value_type of dynamic_array must be a built-in integral");
 
     // Constructors.
-    constexpr dynamic_array() = delete;
-
-    explicit constexpr dynamic_array(size_type count_in,
+    explicit constexpr dynamic_array(size_type count_in = size_type(),
                                      const_reference value_in = value_type(),
                                      const allocator_type& alloc_in = allocator_type())
       : elem_count(count_in),
@@ -722,9 +739,9 @@
       }
     }
 
-    template<typename input_iterator>
-    constexpr dynamic_array(input_iterator first,
-                            input_iterator last,
+    template<typename InputIterator>
+    constexpr dynamic_array(InputIterator first,
+                            InputIterator last,
                             const allocator_type& alloc_in = allocator_type())
       : elem_count(static_cast<size_type>(last - first)),
         my_alloc(alloc_in)
@@ -761,7 +778,7 @@
     // Move constructor.
     constexpr dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
                                                               elems     (other.elems),
-                                                              my_alloc  (std::move(other.my_alloc))
+                                                              my_alloc  (std::move(static_cast<allocator_type&&>(other.my_alloc)))
     {
       other.elem_count = static_cast<size_type>(UINT8_C(0));
       other.elems      = nullptr;
@@ -772,9 +789,16 @@
     {
       if(!empty())
       {
+        // The destructors of the elements are called (in unspecified order)
+        // and the dynamically allocated storage (if any) is deallocated.
+
+        for(auto* itr { begin() }; itr != end(); ++itr) // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        {
+          itr->~value_type();
+        }
+
         using local_allocator_traits_type = std::allocator_traits<allocator_type>;
 
-        // Deallocate the range of *this.
         local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
 
         elem_count = static_cast<size_type>(UINT8_C(0));
@@ -799,9 +823,9 @@
           #else
           other.elems + ::math::wide_integer::detail::min_unsafe
           #endif
-          (
-            elem_count, other.elem_count
-          ),
+                        (
+                          elem_count, other.elem_count
+                        ),
           elems
         );
       }
@@ -901,62 +925,45 @@
 
     friend constexpr auto operator==(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
     {
-      return
-      (
-           (lhs.size() == rhs.size())
-        && (
-                lhs.empty()
-             #if defined(WIDE_INTEGER_NAMESPACE)
-             || WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::equal_unsafe(lhs.cbegin(), lhs.cend(), rhs.cbegin())
-             #else
-             || ::math::wide_integer::detail::equal_unsafe(lhs.cbegin(), lhs.cend(), rhs.cbegin())
-             #endif
-           )
-      );
-    }
-
-    friend constexpr auto operator<(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
-    {
       bool b_result { };
 
       if(lhs.empty())
       {
-        b_result = (!rhs.empty());
+        b_result = rhs.empty();
       }
-      else
+      else if(lhs.size() == rhs.size())
       {
-        // Note: Use lexicographical_compare here. If the dynamic arrays
-        // have unequal sizes, then simply ignore the size differences.
-
-        b_result =
-          #if defined(WIDE_INTEGER_NAMESPACE)
-          WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::lexicographical_compare_unsafe
-          #else
-          ::math::wide_integer::detail::lexicographical_compare_unsafe
-          #endif
-          (
-            lhs.cbegin(),
-            lhs.cend(),
-            rhs.cbegin(),
-            rhs.cend()
-          );
+        #if defined(WIDE_INTEGER_NAMESPACE)
+        b_result = WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::equal_unsafe(lhs.cbegin(), lhs.cend(), rhs.cbegin());
+        #else
+        b_result = ::math::wide_integer::detail::equal_unsafe(lhs.cbegin(), lhs.cend(), rhs.cbegin());
+        #endif
       }
+      // else b_result remains false
 
       return b_result;
+    }
+
+    friend constexpr auto operator<(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
+    {
+      return
+        #if defined(WIDE_INTEGER_NAMESPACE)
+        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::lexicographical_compare_unsafe
+        #else
+        ::math::wide_integer::detail::lexicographical_compare_unsafe
+        #endif
+        (
+          lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend()
+        );
     }
 
     friend constexpr auto operator!=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(lhs == rhs)); }
     friend constexpr auto operator> (const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (rhs < lhs); }
     friend constexpr auto operator>=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(lhs < rhs)); }
     friend constexpr auto operator<=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(rhs < lhs)); }
-  };
 
-  template<typename ValueType, typename AllocatorType>
-  constexpr auto swap(dynamic_array<ValueType, AllocatorType>& x,
-                      dynamic_array<ValueType, AllocatorType>& y) noexcept -> void
-  {
-    x.swap(y);
-  }
+    friend constexpr auto swap(dynamic_array& x, dynamic_array& y) noexcept -> void { x.swap(y); }
+  };
 
   } // namespace util
 
@@ -1017,14 +1024,6 @@
   #endif
 
   namespace detail {
-
-  using size_t    = std::uint32_t;
-  using ptrdiff_t = std::int32_t;
-  #if defined(WIDE_INTEGER_HAS_LIMB_TYPE_UINT64)
-  using uint_defaultlimb_t = std::uint64_t;
-  #else
-  using uint_defaultlimb_t = std::uint32_t;
-  #endif
 
   static_assert((   (std::numeric_limits<size_t>::digits        >= std::numeric_limits<std::uint16_t>::digits)
                  && (std::numeric_limits<ptrdiff_t>::digits + 1 >= std::numeric_limits<std::uint16_t>::digits)),
@@ -1588,22 +1587,42 @@
   namespace math { namespace wide_integer { namespace detail { // NOLINT(modernize-concat-nested-namespaces)
   #endif
 
-  template<typename MyType,
+  template<typename ValueType,
            const size_t MySize,
-           typename MyAlloc>
-  class fixed_dynamic_array final : public detail::dynamic_array<MyType, MyAlloc, size_t, ptrdiff_t> // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
+           typename AllocatorType = ::std::allocator<ValueType>>
+  class fixed_dynamic_array;
+
+  template<typename ValueType,
+           const size_t MySize,
+           typename AllocatorType>
+  class fixed_dynamic_array final : public detail::dynamic_array<ValueType, AllocatorType, size_t, ptrdiff_t> // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   private:
-    using base_class_type = detail::dynamic_array<MyType, MyAlloc, size_t, ptrdiff_t>;
+    using base_class_type = detail::dynamic_array<ValueType, AllocatorType, size_t, ptrdiff_t>;
 
   public:
-    static constexpr auto static_size() -> typename base_class_type::size_type { return MySize; }
+    // Type definitions.
+    using typename base_class_type::allocator_type;
+    using typename base_class_type::value_type;
+    using typename base_class_type::reference;
+    using typename base_class_type::const_reference;
+    using typename base_class_type::iterator;
+    using typename base_class_type::const_iterator;
+    using typename base_class_type::pointer;
+    using typename base_class_type::const_pointer;
+    using typename base_class_type::size_type;
+    using typename base_class_type::difference_type;
+    using typename base_class_type::reverse_iterator;
+    using typename base_class_type::const_reverse_iterator;
 
-    explicit constexpr fixed_dynamic_array(const typename base_class_type::size_type       size_in  = MySize,
-                                           const typename base_class_type::value_type&     value_in = typename base_class_type::value_type(),
-                                           const typename base_class_type::allocator_type& alloc_in = typename base_class_type::allocator_type())
-      : base_class_type(MySize, value_in, alloc_in)
+    static constexpr auto static_size() -> size_type { return MySize; }
+
+    explicit constexpr fixed_dynamic_array(const size_type       size_in  = static_size(),
+                                           const value_type&     value_in = value_type(),
+                                           const allocator_type& alloc_in = allocator_type())
+      : base_class_type(static_size(), value_in, alloc_in)
     {
+      // This parameter is explicitly and purposely ignored.
       static_cast<void>(size_in);
     }
 
@@ -1611,24 +1630,47 @@
 
     constexpr fixed_dynamic_array(fixed_dynamic_array&&) noexcept = default;
 
-    constexpr fixed_dynamic_array(std::initializer_list<typename base_class_type::value_type> lst)
-      : base_class_type(lst.begin(),
-                        lst.begin() + (detail::min_unsafe)(static_cast<typename base_class_type::size_type>(lst.size()), MySize)) { }
+    constexpr fixed_dynamic_array(std::initializer_list<value_type> lst, const allocator_type& alloc_in  = allocator_type())
+      : base_class_type(static_size(), size_type(), alloc_in)
+    {
+      #if defined(WIDE_INTEGER_NAMESPACE)
+      WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::copy_unsafe
+      #else
+      ::math::wide_integer::detail::copy_unsafe
+      #endif
+      (
+        lst.begin(),
+        lst.begin() + (detail::min_unsafe)(static_cast<size_type>(lst.size()), static_size()),
+        base_class_type::data()
+      );
+    }
 
-    //constexpt
     ~fixed_dynamic_array() override = default;
 
     constexpr auto operator=(const fixed_dynamic_array&) -> fixed_dynamic_array& = default;
 
-    constexpr auto operator=(fixed_dynamic_array&&) noexcept -> fixed_dynamic_array& = default;
+    constexpr auto operator=(fixed_dynamic_array&& other) noexcept -> fixed_dynamic_array&
+    {
+      base_class_type::operator=(static_cast<base_class_type&&>(other));
+
+      return *this;
+    }
   };
 
-  template<typename MyType,
+  template<typename T>
+  class tuple_size;
+
+  template<typename ValueType,
+           const size_t MySize,
+           typename AllocatorType>
+  class tuple_size<fixed_dynamic_array<ValueType, MySize, AllocatorType>> : public ::std::integral_constant<size_t, MySize> { };
+
+  template<typename ValueType,
            const size_t MySize>
-  class fixed_static_array final : public detail::array_detail::array<MyType, static_cast<std::size_t>(MySize)>
+  class fixed_static_array final : public detail::array_detail::array<ValueType, MySize>
   {
   private:
-    using base_class_type = detail::array_detail::array<MyType, static_cast<std::size_t>(MySize)>;
+    using base_class_type = detail::array_detail::array<ValueType, MySize>;
 
     struct allocator_dummy_unsafe
     {
@@ -1636,15 +1678,26 @@
     };
 
   public:
-    using size_type      = size_t;
-    using value_type     = typename base_class_type::value_type;
+    // Standard container-local type definitions.
     using allocator_type = allocator_dummy_unsafe;
+
+    using typename base_class_type::size_type;
+    using typename base_class_type::difference_type;
+    using typename base_class_type::value_type;
+    using typename base_class_type::pointer;
+    using typename base_class_type::const_pointer;
+    using typename base_class_type::reference;
+    using typename base_class_type::const_reference;
+    using typename base_class_type::iterator;
+    using typename base_class_type::const_iterator;
+    using typename base_class_type::reverse_iterator;
+    using typename base_class_type::const_reverse_iterator;
+
+    static_assert(::std::is_integral<value_type>::value, "Error the template value_type must be a built-in integral type.");
 
     static constexpr auto static_size() -> size_type { return MySize; }
 
-    constexpr fixed_static_array() = default;
-
-    explicit constexpr fixed_static_array(const size_type      size_in,
+    explicit constexpr fixed_static_array(const size_type      size_in = size_type(),
                                           const value_type&    value_in = value_type(),
                                                 allocator_type alloc_in = allocator_type())
     {
@@ -1652,8 +1705,8 @@
 
       if(size_in < static_size())
       {
-        detail::fill_unsafe(base_class_type::begin(),     base_class_type::begin() + size_in, value_in);
-        detail::fill_unsafe(base_class_type::begin() + size_in, base_class_type::end(),       value_type());
+        detail::fill_unsafe(base_class_type::begin(), base_class_type::begin() + size_in, value_in);
+        detail::fill_unsafe(base_class_type::begin() + size_in, base_class_type::end(), value_type());
       }
       else
       {
@@ -1690,15 +1743,15 @@
       }
     }
 
-    //constexpr
     ~fixed_static_array() = default;
 
     constexpr auto operator=(const fixed_static_array& other_array) -> fixed_static_array& = default;
     constexpr auto operator=(fixed_static_array&& other_array) noexcept -> fixed_static_array& = default;
-
-    constexpr auto operator[](const size_type i)       -> typename base_class_type::reference       { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
-    constexpr auto operator[](const size_type i) const -> typename base_class_type::const_reference { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
   };
+
+  template<typename ValueType,
+           const size_t MySize>
+  class tuple_size<fixed_static_array<ValueType, MySize>> : public ::std::integral_constant<size_t, MySize> { };
 
   template<const size_t Width2> struct verify_power_of_two_times_granularity_one_sixty_fourth // NOLINT(altera-struct-pack-align)
   {
