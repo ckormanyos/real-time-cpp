@@ -45,11 +45,8 @@
     using reverse_iterator       =       std::reverse_iterator<iterator>;
     using const_reverse_iterator =       std::reverse_iterator<const_iterator>;
 
-    // Deleted default constructor.
-    constexpr dynamic_array() = delete;
-
     // Constructors.
-    explicit constexpr dynamic_array(size_type count_in,
+    explicit constexpr dynamic_array(size_type count_in = size_type(),
                                      const_reference value_in = value_type(),
                                      const allocator_type& alloc_in = allocator_type())
       : elem_count(count_in),
@@ -122,9 +119,16 @@
     {
       if(!empty())
       {
+        // The destructors of the elements are called (in unspecified order)
+        // and the dynamically allocated storage (if any) is deallocated.
+
+        for(auto* itr { begin() }; itr != end(); ++itr) // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        {
+          itr->~value_type();
+        }
+
         using local_allocator_traits_type = std::allocator_traits<allocator_type>;
 
-        // Deallocate the range of *this.
         local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
 
         elem_count = static_cast<size_type>(UINT8_C(0));
@@ -137,9 +141,15 @@
     {
       if(this != &other)
       {
-        std::copy(other.elems,
-                  other.elems + (std::min)(elem_count, other.elem_count),
-                  elems);
+        std::copy
+        (
+          other.elems,
+          other.elems + (std::min)
+                        (
+                          elem_count, other.elem_count
+                        ),
+          elems
+        );
       }
 
       return *this;
@@ -148,8 +158,22 @@
     // Move assignment operator.
     constexpr auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
     {
-      std::swap(elem_count, other.elem_count);
-      std::swap(elems,      other.elems);
+      if(this != &other)
+      {
+        if(!empty())
+        {
+          using local_allocator_traits_type = std::allocator_traits<allocator_type>;
+
+          // Deallocate the range of *this.
+          local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
+        }
+
+        elem_count = other.elem_count;
+        elems      = other.elems;
+
+        other.elem_count = static_cast<size_type>(UINT8_C(0));
+        other.elems      = nullptr;
+      }
 
       return *this;
     }
@@ -200,8 +224,9 @@
     {
       if(this != &other)
       {
-        std::swap(elems,      other.elems);
+        std::swap(elems, other.elems);
         std::swap(elem_count, other.elem_count);
+        std::swap(my_alloc, other.my_alloc);
       }
     }
 
@@ -212,29 +237,28 @@
 
     friend constexpr auto operator==(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
     {
-      bool left_and_right_are_equal { };
+      bool b_result { };
 
-      if(lhs.size() == rhs.size())
+      if(lhs.empty())
       {
-        left_and_right_are_equal = std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin());
+        b_result = rhs.empty();
       }
+      else if(lhs.size() == rhs.size())
+      {
+        b_result = std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin());
+      }
+      // else b_result remains false
 
-      return left_and_right_are_equal;
+      return b_result;
     }
 
     friend constexpr auto operator<(const dynamic_array& lhs, const dynamic_array& rhs) -> bool
     {
-      using size_type = typename dynamic_array::size_type;
-
-      const size_type count { (std::min)(lhs.size(), rhs.size()) };
-
-      const bool b_result =
-        std::lexicographical_compare(lhs.cbegin(),
-                                     lhs.cbegin() + count,
-                                     rhs.cbegin(),
-                                     rhs.cbegin() + count);
-
-      return b_result;
+      return
+        std::lexicographical_compare
+        (
+          lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend()
+        );
     }
 
     friend constexpr auto operator!=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(lhs == rhs)); }
@@ -280,6 +304,7 @@
                                            const allocator_type& alloc_in = allocator_type())
       : base_class_type(static_size(), value_in, alloc_in)
     {
+      // This parameter is explicitly and purposely ignored.
       static_cast<void>(size_in);
     }
 
@@ -287,22 +312,33 @@
 
     constexpr fixed_dynamic_array(fixed_dynamic_array&&) noexcept = default;
 
+    constexpr fixed_dynamic_array(std::initializer_list<value_type> lst, const allocator_type& alloc_in  = allocator_type())
+      : base_class_type(static_size(), size_type(), alloc_in)
+    {
+      std::copy
+      (
+        lst.begin(),
+        lst.begin() + (std::min)(static_cast<size_type>(lst.size()), static_size()),
+        base_class_type::data()
+      );
+    }
+
     template<typename InputIterator>
     constexpr fixed_dynamic_array(InputIterator first,
                                   InputIterator last,
                                   const allocator_type& alloc_in = allocator_type())
       : base_class_type(first, last, alloc_in) { }
 
-    constexpr fixed_dynamic_array(std::initializer_list<value_type> lst, const allocator_type& alloc_in  = allocator_type())
-      : base_class_type(lst.begin(),
-                        lst.begin() + (std::min)(static_cast<size_type>(lst.size()), static_size()),
-                        alloc_in) { }
-
     ~fixed_dynamic_array() override = default;
 
     constexpr auto operator=(const fixed_dynamic_array&) -> fixed_dynamic_array& = default;
 
-    constexpr auto operator=(fixed_dynamic_array&&) noexcept -> fixed_dynamic_array& = default;
+    constexpr auto operator=(fixed_dynamic_array&& other) noexcept -> fixed_dynamic_array&
+    {
+      base_class_type::operator=(static_cast<base_class_type&&>(other));
+
+      return *this;
+    }
   };
 
   template<typename T>
