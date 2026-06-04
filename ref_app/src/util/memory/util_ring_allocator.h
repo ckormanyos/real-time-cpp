@@ -88,10 +88,23 @@
         {
           // The buffer has overflowed.
 
+          #if (defined(__GNUC__) && !defined(__clang__))
+          #if(__GNUC__ >= 12)
+          #pragma GCC diagnostic push
+          #pragma GCC diagnostic ignored "-Warray-bounds"
+          #endif
+          #endif
+
           // Reset the allocated pointer to the bottom of the buffer
           // and increment the next get-pointer.
           p       = &buffer.data[std::size_t { UINT8_C(0) }];
           get_ptr = &buffer.data[chunk_size];
+
+          #if (defined(__GNUC__) && !defined(__clang__))
+          #if(__GNUC__ >= 12)
+          #pragma GCC diagnostic pop
+          #endif
+          #endif
         }
 
         return static_cast<void*>(p);
