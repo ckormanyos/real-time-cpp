@@ -24,7 +24,7 @@ jobs:
         compiler: [ g++, clang++ ]
         standard: [ c++20 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop
@@ -56,7 +56,7 @@ jobs:
         compiler: [ g++, clang++ ]
         standard: [ c++20 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop
@@ -87,7 +87,7 @@ jobs:
       matrix:
         standard: [ c++20, c++23 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -118,7 +118,7 @@ jobs:
       matrix:
         standard: [ c++20 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -141,7 +141,7 @@ jobs:
       matrix:
         standard: [ c++23 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -172,7 +172,7 @@ jobs:
       matrix:
         standard: [ c++20 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -208,7 +208,7 @@ jobs:
       matrix:
         standard: [ c++23 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -235,7 +235,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -258,7 +258,7 @@ jobs:
         compiler: [ g++, clang++ ]
         standard: [ c++20 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: benchmark_single-cnl
@@ -275,7 +275,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -327,7 +327,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
