@@ -1,4 +1,5 @@
 # Example Chapter11_07
+
 ## Preemptive Multitasking
 
 This example makes straightforward use
@@ -7,7 +8,7 @@ that features a main task and a low-priority background task.
 
 ## Application Description
 
-This example features two preemptive tasks within a multitasking envoronment.
+This example features two preemptive tasks within a multitasking environment.
 The application task supports the _blinky_ functionality with LED on/off each 1s.
 The application task has higher priority and also yields every $125~\text{ms}$.
 The second task is a background task. It runs continuously,
@@ -117,10 +118,10 @@ Example Chapter11_07 is shown in the image below.
 The blinky LED 1s on/off can be found on `portb.5`.
 The background $10~\text{Hz}$ toggle pin can be found on `portd.3`.
 
-![](./images/board11_07.jpg)
+![Hardware setup](./images/board11_07.jpg)
 
 The oscilloscope image below captures the toggle cycle
 of the LED in the background task at a frequency
-of approximately $10~\text{Hz}$
+of approximately $10~\text{Hz}$.
 
-![](./images/scope11_07.jpg)
+![View of LED toggling signal on oscilloscope](./images/scope11_07.jpg)
