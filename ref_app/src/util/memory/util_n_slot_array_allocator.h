@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2024.
+//  Copyright Christopher Kormanyos 2020 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -47,7 +47,7 @@
     static constexpr std::uint_fast32_t slot_width = SlotWidth;
     static constexpr std::size_t        slot_count = SlotCount;
 
-    using slot_array_type        = std::array<T, slot_width>;
+    using slot_array_type        = std::array<T, static_cast<std::size_t>(slot_width)>;
     using slot_array_memory_type = std::array<slot_array_type, slot_count>;
     using slot_array_flags_type  = std::array<std::uint8_t, slot_count>;
 

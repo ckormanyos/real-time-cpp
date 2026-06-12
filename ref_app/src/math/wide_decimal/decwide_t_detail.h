@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2024.                 //
+//  Copyright Christopher Kormanyos 1999 - 2026.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -114,7 +114,7 @@
     friend class ::math::wide_decimal::decwide_t;
     #endif
 
-    explicit native_float_parts(FloatingPointType f)
+    explicit constexpr native_float_parts(FloatingPointType f)
     {
       using native_float_type = FloatingPointType;
 
@@ -204,7 +204,7 @@
       : my_mantissa_part(other.my_mantissa_part),
         my_exponent_part(other.my_exponent_part) { }
 
-    auto operator=(const native_float_parts& other) noexcept -> native_float_parts& // NOLINT(cert-oop54-cpp)
+    constexpr auto operator=(const native_float_parts& other) noexcept -> native_float_parts& // NOLINT(cert-oop54-cpp)
     {
       if(this != &other)
       {
@@ -215,7 +215,7 @@
       return *this;
     }
 
-    auto operator=(native_float_parts&& other) noexcept -> native_float_parts&
+    constexpr auto operator=(native_float_parts&& other) noexcept -> native_float_parts&
     {
       my_mantissa_part = other.my_mantissa_part;
       my_exponent_part = other.my_exponent_part;
@@ -413,7 +413,7 @@
 
   template<typename IntegralType,
            typename ExponentType = int>
-  inline auto order_of_builtin_integer(const IntegralType n, ExponentType* p10_ptr = nullptr) -> unsigned
+  constexpr auto order_of_builtin_integer(const IntegralType n, ExponentType* p10_ptr = nullptr) -> unsigned
   {
     // This subroutine returns the order of an input integral type.
     // The order is counted as 1 for 0...9, 2 for 10...99, 3 for 100...999, etc.
@@ -512,54 +512,61 @@
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType> constexpr std::int32_t decwide_t_helper<ParamDigitsBaseTen, LimbType>::elem_number_extra; // NOLINT(readability-redundant-declaration,hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType> constexpr std::int32_t decwide_t_helper<ParamDigitsBaseTen, LimbType>::elem_number;       // NOLINT(readability-redundant-declaration,hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
 
-  template<typename MyType,
+  template<typename ValueType,
            const std::size_t MySize,
-           typename MyAlloc>
-  class fixed_dynamic_array final : public util::dynamic_array<MyType, MyAlloc, std::size_t, ptrdiff_t>
+           typename AllocatorType>
+  class fixed_dynamic_array final : public util::dynamic_array<ValueType, AllocatorType, std::size_t, ptrdiff_t>
   {
   private:
-    using base_class_type = util::dynamic_array<MyType, MyAlloc, std::size_t, ptrdiff_t>;
+    using base_class_type = util::dynamic_array<ValueType, AllocatorType, std::size_t, ptrdiff_t>;
 
   public:
-    static constexpr auto static_size() -> typename base_class_type::size_type { return MySize; }
+    // Type definitions.
+    using typename base_class_type::allocator_type;
+    using typename base_class_type::value_type;
+    using typename base_class_type::reference;
+    using typename base_class_type::const_reference;
+    using typename base_class_type::iterator;
+    using typename base_class_type::const_iterator;
+    using typename base_class_type::pointer;
+    using typename base_class_type::const_pointer;
+    using typename base_class_type::size_type;
+    using typename base_class_type::difference_type;
+    using typename base_class_type::reverse_iterator;
+    using typename base_class_type::const_reverse_iterator;
 
-    explicit fixed_dynamic_array(const typename base_class_type::size_type       s = MySize, // NOLINT(hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
-                                 const typename base_class_type::value_type&     v = typename base_class_type::value_type(),
-                                 const typename base_class_type::allocator_type& a = typename base_class_type::allocator_type()) noexcept
-      : base_class_type(MySize, typename base_class_type::value_type(), a)
-    {
-      std::fill(base_class_type::begin(),
-                base_class_type::begin() + (std::min)(MySize, static_cast<typename base_class_type::size_type>(s)),
-                v);
-    }
+    static constexpr auto static_size() -> size_type { return MySize; }
+
+    explicit constexpr fixed_dynamic_array(const size_type       s = size_type(),
+                                           const value_type&     v = value_type(),
+                                           const allocator_type& a = allocator_type()) noexcept
+      : base_class_type(static_size(), v, a) { static_cast<void>(s); }
 
     constexpr fixed_dynamic_array(const fixed_dynamic_array& other)
       : base_class_type(static_cast<const base_class_type&>(other)) { }
 
-    fixed_dynamic_array(std::initializer_list<typename base_class_type::value_type> lst)
-      : base_class_type(MySize)
+    constexpr fixed_dynamic_array(std::initializer_list<value_type> lst,
+                        const allocator_type& a = allocator_type())
+      : base_class_type(static_size(), value_type(), a)
     {
       std::copy(lst.begin(),
-                lst.begin() + (std::min)(static_cast<typename base_class_type::size_type>(lst.size()), MySize),
+                lst.begin() + (std::min)(static_cast<size_type>(lst.size()), static_size()),
                 base_class_type::begin());
     }
 
     constexpr fixed_dynamic_array(fixed_dynamic_array&& other) noexcept
       : base_class_type(static_cast<base_class_type&&>(other)) { }
 
-    auto operator=(const fixed_dynamic_array& other) -> fixed_dynamic_array& // NOLINT(cert-oop54-cpp)
+    constexpr auto operator=(const fixed_dynamic_array& other) -> fixed_dynamic_array& // NOLINT(cert-oop54-cpp)
     {
-      if(this != &other)
-      {
-        base_class_type::operator=(static_cast<const base_class_type&>(other));
-      }
+      static_cast<void>(base_class_type::operator=(static_cast<const base_class_type&>(other)));
 
       return *this;
     }
 
-    auto operator=(fixed_dynamic_array&& other) noexcept -> fixed_dynamic_array&
+    constexpr auto operator=(fixed_dynamic_array&& other) noexcept -> fixed_dynamic_array&
     {
-      base_class_type::operator=(static_cast<base_class_type&&>(other));
+      static_cast<void>(base_class_type::operator=(static_cast<base_class_type&&>(other)));
 
       return *this;
     }
@@ -567,12 +574,12 @@
     ~fixed_dynamic_array() override = default;
   };
 
-  template<typename MyType,
+  template<typename ValueType,
            const std::size_t MySize>
-  class fixed_static_array final : public std::array<MyType, static_cast<std::size_t>(MySize)>
+  class fixed_static_array final : public std::array<ValueType, MySize>
   {
   private:
-    using base_class_type = std::array<MyType, static_cast<std::size_t>(MySize)>;
+    using base_class_type = std::array<ValueType, MySize>;
 
   public:
     using size_type  = std::size_t;
@@ -580,15 +587,13 @@
 
     static constexpr auto static_size() -> size_type { return MySize; }
 
-    constexpr fixed_static_array() = default; // LCOV_EXCL_LINE
-
-    explicit fixed_static_array(const size_type   s,
-                                                       const value_type& v = value_type())
+    explicit constexpr fixed_static_array(const size_type   s = size_type(),
+                                          const value_type& v = value_type())
     {
       if(s < static_size())
       {
-        std::fill(base_class_type::begin(),     base_class_type::begin() + s, v);
-        std::fill(base_class_type::begin() + s, base_class_type::end(),       value_type());
+        std::fill(base_class_type::begin(), base_class_type::begin() + s, v);
+        std::fill(base_class_type::begin() + s, base_class_type::end(), value_type());
       }
       else
       {
@@ -596,40 +601,33 @@
       }
     }
 
-    fixed_static_array(const fixed_static_array&) = default;
-    fixed_static_array(fixed_static_array&&) noexcept = default;
+    constexpr fixed_static_array(const fixed_static_array&) = default;
+    constexpr fixed_static_array(fixed_static_array&&) noexcept = default;
 
-    fixed_static_array(std::initializer_list<typename base_class_type::value_type> lst)
+    constexpr fixed_static_array(std::initializer_list<value_type> lst)
     {
-      const auto size_to_copy =
-        (std::min)(static_cast<size_type>(lst.size()),
-                   static_cast<size_type>(MySize));
-
-      if(size_to_copy < static_cast<size_type>(base_class_type::size()))
+      if(static_cast<size_type>(lst.size()) < static_size())
       {
         std::copy(lst.begin(),
-                  lst.begin() + size_to_copy,
+                  lst.end(),
                   base_class_type::begin());
 
-        std::fill(base_class_type::begin() + size_to_copy,
+        std::fill(base_class_type::begin() + static_cast<size_type>(lst.size()),
                   base_class_type::end(),
-                  static_cast<typename base_class_type::value_type>(UINT8_C(0)));
+                  value_type());
       }
       else
       {
         std::copy(lst.begin(),
-                  lst.begin() + size_to_copy,
+                  lst.begin() + static_size(),
                   base_class_type::begin());
       }
     }
 
     ~fixed_static_array() = default; // LCOV_EXCL_LINE
 
-    auto operator=(const fixed_static_array& other_array) -> fixed_static_array& = default;
-    auto operator=(fixed_static_array&& other_array) noexcept -> fixed_static_array& = default;
-
-    auto operator[](const size_type i)       -> typename base_class_type::reference       { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
-    auto operator[](const size_type i) const -> typename base_class_type::const_reference { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
+    constexpr auto operator=(const fixed_static_array& other_array) -> fixed_static_array& = default;
+    constexpr auto operator=(fixed_static_array&& other_array) noexcept -> fixed_static_array& = default;
   };
 
   enum class os_float_field_type // NOLINT(performance-enum-size)
@@ -661,7 +659,7 @@
 
     ~unsigned_wrap() noexcept = default; // LCOV_EXCL_LINE
 
-    auto operator=(const unsigned_wrap& other) noexcept -> unsigned_wrap&
+    constexpr auto operator=(const unsigned_wrap& other) noexcept -> unsigned_wrap&
     {
       if(this != &other)
       {
@@ -672,22 +670,25 @@
       return *this;
     }
 
-    auto operator=(unsigned_wrap&& other) noexcept -> unsigned_wrap&
+    constexpr auto operator=(unsigned_wrap&& other) noexcept -> unsigned_wrap&
     {
-      my_neg   = other.my_neg;
-      my_value = other.my_value;
+      if(this != &other)
+      {
+        my_neg   = other.my_neg;
+        my_value = other.my_value;
+      }
 
       return *this;
     }
 
-    WIDE_DECIMAL_NODISCARD auto constexpr get_value_unsigned() const noexcept -> unsigned_type { return my_value; }
-    WIDE_DECIMAL_NODISCARD auto constexpr get_value_signed  () const noexcept ->   signed_type { return static_cast<signed_type>((!my_neg) ? static_cast<signed_type>(my_value) : -static_cast<signed_type>(my_value)); }
-    WIDE_DECIMAL_NODISCARD auto constexpr get_is_neg        () const noexcept -> bool          { return my_neg; }
+    WIDE_DECIMAL_NODISCARD constexpr auto get_value_unsigned() const noexcept -> unsigned_type { return my_value; }
+    WIDE_DECIMAL_NODISCARD constexpr auto get_value_signed  () const noexcept ->   signed_type { return static_cast<signed_type>((!my_neg) ? static_cast<signed_type>(my_value) : -static_cast<signed_type>(my_value)); }
+    WIDE_DECIMAL_NODISCARD constexpr auto get_is_neg        () const noexcept -> bool          { return my_neg; }
 
     bool          my_neg;   // NOLINT(misc-non-private-member-variables-in-classes)
     unsigned_type my_value; // NOLINT(misc-non-private-member-variables-in-classes)
 
-    auto operator+=(const unsigned_wrap& other) noexcept -> unsigned_wrap&
+    constexpr auto operator+=(const unsigned_wrap& other) noexcept -> unsigned_wrap&
     {
       if(my_neg == other.my_neg)
       {
@@ -732,7 +733,7 @@
       return *this;
     }
 
-    auto operator-=(const unsigned_wrap& other) noexcept -> unsigned_wrap&
+    constexpr auto operator-=(const unsigned_wrap& other) noexcept -> unsigned_wrap&
     {
       if(my_value == static_cast<unsigned_type>(UINT8_C(0)))
       {
@@ -752,10 +753,10 @@
 
       return *this;
     }
-  };
 
-  template<typename UnsignedIntegerType, typename SignedIntegerType> inline auto operator+(const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& a, const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& b) -> unsigned_wrap<UnsignedIntegerType, SignedIntegerType> { return unsigned_wrap<UnsignedIntegerType, SignedIntegerType>(a) += b; }
-  template<typename UnsignedIntegerType, typename SignedIntegerType> inline auto operator-(const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& a, const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& b) -> unsigned_wrap<UnsignedIntegerType, SignedIntegerType> { return unsigned_wrap<UnsignedIntegerType, SignedIntegerType>(a) -= b; }
+    friend constexpr auto operator+(const unsigned_wrap& a, const unsigned_wrap& b) -> unsigned_wrap { return unsigned_wrap(a) += b; }
+    friend constexpr auto operator-(const unsigned_wrap& a, const unsigned_wrap& b) -> unsigned_wrap { return unsigned_wrap(a) -= b; }
+  };
 
   #if(__cplusplus >= 201703L)
   } // namespace math::wide_decimal::detail

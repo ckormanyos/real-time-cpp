@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2025.                 //
+//  Copyright Christopher Kormanyos 1999 - 2026.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -863,7 +863,7 @@
         {
           const auto n = static_cast<limb_type>(d);
 
-          my_data[limb_index] = n;
+          my_data[limb_index] = n; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
           d -= static_cast<internal_float_type>(n);
           d *= static_cast<internal_float_type>(decwide_t_elem_mask);
@@ -894,16 +894,7 @@
     }
 
     // Move assignment operator.
-    auto operator=(decwide_t&& other) noexcept -> decwide_t&
-    {
-      my_data      = static_cast<representation_type&&>(other.my_data);
-      my_exp       = other.my_exp;
-      my_neg       = other.my_neg;
-      my_fpclass   = other.my_fpclass;
-      my_prec_elem = other.my_prec_elem;
-
-      return *this;
-    }
+    auto operator=(decwide_t&& other) noexcept -> decwide_t& = default;
 
     WIDE_DECIMAL_NODISCARD auto  representation()       noexcept ->       representation_type& { return my_data; }
     WIDE_DECIMAL_NODISCARD auto  representation() const noexcept -> const representation_type& { return my_data; }
@@ -1494,7 +1485,7 @@
               / nn
             );
 
-          my_data[index_prev] = val_prev;
+          my_data[index_prev] = val_prev; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         }
       }
 
@@ -2244,7 +2235,7 @@
                  limb_index < digit_loops_max; // NOLINT(altera-id-dependent-backward-branch)
                ++limb_index)
       {
-        mantissa += (static_cast<internal_float_type>(my_data[limb_index]) * scale);
+        mantissa += (static_cast<internal_float_type>(my_data[limb_index]) * scale); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
         scale /= static_cast<internal_float_type>(decwide_t_elem_mask);
       }
@@ -2476,7 +2467,7 @@
                     ++limb_index)
             {
               val *= static_cast<unsigned long long>(decwide_t_elem_mask);    // NOLINT(google-runtime-int)
-              val += static_cast<unsigned long long>(xn.my_data[limb_index]); // NOLINT(google-runtime-int)
+              val += static_cast<unsigned long long>(xn.my_data[limb_index]); // NOLINT(google-runtime-int,cppcoreguidelines-pro-bounds-constant-array-index)
             }
 
             signed_long_long_result = ((!b_neg) ? static_cast<signed long long>(val)                   // NOLINT(google-runtime-int)
@@ -2537,7 +2528,7 @@
                      ++limb_index)
             {
               val *= static_cast<unsigned long long>(decwide_t_elem_mask);    // NOLINT(google-runtime-int)
-              val += static_cast<unsigned long long>(xn.my_data[limb_index]); // NOLINT(google-runtime-int)
+              val += static_cast<unsigned long long>(xn.my_data[limb_index]); // NOLINT(google-runtime-int,cppcoreguidelines-pro-bounds-constant-array-index)
             }
 
             unsigned_long_long_result = val;
@@ -2575,17 +2566,13 @@
       // Initialization from initializer list of limbs,
       // exponent value (normed to limb granularity)
       // and optional sign flag.
-      auto a = decwide_t { };
+      decwide_t a { };
 
       if(limb_values.size() < a.my_data.size())
       {
         std::copy(limb_values.begin(),
                   limb_values.end(),
                   a.my_data.begin());
-
-        std::fill(a.my_data.begin() + limb_values.size(),
-                  a.my_data.end(),
-                  static_cast<limb_type>(UINT8_C(0)));
       }
       else
       {
@@ -3225,7 +3212,7 @@
         const auto round_digit_value =
           digit_helper_struct_type::digit_at_pos_in_limb
           (
-             my_data[static_cast<local_size_type>(round_digit_idx)],
+             my_data[static_cast<local_size_type>(round_digit_idx)], // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
              static_cast<unsigned>(round_digit_pos)
           );
 
@@ -3233,13 +3220,13 @@
           detail::pow10_maker_as_runtime_value(static_cast<std::uint32_t>(least_digit_pos));
 
         // Clear the lower base-10 digits of the rounded element.
-        my_data[static_cast<local_size_type>(least_digit_idx)] =
+        my_data[static_cast<local_size_type>(least_digit_idx)] = // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
           static_cast<local_limb_type>
           (
-              my_data[static_cast<local_size_type>(least_digit_idx)]
+              my_data[static_cast<local_size_type>(least_digit_idx)] // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
             - static_cast<local_limb_type>
               (
-                  my_data[static_cast<local_size_type>(least_digit_idx)]
+                  my_data[static_cast<local_size_type>(least_digit_idx)] // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                 % static_cast<local_limb_type>(least_digit_p10)
               )
           );
@@ -3262,26 +3249,26 @@
         // Perform round-to-nearest with no tie-breaking whatsoever.
         if(round_digit_value >= static_cast<std::uint8_t>(UINT8_C(5)))
         {
-          my_data[static_cast<local_size_type>(least_digit_idx)] =
+          my_data[static_cast<local_size_type>(least_digit_idx)] = // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
             static_cast<local_limb_type>
             (
-                my_data[static_cast<local_size_type>(least_digit_idx)]
+                my_data[static_cast<local_size_type>(least_digit_idx)] // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
               + static_cast<local_limb_type>(least_digit_p10)
             );
 
           // There is a carry from rounding up.
           std::uint_fast8_t carry_out =
-            ((my_data[static_cast<local_size_type>(least_digit_idx)] >= decwide_t_elem_mask)
+            ((my_data[static_cast<local_size_type>(least_digit_idx)] >= decwide_t_elem_mask) // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
               ? static_cast<std::uint_fast8_t>(UINT8_C(1))
               : static_cast<std::uint_fast8_t>(UINT8_C(0)));
 
           // Propagate the carry into the limbs of higher significance as needed.
           if(carry_out != static_cast<std::uint_fast8_t>(UINT8_C(0)))
           {
-            my_data[static_cast<local_size_type>(least_digit_idx)] =
+            my_data[static_cast<local_size_type>(least_digit_idx)] = // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
               static_cast<limb_type>
               (
-                  my_data[static_cast<local_size_type>(least_digit_idx)]
+                  my_data[static_cast<local_size_type>(least_digit_idx)] // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                 - static_cast<limb_type>(decwide_t_elem_mask)
               );
 
@@ -3291,7 +3278,7 @@
               const auto tt =
                 static_cast<local_limb_type>
                 (
-                    my_data[static_cast<local_size_type>(least_digit_idx)]
+                    my_data[static_cast<local_size_type>(least_digit_idx)] // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                   + static_cast<local_limb_type>(carry_out)
                 );
 
@@ -3300,7 +3287,7 @@
 
               const auto has_carry = (carry_out != static_cast<std::uint_fast8_t>(UINT8_C(0)));
 
-              my_data[static_cast<local_size_type>(least_digit_idx)] =
+              my_data[static_cast<local_size_type>(least_digit_idx)] = // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                 static_cast<local_limb_type>
                 (
                     tt
@@ -3413,7 +3400,7 @@
         {
           // The string contains nothing but leading zeros.
           // This string represents zero.
-          static_cast<void>
+          static_cast<void> // LCOV_EXCL_LINE
           (
             operator=(zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>())
           );
@@ -3718,7 +3705,7 @@
 
         auto ptr_end = static_cast<char*>(nullptr); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg,llvm-qualified-auto,readability-qualified-auto)
 
-        my_data[i1] =
+        my_data[i1] = // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
           static_cast<limb_type>
           (
             std::strtoul(str_next_limb.c_str(), &ptr_end, static_cast<int>(INT8_C(10)))
@@ -4308,6 +4295,10 @@
   #pragma GCC diagnostic pop
   #endif
 
+  #if ((defined(__GNUC__) && (__GNUC__ >= 12)) && !defined(__clang__))
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wstringop-overread"
+  #endif
   template<const ::std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>
   constexpr auto one() -> decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>
   {
@@ -4318,6 +4309,9 @@
 
     return other_wide_decimal_type::from_lst( { static_cast<other_limb_type>(UINT8_C(1)) } );
   }
+  #if ((defined(__GNUC__) && (__GNUC__ >= 12)) && !defined(__clang__))
+  #pragma GCC diagnostic pop
+  #endif
 
   template<const ::std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>
   constexpr auto two() -> decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>
@@ -5519,7 +5513,15 @@
              typename InternalFloatType,
              typename ExponentType,
              typename FftFloatType>
-    class numeric_limits<nonstd::wide_decimal_namespace::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>>
+    class numeric_limits
+          <
+            nonstd::wide_decimal_namespace::decwide_t<ParamDigitsBaseTen,
+            LimbType,
+            AllocatorType,
+            InternalFloatType,
+            ExponentType,
+            FftFloatType>
+          >
     {
     private:
       using local_wide_decimal_type =
@@ -5545,7 +5547,19 @@
       static constexpr auto has_infinity      = false;
       static constexpr auto has_quiet_NaN     = false;
       static constexpr auto has_signaling_NaN = false;
+      #ifdef _MSC_VER
+      #  pragma warning(push)
+      #  pragma warning(disable : 4996)
+      #elif (defined(__clang__) && (__clang_major__ >= 17))
+      #  pragma clang diagnostic push
+      #  pragma clang diagnostic ignored "-Wdeprecated-declarations"
+      #endif
       static constexpr auto has_denorm        = static_cast<std::float_denorm_style>(std::denorm_absent);
+      #ifdef _MSC_VER
+      #pragma warning(pop)
+      #elif (defined(__clang__) && (__clang_major__ >= 17))
+      #  pragma clang diagnostic pop
+      #endif
       static constexpr auto has_denorm_loss   = false;
       static constexpr auto traps             = false;
       static constexpr auto tinyness_before   = false;
