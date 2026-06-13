@@ -718,7 +718,9 @@
 
         while(it != end())
         {
-          *it++ = value_in;
+          std::allocator_traits<allocator_type>::construct(my_alloc, it, value_in);
+
+          ++it;
         }
       }
     }
@@ -857,22 +859,22 @@
     }
 
     // Iterator members:
-    WIDE_INTEGER_NODISCARD constexpr auto begin  ()       -> iterator               { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto end    ()       -> iterator               { return elems + elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto begin  () const -> const_iterator         { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto end    () const -> const_iterator         { return elems + elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto cbegin () const -> const_iterator         { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto cend   () const -> const_iterator         { return elems + elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto rbegin ()       -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
-    WIDE_INTEGER_NODISCARD constexpr auto rend   ()       -> reverse_iterator       { return reverse_iterator(elems); }
-    WIDE_INTEGER_NODISCARD constexpr auto rbegin () const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    WIDE_INTEGER_NODISCARD constexpr auto rend   () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
-    WIDE_INTEGER_NODISCARD constexpr auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    WIDE_INTEGER_NODISCARD constexpr auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    WIDE_INTEGER_NODISCARD constexpr auto begin  ()       noexcept -> iterator               { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto end    ()       noexcept -> iterator               { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto begin  () const noexcept -> const_iterator         { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto end    () const noexcept -> const_iterator         { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto cbegin () const noexcept -> const_iterator         { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto cend   () const noexcept -> const_iterator         { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto rbegin ()       noexcept -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto rend   ()       noexcept -> reverse_iterator       { return reverse_iterator(elems); }
+    WIDE_INTEGER_NODISCARD constexpr auto rbegin () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto rend   () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    WIDE_INTEGER_NODISCARD constexpr auto crbegin() const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto crend  () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
 
     // Raw pointer access.
-    WIDE_INTEGER_NODISCARD constexpr auto data()       -> pointer       { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto data() const -> const_pointer { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto data()       noexcept -> pointer       { return elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto data() const noexcept -> const_pointer { return elems; }
 
     // Size and capacity.
     WIDE_INTEGER_NODISCARD constexpr auto size    () const noexcept -> size_type { return  elem_count; }
@@ -880,17 +882,17 @@
     WIDE_INTEGER_NODISCARD constexpr auto empty   () const noexcept -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
 
     // Element access members.
-    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i)       -> reference       { return elems[i]; }
-    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i) const -> const_reference { return elems[i]; }
+    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i)       noexcept -> reference       { return elems[i]; }
+    WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i) const noexcept -> const_reference { return elems[i]; }
 
-    WIDE_INTEGER_NODISCARD constexpr auto front()       -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
-    WIDE_INTEGER_NODISCARD constexpr auto front() const -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    WIDE_INTEGER_NODISCARD constexpr auto front()       noexcept -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    WIDE_INTEGER_NODISCARD constexpr auto front() const noexcept -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
 
-    WIDE_INTEGER_NODISCARD constexpr auto back()       -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    WIDE_INTEGER_NODISCARD constexpr auto back() const -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto back()       noexcept -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto back() const noexcept -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
-    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i)       -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i)       noexcept -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i) const noexcept -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
     // Element manipulation members.
     constexpr auto fill(const value_type& value_in) -> void

@@ -19,9 +19,9 @@
   namespace util {
 
   template<typename ValueType,
-           typename AllocatorType = ::std::allocator<ValueType>,
-           typename SizeType      = ::std::size_t,
-           typename DiffType      = ::std::ptrdiff_t>
+           typename AllocatorType = std::allocator<ValueType>,
+           typename SizeType      = std::size_t,
+           typename DiffType      = std::ptrdiff_t>
   class dynamic_array;
 
   template<typename ValueType,
@@ -60,7 +60,9 @@
 
         while(it != end())
         {
-          *it++ = value_in;
+          std::allocator_traits<allocator_type>::construct(my_alloc, it, value_in);
+
+          ++it;
         }
       }
     }

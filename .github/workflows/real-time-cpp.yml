@@ -24,7 +24,7 @@ jobs:
         standard: [ c++14 ]
         compiler: [ g++, clang++ ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -51,7 +51,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -71,7 +71,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -91,7 +91,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: clone-osx-cross-homebrew-avr
@@ -135,7 +135,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, nxp_imxrt1062, r7fa4m1ab, rpi_pico_rp2040, rpi_pico2_rp2350, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152, stm32l432 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -155,7 +155,7 @@ jobs:
       matrix:
         suite: [ am6254_soc ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -178,7 +178,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, nxp_imxrt1062, r7fa4m1ab, rpi_pico_rp2040, rpi_pico2_rp2350, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152, stm32l432 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -198,7 +198,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, nxp_imxrt1062, rpi_pico_rp2040, rpi_pico2_rp2350, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152, stm32l432 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: wget-macos-gnu-arm-toolchain
@@ -238,7 +238,7 @@ jobs:
       matrix:
         suite: [ bl602_sifive_e24_riscv, esp32p4_riscv_soc, riscvfe310, wch_ch32v307, xtensa_esp32_s3_riscv_cop ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -262,7 +262,7 @@ jobs:
       matrix:
         suite: [ xtensa32, xtensa_esp32_s3 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -279,7 +279,7 @@ jobs:
   target-x86_64:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: build-target-x86_64-w64-mingw32
@@ -291,7 +291,7 @@ jobs:
   target-host-cmake:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - name: build-target-host
@@ -313,7 +313,7 @@ jobs:
       matrix:
         suite: [ Debug, Release ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: '0'
       - uses: ilammy/msvc-dev-cmd@v1
