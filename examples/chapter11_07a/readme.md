@@ -1,4 +1,5 @@
 # Example Chapter11_07a (advanced level)
+
 ## Preemptive Multitasking Computes 100,001 Digits of Pi in Background Task
 
 This example makes advanced use
@@ -29,7 +30,7 @@ The calculations requires considerable amounts of RAM,
 much more than is available on our target system with the $8$--bit microcontroller.
 For this purpose, a $4~\text{MByte}$ external serial SRAM is used.
 This simplifies the breadboard wiring significantly
-(compared, for instance, with previo0us examples),
+(compared, for instance, with previous examples),
 but does require level-shifting
 to and from $3.3$_V_ and $5.0$_V_.
 Level-shifting is carried out with a specialized
@@ -59,7 +60,6 @@ The pin most important pin connections are shown in the tables below.
 | 6               | SCK        | portd.5                 |
 | 5               | MOSI       | portd.4                 |
 
-
 ### LCD Connections
 
 | LCD        | ARDUINO(R) Connection   |
@@ -68,11 +68,10 @@ The pin most important pin connections are shown in the tables below.
 | SDI        | portd.1                 |
 | SCK        | portd.0                 |
 
-
 The hardware setup with the $4~\text{MByte}$ serial SRAM
 is pictured in the image below. The scene shows the ARDUINO(R)
 with the external serial SRAM executing cyclic, back-to-back $10,001$
 decimal digit $\pi$ calculations. In this snapshot, one successful
 calculation is complete and the second one is well underway.
 
-![](./images/board11_07a.jpg)
+![Hardware setup](./images/board11_07a.jpg)
