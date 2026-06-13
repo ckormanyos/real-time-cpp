@@ -1,4 +1,5 @@
 # Example Chapter12_04
+
 ## Benchmarking Floating-Point Calculations
 
 Example chapter12_04 performs a variety of floating-point
@@ -12,7 +13,7 @@ Legendre functions, zeta-type functions and many others
 are essential in pure and applied mathematics.
 Special functions are _special_ in the sense of generally
 being considered more specialized than elementary
-transecndental functions like trigonometric functions,
+transcendental functions like trigonometric functions,
 logarithmic functions, exponential functions and the like.
 
 Many special functions, although they can be very difficult to calculate
@@ -46,8 +47,8 @@ See also [WolframAlpha](https://www.wolframalpha.com/input?i=N%5BBesselJ%5B11%2F
 with the input `N[BesselJ[11/9, EulerGamma], 40]`.
 
 Other fixed parameter points have been selected
-for the Legendre and hypergeometric functions as well, can be found
-in the original example code and is also shown in the snippet below.
+for the Legendre and hypergeometric functions as well. They can be found
+in the original example code and are also shown in the snippet below.
 
 ```cpp
 void app::benchmark::task_func()
