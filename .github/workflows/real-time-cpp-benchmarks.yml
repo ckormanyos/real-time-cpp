@@ -360,7 +360,7 @@ jobs:
           ls -la ./bin/app_benchmark_std_big_int.elf ./bin/app_benchmark_std_big_int.hex ./bin/app_benchmark_std_big_int.map
         working-directory: ./ref_app/
 
-# For some reason the run fails. So only build it and check the build results.
+# For some reason the run fails. So let's just build the std-big-int app and check the build results.
 #      - name: emulate-target stm32f429
 #        run: |
 #          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/xpack-qemu-arm-8.2.6-1/bin:$PATH"
