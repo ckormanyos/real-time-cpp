@@ -10,8 +10,6 @@
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-snippets.yml/badge.svg" alt="Build Snippets"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/actions">
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-benchmarks.yml/badge.svg" alt="Build Benchmarks"></a>
-    <a href="https://github.com/ckormanyos/real-time-cpp/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">
-        <img src="https://custom-icon-badges.herokuapp.com/github/issues-raw/ckormanyos/real-time-cpp?logo=github" alt="Issues" /></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/actions/workflows/codeql.yml">
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/codeql.yml/badge.svg" alt="CodeQL"></a>
     <a href="https://scan.coverity.com/projects/ckormanyos-real-time-cpp">
