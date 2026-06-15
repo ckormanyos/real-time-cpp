@@ -1,4 +1,5 @@
 # Example Chapter12_04a (variation 32-bit microcontroller)
+
 ## Benchmarking Floating-Point Calculations
 
 Example chapter12_04a performs a variety of floating-point
