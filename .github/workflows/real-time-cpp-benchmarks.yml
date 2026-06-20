@@ -359,23 +359,21 @@ jobs:
           arm-none-eabi-objcopy ./bin/app_benchmark_std_big_int.elf -O ihex ./bin/app_benchmark_std_big_int.hex
           ls -la ./bin/app_benchmark_std_big_int.elf ./bin/app_benchmark_std_big_int.hex ./bin/app_benchmark_std_big_int.map
         working-directory: ./ref_app/
-
-# For some reason the run fails. So let's just build the std-big-int app and check the build results.
-#      - name: emulate-target stm32f429
-#        run: |
-#          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/xpack-qemu-arm-8.2.6-1/bin:$PATH"
-#          qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
-#          sleep 2
-#        working-directory: ./ref_app/
-#      - name: run-test-on-target
-#        run: |
-#          sleep 2
-#          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
-#          echo 'Run test on target'
-#          echo
-#          arm-none-eabi-gdb ./bin/app_benchmark_std_big_int.elf -x ./target/build/test_app_benchmarks_emulator.gdb > ./app_benchmark_std_big_int.txt
-#          cat ./app_benchmark_std_big_int.txt
-#          echo
-#          echo 'We will now grep for the right answer...'
-#          grep 'value 0xF00DCAFE' ./app_benchmark_std_big_int.txt
-#        working-directory: ./ref_app/
+      - name: emulate-target stm32f429
+        run: |
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/xpack-qemu-arm-8.2.6-1/bin:$PATH"
+          qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
+          sleep 2
+        working-directory: ./ref_app/
+      - name: run-test-on-target
+        run: |
+          sleep 2
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
+          echo 'Run test on target'
+          echo
+          arm-none-eabi-gdb ./bin/app_benchmark_std_big_int.elf -x ./target/build/test_app_benchmarks_emulator.gdb > ./app_benchmark_std_big_int.txt
+          cat ./app_benchmark_std_big_int.txt
+          echo
+          echo 'We will now grep for the right answer...'
+          grep 'value 0xF00DCAFE' ./app_benchmark_std_big_int.txt
+        working-directory: ./ref_app/
