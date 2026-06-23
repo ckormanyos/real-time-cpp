@@ -1,4 +1,5 @@
 # Example Chapter17_03a
+
 ## Traditional C-Language in Modern C++, Using Time Slices
 
 Example chapter17_03a is almost identical with
@@ -105,7 +106,7 @@ void app::crc::task_func()
       // Finalize this CRC object.
       app_crc_checksums[app_crc_object_index]->finalize();
 
-      // Increment to othe next CRC object in the list.
+      // Increment to the next CRC object in the list.
       ++app_crc_object_index;
 
       if(app_crc_object_index >= app_crc_checksums.size())
