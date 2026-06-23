@@ -84,7 +84,7 @@ with the prime number theorem.
 The electronic subcircuit used for creating the random digitized noise
 is sketched below.
 
-![Schematic view of the random noise generator subcircuit](./images/circuit16_08.svg)
+![Schematic view of the random noise generator subcircuit](./images/circuit16_08.png)
 
 The oscilloscope image below shows a small snapshot
 of the random digitized noise from this circuit.
