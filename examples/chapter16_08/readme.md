@@ -1,4 +1,5 @@
 # Example Chapter16_08 (advanced level)
+
 ## Generate and Display 128-bit Random Prime Numbers
 
 This advanced example uses a self-made pseudo-random electronic
@@ -34,7 +35,7 @@ from Newhaven Display International. The display
 is 40 characters in width by 4 lines and is, in fact,
 controlled as two individual displays packed together.
 
-The realease version of this software is intended to run on our target
+The release version of this software is intended to run on our target
 with the 8-bit microcontroller, as shown below.
 On this system, it takes approximately $15~\text{s}$ on average
 to find each single new pseudo-random 128-bit prime.
@@ -51,10 +52,10 @@ project uses
 [Boost.Multiprecision](https://www.boost.org/doc/libs/1_82_0/libs/multiprecision/doc/html/index.html)
 for its 128-bit integer representation and independent primality testing.
 
-This advanced example's software running on an 8-bit micrcocontroller
+This advanced example's software running on an 8-bit microcontroller
 exhibits a fascinating combination of elementary electronics,
 real-time C++ object-oriented and template programming,
-and the inate elegance and beauty of pure mathematics.
+and the innate elegance and beauty of pure mathematics.
 
 ## Hardware Setup
 
@@ -71,7 +72,7 @@ of the breadboard. The $12~\text{V}$ supply (center left) stems from a classic L
 voltage regulator, from which TTL $+5~\text{V}$ (upper left) is also derived for
 the MCU and logic power rail.
 
-![](./images/board16_08.jpg)
+![View of hardware setup](./images/board16_08.jpg)
 
 In this particular image,
 the system has accumulated a few hundred pseudo-random prime
@@ -83,7 +84,7 @@ with the prime number theorem.
 The electronic subcircuit used for creating the random digitized noise
 is sketched below.
 
-![](./images/circuit16_08.svg)
+![Schematic view of the random noise generator subcircuit](./images/circuit16_08.svg)
 
 The oscilloscope image below shows a small snapshot
 of the random digitized noise from this circuit.
@@ -91,13 +92,12 @@ The square-wave-like pulses result from digitizing the random signal
 above/below $0~\text{V}$. This is done with an op-amp and rudimentary logic,
 as shown in the circuit.
 
-![](./images/signal16_08.jpg)
+![View of the generated noise on oscilloscope](./images/signal16_08.jpg)
 
 ## Deep Connection to the Prime Number Theorem
 
 Recall the prime counting function
-previously encountered in Example Chapter03_02
-[here](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter03_02#prime-counting-function).
+previously encountered in Example [Chapter03_02](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter03_02#prime-counting-function).
 The prime number theorem known from mathematical number theory
 postulates that the prime counting function $\pi(x)$ for large $x$
 asymptotically and approximately approaches
@@ -148,7 +148,7 @@ $$
 \left(\frac{2}{3}\right)~{\approx}~\frac{1}{24}\text{,}
 $$
 
-which is around $4\\%$.
+which is around $4\%$.
 
 Sect. 16.8 in the book runs through
 the related, intriguing mathematics in great detail.
