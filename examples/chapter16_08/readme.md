@@ -148,7 +148,7 @@ $$
 \left(\frac{2}{3}\right)~{\approx}~\frac{1}{24}\text{,}
 $$
 
-which is around $4\%$.
+which is around $4\\%$.
 
 Sect. 16.8 in the book runs through
 the related, intriguing mathematics in great detail.
