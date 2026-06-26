@@ -5,16 +5,13 @@
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-examples.yml/badge.svg" alt="Build Examples"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
-    <a href="https://godbolt.org/z/fxWzb6h6f">
+    <a href="https://godbolt.org/z/zbcof9E94">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt"></a>
 </p>
 
-These examples are motivated by the book
-C.M. Kormanyos,
-[Real-Time C++](https://www.springer.com/de/book/9783662629956):
-Efficient Object-Oriented
-and Template Microcontroller Programming, Fourth Edition
-(Springer, Heidelberg, 2021) ISBN 9783662629956.
+These examples are motivated by the book C.M. Kormanyos, _Real-Time_ _C++:_
+_Efficient_ _Object-Oriented_ _and_ _Template_ _Microcontroller_ _Programming_, _4_$^{th}$ _Edition_
+and are made available for educational and exploratory use.
 
 The first couple of example projects can use the ARDUINO board directly
 and non-modified. Examples from the later chapters in the book do, however,
@@ -140,11 +137,11 @@ in each individual example directory.
 ## Try it at _godbolt_
 
 <p align="center">
-    <a href="https://godbolt.org/z/fxWzb6h6f">
+    <a href="https://godbolt.org/z/zbcof9E94">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt"></a>
 </p>
 
-Use this [short link](https://godbolt.org/z/fxWzb6h6f)
+Use this [short link](https://godbolt.org/z/zbcof9E94)
 to [godbolt](https://godbolt.org) in order to further explore
 Example [chapter02_02](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter02_02)
 (the LED program). In the link, the main source file of the example

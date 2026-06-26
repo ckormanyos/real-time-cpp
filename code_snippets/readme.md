@@ -10,12 +10,10 @@ Real-Time-C++ - Code Snippets
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
-These are the code snippets from the chapters of the book
-C.M. Kormanyos,
-[Real-Time C++](https://www.springer.com/de/book/9783662629956):
-Efficient Object-Oriented
-and Template Microcontroller Programming, Fourth Edition
-(Springer, Heidelberg, 2021) ISBN 9783662629956.
+These are the code snippets from the chapters
+of the book C.M. Kormanyos, _Real-Time_ _C++:_ _Efficient_ _Object-Oriented_
+_and_ _Template_ _Microcontroller_ _Programming_, _4_$^{th}$ _Edition_
+and are made available for educational and exploratory use.
 
 ## Summary of the Code Snippets
 

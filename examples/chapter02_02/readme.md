@@ -3,7 +3,7 @@
 ## The LED program
 
 <p align="center">
-    <a href="https://godbolt.org/z/fxWzb6h6f">
+    <a href="https://godbolt.org/z/zbcof9E94">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt" />
     </a>
 </p>
@@ -160,7 +160,7 @@ such as:
 
 ## Try it at _godbolt_
 
-Use the following [short link](https://godbolt.org/z/v5f45fMqq)
+Use the following [short link](https://godbolt.org/z/zbcof9E94)
 to [godbolt](https://godbolt.org) in order to further explore this program.
 
 In the afore-mentioned link, the file [`led.cpp`](./led.cpp) is,
@@ -171,7 +171,7 @@ but not executed because there is no target hardware available.
 ### On the Metal: _Clear_ and _Set_ Bit
 
 Consider the assembly output near the bottom of the page in the right-side tab
-of the [short link](https://godbolt.org/z/v5f45fMqq)
+of the [short link](https://godbolt.org/z/zbcof9E94)
 to [godbolt](https://godbolt.org). Upon close investigation,
 the bit-_clear_ and bit-_set_ opcodes (`cbi` and `sbi`)
 can be recognized.

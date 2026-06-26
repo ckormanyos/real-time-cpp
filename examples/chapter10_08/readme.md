@@ -3,7 +3,7 @@
 ## External SPI RAM and Computing 10,001 Digits of Pi
 
 <p align="center">
-    <a href="https://godbolt.org/z/EMx88ocxn">
+    <a href="https://godbolt.org/z/cr7MxKsK3">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt" /></a>
 </p>
 
@@ -66,7 +66,7 @@ A similar implementation of the Pi Spigot program has been setup
 at [godbolt](https://godbolt.org), where it can be compiled and executed.
 This setup computes $10,001$ decimal digits of $\pi$.
 
-Use the following [short link](https://godbolt.org/z/EMx88ocxn)
+Use the following [short link](https://godbolt.org/z/cr7MxKsK3)
 to further explore this program.
 
 ## 8-Bit MCU Adaptions
