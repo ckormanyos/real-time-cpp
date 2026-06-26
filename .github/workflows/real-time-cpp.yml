@@ -102,12 +102,11 @@ jobs:
         working-directory: ./
       - name: install-osx-cross-homebrew-avr
         run: |
-          echo 'Tap osx-cross/homebrew-avr on MacOS via brew'
+          echo 'Tap, trust and install osx-cross/avr on MacOS via brew'
           echo ""
-          echo 'Install osx-cross/homebrew-avr on MacOS via brew'
           cd ${{ runner.workspace }}/homebrew-avr
           brew tap osx-cross/avr
-          brew trust --formula osx-cross/avr/avr-gcc@15
+          brew trust aws/tap azure/bicep osx-cross/avr
           brew install osx-cross/avr/avr-gcc@15
         working-directory: ./
       - name: target-avr-macos-${{ matrix.suite }}
