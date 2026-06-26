@@ -1,4 +1,5 @@
 # Example Chapter17_03
+
 ## Traditional C Language Code in a Modern C++ Project
 
 Example chapter17_03 depicts some methods that potentially allow
@@ -61,13 +62,12 @@ void Crc08_Finalize    (Crc08_Context_Type* Crc_Context);
 On top of the existing C-language CRC library we have built a skinny
 object-oriented C++ wrapper class architecture that
 allows the CRC objects to be used effectively in a
-modern C++ envorinment. The application benchmark task,
+modern C++ environment. The application benchmark task,
 for instance, tests all four CRC functions and compares
 the results with their expected values. As mentioned in
-![Example chapter06_01](../chapter06_01), the standard
+[Example chapter06_01](../chapter06_01), the standard
 CRC test involves the result of performing the CRC on the
-bytes of the ACII digits
-<img src="https://render.githubusercontent.com/render/math?math=1{\ldots}9">.
+bytes of the ASCII digits $1$ through $9$.
 
 The application task `app::crc::task_func()` is shown below.
 
