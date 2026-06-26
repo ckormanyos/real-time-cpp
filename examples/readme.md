@@ -5,7 +5,7 @@
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-examples.yml/badge.svg" alt="Build Examples"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
-    <a href="https://godbolt.org/z/fxWzb6h6f">
+    <a href="https://godbolt.org/z/zbcof9E94">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt"></a>
 </p>
 
@@ -137,11 +137,11 @@ in each individual example directory.
 ## Try it at _godbolt_
 
 <p align="center">
-    <a href="https://godbolt.org/z/jTPPo51aM">
+    <a href="https://godbolt.org/z/zbcof9E94">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt"></a>
 </p>
 
-Use this [short link](https://godbolt.org/z/jTPPo51aM)
+Use this [short link](https://godbolt.org/z/zbcof9E94)
 to [godbolt](https://godbolt.org) in order to further explore
 Example [chapter02_02](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter02_02)
 (the LED program). In the link, the main source file of the example

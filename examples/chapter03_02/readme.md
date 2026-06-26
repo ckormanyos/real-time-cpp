@@ -3,7 +3,7 @@
 ## Integer Types Having Fixed Widths and Prime Numbers
 
 <p align="center">
-    <a href="https://godbolt.org/z/dPbM7v4ff">
+    <a href="https://godbolt.org/z/Pa3WbG8h6">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" alt="godbolt" /></a>
 </p>
 
@@ -89,7 +89,7 @@ A nifty little PC-based sieving program from the code snippets area helps to
 [explore prime numbers](../../code_snippets/chapter03/chapter03_02-002a_explore_prime_numbers.cpp).
 
 This code can be run in its entirety at the following
-[short link](https://godbolt.org/z/dPbM7v4ff) to [godbolt](https://godbolt.org).
+[short link](https://godbolt.org/z/Pa3WbG8h6) to [godbolt](https://godbolt.org).
 
 ## Prime Counting Function
 
