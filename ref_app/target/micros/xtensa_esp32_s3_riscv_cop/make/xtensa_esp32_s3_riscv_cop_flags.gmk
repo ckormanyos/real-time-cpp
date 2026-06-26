@@ -87,8 +87,8 @@ PYTHON         := python
 
 
 BIN2ASM_FLAGS  := -s ".coprocessor"                              \
-                   -l 16                                         \
-                   -g coprocessor_bin
+                  -l 16                                          \
+                  -g coprocessor_bin
 
 
 RULE_SPECIAL_MAKE_IMAGE_FILE_PART00 := $(ECHO) +++ creating binary $(APP).bin

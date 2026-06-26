@@ -102,19 +102,19 @@ jobs:
         working-directory: ./
       - name: install-osx-cross-homebrew-avr
         run: |
-          echo 'Tap osx-cross/homebrew-avr on MacOS via brew'
+          echo 'Tap, trust and install osx-cross/avr on MacOS via brew'
           echo ""
-          echo 'Install osx-cross/homebrew-avr on MacOS via brew'
           cd ${{ runner.workspace }}/homebrew-avr
           brew tap osx-cross/avr
-          brew install avr-gcc@12
+          brew trust aws/tap azure/bicep osx-cross/avr
+          brew install osx-cross/avr/avr-gcc@15
         working-directory: ./
       - name: target-avr-macos-${{ matrix.suite }}
         run: |
           echo query the GNUmake version
           make --version
-          echo Add the brew-installed-avr-gcc@12 path
-          PATH="/opt/homebrew/opt/avr-gcc@12/bin:$PATH"
+          echo Add the brew-installed-avr-gcc@15 path
+          PATH="/opt/homebrew/opt/avr-gcc@15/bin:$PATH"
           echo ""
           echo Query the avr-gcc version
           avr-g++ -v
