@@ -8,9 +8,10 @@
 #ifndef UTIL_RING_ALLOCATOR_2010_02_23_H
   #define UTIL_RING_ALLOCATOR_2010_02_23_H
 
+  #include <algorithm>
+  #include <array>
   #include <cstddef>
   #include <cstdint>
-  #include <memory>
 
   namespace util
   {
