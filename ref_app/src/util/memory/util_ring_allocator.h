@@ -17,7 +17,7 @@
   {
     template <const std::size_t ArenaSize>
     struct ring_arena {
-        std::array<std::byte, ArenaSize> buffer;
+        std::array<std::uint8_t, ArenaSize> buffer;
 
         std::size_t head{};
         std::size_t outstanding{};
