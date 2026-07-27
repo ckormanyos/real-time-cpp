@@ -297,7 +297,7 @@ cd real-time-cpp
 mkdir build
 cd build
 cmake ../ref_app -DTRIPLE=avr -DTARGET=avr -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-make -j ref_app
+cmake --build .
 ```
 
 We will now consider, for instance, building the reference application for
@@ -322,7 +322,7 @@ cd real-time-cpp
 mkdir build
 cd build
 cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32f446 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-make -j ref_app
+cmake --build .
 ```
 
 When building with CMake for other targets,
@@ -339,7 +339,7 @@ cd real-time-cpp
 mkdir build
 cd build
 cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-make -j ref_app
+cmake --build .
 ```
 
 ### Build with MICROCHIP's ATMEL Studio
