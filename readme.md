@@ -1,5 +1,4 @@
-﻿Real-Time-C++
-==================
+﻿# Real-Time-C++
 
 <p align="center">
     <a href="https://github.com/ckormanyos/real-time-cpp/actions">
@@ -511,8 +510,8 @@ The multicore system first boots core0 which subsequently
 starts up core1 and also starts up the RISC-V-ULP coprocessor core.
 Blinky runs in the standard `ref_app`
 on core0 toggling `port7` while an endless timer loop on core1
-toggles `port6`. These LED ports togle in near unison
-at the normal blinky feequency of $\frac{1}{2}~\text{Hz}$.
+toggles `port6`. These LED ports toggle in near unison
+at the normal blinky frequency of $\frac{1}{2}~\text{Hz}$.
 The RISC-V-ULP coprocessor performs an LED dimming
 show on `port17` at a randomly chosen frequency
 that is asynchronous to the regular blinky show.
@@ -580,7 +579,7 @@ and the oscilloscope captures
 a real-time measurement of the benchmark's time signal
 on digital I/O `port1.15`, header pin `P8.15` of the BBB.
 
-![](./images/bare_metal_bbb.jpg)
+![BeagleBone Black Baremetal example](./images/bare_metal_bbb.jpg)
 
 ## Continuous Integration (CI)
 
