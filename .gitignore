@@ -6,3 +6,4 @@ ref_app/tmp/
 ref_app/x64
 ref_app/bin/
 examples/chapter*/bin
+build

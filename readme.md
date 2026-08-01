@@ -1,5 +1,4 @@
-﻿Real-Time-C++
-==================
+﻿# Real-Time-C++
 
 <p align="center">
     <a href="https://github.com/ckormanyos/real-time-cpp/actions">
@@ -298,7 +297,7 @@ cd real-time-cpp
 mkdir build
 cd build
 cmake ../ref_app -DTRIPLE=avr -DTARGET=avr -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-make -j ref_app
+cmake --build .
 ```
 
 We will now consider, for instance, building the reference application for
@@ -323,7 +322,7 @@ cd real-time-cpp
 mkdir build
 cd build
 cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32f446 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-make -j ref_app
+cmake --build .
 ```
 
 When building with CMake for other targets,
@@ -340,7 +339,7 @@ cd real-time-cpp
 mkdir build
 cd build
 cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-make -j ref_app
+cmake --build .
 ```
 
 ### Build with MICROCHIP's ATMEL Studio
@@ -511,8 +510,8 @@ The multicore system first boots core0 which subsequently
 starts up core1 and also starts up the RISC-V-ULP coprocessor core.
 Blinky runs in the standard `ref_app`
 on core0 toggling `port7` while an endless timer loop on core1
-toggles `port6`. These LED ports togle in near unison
-at the normal blinky feequency of $\frac{1}{2}~\text{Hz}$.
+toggles `port6`. These LED ports toggle in near unison
+at the normal blinky frequency of $\frac{1}{2}~\text{Hz}$.
 The RISC-V-ULP coprocessor performs an LED dimming
 show on `port17` at a randomly chosen frequency
 that is asynchronous to the regular blinky show.
@@ -580,7 +579,7 @@ and the oscilloscope captures
 a real-time measurement of the benchmark's time signal
 on digital I/O `port1.15`, header pin `P8.15` of the BBB.
 
-![](./images/bare_metal_bbb.jpg)
+![BeagleBone Black Baremetal example](./images/bare_metal_bbb.jpg)
 
 ## Continuous Integration (CI)
 
