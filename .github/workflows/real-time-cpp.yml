@@ -81,7 +81,7 @@ jobs:
           mkdir build
           cd build
           cmake -Wno-dev ../ref_app -DTRIPLE=avr -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
+          cmake --build .
           ls -la ref_app.hex ref_app.s19 ref_app.map
         working-directory: ./
   target-avr-macos:
@@ -188,7 +188,7 @@ jobs:
           mkdir build
           cd build
           cmake -Wno-dev ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
+          cmake --build .
           ls -la ref_app.hex ref_app.s19 ref_app.map
         working-directory: ./
   target-arm-macos:
@@ -299,7 +299,7 @@ jobs:
           mkdir build
           cd build
           cmake -Wno-dev ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
+          cmake --build .
           ls ref_app.exe ref_app.map
         working-directory: ./
         shell: bash
