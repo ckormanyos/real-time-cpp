@@ -1509,7 +1509,7 @@
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
-  auto to_string(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x) -> std::string;
+  auto to_string(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x, int base = static_cast<int>(INT8_C(10))) -> std::string;
   #endif
 
   template<typename ForwardIterator,
@@ -2824,7 +2824,7 @@
 
         using string_storage_oct_type =
           std::conditional_t
-            <my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+            <my_width2 <= static_cast<size_t>(UINT32_C(512)),
              detail::fixed_static_array <char,
                                          wr_string_max_buffer_size_oct()>,
              detail::fixed_dynamic_array<char,
@@ -2897,7 +2897,11 @@
 
         str_temp[static_cast<typename string_storage_oct_type::size_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1)))] = '\0';
 
-        detail::strcpy_unsafe(str_result, str_temp.data() + pos);
+        const auto str_length { detail::strlen_unsafe(str_temp.data() + pos) };
+
+        detail::copy_unsafe(str_temp.data() + pos, str_temp.data() + pos + str_length, str_result);
+
+        *(str_result + str_length) = '\0';
       }
       else if(base_rep == static_cast<std::uint_fast8_t>(UINT8_C(10)))
       {
@@ -2912,7 +2916,7 @@
 
         using string_storage_dec_type =
           std::conditional_t
-            <my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+            <my_width2 <= static_cast<size_t>(UINT32_C(512)),
              detail::fixed_static_array <char,
                                          wr_string_max_buffer_size_dec()>,
              detail::fixed_dynamic_array<char,
@@ -2993,7 +2997,11 @@
 
         str_temp[static_cast<typename string_storage_dec_type::size_type>(str_temp.size() - size_t { UINT8_C(1) })] = '\0';
 
-        detail::strcpy_unsafe(str_result, str_temp.data() + pos);
+        const auto str_length { detail::strlen_unsafe(str_temp.data() + pos) };
+
+        detail::copy_unsafe(str_temp.data() + pos, str_temp.data() + pos + str_length, str_result);
+
+        *(str_result + str_length) = '\0';
       }
       else if(base_rep == static_cast<std::uint_fast8_t>(UINT8_C(16)))
       {
@@ -3001,7 +3009,7 @@
 
         using string_storage_hex_type =
           std::conditional_t
-            <my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+            <my_width2 <= static_cast<size_t>(UINT32_C(512)),
              detail::fixed_static_array <char,
                                          wr_string_max_buffer_size_hex()>,
              detail::fixed_dynamic_array<char,
@@ -3075,7 +3083,11 @@
 
         str_temp[static_cast<typename string_storage_hex_type::size_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1)))] = '\0';
 
-        detail::strcpy_unsafe(str_result, str_temp.data() + pos);
+        const auto str_length { detail::strlen_unsafe(str_temp.data() + pos) };
+
+        detail::copy_unsafe(str_temp.data() + pos, str_temp.data() + pos + str_length, str_result);
+
+        *(str_result + str_length) = '\0';
       }
       else
       {
@@ -3297,10 +3309,6 @@
 
       return result;
     }
-
-    static constexpr auto my_fill_char() -> char { return '.'; }
-
-    static constexpr auto is_not_fill_char(char c) -> bool { return (c != my_fill_char()); }
 
     // Define the maximum buffer sizes for extracting
     // octal, decimal and hexadecimal string representations.
@@ -5749,7 +5757,7 @@
     {
       using string_storage_oct_type =
         std::conditional_t
-          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(512)),
             detail::fixed_static_array <char,
                                         local_wide_integer_type::wr_string_max_buffer_size_oct()>,
             detail::fixed_dynamic_array<char,
@@ -5758,8 +5766,10 @@
                                                                                          std::allocator<void>,
                                                                                          AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
 
-      // TBD: There is redundant storage of this kind both here
+      // There is redundant storage of this kind both here
       // in this subroutine as well as in the wr_string method.
+      // This is on purpose for convenience but might be
+      // changed in the future.
       string_storage_oct_type str_result { }; // LCOV_EXCL_LINE
 
       str_result.fill('\0');
@@ -5772,7 +5782,7 @@
     {
       using string_storage_dec_type =
         std::conditional_t
-          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(512)),
             detail::fixed_static_array <char,
                                         local_wide_integer_type::wr_string_max_buffer_size_dec()>,
             detail::fixed_dynamic_array<char,
@@ -5781,8 +5791,10 @@
                                                                                           std::allocator<void>,
                                                                                           AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
 
-      // TBD: There is redundant storage of this kind both here
+      // There is redundant storage of this kind both here
       // in this subroutine as well as in the wr_string method.
+      // This is on purpose for convenience but might be
+      // changed in the future.
       string_storage_dec_type str_result { };
 
       str_result.fill('\0');
@@ -5795,7 +5807,7 @@
     {
       using string_storage_hex_type =
         std::conditional_t
-          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(512)),
             detail::fixed_static_array <char,
                                         local_wide_integer_type::wr_string_max_buffer_size_hex()>,
             detail::fixed_dynamic_array<char,
@@ -7253,7 +7265,7 @@
     {
       using string_storage_oct_type =
         std::conditional_t
-          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(512)),
             detail::fixed_static_array <char,
                                         local_wide_integer_type::wr_string_max_buffer_size_oct()>,
             detail::fixed_dynamic_array<char,
@@ -7262,30 +7274,15 @@
                                                                                          std::allocator<void>,
                                                                                          AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
 
-      using local_size_type = typename string_storage_oct_type::size_type;
-
       string_storage_oct_type str_temp { };
-
-      str_temp.fill(local_wide_integer_type::my_fill_char());
 
       const auto wr_string_is_ok = x.wr_string(str_temp.begin(), base_rep, show_base, show_pos, is_uppercase);
 
-      auto rit_trim = detail::find_if_unsafe(str_temp.crbegin(),
-                                             str_temp.crend(),
-                                             local_wide_integer_type::is_not_fill_char);
-
-      const auto wr_string_and_trim_is_ok =
-      (
-        (rit_trim != str_temp.crend()) && wr_string_is_ok
-      );
-
-      if(wr_string_and_trim_is_ok)
+      if(wr_string_is_ok)
       {
-        const auto chars_retrieved =
-          static_cast<local_size_type>
-          (
-            str_temp.size() - static_cast<local_size_type>(detail::distance_unsafe(str_temp.crbegin(), rit_trim))
-          );
+        using local_size_type = typename string_storage_oct_type::size_type;
+
+        const auto chars_retrieved = static_cast<local_size_type>(detail::strlen_unsafe(str_temp.data()));
 
         const auto chars_to_get = static_cast<local_size_type>(detail::distance_unsafe(first, last));
 
@@ -7293,14 +7290,17 @@
                                          str_temp.cbegin() + (detail::min_unsafe)(chars_retrieved, chars_to_get),
                                          first);
 
-        result.ec = std::errc();
+        if(chars_retrieved <= chars_to_get)
+        {
+          result.ec = std::errc();
+        }
       }
     }
     else if(base_rep == static_cast<std::uint_fast8_t>(UINT8_C(16)))
     {
       using string_storage_hex_type =
         std::conditional_t
-          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(512)),
             detail::fixed_static_array <char,
                                         local_wide_integer_type::wr_string_max_buffer_size_hex()>,
             detail::fixed_dynamic_array<char,
@@ -7309,30 +7309,15 @@
                                                                                          std::allocator<void>,
                                                                                          AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
 
-      using local_size_type = typename string_storage_hex_type::size_type;
-
       string_storage_hex_type str_temp { };
-
-      str_temp.fill(local_wide_integer_type::my_fill_char());
 
       const auto wr_string_is_ok = x.wr_string(str_temp.begin(), base_rep, show_base, show_pos, is_uppercase);
 
-      auto rit_trim = detail::find_if_unsafe(str_temp.crbegin(),
-                                             str_temp.crend(),
-                                             local_wide_integer_type::is_not_fill_char);
-
-      const auto wr_string_and_trim_is_ok =
-      (
-        (rit_trim != str_temp.crend()) && wr_string_is_ok
-      );
-
-      if(wr_string_and_trim_is_ok)
+      if(wr_string_is_ok)
       {
-        const auto chars_retrieved =
-          static_cast<local_size_type>
-          (
-            str_temp.size() - static_cast<local_size_type>(detail::distance_unsafe(str_temp.crbegin(), rit_trim))
-          );
+        using local_size_type = typename string_storage_hex_type::size_type;
+
+        const auto chars_retrieved = static_cast<local_size_type>(detail::strlen_unsafe(str_temp.data()));
 
         const auto chars_to_get = static_cast<local_size_type>(detail::distance_unsafe(first, last));
 
@@ -7340,14 +7325,17 @@
                                          str_temp.cbegin() + (detail::min_unsafe)(chars_retrieved, chars_to_get),
                                          first);
 
-        result.ec = std::errc();
+        if(chars_retrieved <= chars_to_get)
+        {
+          result.ec = std::errc();
+        }
       }
     }
     else
     {
       using string_storage_dec_type =
         std::conditional_t
-          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(512)),
             detail::fixed_static_array <char,
                                         local_wide_integer_type::wr_string_max_buffer_size_dec()>,
             detail::fixed_dynamic_array<char,
@@ -7356,30 +7344,15 @@
                                                                                          std::allocator<void>,
                                                                                          AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
 
-      using local_size_type = typename string_storage_dec_type::size_type;
-
       string_storage_dec_type str_temp { };
-
-      str_temp.fill(local_wide_integer_type::my_fill_char());
 
       const auto wr_string_is_ok = x.wr_string(str_temp.begin(), base_rep, show_base, show_pos, is_uppercase);
 
-      auto rit_trim = detail::find_if_unsafe(str_temp.crbegin(),
-                                             str_temp.crend(),
-                                             local_wide_integer_type::is_not_fill_char);
-
-      const auto wr_string_and_trim_is_ok =
-      (
-        (rit_trim != str_temp.crend()) &&  wr_string_is_ok
-      );
-
-      if(wr_string_and_trim_is_ok)
+      if(wr_string_is_ok)
       {
-        const auto chars_retrieved =
-          static_cast<local_size_type>
-          (
-            str_temp.size() - static_cast<local_size_type>(detail::distance_unsafe(str_temp.crbegin(), rit_trim))
-          );
+        using local_size_type = typename string_storage_dec_type::size_type;
+
+        const auto chars_retrieved = static_cast<local_size_type>(detail::strlen_unsafe(str_temp.data()));
 
         const auto chars_to_get = static_cast<local_size_type>(detail::distance_unsafe(first, last));
 
@@ -7387,7 +7360,10 @@
                                          str_temp.cbegin() + (detail::min_unsafe)(chars_retrieved, chars_to_get),
                                          first);
 
-        result.ec = std::errc();
+        if(chars_retrieved <= chars_to_get)
+        {
+          result.ec = std::errc();
+        }
       }
     }
 
@@ -7446,57 +7422,66 @@
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
-  auto to_string(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x) -> std::string
+  auto to_string(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x, int base) -> std::string
   {
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
 
-    using string_storage_dec_type =
-      std::conditional_t
-        <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
-          detail::fixed_static_array <char,
-                                      local_wide_integer_type::wr_string_max_buffer_size_dec()>,
-          detail::fixed_dynamic_array<char,
-                                      local_wide_integer_type::wr_string_max_buffer_size_dec(),
-                                      typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
-                                                                                       std::allocator<void>,
-                                                                                       AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
-
-    using local_size_type = typename string_storage_dec_type::size_type;
-
-    string_storage_dec_type str_temp { }; // LCOV_EXCL_LINE
-
-    str_temp.fill(local_wide_integer_type::my_fill_char());
-
-    const auto base_rep     = static_cast<std::uint_fast8_t>(UINT8_C(10));
-    const auto show_base    = false;
-    const auto show_pos     = false;
-    const auto is_uppercase = false;
-
-    const auto wr_string_is_ok = x.wr_string(str_temp.begin(), base_rep, show_base, show_pos, is_uppercase);
-
-    auto rit_trim = detail::find_if_unsafe(str_temp.crbegin(),
-                                           str_temp.crend(),
-                                           local_wide_integer_type::is_not_fill_char);
-
-    const auto wr_string_and_trim_is_ok =
-    (
-      (rit_trim != str_temp.crend()) && wr_string_is_ok
-    );
-
     std::string str_result { };
 
-    if(wr_string_and_trim_is_ok)
+    if(base == static_cast<int>(INT8_C(8)))
     {
-      const auto str_result_size =
-        static_cast<local_size_type>
-        (
-            str_temp.size()
-          - static_cast<local_size_type>(detail::distance_unsafe(str_temp.crbegin(), rit_trim))
-        );
+      using string_storage_oct_type =
+        std::conditional_t
+          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(512)),
+            detail::fixed_static_array <char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_oct()>,
+            detail::fixed_dynamic_array<char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_oct(),
+                                        typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                         std::allocator<void>,
+                                                                                         AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
+      string_storage_oct_type str_temp { }; // LCOV_EXCL_LINE
 
-      detail::fill_unsafe(str_temp.begin() + str_result_size, str_temp.end(), '\0');
+      const auto wr_string_is_ok = x.wr_string(str_temp.begin(), static_cast<std::uint_fast8_t>(UINT8_C(8)), false, false, false);
 
-      str_result = std::string(str_temp.data());
+      if(wr_string_is_ok) { str_result = std::string(str_temp.data()); }
+    }
+    else if(base == static_cast<int>(INT8_C(16)))
+    {
+      using string_storage_hex_type =
+        std::conditional_t
+          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(512)),
+            detail::fixed_static_array <char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_hex()>,
+            detail::fixed_dynamic_array<char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_hex(),
+                                        typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                         std::allocator<void>,
+                                                                                         AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
+      string_storage_hex_type str_temp { }; // LCOV_EXCL_LINE
+
+      const auto wr_string_is_ok = x.wr_string(str_temp.begin(), static_cast<std::uint_fast8_t>(UINT8_C(16)), false, false, false);
+
+      if(wr_string_is_ok) { str_result = std::string(str_temp.data()); }
+    }
+    else
+    {
+      using string_storage_dec_type =
+        std::conditional_t
+          <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(512)),
+            detail::fixed_static_array <char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_dec()>,
+            detail::fixed_dynamic_array<char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_dec(),
+                                        typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                         std::allocator<void>,
+                                                                                         AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
+
+      string_storage_dec_type str_temp { }; // LCOV_EXCL_LINE
+
+      const auto wr_string_is_ok = x.wr_string(str_temp.begin(), static_cast<std::uint_fast8_t>(UINT8_C(10)), false, false, false);
+
+      if(wr_string_is_ok) { str_result = std::string(str_temp.data()); }
     }
 
     return str_result;
