@@ -23,11 +23,11 @@ TGT_ALLFLAGS  = -Os                                                             
                 -mfpu=fpv4-sp-d16                                                 \
                 -ffast-math                                                       \
                 -finline-functions                                                \
-                -finline-limit=32                                                 \
+                -finline-limit=128                                                \
                 -mno-unaligned-access                                             \
                 -mno-long-calls
 
-TGT_CFLAGS    = -std=c99                                                          \
+TGT_CFLAGS    = -std=c11                                                          \
                 -Wunsuffixed-float-constants                                      \
                 $(TGT_ALLFLAGS)
 
@@ -41,6 +41,8 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                                         \
                 -nostartfiles                                                     \
+                --specs=nano.specs                                                \
+                --specs=nosys.specs                                               \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)

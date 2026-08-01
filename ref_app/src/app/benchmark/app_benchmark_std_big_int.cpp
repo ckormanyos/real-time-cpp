@@ -55,8 +55,9 @@ static auto do_one_test() -> bool
 {
   using ring_allocator_type = util::ring_allocator<beman::big_int::uint_multiprecision_t, std::size_t{0x2000U}>;
 
-  using ring_big_int_type =
-      beman::big_int::basic_big_int<beman::big_int::big_int::inplace_bits, ring_allocator_type>;
+  using ring_big_int_type = beman::big_int::basic_big_int<beman::big_int::big_int::inplace_bits,
+                                                          beman::big_int::uint_multiprecision_t,
+                                                          ring_allocator_type>;
 
   using namespace beman::big_int::literals;
 

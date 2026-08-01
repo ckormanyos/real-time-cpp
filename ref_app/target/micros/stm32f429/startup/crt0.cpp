@@ -1,12 +1,11 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2022.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// STM32 EABI ARM(R) Cortex-M4(TM) startup code.
-// Expressed with C++ for STM32F4xx by Chris.
+// Generic Cortex-M4F startup code.
 
 #include <mcal/mcal.h>
 
