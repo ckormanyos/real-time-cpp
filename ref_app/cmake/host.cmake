@@ -57,8 +57,6 @@ else()
         set(_TARGET_CFLAGS
             -finline-functions
             -finline-limit=32
-            -march=native
-            -mtune=native
         )
 
         set(TARGET_AFLAGS "")
