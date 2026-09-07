@@ -106,20 +106,6 @@
         p_hash->initialize();
       }
 
-      using local_input_iterator_type = InputIteratorType;
-      using local_input_value_type = typename std::iterator_traits<local_input_iterator_type>::value_type;
-
-      // Invalidate the input container values at the first 32 indices.
-      const std::uint32_t
-        invalidate_size
-        {
-          (std::min)(std::uint32_t { UINT8_C(32) }, get_input_static_size())
-        };
-
-      std::fill(my_pi_in,
-                detail::advance_and_point(my_pi_in, invalidate_size),
-                (std::numeric_limits<local_input_value_type>::max)());
-
       unsigned_small_type val_c { static_cast<unsigned_small_type>(static_cast<unsigned>(UINT8_C(0))) };
 
       my_output_count = static_cast<std::uint32_t>(UINT8_C(0));
