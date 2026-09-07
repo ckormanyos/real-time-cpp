@@ -563,7 +563,7 @@
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_types.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memroy_sram_iterator.h">
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_iterator.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\host\mcal_memory_sram.h">

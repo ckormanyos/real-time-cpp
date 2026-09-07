@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2025.
+//  Copyright Christopher Kormanyos 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,21 +25,18 @@
     using address_type      = AddressType;
 
   public:
+    using pointer           = sram_ptr;
     using reference         = sram_ref<ValueType,
                                        AddressType,
                                        AddressDifferenceType>;
     using value_type        = typename reference::value_type;
     using size_type         = typename reference::size_type;
     using difference_type   = typename reference::difference_type;
-    using iterator_category = std::bidirectional_iterator_tag;
+    using iterator_category = std::random_access_iterator_tag;
 
-    sram_ptr() noexcept : my_address() { }
+    sram_ptr() noexcept = default;
 
     explicit constexpr sram_ptr(address_type addr) noexcept : my_address(addr) { }
-
-    sram_ptr(const sram_ptr& other) noexcept : my_address(other.my_address) { }
-
-    sram_ptr(sram_ptr&& other) noexcept : my_address(other.my_address) { }
 
     template<typename OtherValueType,
              typename OtherAddressType,
@@ -47,84 +44,73 @@
     sram_ptr(const sram_ptr<OtherValueType, OtherAddressType, OtherAddressDifferenceType>& other) noexcept
       : my_address(other.my_address) { }
 
-    ~sram_ptr() { }
-
-    sram_ptr& operator=(const sram_ptr& other) noexcept
-    {
-      if(this != &other)
-      {
-        my_address = other.my_address;
-      }
-
-      return *this;
-    }
-
-    sram_ptr& operator=(sram_ptr&& other) noexcept
-    {
-      my_address = other.my_address;
-
-      return *this;
-    }
-
-    reference operator*() noexcept
+    auto operator*() noexcept -> reference
     {
       return reference(my_address);
     }
 
-    const reference operator*() const noexcept
+    auto operator*() const noexcept -> const reference
     {
       return reference(my_address);
     }
 
-    sram_ptr& operator++() noexcept { ++my_address; return *this; }
-    sram_ptr& operator--() noexcept { --my_address; return *this; }
+    auto operator++() noexcept -> sram_ptr& { my_address += sizeof(value_type); return *this; }
+    auto operator--() noexcept -> sram_ptr& { my_address -= sizeof(value_type); return *this; }
 
-    sram_ptr operator++(int) noexcept { const sram_ptr tmp = *this; ++my_address; return tmp; }
-    sram_ptr operator--(int) noexcept { const sram_ptr tmp = *this; --my_address; return tmp; }
+    sram_ptr operator++(int) noexcept { const sram_ptr tmp = *this; my_address += sizeof(value_type); return tmp; }
+    sram_ptr operator--(int) noexcept { const sram_ptr tmp = *this; my_address -= sizeof(value_type); return tmp; }
 
-    sram_ptr operator+(difference_type n) const noexcept
+    auto operator+(difference_type n) const noexcept -> sram_ptr
     {
-      const address_type addr = ((n < 0) ? my_address - size_type(-n)
-                                         : my_address + size_type(n));
+      const address_type addr = ((n < 0) ? my_address - ((size_type(0U) - size_type(n)) * sizeof(value_type))
+                                         : my_address + (size_type(n) * sizeof(value_type)));
 
       return sram_ptr(addr);
     }
 
-    sram_ptr operator-(difference_type n) const noexcept
+    auto operator-(difference_type n) const noexcept -> sram_ptr
     {
-      const address_type addr = ((n < 0) ? my_address + size_type(-n)
-                                         : my_address - size_type(n));
+      const address_type addr = ((n < 0) ? my_address + ((size_type(0U) - size_type(n)) * sizeof(value_type))
+                                         : my_address - (size_type(n) * sizeof(value_type)));
 
       return sram_ptr(addr);
     }
 
-    sram_ptr& operator+=(difference_type n) noexcept
+    auto operator+=(difference_type n) noexcept -> sram_ptr&
     {
-      my_address = ((n < 0) ? my_address - size_type(-n)
-                            : my_address + size_type(n));
+      my_address = ((n < 0) ? my_address - ((size_type(0U) - size_type(n)) * sizeof(value_type))
+                            : my_address + (size_type(n) * sizeof(value_type)));
 
       return *this;
     }
 
-    sram_ptr& operator-=(difference_type n) noexcept
+    auto operator-=(difference_type n) noexcept -> sram_ptr&
     {
-      my_address = ((n < 0) ? my_address + size_type(-n)
-                            : my_address - size_type(n));
+      my_address = ((n < 0) ? my_address + ((size_type(0U) - size_type(n)) * sizeof(value_type))
+                            : my_address - (size_type(n) * sizeof(value_type)));
 
       return *this;
     }
 
   private:
-    address_type my_address;
+    address_type my_address{};
 
-    friend inline difference_type operator-(const sram_ptr& x, const sram_ptr& y) noexcept
+    template<typename, typename, typename>
+    friend class sram_ptr;
+
+    friend inline auto operator-(const sram_ptr& x, const sram_ptr& y) noexcept -> difference_type
     {
-      return (x.my_address - y.my_address);
+      if(x.my_address >= y.my_address)
+      {
+        return difference_type((x.my_address - y.my_address) / sizeof(value_type));
+      }
+
+      return -difference_type((y.my_address - x.my_address) / sizeof(value_type));
     }
 
-    friend inline sram_ptr operator+(difference_type n, const sram_ptr& x) noexcept
+    friend inline auto operator+(difference_type n, const sram_ptr& x) noexcept -> sram_ptr
     {
-      return sram_ptr(x.my_address + n);
+      return sram_ptr(x + n);
     }
 
     friend inline bool operator< (const sram_ptr& x, const sram_ptr& y) noexcept { return (x.my_address <  y.my_address); }

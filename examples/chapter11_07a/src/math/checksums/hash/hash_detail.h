@@ -13,7 +13,7 @@
 
   namespace math { namespace checksums { namespace hash { namespace detail {
 
-  template<const std::uint_fast8_t digits_shift,
+  template<std::uint_fast8_t digits_shift,
            typename arithmetic_type>
   constexpr auto circular_right_shift(arithmetic_type the_value) -> arithmetic_type
   {
@@ -25,7 +25,7 @@
       );
   }
 
-  template<const std::uint_fast8_t digits_shift,
+  template<std::uint_fast8_t digits_shift,
            typename arithmetic_type>
   constexpr auto circular_left_shift(arithmetic_type the_value) -> arithmetic_type
   {

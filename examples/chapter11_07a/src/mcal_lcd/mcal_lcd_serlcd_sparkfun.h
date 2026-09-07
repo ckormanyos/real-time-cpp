@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Iliass Mahjoub 2023 - 2025
-//  Copyright Christopher Kormanyos 2024 - 2025
+//  Copyright Iliass Mahjoub 2023 - 2026
+//  Copyright Christopher Kormanyos 2024 - 2026
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -44,9 +44,7 @@
   public:
     lcd_serlcd_sparkfun() = default;
 
-    ~lcd_serlcd_sparkfun() override = default;
-
-    auto init(void) -> bool override
+    auto init() -> bool override
     {
       blocking_delay(timer_type::milliseconds(tick_type { UINT16_C(1250) }));
 
@@ -99,7 +97,7 @@
     }
 
   private:
-    void transfer(const std::uint8_t byte_to_send)
+    auto transfer(const std::uint8_t byte_to_send) const -> void
     {
       std::uint8_t dummy_byte_to_recv { };
 
@@ -109,13 +107,13 @@
       blocking_delay(timer_type::microseconds(tick_type { UINT8_C(150) }));
     }
 
-    auto setting(const std::uint8_t setting) -> void
+    auto setting(const std::uint8_t setting) const -> void
     {
       transfer(serlcd_setting_mode);
       transfer(setting);
     }
 
-    auto set_line_index(const std::uint8_t index) -> bool override
+    auto set_line_index(const std::uint8_t index) const -> bool override
     {
       // Set the active cursor position to the beginning of the line index.
 
@@ -146,7 +144,7 @@
       return true;
     }
 
-    auto set_rgb_fast(const std::uint8_t hue_r, const std::uint8_t hue_g, const std::uint8_t hue_b) -> void
+    auto set_rgb_fast(const std::uint8_t hue_r, const std::uint8_t hue_g, const std::uint8_t hue_b) const -> void
     {
       // Create the RGB command data stream.
       const std::array<std::uint8_t, std::size_t { UINT8_C(5) }> cmd =

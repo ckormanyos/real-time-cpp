@@ -32,16 +32,6 @@
   public:
     using transform_function_type = std::uint32_t(*)(const std::uint32_t*);
 
-    hash_sha1() = default;
-
-    hash_sha1(const hash_sha1&) = default;
-    hash_sha1(hash_sha1&&) = default;
-
-    ~hash_sha1() override = default;
-
-    auto operator=(const hash_sha1&) -> hash_sha1& = default;
-    auto operator=(hash_sha1&&) -> hash_sha1& = default;
-
     auto initialize() -> void override
     {
       base_class_type::initialize();

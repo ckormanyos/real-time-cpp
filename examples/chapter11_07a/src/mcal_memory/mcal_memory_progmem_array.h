@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2025.
+//  Copyright Christopher Kormanyos 2019 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,9 +25,8 @@
   class array
   {
   private:
-    static_assert(N > 0U, "error: Number of elements must exceed zero");
-
     static constexpr mcal_progmem_uintptr_t static_size = N;
+    static constexpr mcal_progmem_uintptr_t storage_size = (N > 0U) ? N : 1U;
 
   public:
     // Standard container-local type definitions.
@@ -39,87 +38,100 @@
     using const_pointer          = typename const_iterator::pointer;
     using const_reference        = typename const_iterator::reference;
 
-    const value_type elems[static_size];
+    const value_type elems[storage_size];
 
-    ~array() noexcept = default;
+    auto begin() const noexcept -> const_iterator { return const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[0U])); }
+    auto end  () const noexcept -> const_iterator { return const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[static_size])); }
 
-    const_iterator begin() const noexcept { return const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[0U])); }
-    const_iterator end  () const noexcept { return const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[static_size])); }
+    auto cbegin() const noexcept -> const_iterator { return begin(); }
+    auto cend  () const noexcept -> const_iterator { return end(); }
 
-    const_iterator cbegin() const noexcept { return begin(); }
-    const_iterator cend  () const noexcept { return end(); }
+    auto rbegin() const noexcept -> const_reverse_iterator
+    {
+      return const_reverse_iterator(const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[static_size])));
+    }
 
-    const_reverse_iterator rbegin() const noexcept { return const_reverse_iterator(MCAL_PROGMEM_ADDRESSOF(elems[static_size])); }
-    const_reverse_iterator rend  () const noexcept { return const_reverse_iterator(MCAL_PROGMEM_ADDRESSOF(elems[0U])); }
+    auto rend() const noexcept -> const_reverse_iterator
+    {
+      return const_reverse_iterator(const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[0U])));
+    }
 
-    const_reverse_iterator crbegin() const noexcept { return rbegin(); }
-    const_reverse_iterator crend  () const noexcept { return rend(); }
+    auto crbegin() const noexcept -> const_reverse_iterator { return rbegin(); }
+    auto crend  () const noexcept -> const_reverse_iterator { return rend(); }
 
-    const_reference at(const size_type i) const noexcept
+    auto at(const size_type i) const noexcept -> const_reference
     {
       return *(cbegin() + difference_type(i));
     }
 
-    const_reference operator[](const size_type i) const noexcept
+    auto operator[](const size_type i) const noexcept -> const_reference
     {
       return at(i);
     }
 
-    const_reference front() const noexcept
+    auto front() const noexcept -> const_reference
     {
       return at(0U);
     }
 
-    const_reference back() const noexcept
+    auto back() const noexcept -> const_reference
     {
       return at(static_size - 1U);
     }
 
     constexpr size_type size    () const noexcept { return static_size; }
-    constexpr bool      empty   () const noexcept { return false; }
+    constexpr bool      empty   () const noexcept { return (static_size == 0U); }
     constexpr size_type max_size() const noexcept { return static_size; }
 
-    const_pointer data() const noexcept
+    auto data() const noexcept -> const_pointer
     {
       return const_pointer(MCAL_PROGMEM_ADDRESSOF(elems[0U]));
     }
   };
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  bool operator==(const array<T, N>& left, const array<T, N>& right)
+  auto operator==(const array<T, N>& left, const array<T, N>& right) -> bool
   {
-    return std::equal(left.cbegin(), left.cend(), right.cbegin());
+    return std::equal(left.cbegin(), left.cend(), right.cbegin(),
+                      [](const auto& x, const auto& y)
+                      {
+                        return x.value() == y.value();
+                      });
   }
 
   template<typename T, mcal_progmem_uintptr_t N>
-  bool operator<(const array<T, N>& left, const array<T, N>& right)
+  auto operator<(const array<T, N>& left, const array<T, N>& right) -> bool
   {
     return std::lexicographical_compare(left.cbegin(),
                                         left.cend(),
                                         right.cbegin(),
-                                        right.end());
+                                         right.cend(),
+                                        [](const auto& x, const auto& y)
+                                        {
+                                          return x.value() < y.value();
+                                        });
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  bool operator!=(const array<T, N>& left, const array<T, N>& right)
+  auto operator!=(const array<T, N>& left, const array<T, N>& right) -> bool
   {
     return (!(left == right));
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  bool operator>(const array<T, N>& left, const array<T, N>& right)
+  auto operator>(const array<T, N>& left, const array<T, N>& right) -> bool
   {
     return (right < left);
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  bool operator>=(const array<T, N>& left, const array<T, N>& right)
+  auto operator>=(const array<T, N>& left, const array<T, N>& right) -> bool
   {
     return (!(left < right));
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  bool operator<=(const array<T, N>& left, const array<T, N>& right)
+  auto operator<=(const array<T, N>& left, const array<T, N>& right) -> bool
   {
     return (!(right < left));
   }

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2025.
+//  Copyright Christopher Kormanyos 2019 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -29,11 +29,14 @@
 
     explicit constexpr progmem_ref(address_type address) noexcept : my_address(address) { }
 
-    progmem_ref(const progmem_ref& other) noexcept : my_address(other.my_address) { }
+    progmem_ref(const progmem_ref&) noexcept = default;
 
-    ~progmem_ref() noexcept = default;
+    explicit operator value_type() const noexcept
+    {
+      return value();
+    }
 
-    operator value_type() const noexcept
+    auto value() const noexcept -> value_type
     {
       return read<value_type>(my_address);
     }
@@ -41,9 +44,6 @@
   private:
     const address_type my_address;
 
-    progmem_ref() = delete;
-
-    // This class is read only.
     progmem_ref& operator=(const progmem_ref&) = delete;
     progmem_ref& operator=(const value_type&) = delete;
   };
