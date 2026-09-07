@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2025.
+//  Copyright Christopher Kormanyos 2017 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,9 +17,7 @@
   class led_rgb_base : public mcal::led::led_boolean_state_base
   {
   public:
-    ~led_rgb_base() override = default;
-
-    auto toggle() noexcept -> void override
+    auto toggle() -> void override
     {
       using base_class_type = mcal::led::led_boolean_state_base;
 
@@ -68,12 +66,13 @@
   protected:
     constexpr led_rgb_base() = default;
 
+  protected:
+    virtual auto apply_color() -> void = 0;
+
   private:
     std::uint_fast8_t my_hue_r { };
     std::uint_fast8_t my_hue_g { };
     std::uint_fast8_t my_hue_b { };
-
-    virtual void apply_color() = 0;
 
     auto my_on () -> void
     {

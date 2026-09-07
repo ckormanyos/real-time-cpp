@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2025.
+//  Copyright Christopher Kormanyos 2013 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,8 +22,6 @@
   public:
     explicit constexpr led_console(const std::uint_fast8_t idx = std::uint_fast8_t { UINT8_C(0) }) noexcept
       : my_index(idx) { }
-
-    ~led_console() override = default;
 
     auto toggle() -> void override
     {

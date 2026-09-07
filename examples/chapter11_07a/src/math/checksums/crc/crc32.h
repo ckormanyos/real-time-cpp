@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,8 +14,8 @@
   namespace math { namespace checksums { namespace crc {
 
   template<typename input_iterator>
-  std::uint32_t crc32_mpeg2(input_iterator first,
-                            input_iterator last)
+  constexpr auto crc32_mpeg2(input_iterator first,
+                             input_iterator last) -> std::uint32_t
   {
     // Name            : CRC-32/MPEG-2
     // Polynomial      : 0x04C11DB7
@@ -44,7 +44,7 @@
 
     for( ; first != last; ++first)
     {
-      const std::uint_fast8_t the_byte = uint_fast8_t((*first) & UINT8_C(0xFF));
+      const auto the_byte = static_cast<std::uint_fast8_t>(*first & UINT8_C(0xFF));
 
       std::uint_fast8_t index;
 

@@ -1,5 +1,6 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2025
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2020 - 2026
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -21,47 +22,31 @@
            typename port_pin_mosi_type,
            typename port_pin_csn_type,
            typename port_pin_miso_type,
-           const std::uint_fast16_t nop_count,
-           const bool has_disable_enable_interrupts>
-  class spi_software_port_driver : public ::util::communication_base
+           std::uint_fast16_t nop_count,
+           bool has_disable_enable_interrupts>
+  class spi_software_port_driver final
   {
   private:
-    // Consider:
-    // https://en.wikipedia.org/wiki/Serial_Peripheral_Interface
-
-    // Timing applies to both the master and the slave device.
-
-    // CPOL=0:
-    //   The clock idles to 0 and each cycle consists
-    //   of a pulse of 1. The leading edge is a rising edge
-    //   and the trailing edge is a falling edge.
-
-    // CPHA=0:
-    //   Data out changes on the trailing edge of the
-    //   preceding clock cycle, while data in is captured
-    //   on (or shortly after) the leading edge of the
-    //   clock cycle.
-
-    using base_class_type = ::util::communication_base;
+    using communication_type = ::util::communication_base;
 
   public:
     static auto init() -> void
     {
-       port_pin_csn_type::set_pin_high();
-       port_pin_sck_type::set_pin_low();
+      port_pin_csn_type::set_pin_high();
+      port_pin_sck_type::set_pin_low();
       port_pin_mosi_type::set_pin_low();
 
-       port_pin_csn_type::set_direction_output();
-       port_pin_sck_type::set_direction_output();
+      port_pin_csn_type::set_direction_output();
+      port_pin_sck_type::set_direction_output();
       port_pin_mosi_type::set_direction_output();
       port_pin_miso_type::set_direction_input();
     }
 
     static auto send(const std::uint8_t byte_to_send, std::uint8_t& byte_to_recv) -> bool
     {
-      using value_type = typename base_class_type::buffer_value_type;
+      using value_type = typename communication_type::buffer_value_type;
 
-      byte_to_recv = static_cast<value_type>(UINT8_C(0));
+      byte_to_recv = value_type { UINT8_C(0) };
 
       transceive_bit<std::uint_fast8_t { UINT8_C(0x80) }>(byte_to_send, byte_to_recv);
       transceive_bit<std::uint_fast8_t { UINT8_C(0x40) }>(byte_to_send, byte_to_recv);
@@ -75,17 +60,13 @@
       return true;
     }
 
-    static auto send_n(base_class_type::send_iterator_type first,
-                       base_class_type::send_iterator_type last,
+    static auto send_n(communication_type::send_iterator_type first,
+                       communication_type::send_iterator_type last,
                        std::uint8_t& byte_to_recv) -> bool
     {
       while(first != last)
       {
-        using value_type = typename base_class_type::buffer_value_type;
-
-        const auto byte_to_send { static_cast<value_type>(*first++) };
-
-        static_cast<void>(send(byte_to_send, byte_to_recv));
+        static_cast<void>(send(static_cast<communication_type::buffer_value_type>(*first++), byte_to_recv));
       }
 
       return true;
@@ -94,85 +75,75 @@
     static auto select() -> void
     {
       mcal::helper::disable_all_interrupts<has_disable_enable_interrupts>();
-
-       port_pin_csn_type::set_pin_low();
+      port_pin_csn_type::set_pin_low();
     }
 
     static auto deselect() -> void
     {
-       port_pin_csn_type::set_pin_high();
-
+      port_pin_csn_type::set_pin_high();
       mcal::helper::enable_all_interrupts<has_disable_enable_interrupts>();
     }
 
   private:
-    template<const std::uint_fast8_t BitMask>
+    template<std::uint_fast8_t BitMask>
     static auto transceive_bit(const std::uint8_t byte_to_send, std::uint8_t& byte_to_recv) -> void
     {
-      using value_type = typename base_class_type::buffer_value_type;
+      using value_type = typename communication_type::buffer_value_type;
 
-      constexpr std::uint_fast8_t bit_mask { BitMask };
-
-      const bool
-        bit_is_high
-        {
-          (static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(byte_to_send) & bit_mask) != static_cast<std::uint_fast8_t>(UINT8_C(0)))
-        };
+      constexpr auto bit_mask = BitMask;
+      const bool bit_is_high =
+        (static_cast<std::uint_fast8_t>(byte_to_send) & bit_mask) != std::uint_fast8_t { UINT8_C(0) };
 
       (bit_is_high ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low());
-
-       port_pin_sck_type::set_pin_high();
+      port_pin_sck_type::set_pin_high();
       mcal::helper::nop_maker<nop_count>();
 
       if(port_pin_miso_type::read_input_value())
       {
-        byte_to_recv =
-          static_cast<value_type>
-          (
-            static_cast<std::uint_fast8_t>(byte_to_recv) | bit_mask
-          );
+        byte_to_recv = static_cast<value_type>(byte_to_recv | bit_mask);
       }
 
-       port_pin_sck_type::set_pin_low();
+      port_pin_sck_type::set_pin_low();
     }
   };
 
   template<typename port_pin_sck_type,
            typename port_pin_mosi_type,
            typename port_pin_csn_type,
-           const std::uint_fast16_t nop_count,
-           const bool has_disable_enable_interrupts>
+           std::uint_fast16_t nop_count,
+           bool has_disable_enable_interrupts>
   class spi_software_port_driver<port_pin_sck_type,
                                  port_pin_mosi_type,
                                  port_pin_csn_type,
                                  mcal::port::port_pin_dummy,
                                  nop_count,
-                                 has_disable_enable_interrupts> : public util::communication_base
+                                 has_disable_enable_interrupts> final
   {
+  private:
+    using communication_type = ::util::communication_base;
+
   public:
     static auto init() -> void
     {
-       port_pin_csn_type::set_pin_high();
-       port_pin_sck_type::set_pin_low();
+      port_pin_csn_type::set_pin_high();
+      port_pin_sck_type::set_pin_low();
       port_pin_mosi_type::set_pin_low();
 
-       port_pin_csn_type::set_direction_output();
-       port_pin_sck_type::set_direction_output();
+      port_pin_csn_type::set_direction_output();
+      port_pin_sck_type::set_direction_output();
       port_pin_mosi_type::set_direction_output();
     }
 
     static auto send(const std::uint8_t byte_to_send) -> bool
     {
-      const std::uint_fast8_t by { static_cast<std::uint_fast8_t>(byte_to_send) };
-
-       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x80))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
-       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x40))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
-       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x20))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
-       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x10))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
-       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x08))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
-       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x04))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
-       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x02))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
-       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x01))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
+      send_bit(byte_to_send, std::uint_fast8_t { UINT8_C(0x80) });
+      send_bit(byte_to_send, std::uint_fast8_t { UINT8_C(0x40) });
+      send_bit(byte_to_send, std::uint_fast8_t { UINT8_C(0x20) });
+      send_bit(byte_to_send, std::uint_fast8_t { UINT8_C(0x10) });
+      send_bit(byte_to_send, std::uint_fast8_t { UINT8_C(0x08) });
+      send_bit(byte_to_send, std::uint_fast8_t { UINT8_C(0x04) });
+      send_bit(byte_to_send, std::uint_fast8_t { UINT8_C(0x02) });
+      send_bit(byte_to_send, std::uint_fast8_t { UINT8_C(0x01) });
 
       return true;
     }
@@ -180,22 +151,44 @@
     static auto send(const std::uint8_t byte_to_send, std::uint8_t& byte_to_recv) -> bool
     {
       byte_to_recv = std::uint8_t { UINT8_C(0) };
-
       return send(byte_to_send);
+    }
+
+    static auto send_n(communication_type::send_iterator_type first,
+                       communication_type::send_iterator_type last,
+                       std::uint8_t& byte_to_recv) -> bool
+    {
+      while(first != last)
+      {
+        static_cast<void>(send(static_cast<std::uint8_t>(*first++), byte_to_recv));
+      }
+
+      return true;
     }
 
     static auto select() -> void
     {
       mcal::helper::disable_all_interrupts<has_disable_enable_interrupts>();
-
-       port_pin_csn_type::set_pin_low();
+      port_pin_csn_type::set_pin_low();
     }
 
     static auto deselect() -> void
     {
-       port_pin_csn_type::set_pin_high();
-
+      port_pin_csn_type::set_pin_high();
       mcal::helper::enable_all_interrupts<has_disable_enable_interrupts>();
+    }
+
+  private:
+    static auto send_bit(const std::uint8_t byte_to_send,
+                         const std::uint_fast8_t bit_mask) -> void
+    {
+      const bool bit_is_high =
+        (static_cast<std::uint_fast8_t>(byte_to_send) & bit_mask) != std::uint_fast8_t { UINT8_C(0) };
+
+      (bit_is_high ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low());
+      port_pin_sck_type::set_pin_high();
+      mcal::helper::nop_maker<nop_count>();
+      port_pin_sck_type::set_pin_low();
     }
   };
 

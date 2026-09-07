@@ -12,15 +12,17 @@
   #include <math/checksums/hash/hash_stream_base.h>
 
   #include <array>
+  #include <algorithm>
   #include <cstddef>
   #include <cstdint>
   #include <limits>
+  #include <tuple>
 
   namespace math { namespace checksums { namespace hash {
 
-  template<const std::uint16_t ResultBitCount,
-           const std::uint16_t MessageBlockBufferSize,
-           const std::uint16_t MessageBlockBitCount>
+  template<std::uint16_t ResultBitCount,
+           std::uint16_t MessageBlockBufferSize,
+           std::uint16_t MessageBlockBitCount>
   class hash_base : public hash_stream_base
   {
   private:
@@ -134,7 +136,7 @@
       perform_algorithm();
     }
 
-    auto get_result(typename result_type::pointer result) -> void
+    auto get_result(typename result_type::pointer result) const -> void
     {
       // Extract the hash result from the message digest state.
       detail::convert_uint32_input_to_uint8_output_reverse
@@ -168,12 +170,6 @@
     context_type        transform_context    { };
 
     hash_base() = default;
-
-    hash_base(const hash_base&) = default;
-    hash_base(hash_base&&) = default;
-
-    auto operator=(const hash_base& other) -> hash_base& = default;
-    auto operator=(hash_base&& other) -> hash_base& = default;
 
   private:
     static constexpr auto message_length_total_width() -> std::uint16_t

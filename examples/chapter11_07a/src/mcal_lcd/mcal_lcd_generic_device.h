@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2024 - 2025
+//  Copyright Christopher Kormanyos 2024 - 2026
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -20,15 +20,11 @@
   class lcd_generic_device : public mcal::lcd::lcd_base
   {
   public:
-    ~lcd_generic_device() override = default;
-
   protected:
     using timer_type = util::timer<std::uint32_t>;
     using tick_type = typename timer_type::tick_type;
 
-    lcd_generic_device() = default;
-
-    static void blocking_delay(const tick_type blocking_delay_value)
+    static auto blocking_delay(const tick_type blocking_delay_value) -> void
     {
       timer_type::blocking_delay(blocking_delay_value);
     }
