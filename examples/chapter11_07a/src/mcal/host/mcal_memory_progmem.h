@@ -23,8 +23,6 @@
 
   #define MCAL_PROGMEM_ADDRESSOF(x) ((mcal_progmem_uintptr_t) (&(x)))
 
-  #define MCAL_PROGMEM_ADDRESSOF(x) ((mcal_progmem_uintptr_t) (&(x)))
-
   static inline uint8_t mcal_memory_progmem_read_byte(const mcal_progmem_uintptr_t src_addr)
   {
     return *(const uint8_t*) src_addr;

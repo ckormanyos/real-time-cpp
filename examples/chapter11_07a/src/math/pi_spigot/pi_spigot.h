@@ -157,7 +157,8 @@
           const auto di =
             ((j == static_cast<std::uint32_t>(UINT8_C(0)))
               ? static_cast<unsigned_large_type>(d_init())
-              : static_cast<unsigned_large_type>(*detail::advance_and_point(my_pi_in, my_index)));
+              : static_cast<unsigned_large_type>(
+                  (*detail::advance_and_point(my_pi_in, my_index)).value()));
 
           val_d =
             static_cast<unsigned_large_type>

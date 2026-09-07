@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2025.
+//  Copyright Christopher Kormanyos 2020 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,8 +16,8 @@
   namespace mcal { namespace memory { namespace sram {
 
   template<typename ValueType>
-  ValueType read(const mcal_sram_uintptr_t src_addr,
-                 const typename std::enable_if<(sizeof(ValueType) == 1U)>::type* = nullptr) noexcept
+  auto read(const mcal_sram_uintptr_t src_addr,
+            const typename std::enable_if<(sizeof(ValueType) == 1U)>::type* = nullptr) noexcept -> ValueType
   {
     auto byte_to_read = std::uint8_t { };
 
@@ -29,8 +29,8 @@
   }
 
   template<typename ValueType>
-  ValueType read(const mcal_sram_uintptr_t src_addr,
-                 const typename std::enable_if<(sizeof(ValueType) != 1U)>::type* = nullptr) noexcept
+  auto read(const mcal_sram_uintptr_t src_addr,
+            const typename std::enable_if<(sizeof(ValueType) != 1U)>::type* = nullptr) noexcept -> ValueType
   {
     using local_value_type = ValueType;
 
@@ -45,9 +45,9 @@
   }
 
   template<typename ValueType>
-  void write(const ValueType src_value,
+  auto write(const ValueType src_value,
              const mcal_sram_uintptr_t dest_addr,
-             const typename std::enable_if<(sizeof(ValueType) == 1U)>::type* = nullptr) noexcept
+             const typename std::enable_if<(sizeof(ValueType) == 1U)>::type* = nullptr) noexcept -> void
   {
     const auto result_write_is_ok = mcal_memory_sram_device().write(dest_addr, &src_value);
 
@@ -55,9 +55,9 @@
   }
 
   template<typename ValueType>
-  void write(const ValueType src_value,
+  auto write(const ValueType src_value,
              const mcal_sram_uintptr_t dest_addr,
-             const typename std::enable_if<(sizeof(ValueType) != 1U)>::type* = nullptr) noexcept
+             const typename std::enable_if<(sizeof(ValueType) != 1U)>::type* = nullptr) noexcept -> void
   {
     using local_value_type = ValueType;
 
@@ -66,6 +66,6 @@
     static_cast<void>(result_write_is_ok);
   }
 
-  } } } // namespace mcal::memory::progmem
+  } } } // namespace mcal::memory::sram
 
 #endif // MCAL_MEMORY_SRAM_ACCESS_2020_04_10_H

@@ -8,17 +8,18 @@
 #ifndef MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H
   #define MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H
 
+  #include <cstdint>
+
   #include <mcal/mcal_helper.h>
   #include <mcal_port.h>
   #include <mcal_port_pin_dummy.h>
-  #include <util/utility/util_attribute.h>
   #include <util/utility/util_communication.h>
 
   namespace mcal { namespace spi {
 
-  template<typename port_pin_sck__type,
+  template<typename port_pin_sck_type,
            typename port_pin_mosi_type,
-           typename port_pin_csn__type,
+           typename port_pin_csn_type,
            typename port_pin_miso_type,
            const std::uint_fast16_t nop_count,
            const bool has_disable_enable_interrupts>
@@ -46,12 +47,12 @@
   public:
     static auto init() -> void
     {
-      port_pin_csn__type::set_pin_high();
-      port_pin_sck__type::set_pin_low();
+       port_pin_csn_type::set_pin_high();
+       port_pin_sck_type::set_pin_low();
       port_pin_mosi_type::set_pin_low();
 
-      port_pin_csn__type::set_direction_output();
-      port_pin_sck__type::set_direction_output();
+       port_pin_csn_type::set_direction_output();
+       port_pin_sck_type::set_direction_output();
       port_pin_mosi_type::set_direction_output();
       port_pin_miso_type::set_direction_input();
     }
@@ -94,12 +95,12 @@
     {
       mcal::helper::disable_all_interrupts<has_disable_enable_interrupts>();
 
-      port_pin_csn__type::set_pin_low();
+       port_pin_csn_type::set_pin_low();
     }
 
     static auto deselect() -> void
     {
-      port_pin_csn__type::set_pin_high();
+       port_pin_csn_type::set_pin_high();
 
       mcal::helper::enable_all_interrupts<has_disable_enable_interrupts>();
     }
@@ -120,7 +121,7 @@
 
       (bit_is_high ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low());
 
-      port_pin_sck__type::set_pin_high();
+       port_pin_sck_type::set_pin_high();
       mcal::helper::nop_maker<nop_count>();
 
       if(port_pin_miso_type::read_input_value())
@@ -132,30 +133,31 @@
           );
       }
 
-      port_pin_sck__type::set_pin_low();
+       port_pin_sck_type::set_pin_low();
     }
   };
 
-  template<typename port_pin_sck__type,
+  template<typename port_pin_sck_type,
            typename port_pin_mosi_type,
-           typename port_pin_csn__type,
+           typename port_pin_csn_type,
+           const std::uint_fast16_t nop_count,
            const bool has_disable_enable_interrupts>
-  class spi_software_port_driver<port_pin_sck__type,
+  class spi_software_port_driver<port_pin_sck_type,
                                  port_pin_mosi_type,
-                                 port_pin_csn__type,
+                                 port_pin_csn_type,
                                  mcal::port::port_pin_dummy,
-                                 static_cast<std::uint_fast16_t>(UINT8_C(0)),
+                                 nop_count,
                                  has_disable_enable_interrupts> : public util::communication_base
   {
   public:
     static auto init() -> void
     {
-      port_pin_csn__type::set_pin_high();
-      port_pin_sck__type::set_pin_low();
+       port_pin_csn_type::set_pin_high();
+       port_pin_sck_type::set_pin_low();
       port_pin_mosi_type::set_pin_low();
 
-      port_pin_csn__type::set_direction_output();
-      port_pin_sck__type::set_direction_output();
+       port_pin_csn_type::set_direction_output();
+       port_pin_sck_type::set_direction_output();
       port_pin_mosi_type::set_direction_output();
     }
 
@@ -163,28 +165,35 @@
     {
       const std::uint_fast8_t by { static_cast<std::uint_fast8_t>(byte_to_send) };
 
-      (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x80))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck__type::set_pin_high(); port_pin_sck__type::set_pin_low();
-      (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x40))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck__type::set_pin_high(); port_pin_sck__type::set_pin_low();
-      (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x20))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck__type::set_pin_high(); port_pin_sck__type::set_pin_low();
-      (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x10))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck__type::set_pin_high(); port_pin_sck__type::set_pin_low();
-      (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x08))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck__type::set_pin_high(); port_pin_sck__type::set_pin_low();
-      (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x04))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck__type::set_pin_high(); port_pin_sck__type::set_pin_low();
-      (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x02))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck__type::set_pin_high(); port_pin_sck__type::set_pin_low();
-      (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x01))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck__type::set_pin_high(); port_pin_sck__type::set_pin_low();
+       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x80))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
+       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x40))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
+       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x20))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
+       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x10))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
+       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x08))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
+       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x04))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
+       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x02))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
+       (static_cast<std::uint_fast8_t>(by & static_cast<std::uint_fast8_t>(UINT8_C(0x01))) != static_cast<std::uint_fast8_t>(UINT8_C(0))) ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low(); port_pin_sck_type::set_pin_high(); mcal::helper::nop_maker<nop_count>(); port_pin_sck_type::set_pin_low();
 
       return true;
+    }
+
+    static auto send(const std::uint8_t byte_to_send, std::uint8_t& byte_to_recv) -> bool
+    {
+      byte_to_recv = std::uint8_t { UINT8_C(0) };
+
+      return send(byte_to_send);
     }
 
     static auto select() -> void
     {
       mcal::helper::disable_all_interrupts<has_disable_enable_interrupts>();
 
-      port_pin_csn__type::set_pin_low();
+       port_pin_csn_type::set_pin_low();
     }
 
     static auto deselect() -> void
     {
-      port_pin_csn__type::set_pin_high();
+       port_pin_csn_type::set_pin_high();
 
       mcal::helper::enable_all_interrupts<has_disable_enable_interrupts>();
     }
