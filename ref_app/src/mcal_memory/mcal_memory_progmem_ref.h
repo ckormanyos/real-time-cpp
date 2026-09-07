@@ -31,7 +31,7 @@
 
     progmem_ref(const progmem_ref&) noexcept = default;
 
-    explicit operator value_type() const noexcept
+    operator value_type() const noexcept
     {
       return value();
     }
