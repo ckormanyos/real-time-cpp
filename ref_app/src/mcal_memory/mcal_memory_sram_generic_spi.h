@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2025.
+//  Copyright Christopher Kormanyos 2020 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,6 +22,11 @@
            typename CommunicationType>
   class mcal_memory_sram_generic_spi : private util::noncopyable
   {
+    static_assert(ByteSizeTotal > static_cast<mcal_sram_uintptr_t>(UINT32_C(0)),
+                  "The SRAM size must be greater than zero.");
+    static_assert(PageGranularity > static_cast<mcal_sram_uintptr_t>(UINT32_C(0)),
+                  "The SRAM page granularity must be greater than zero.");
+
   public:
     using communication_type = CommunicationType;
 
@@ -85,16 +90,22 @@
       }
       else
       {
-        if(single_page(address, count))
+        auto current_address = static_cast<std::uint32_t>
+        (
+          address % static_cast<std::uint32_t>(byte_size_total())
+        );
+
+        for(std::size_t transferred = static_cast<std::size_t>(UINT8_C(0));
+            transferred < count;
+            )
         {
-          const std::uint32_t
-            addr_chan
-            {
-              static_cast<std::uint32_t>
-              (
-                address % static_cast<std::uint32_t>(byte_size_total())
-              )
-            };
+          const auto page_offset = current_address % static_cast<std::uint32_t>(page_granularity());
+          const auto page_remaining = page_granularity() - page_offset;
+          const auto memory_remaining = byte_size_total() - current_address;
+          const auto chunk_limit = (page_remaining < memory_remaining) ? page_remaining : memory_remaining;
+          const auto chunk = (static_cast<std::size_t>(chunk_limit) < (count - transferred))
+                           ? static_cast<std::size_t>(chunk_limit)
+                           : (count - transferred);
 
           using local_cmd_array_type = std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(4))>;
 
@@ -102,9 +113,9 @@
             cmd
             {
               read_cmd,
-              static_cast<std::uint8_t>(addr_chan >> 16U),
-              static_cast<std::uint8_t>(addr_chan >>  8U),
-              static_cast<std::uint8_t>(addr_chan >>  0U)
+              static_cast<std::uint8_t>(current_address >> 16U),
+              static_cast<std::uint8_t>(current_address >>  8U),
+              static_cast<std::uint8_t>(current_address >>  0U)
             };
 
           std::uint8_t dummy_byte_to_read { };
@@ -113,20 +124,22 @@
 
           static_cast<void>(communication_type::send_n(cmd.cbegin(), cmd.cend(), dummy_byte_to_read));
 
-          for(auto i = static_cast<std::size_t>(UINT8_C(0)); i < count; ++i)
+          for(std::size_t i = static_cast<std::size_t>(UINT8_C(0)); i < chunk; ++i)
           {
-            static_cast<void>(communication_type::send(static_cast<std::uint8_t>(UINT8_C(0xFF)), *(p_data_to_read + i)));
+            static_cast<void>(communication_type::send(static_cast<std::uint8_t>(UINT8_C(0xFF)), *(p_data_to_read + transferred + i)));
           }
 
           communication_type::deselect();
-        }
-        else
-        {
-          for(auto i = static_cast<std::size_t>(UINT8_C(0)); i < count; ++i)
-          {
-            const auto addr_i = static_cast<std::uint32_t>(address + static_cast<std::uint32_t>(i));
 
-            static_cast<void>(read(addr_i, p_data_to_read + i));
+          transferred += chunk;
+
+          if(chunk >= static_cast<std::size_t>(memory_remaining))
+          {
+            current_address = static_cast<std::uint32_t>(UINT32_C(0));
+          }
+          else
+          {
+            current_address += static_cast<std::uint32_t>(chunk);
           }
         }
       }
@@ -183,13 +196,22 @@
       }
       else
       {
-        if(single_page(address, count))
+        auto current_address = static_cast<std::uint32_t>
+        (
+          address % static_cast<std::uint32_t>(byte_size_total())
+        );
+
+        for(std::size_t transferred = static_cast<std::size_t>(UINT8_C(0));
+            transferred < count;
+            )
         {
-          const auto addr_chan =
-            static_cast<std::uint32_t>
-            (
-              address % static_cast<std::uint32_t>(byte_size_total())
-            );
+          const auto page_offset = current_address % static_cast<std::uint32_t>(page_granularity());
+          const auto page_remaining = page_granularity() - page_offset;
+          const auto memory_remaining = byte_size_total() - current_address;
+          const auto chunk_limit = (page_remaining < memory_remaining) ? page_remaining : memory_remaining;
+          const auto chunk = (static_cast<std::size_t>(chunk_limit) < (count - transferred))
+                           ? static_cast<std::size_t>(chunk_limit)
+                           : (count - transferred);
 
           using local_cmd_array_type = std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(4))>;
 
@@ -197,9 +219,9 @@
             local_cmd_array_type
             {
               write_cmd,
-              static_cast<std::uint8_t>(addr_chan >> 16U),
-              static_cast<std::uint8_t>(addr_chan >>  8U),
-              static_cast<std::uint8_t>(addr_chan >>  0U)
+              static_cast<std::uint8_t>(current_address >> 16U),
+              static_cast<std::uint8_t>(current_address >>  8U),
+              static_cast<std::uint8_t>(current_address >>  0U)
             };
 
           std::uint8_t dummy_byte_to_read { };
@@ -208,20 +230,22 @@
 
           static_cast<void>(communication_type::send_n(cmd.cbegin(), cmd.cend(), dummy_byte_to_read));
 
-          for(auto i = static_cast<std::size_t>(UINT8_C(0)); i < count; ++i)
+          for(std::size_t i = static_cast<std::size_t>(UINT8_C(0)); i < chunk; ++i)
           {
-            static_cast<void>(communication_type::send(*(p_data_to_write + i), dummy_byte_to_read));
+            static_cast<void>(communication_type::send(*(p_data_to_write + transferred + i), dummy_byte_to_read));
           }
 
           communication_type::deselect();
-        }
-        else
-        {
-          for(auto i = static_cast<std::size_t>(UINT8_C(0)); i < count; ++i)
-          {
-            const auto addr_i = static_cast<std::uint32_t>(address + static_cast<std::uint32_t>(i));
 
-            static_cast<void>(write(addr_i, p_data_to_write + i));
+          transferred += chunk;
+
+          if(chunk >= static_cast<std::size_t>(memory_remaining))
+          {
+            current_address = static_cast<std::uint32_t>(UINT32_C(0));
+          }
+          else
+          {
+            current_address += static_cast<std::uint32_t>(chunk);
           }
         }
       }
@@ -234,22 +258,6 @@
 
     static constexpr auto page_granularity() noexcept -> mcal_sram_uintptr_t { return static_cast<mcal_sram_uintptr_t>(PageGranularity); }
 
-    static constexpr auto single_page(std::uint32_t address, std::size_t count) noexcept -> bool
-    {
-      const auto current_page = static_cast<std::uint32_t>(address / static_cast<std::uint32_t>(page_granularity()));
-
-      const auto last_page =
-        static_cast<std::uint32_t>
-        (
-            static_cast<std::uint32_t>
-            (
-              address + static_cast<std::uint32_t>(count - static_cast<std::size_t>(UINT8_C(1)))
-            )
-          / static_cast<std::uint32_t>(page_granularity())
-        );
-
-      return (last_page == current_page);
-    }
   };
 
   } } } // namespace mcal::memory::sram

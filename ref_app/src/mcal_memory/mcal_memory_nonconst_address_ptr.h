@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2025.
+//  Copyright Christopher Kormanyos 2020 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -27,7 +27,7 @@
     using difference_type   = typename pointer::difference_type;
     using iterator_category = std::random_access_iterator_tag;
 
-    static constexpr size_type static_size = sizeof(value_type);
+    static constexpr size_type static_size = 1U;
 
     constexpr nonconst_address_ptr() noexcept = default;
 
@@ -37,107 +37,85 @@
     constexpr nonconst_address_ptr(pointer ptr) noexcept
       : my_ptr(ptr) { }
 
-    nonconst_address_ptr(const nonconst_address_ptr& other) noexcept
-      : my_ptr(other.my_ptr) { }
-
-    nonconst_address_ptr(nonconst_address_ptr&& other) noexcept
-      : my_ptr(other.my_ptr) { }
-
-    ~nonconst_address_ptr() = default;
-
-    nonconst_address_ptr& operator=(const nonconst_address_ptr& other) noexcept
-    {
-      my_ptr = other.my_ptr;
-
-      return *this;
-    }
-
-    nonconst_address_ptr& operator=(nonconst_address_ptr&& other) noexcept
-    {
-      my_ptr = other.my_ptr;
-
-      return *this;
-    }
-
-    reference operator*() noexcept
+    auto operator*() noexcept -> reference
     {
       reference value = *my_ptr;
 
       return value;
     }
 
-    const_reference operator*() const noexcept
+    auto operator*() const noexcept -> const_reference
     {
       const_reference value = *my_ptr;
 
       return value;
     }
 
-    reference operator[](const size_type i) noexcept
+    auto operator[](const difference_type i) noexcept -> reference
     {
-      reference value = *(my_ptr + difference_type(i * static_size));
+      reference value = *(my_ptr + (i * difference_type(static_size)));
 
       return value;
     }
 
-    const_reference operator[](const size_type i) const noexcept
+    auto operator[](const difference_type i) const noexcept -> const_reference
     {
-      const_reference value = *(my_ptr + difference_type(i * static_size));
+      const_reference value = *(my_ptr + (i * difference_type(static_size)));
 
       return value;
     }
 
-    nonconst_address_ptr& operator++() noexcept { my_ptr += static_size; return *this; }
-    nonconst_address_ptr& operator--() noexcept { my_ptr -= static_size; return *this; }
+    auto operator++() noexcept -> nonconst_address_ptr& { my_ptr += static_size; return *this; }
+    auto operator--() noexcept -> nonconst_address_ptr& { my_ptr -= static_size; return *this; }
 
     nonconst_address_ptr operator++(int) noexcept { const nonconst_address_ptr tmp = *this; my_ptr += static_size; return tmp; }
     nonconst_address_ptr operator--(int) noexcept { const nonconst_address_ptr tmp = *this; my_ptr -= static_size; return tmp; }
 
-    nonconst_address_ptr operator+(difference_type n) const noexcept
+    auto operator+(difference_type n) const noexcept -> nonconst_address_ptr
     {
-      const pointer ptr = ((n < 0) ? my_ptr - difference_type(size_type(-n) * static_size)
+      const pointer ptr = ((n < 0) ? my_ptr - difference_type((size_type(0U) - size_type(n)) * static_size)
                                    : my_ptr + difference_type(size_type(n)  * static_size));
 
       return nonconst_address_ptr(ptr);
     }
 
-    nonconst_address_ptr operator-(difference_type n) const noexcept
+    auto operator-(difference_type n) const noexcept -> nonconst_address_ptr
     {
-      const pointer ptr = ((n < 0) ? my_ptr + difference_type(size_type(-n) * static_size)
+      const pointer ptr = ((n < 0) ? my_ptr + difference_type((size_type(0U) - size_type(n)) * static_size)
                                    : my_ptr - difference_type(size_type(n)  * static_size));
 
       return nonconst_address_ptr(ptr);
     }
 
-    nonconst_address_ptr& operator+=(difference_type n) noexcept
+    auto operator+=(difference_type n) noexcept -> nonconst_address_ptr&
     {
-      my_ptr = ((n < 0) ? my_ptr - difference_type(size_type(-n) * static_size)
+      my_ptr = ((n < 0) ? my_ptr - difference_type((size_type(0U) - size_type(n)) * static_size)
                         : my_ptr + difference_type(size_type(n)  * static_size));
 
       return *this;
     }
 
-    nonconst_address_ptr& operator-=(difference_type n) noexcept
+    auto operator-=(difference_type n) noexcept -> nonconst_address_ptr&
     {
-      my_ptr = ((n < 0) ? my_ptr + difference_type(size_type(-n) * static_size)
+      my_ptr = ((n < 0) ? my_ptr + difference_type((size_type(0U) - size_type(n)) * static_size)
                         : my_ptr - difference_type(size_type(n)  * static_size));
 
       return *this;
     }
 
   private:
-    pointer my_ptr;
+    pointer my_ptr{};
 
-    friend inline difference_type operator-(const nonconst_address_ptr& x,
-                                            const nonconst_address_ptr& y) noexcept
+    friend inline auto operator-(const nonconst_address_ptr& x,
+                                 const nonconst_address_ptr& y) noexcept -> difference_type
     {
-      return (x.my_ptr - y.my_ptr) / static_size;
+      return x.my_ptr - y.my_ptr;
     }
 
-    friend inline nonconst_address_ptr operator+(difference_type n,
-                                                 const nonconst_address_ptr& x) noexcept
+    friend inline auto operator+(difference_type n,
+                                 const nonconst_address_ptr& x) noexcept -> nonconst_address_ptr
     {
-      return nonconst_address_ptr(x.my_ptr + (n * static_size));
+      return nonconst_address_ptr(x.my_ptr + n);
     }
 
     friend inline bool operator< (const nonconst_address_ptr& x, const nonconst_address_ptr& y) noexcept { return (x.my_ptr <  y.my_ptr); }
@@ -152,7 +130,7 @@
 
   namespace std
   {
-    // Provide a template specialization of iterator_trats
+    // Provide a template specialization of iterator_traits
     // for mcal::memory::nonconst_address_ptr<>.
 
     template<typename PointerType>
