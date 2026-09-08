@@ -8,8 +8,8 @@
 #ifndef MCAL_LED_CONSOLE_2020_04_23_H
   #define MCAL_LED_CONSOLE_2020_04_23_H
 
-  #include <mcal_led/mcal_led_boolean_state_base.h>
   #include <mcal_cpu.h>
+  #include <mcal_led/mcal_led_boolean_state_base.h>
 
   #include <atomic>
   #include <cstdint>
