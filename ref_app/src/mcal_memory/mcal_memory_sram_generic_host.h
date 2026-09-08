@@ -14,7 +14,7 @@
 
   namespace mcal { namespace memory { namespace sram {
 
-  template<const mcal_sram_uintptr_t ByteSizeTotal>
+  template<mcal_sram_uintptr_t ByteSizeTotal>
   class mcal_memory_sram_generic_host
   {
     static_assert(ByteSizeTotal > static_cast<mcal_sram_uintptr_t>(UINT32_C(0)),

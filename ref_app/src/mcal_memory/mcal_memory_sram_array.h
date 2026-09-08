@@ -21,8 +21,8 @@
   namespace mcal { namespace memory { namespace sram {
 
   template<typename T,
-           const mcal_sram_uintptr_t N,
-           const mcal_sram_uintptr_t Address>
+           mcal_sram_uintptr_t N,
+           mcal_sram_uintptr_t Address>
   class array
   {
   private:
@@ -43,7 +43,7 @@
       sram_ptr<T, mcal_sram_uintptr_t, mcal_sram_ptrdiff_t>,
       sram_const_ref<T, mcal_sram_uintptr_t, mcal_sram_ptrdiff_t>>;
     using reference              = typename iterator::reference;
-    using const_reference        = const reference;
+    using const_reference        = sram_const_ref<T, mcal_sram_uintptr_t, mcal_sram_ptrdiff_t>;
 
     constexpr array() noexcept = default;
 
@@ -150,9 +150,9 @@
   };
 
   template<typename T,
-           const mcal_sram_uintptr_t N,
-           const mcal_sram_uintptr_t Address>
-  auto operator==(const array<T, N, Address>& left, const array<T, N, Address>& right) -> bool
+           mcal_sram_uintptr_t N,
+           mcal_sram_uintptr_t Address>
+  auto operator==(const array<T, N, Address>& left, const array<T, N, Address>& right) noexcept -> bool
   {
     return std::equal(left.cbegin(), left.cend(), right.cbegin(),
                       [](const auto& x, const auto& y)
@@ -162,9 +162,9 @@
   }
 
   template<typename T,
-           const mcal_sram_uintptr_t N,
-           const mcal_sram_uintptr_t Address>
-  auto operator<(const array<T, N, Address>& left, const array<T, N, Address>& right) -> bool
+           mcal_sram_uintptr_t N,
+           mcal_sram_uintptr_t Address>
+  auto operator<(const array<T, N, Address>& left, const array<T, N, Address>& right) noexcept -> bool
   {
     return std::lexicographical_compare(left.cbegin(),
                                         left.cend(),
@@ -177,33 +177,33 @@
   }
 
   template<typename T,
-           const mcal_sram_uintptr_t N,
-           const mcal_sram_uintptr_t Address>
-  auto operator!=(const array<T, N, Address>& left, const array<T, N, Address>& right) -> bool
+           mcal_sram_uintptr_t N,
+           mcal_sram_uintptr_t Address>
+  auto operator!=(const array<T, N, Address>& left, const array<T, N, Address>& right) noexcept -> bool
   {
     return (!(left == right));
   }
 
   template<typename T,
-           const mcal_sram_uintptr_t N,
-           const mcal_sram_uintptr_t Address>
-  auto operator>(const array<T, N, Address>& left, const array<T, N, Address>& right) -> bool
+           mcal_sram_uintptr_t N,
+           mcal_sram_uintptr_t Address>
+  auto operator>(const array<T, N, Address>& left, const array<T, N, Address>& right) noexcept -> bool
   {
     return (right < left);
   }
 
   template<typename T,
-           const mcal_sram_uintptr_t N,
-           const mcal_sram_uintptr_t Address>
-  auto operator>=(const array<T, N, Address>& left, const array<T, N, Address>& right) -> bool
+           mcal_sram_uintptr_t N,
+           mcal_sram_uintptr_t Address>
+  auto operator>=(const array<T, N, Address>& left, const array<T, N, Address>& right) noexcept -> bool
   {
     return (!(left < right));
   }
 
   template<typename T,
-           const mcal_sram_uintptr_t N,
-           const mcal_sram_uintptr_t Address>
-  auto operator<=(const array<T, N, Address>& left, const array<T, N, Address>& right) -> bool
+           mcal_sram_uintptr_t N,
+           mcal_sram_uintptr_t Address>
+  auto operator<=(const array<T, N, Address>& left, const array<T, N, Address>& right) noexcept -> bool
   {
     return (!(right < left));
   }
@@ -218,5 +218,8 @@
     : public std::integral_constant<mcal_sram_uintptr_t, N> { };
 
   } } } // namespace mcal::memory::sram
+
+  template<typename T, mcal_sram_uintptr_t N, mcal_sram_uintptr_t Address>
+  constexpr mcal_sram_uintptr_t mcal::memory::sram::array<T, N, Address>::static_size;
 
 #endif // MCAL_MEMORY_SRAM_ARRAY_2020_04_26_H

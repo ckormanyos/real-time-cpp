@@ -533,9 +533,6 @@
     <ClInclude Include="src\mcal\host\mcal_dev.h">
       <Filter>src\mcal\host</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
@@ -552,6 +549,9 @@
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_random_access_iterator_operations.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_access.h">
@@ -576,6 +576,9 @@
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_types.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
   </ItemGroup>

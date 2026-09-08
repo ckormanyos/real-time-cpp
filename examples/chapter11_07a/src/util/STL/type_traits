@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2022.
+//  Copyright Christopher Kormanyos 2013 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -262,7 +262,7 @@
     struct add_rvalue_reference : decltype(traits_helper::try_add_rvalue_reference<T>(0)) { };
 
     template<typename T>
-    typename std::add_rvalue_reference<T>::type declval();
+    typename add_rvalue_reference<T>::type declval() noexcept;
 
     template <typename T>
     struct is_class : decltype(traits_helper::test<T>(nullptr)) { };

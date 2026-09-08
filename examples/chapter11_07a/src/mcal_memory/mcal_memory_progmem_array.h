@@ -21,7 +21,7 @@
   namespace mcal { namespace memory { namespace progmem {
 
   template<typename T,
-           const mcal_progmem_uintptr_t N>
+           mcal_progmem_uintptr_t N>
   class array
   {
   private:
@@ -41,14 +41,14 @@
     const value_type elems[storage_size];
 
     auto begin() const noexcept -> const_iterator { return const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[0U])); }
-    auto end  () const noexcept -> const_iterator { return const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[static_size])); }
+    auto end  () const noexcept -> const_iterator { return begin() + difference_type(static_size); }
 
     auto cbegin() const noexcept -> const_iterator { return begin(); }
     auto cend  () const noexcept -> const_iterator { return end(); }
 
     auto rbegin() const noexcept -> const_reverse_iterator
     {
-      return const_reverse_iterator(const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[static_size])));
+      return const_reverse_iterator(end());
     }
 
     auto rend() const noexcept -> const_reverse_iterator
@@ -89,8 +89,8 @@
     }
   };
 
-  template<typename T, const mcal_progmem_uintptr_t N>
-  auto operator==(const array<T, N>& left, const array<T, N>& right) -> bool
+  template<typename T, mcal_progmem_uintptr_t N>
+  auto operator==(const array<T, N>& left, const array<T, N>& right) noexcept -> bool
   {
     return std::equal(left.cbegin(), left.cend(), right.cbegin(),
                       [](const auto& x, const auto& y)
@@ -100,7 +100,7 @@
   }
 
   template<typename T, mcal_progmem_uintptr_t N>
-  auto operator<(const array<T, N>& left, const array<T, N>& right) -> bool
+  auto operator<(const array<T, N>& left, const array<T, N>& right) noexcept -> bool
   {
     return std::lexicographical_compare(left.cbegin(),
                                         left.cend(),
@@ -113,25 +113,25 @@
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  auto operator!=(const array<T, N>& left, const array<T, N>& right) -> bool
+  auto operator!=(const array<T, N>& left, const array<T, N>& right) noexcept -> bool
   {
     return (!(left == right));
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  auto operator>(const array<T, N>& left, const array<T, N>& right) -> bool
+  auto operator>(const array<T, N>& left, const array<T, N>& right) noexcept -> bool
   {
     return (right < left);
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  auto operator>=(const array<T, N>& left, const array<T, N>& right) -> bool
+  auto operator>=(const array<T, N>& left, const array<T, N>& right) noexcept -> bool
   {
     return (!(left < right));
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  auto operator<=(const array<T, N>& left, const array<T, N>& right) -> bool
+  auto operator<=(const array<T, N>& left, const array<T, N>& right) noexcept -> bool
   {
     return (!(right < left));
   }
@@ -143,12 +143,12 @@
   struct tuple_size<mcal::memory::progmem::array<T, N>>
     : public std::integral_constant<mcal_progmem_uintptr_t, N> { };
 
-  template<const mcal_progmem_uintptr_t N, typename T>
+  template<mcal_progmem_uintptr_t N, typename T>
   struct tuple_element;
 
-  template<const mcal_progmem_uintptr_t I,
+  template<mcal_progmem_uintptr_t I,
            typename T,
-           const mcal_progmem_uintptr_t N>
+           mcal_progmem_uintptr_t N>
   struct tuple_element<I, mcal::memory::progmem::array<T, N>>
   {
     static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
@@ -157,5 +157,11 @@
   };
 
   } } } // namespace mcal::memory::progmem
+
+  template<typename T, mcal_progmem_uintptr_t N>
+  constexpr mcal_progmem_uintptr_t mcal::memory::progmem::array<T, N>::static_size;
+
+  template<typename T, mcal_progmem_uintptr_t N>
+  constexpr mcal_progmem_uintptr_t mcal::memory::progmem::array<T, N>::storage_size;
 
 #endif // MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H

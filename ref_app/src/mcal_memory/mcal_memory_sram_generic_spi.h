@@ -17,8 +17,8 @@
 
   namespace mcal { namespace memory { namespace sram {
 
-  template<const mcal_sram_uintptr_t ByteSizeTotal,
-           const mcal_sram_uintptr_t PageGranularity,
+  template<mcal_sram_uintptr_t ByteSizeTotal,
+           mcal_sram_uintptr_t PageGranularity,
            typename CommunicationType>
   class mcal_memory_sram_generic_spi : private util::noncopyable
   {
