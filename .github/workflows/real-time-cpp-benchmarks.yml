@@ -40,7 +40,7 @@ jobs:
         working-directory: ./
       - name: clone-boost-decimal
         run: |
-          git clone -b develop --depth 1 https://github.com/boost/decimal.git ../boost-decimal-root
+          git clone -b develop --depth 1 https://github.com/boostorg/decimal.git ../boost-decimal-root
       - name: clone-cppalliance-crypt
         run: |
           git clone -b develop --depth 1 https://github.com/cppalliance/crypt.git ../cppalliance-crypt-root
@@ -72,7 +72,7 @@ jobs:
         working-directory: ./
       - name: clone-boost-decimal
         run: |
-          git clone -b develop --depth 1 https://github.com/boost/decimal.git ../boost-decimal-root
+          git clone -b develop --depth 1 https://github.com/boostorg/decimal.git ../boost-decimal-root
         working-directory: ./
       - name: benchmark_apple-clang
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
@@ -190,7 +190,7 @@ jobs:
         working-directory: ./
       - name: clone-boost-decimal
         run: |
-          git clone -b develop --depth 1 https://github.com/boost/decimal.git ../boost-decimal-root
+          git clone -b develop --depth 1 https://github.com/boostorg/decimal.git ../boost-decimal-root
       - name: clone-cppalliance-crypt
         run: |
           git clone -b develop --depth 1 https://github.com/cppalliance/crypt.git ../cppalliance-crypt-root
