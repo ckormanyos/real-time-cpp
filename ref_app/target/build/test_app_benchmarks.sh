@@ -47,7 +47,7 @@ $GCC -std=$STD -Wall -Werror -O2 -m64 -I./src/mcal/host -I./src                 
 if [[ "$GCC" == "g++" ]]; then
 $GCC -std=$STD -Wall -Werror -O2 -m64 -I./src/mcal/host -I./src                                                             -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_ECC_GENERIC_ECC            -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_ecc_generic_ecc.cpp            -o ./bin/app_benchmark_ecc_generic_ecc.exe
 fi
-$GCC -std=$STD -Wall         -O2 -m64 -I./src/mcal/host -I./src -I../../cppalliance-decimal-root/include -I../../boost-root -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_NON_STD_DECIMAL            -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_non_std_decimal.cpp            -o ./bin/app_benchmark_non_std_decimal.exe
+$GCC -std=$STD -Wall         -O2 -m64 -I./src/mcal/host -I./src -I../../boost-decimal-root/include -I../../boost-root       -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_NON_STD_DECIMAL            -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_non_std_decimal.cpp            -o ./bin/app_benchmark_non_std_decimal.exe
 $GCC -std=$STD -Wall         -O2 -m64 -I./src/mcal/host -I./src -I../../cppalliance-crypt-root/include   -I../../boost-root -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_BOOST_CRYPT_HASHER         -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_boost_crypt_hasher.cpp         -o ./bin/app_benchmark_boost_crypt_hasher.exe
 
 echo check existences of exe-files

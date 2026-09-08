@@ -9,12 +9,12 @@
   #define PI_CALC_CFG_2023_05_09_H
 
   // In this embedded software adaptation of this work,
-  // we limit the decimal digit count to about 100k or fewer.
+  // we limit the decimal digit count to 100k or fewer.
 
-  #define PI_CRUNCH_METAL_PI_SPIGOT_USE_100_DIGITS      100
-  #define PI_CRUNCH_METAL_PI_SPIGOT_USE_1K_DIGITS      1000
-  #define PI_CRUNCH_METAL_PI_SPIGOT_USE_10K_DIGITS    10000
-  #define PI_CRUNCH_METAL_PI_SPIGOT_USE_100K_DIGITS  100000
+  #define PI_CRUNCH_METAL_PI_SPIGOT_USE_100_DIGITS       100
+  #define PI_CRUNCH_METAL_PI_SPIGOT_USE_1K_DIGITS      1'000
+  #define PI_CRUNCH_METAL_PI_SPIGOT_USE_10K_DIGITS    10'000
+  #define PI_CRUNCH_METAL_PI_SPIGOT_USE_100K_DIGITS  100'000
 
   #if !defined(PI_CRUNCH_METAL_PI_SPIGOT_DIGITS)
   #define PI_CRUNCH_METAL_PI_SPIGOT_DIGITS  PI_CRUNCH_METAL_PI_SPIGOT_USE_1K_DIGITS

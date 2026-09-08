@@ -363,10 +363,10 @@
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_array.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_host.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_spi.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_iterator.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_ref.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_types.h" />
-    <ClInclude Include="src\mcal_memory\mcal_memory_sram_iterator.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h" />
     <ClInclude Include="src\os\FreeRTOS\Source\include\atomic.h" />
