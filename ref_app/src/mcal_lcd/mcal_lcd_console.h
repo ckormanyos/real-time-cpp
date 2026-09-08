@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2025.
+//  Copyright Christopher Kormanyos 2020 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,10 +22,6 @@
   class lcd_console : public mcal::lcd::lcd_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   public:
-    lcd_console() = default; // LCOV_EXCL_LINE
-
-    ~lcd_console() override = default;
-
     auto write(const char* pstr,
                const std::size_t length, // NOLINT(bugprone-easily-swappable-parameters)
                const std::uint_fast8_t line_index) -> bool override
@@ -50,7 +46,6 @@
       return write_is_ok;
     }
 
-    [[nodiscard]]
     auto init() -> bool override { return true; } // LCOV_EXCL_LINE
   };
 

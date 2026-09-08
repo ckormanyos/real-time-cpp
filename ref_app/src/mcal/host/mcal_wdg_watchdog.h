@@ -8,6 +8,7 @@
 #ifndef MCAL_WDG_WATCHDOG_2013_12_11_H
   #define MCAL_WDG_WATCHDOG_2013_12_11_H
 
+  #include <mcal_cpu.h>
   #include <mcal_wdg.h>
 
   #include <util/utility/util_noncopyable.h>
@@ -75,7 +76,7 @@
 
         auto get_watchdog_timeout() const -> bool
         {
-          while(my_lock.test_and_set()) { ; }
+          while(my_lock.test_and_set()) { mcal::cpu::nop(); }
           const auto timeout_result = my_timer.timeout();
           my_lock.clear();
 
@@ -84,7 +85,7 @@
 
         auto reset_watchdog_timer() -> void
         {
-          while(my_lock.test_and_set()) { ; }
+          while(my_lock.test_and_set()) { mcal::cpu::nop(); }
           my_timer.start_relative(my_period);
           my_lock.clear();
         }

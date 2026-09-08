@@ -248,27 +248,6 @@
     <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h">
       <Filter>src\mcal_spi</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_cpu.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
@@ -545,13 +524,49 @@
     <ClInclude Include="src\mcal\host\mcal_benchmark.h">
       <Filter>src\mcal\host</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_memory_sram.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_dev.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_dev.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_access.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_array.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_host.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_spi.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_iterator.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_ptr.h">
@@ -562,21 +577,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_sram_types.h">
       <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_sram_iterator.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\host\mcal_memory_sram.h">
-      <Filter>src\mcal\host</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_sram_generic_host.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_dev.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\host\mcal_dev.h">
-      <Filter>src\mcal\host</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

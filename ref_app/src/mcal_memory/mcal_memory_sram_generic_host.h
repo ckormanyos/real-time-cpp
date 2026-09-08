@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2025.
+//  Copyright Christopher Kormanyos 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,6 +17,9 @@
   template<const mcal_sram_uintptr_t ByteSizeTotal>
   class mcal_memory_sram_generic_host
   {
+    static_assert(ByteSizeTotal > static_cast<mcal_sram_uintptr_t>(UINT32_C(0)),
+                  "The host SRAM size must be greater than zero.");
+
   public:
     mcal_memory_sram_generic_host() : my_buffer(static_cast<std::size_t>(byte_size_total())) { }
 
@@ -85,7 +88,7 @@
     }
 
   private:
-    std::vector<std::uint8_t> my_buffer { static_cast<std::size_t>(byte_size_total()) };
+    std::vector<std::uint8_t> my_buffer = std::vector<std::uint8_t>(static_cast<std::size_t>(byte_size_total()));
 
     static constexpr auto byte_size_total() noexcept -> mcal_sram_uintptr_t { return static_cast<mcal_sram_uintptr_t>(ByteSizeTotal); }
   };

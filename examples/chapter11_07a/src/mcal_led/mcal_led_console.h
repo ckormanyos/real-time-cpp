@@ -8,6 +8,7 @@
 #ifndef MCAL_LED_CONSOLE_2020_04_23_H
   #define MCAL_LED_CONSOLE_2020_04_23_H
 
+  #include <mcal_cpu.h>
   #include <mcal_led/mcal_led_boolean_state_base.h>
 
   #include <atomic>
@@ -39,11 +40,11 @@
 
       auto& console_sync_instance { console_sync() };
 
-      while(console_sync_instance.test_and_set(std::memory_order_acquire)) { }
+      while(console_sync_instance.test_and_set()) { mcal::cpu::nop(); }
 
       std::cout << strm.str() << std::endl;
 
-      console_sync_instance.clear(std::memory_order_release);
+      console_sync_instance.clear();
     }
 
   private:

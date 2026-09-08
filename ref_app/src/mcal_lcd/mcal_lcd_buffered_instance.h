@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2024 - 2025.
+//  Copyright Christopher Kormanyos 2024 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -43,10 +43,8 @@
 
     lcd_buffered_instance() = delete;
 
-    ~lcd_buffered_instance() override = default;
-
-    static constexpr auto width () noexcept -> std::size_t { return std::tuple_size<row_array_type>::value; }
-    static constexpr auto height() noexcept -> std::size_t { return std::tuple_size<row_col_array_buffer_type>::value; }
+    static constexpr auto width() noexcept -> std::size_t { return WidthInCols; }
+    static constexpr auto height() noexcept -> std::size_t { return HeightInRows; }
 
     auto init() -> bool override { return my_backend_display.init(); }
 
@@ -64,7 +62,7 @@
 
         candidate_row.fill(' ');
 
-        const auto length_to_copy = (std::min)(static_cast<std::ptrdiff_t>(length), static_cast<std::ptrdiff_t>(width()));
+        const auto length_to_copy = (std::min)(length, width());
 
         std::copy(pstr, pstr + length_to_copy, candidate_row.begin());
 

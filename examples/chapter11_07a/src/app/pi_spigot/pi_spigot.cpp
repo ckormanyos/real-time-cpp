@@ -9,8 +9,8 @@
 ///////////////////////////////////////////////////////////////////
 
 // This program can be used to compute many thousands
-// of decimal digits of digits of pi. It uses a so-called
-// "spigot" algorithm having quadratic complexity.
+// of decimal digits of pi. It uses a so-called "spigot"
+// algorithm. This calculation has quadratic complexity.
 
 #include <pi_calc_cfg.h>
 

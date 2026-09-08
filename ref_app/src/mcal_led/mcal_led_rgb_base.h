@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2025.
+//  Copyright Christopher Kormanyos 2017 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,9 +17,7 @@
   class led_rgb_base : public mcal::led::led_boolean_state_base
   {
   public:
-    ~led_rgb_base() override = default;
-
-    auto toggle() noexcept -> void override
+    auto toggle() -> void override
     {
       using base_class_type = mcal::led::led_boolean_state_base;
 
@@ -50,7 +48,7 @@
       );
     }
 
-    constexpr auto get_color() const noexcept -> std::uint32_t
+    constexpr auto get_color() const -> std::uint32_t
     {
       return
         static_cast<std::uint32_t>
@@ -61,19 +59,20 @@
         );
     }
 
-    constexpr auto get_hue_r() const noexcept -> std::uint_fast8_t { return my_hue_r; }
-    constexpr auto get_hue_g() const noexcept -> std::uint_fast8_t { return my_hue_g; }
-    constexpr auto get_hue_b() const noexcept -> std::uint_fast8_t { return my_hue_b; }
+    constexpr auto get_hue_r() const -> std::uint_fast8_t { return my_hue_r; }
+    constexpr auto get_hue_g() const -> std::uint_fast8_t { return my_hue_g; }
+    constexpr auto get_hue_b() const -> std::uint_fast8_t { return my_hue_b; }
 
   protected:
     constexpr led_rgb_base() = default;
+
+  protected:
+    virtual auto apply_color() -> void = 0;
 
   private:
     std::uint_fast8_t my_hue_r { };
     std::uint_fast8_t my_hue_g { };
     std::uint_fast8_t my_hue_b { };
-
-    virtual void apply_color() = 0;
 
     auto my_on () -> void
     {

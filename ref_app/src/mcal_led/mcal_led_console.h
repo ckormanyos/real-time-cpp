@@ -8,6 +8,7 @@
 #ifndef MCAL_LED_CONSOLE_2020_04_23_H
   #define MCAL_LED_CONSOLE_2020_04_23_H
 
+  #include <mcal_cpu.h>
   #include <mcal_led/mcal_led_boolean_state_base.h>
 
   #include <atomic>
@@ -23,8 +24,6 @@
     explicit constexpr led_console(const std::uint_fast8_t idx = std::uint_fast8_t { UINT8_C(0) }) noexcept
       : my_index(idx) { }
 
-    ~led_console() override = default;
-
     auto toggle() -> void override
     {
       using base_class_type = mcal::led::led_boolean_state_base;
@@ -39,11 +38,13 @@
            << " is "
            << (base_class_type::state_is_on() ? "on" : "off");
 
-      auto& consol_sync_atomic_flag { console_sync() };
+      auto& console_sync_instance { console_sync() };
 
-      while(consol_sync_atomic_flag.test_and_set()) { }
+      while(console_sync_instance.test_and_set()) { mcal::cpu::nop(); }
+
       std::cout << strm.str() << std::endl;
-      consol_sync_atomic_flag.clear();
+
+      console_sync_instance.clear();
     }
 
   private:

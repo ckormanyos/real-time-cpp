@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2025.
+//  Copyright Christopher Kormanyos 2020 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -36,11 +36,7 @@
   class lcd_generic_st7066 final : public mcal::lcd::lcd_generic_device
   {
   public:
-    lcd_generic_st7066() = default;
-
-    ~lcd_generic_st7066() override = default;
-
-    auto init(void) -> bool override
+    auto init() -> bool override
     {
       port_pin_rs__type::set_pin_low();
       port_pin_rw__type::set_pin_low();
@@ -101,7 +97,7 @@
     }
 
   private:
-    auto write(const std::uint8_t i) -> void
+    auto write(const std::uint8_t i) const -> void
     {
       P1_set(i);                                        // P1 = i;   // Put data on the output Port
       port_pin_rs__type::set_pin_high();                // D_I =1;   // D/I=HIGH : send data
@@ -111,7 +107,7 @@
       port_pin_e___type::set_pin_low();                 // E = 0;    // Clock enable: falling edge
     }
 
-    auto command(std::uint8_t i) -> void
+    auto command(const std::uint8_t i) const -> void
     {
       P1_set(i);                                        // P1 = i;   // Put data on output Port
       port_pin_rs__type::set_pin_low();                 // D_I =0;   // D/I=LOW : send instruction
@@ -122,7 +118,7 @@
       blocking_delay(timer_type::microseconds(40U));                 // Command execution delay
     }
 
-    auto P1_set(const std::uint8_t c) -> void
+    auto P1_set(const std::uint8_t c) const -> void
     {
       (static_cast<std::uint_fast8_t>(c & UINT8_C(0x01)) != UINT8_C(0)) ? port_pin_db0_type::set_pin_high() : port_pin_db0_type::set_pin_low();
       (static_cast<std::uint_fast8_t>(c & UINT8_C(0x02)) != UINT8_C(0)) ? port_pin_db1_type::set_pin_high() : port_pin_db1_type::set_pin_low();
