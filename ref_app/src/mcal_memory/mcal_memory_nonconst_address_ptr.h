@@ -73,38 +73,43 @@
 
     auto operator+(difference_type n) const noexcept -> nonconst_address_ptr
     {
-      const pointer ptr = ((n < 0) ? my_ptr - difference_type((size_type(0U) - size_type(n)) * static_size)
-                                   : my_ptr + difference_type(size_type(n)  * static_size));
-
-      return nonconst_address_ptr(ptr);
+      return nonconst_address_ptr(offset_pointer(my_ptr, n));
     }
 
     auto operator-(difference_type n) const noexcept -> nonconst_address_ptr
     {
-      const pointer ptr = ((n < 0) ? my_ptr + difference_type((size_type(0U) - size_type(n)) * static_size)
-                                   : my_ptr - difference_type(size_type(n)  * static_size));
-
-      return nonconst_address_ptr(ptr);
+      return nonconst_address_ptr(offset_pointer(my_ptr, n, true));
     }
 
     auto operator+=(difference_type n) noexcept -> nonconst_address_ptr&
     {
-      my_ptr = ((n < 0) ? my_ptr - difference_type((size_type(0U) - size_type(n)) * static_size)
-                        : my_ptr + difference_type(size_type(n)  * static_size));
+      my_ptr = offset_pointer(my_ptr, n);
 
       return *this;
     }
 
     auto operator-=(difference_type n) noexcept -> nonconst_address_ptr&
     {
-      my_ptr = ((n < 0) ? my_ptr + difference_type((size_type(0U) - size_type(n)) * static_size)
-                        : my_ptr - difference_type(size_type(n)  * static_size));
+      my_ptr = offset_pointer(my_ptr, n, true);
 
       return *this;
     }
 
   private:
+    static constexpr pointer offset_pointer(pointer ptr,
+                                             difference_type n,
+                                             bool subtract = false) noexcept
+    {
+      return ((n < 0) ? (subtract ? ptr + difference_type((size_type(0U) - size_type(n)) * static_size)
+                                  : ptr - difference_type((size_type(0U) - size_type(n)) * static_size))
+                      : (subtract ? ptr - difference_type(size_type(n) * static_size)
+                                  : ptr + difference_type(size_type(n) * static_size)));
+    }
+
     pointer my_ptr{};
+
+    template<typename, typename>
+    friend class const_address_ptr;
 
     friend inline auto operator-(const nonconst_address_ptr& x,
                                  const nonconst_address_ptr& y) noexcept -> difference_type
@@ -127,6 +132,10 @@
   };
 
   } } // namespace mcal::memory
+
+  template<typename PointerType>
+  constexpr typename mcal::memory::nonconst_address_ptr<PointerType>::size_type
+    mcal::memory::nonconst_address_ptr<PointerType>::static_size;
 
   namespace std
   {

@@ -11,6 +11,7 @@
   #include <mcal_memory/mcal_memory_const_address_ptr.h>
   #include <mcal_memory/mcal_memory_nonconst_address_ptr.h>
   #include <mcal_memory/mcal_memory_sram_ptr.h>
+  #include <mcal_memory/mcal_memory_random_access_iterator_operations.h>
 
   #include <iterator>
 
@@ -36,24 +37,19 @@
            typename AddressType,
            typename AddressDifferenceType>
   class sram_iterator
-    : public mcal::memory::sram::iterator<std::random_access_iterator_tag,
-                                          ValueType,
-                                          AddressType,
-                                          AddressDifferenceType>
-  {
-  private:
-    using base_class_type =
-      mcal::memory::sram::iterator<std::random_access_iterator_tag,
-                                   ValueType,
-                                   AddressType,
-                                   AddressDifferenceType>;
 
+  {
   public:
-    using value_type        = typename base_class_type::value_type;
-    using difference_type   = typename base_class_type::difference_type;
-    using pointer           = typename base_class_type::pointer;
-    using reference         = typename base_class_type::reference;
-    using iterator_category = typename base_class_type::iterator_category;
+    using pointer           = mcal::memory::nonconst_address_ptr<sram_ptr<ValueType, AddressType, AddressDifferenceType>>;
+    using difference_type   = typename pointer::difference_type;
+    using value_type        = typename pointer::value_type;
+    using const_pointer     = mcal::memory::const_address_ptr<
+      sram_ptr<ValueType, AddressType, AddressDifferenceType>,
+      sram_const_ref<ValueType, AddressType, AddressDifferenceType>>;
+    using reference         = typename pointer::reference;
+    using const_reference   = sram_const_ref<ValueType, AddressType, AddressDifferenceType>;
+    using iterator_category = std::random_access_iterator_tag;
+    using operations         = mcal::memory::random_access_iterator_operations<pointer>;
 
     sram_iterator() noexcept = default;
 
@@ -61,9 +57,19 @@
 
     sram_iterator(const pointer x) noexcept : current(x) { }
 
+    operator const_pointer() const noexcept
+    {
+      return const_pointer(current);
+    }
+
     template<typename OtherIteratorType,
              typename OtherAddressType,
-             typename OtherAddressDifferenceType>
+             typename OtherAddressDifferenceType,
+             typename std::enable_if<
+               std::is_convertible<OtherIteratorType, ValueType>::value &&
+               std::is_convertible<OtherAddressType, AddressType>::value &&
+               std::is_convertible<OtherAddressDifferenceType, AddressDifferenceType>::value
+             >::type* = nullptr>
     sram_iterator(const sram_iterator<OtherIteratorType, OtherAddressType, OtherAddressDifferenceType>& other) noexcept
       : current(static_cast<const pointer>(other.current)) { }
 
@@ -72,9 +78,9 @@
       return *current;
     }
 
-    auto operator*() const noexcept -> const reference
+    auto operator*() const noexcept -> const_reference
     {
-      return *current;
+      return *const_pointer(current);
     }
 
     auto operator[](difference_type n) noexcept -> reference
@@ -82,29 +88,29 @@
       return *(current + n);
     }
 
-    auto operator[](difference_type n) const noexcept -> const reference
+    auto operator[](difference_type n) const noexcept -> const_reference
     {
-      return *(current + n);
+      return *(const_pointer(current) + n);
     }
 
-    auto operator++() noexcept -> sram_iterator& { ++current; return *this; }
-    auto operator--() noexcept -> sram_iterator& { --current; return *this; }
+    auto operator++() noexcept -> sram_iterator& { operations::increment(current, difference_type(1)); return *this; }
+    auto operator--() noexcept -> sram_iterator& { operations::increment(current, difference_type(-1)); return *this; }
 
-    sram_iterator operator++(int) noexcept { const sram_iterator tmp = *this; ++current; return tmp; }
-    sram_iterator operator--(int) noexcept { const sram_iterator tmp = *this; --current; return tmp; }
+    sram_iterator operator++(int) noexcept { const sram_iterator tmp = *this; ++(*this); return tmp; }
+    sram_iterator operator--(int) noexcept { const sram_iterator tmp = *this; --(*this); return tmp; }
 
     auto operator+(difference_type n) const noexcept -> sram_iterator
     {
-      return sram_iterator(current + n);
+      return sram_iterator(operations::add(current, n));
     }
 
     auto operator-(difference_type n) const noexcept -> sram_iterator
     {
-      return sram_iterator(current - n);
+      return sram_iterator(operations::subtract(current, n));
     }
 
-    auto operator+=(difference_type n) noexcept -> sram_iterator& { current += n; return *this; }
-    auto operator-=(difference_type n) noexcept -> sram_iterator& { current -= n; return *this; }
+    auto operator+=(difference_type n) noexcept -> sram_iterator& { operations::increment(current, n); return *this; }
+    auto operator-=(difference_type n) noexcept -> sram_iterator& { current = operations::subtract(current, n); return *this; }
 
   private:
     pointer current{};
@@ -112,18 +118,18 @@
     template<typename, typename, typename>
     friend class sram_iterator;
 
-    friend inline bool operator< (const sram_iterator& x, const sram_iterator& y) noexcept { return (x.current <  y.current); }
-    friend inline bool operator<=(const sram_iterator& x, const sram_iterator& y) noexcept { return (x.current <= y.current); }
-    friend inline bool operator==(const sram_iterator& x, const sram_iterator& y) noexcept { return (x.current == y.current); }
-    friend inline bool operator!=(const sram_iterator& x, const sram_iterator& y) noexcept { return (x.current != y.current); }
-    friend inline bool operator>=(const sram_iterator& x, const sram_iterator& y) noexcept { return (x.current >= y.current); }
-    friend inline bool operator> (const sram_iterator& x, const sram_iterator& y) noexcept { return (x.current >  y.current); }
+    friend inline bool operator< (const sram_iterator& x, const sram_iterator& y) noexcept { return operations::less(x.current, y.current); }
+    friend inline bool operator<=(const sram_iterator& x, const sram_iterator& y) noexcept { return operations::less_equal(x.current, y.current); }
+    friend inline bool operator==(const sram_iterator& x, const sram_iterator& y) noexcept { return operations::equal(x.current, y.current); }
+    friend inline bool operator!=(const sram_iterator& x, const sram_iterator& y) noexcept { return operations::not_equal(x.current, y.current); }
+    friend inline bool operator>=(const sram_iterator& x, const sram_iterator& y) noexcept { return operations::greater_equal(x.current, y.current); }
+    friend inline bool operator> (const sram_iterator& x, const sram_iterator& y) noexcept { return operations::greater(x.current, y.current); }
 
     friend inline auto operator-(const sram_iterator& x,
                                  const sram_iterator& y) noexcept
       -> typename sram_iterator::difference_type
     {
-      return (x.current - y.current);
+      return operations::distance(x.current, y.current);
     }
 
     friend inline auto operator+(typename sram_iterator::difference_type n,
@@ -133,16 +139,6 @@
       return sram_iterator(x.current + n);
     }
   };
-
-  template<typename input_iterator>
-  typename std::iterator_traits<input_iterator>::difference_type
-  distance(input_iterator first, input_iterator last) noexcept
-  {
-    using local_difference_type =
-      typename std::iterator_traits<input_iterator>::difference_type;
-
-    return local_difference_type(last - first);
-  }
 
   template <typename container_type> inline auto begin (const container_type& c) -> decltype(c.begin())  { return c.begin(); }
   template <typename container_type> inline auto end   (const container_type& c) -> decltype(c.end())    { return c.end(); }

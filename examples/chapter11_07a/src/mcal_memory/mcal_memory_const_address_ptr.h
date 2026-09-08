@@ -12,6 +12,9 @@
 
   namespace mcal { namespace memory {
 
+  template<typename PointerType>
+  class nonconst_address_ptr;
+
   template<typename PointerType,
            typename ReferenceType = const typename PointerType::reference>
   class const_address_ptr
@@ -34,6 +37,10 @@
 
     constexpr const_address_ptr(pointer ptr) noexcept : my_ptr(ptr) { }
 
+    template<typename OtherPointerType>
+    constexpr const_address_ptr(const nonconst_address_ptr<OtherPointerType>& other) noexcept
+      : my_ptr(other.my_ptr) { }
+
     auto operator*() const noexcept -> reference
     {
       const reference value = *my_ptr;
@@ -54,38 +61,43 @@
 
     auto operator+(difference_type n) const noexcept -> const_address_ptr
     {
-      const pointer ptr = ((n < 0) ? my_ptr - difference_type((size_type(0U) - size_type(n)) * static_size)
-                                   : my_ptr + difference_type(size_type(n)  * static_size));
-
-      return const_address_ptr(ptr);
+      return const_address_ptr(offset_pointer(my_ptr, n));
     }
 
     auto operator-(difference_type n) const noexcept -> const_address_ptr
     {
-      const pointer ptr = ((n < 0) ? my_ptr + difference_type((size_type(0U) - size_type(n)) * static_size)
-                                   : my_ptr - difference_type(size_type(n)  * static_size));
-
-      return const_address_ptr(ptr);
+      return const_address_ptr(offset_pointer(my_ptr, n, true));
     }
 
     auto operator+=(difference_type n) noexcept -> const_address_ptr&
     {
-      my_ptr = ((n < 0) ? my_ptr - difference_type((size_type(0U) - size_type(n)) * static_size)
-                        : my_ptr + difference_type(size_type(n)  * static_size));
+      my_ptr = offset_pointer(my_ptr, n);
 
       return *this;
     }
 
     auto operator-=(difference_type n) noexcept -> const_address_ptr&
     {
-      my_ptr = ((n < 0) ? my_ptr + difference_type((size_type(0U) - size_type(n)) * static_size)
-                        : my_ptr - difference_type(size_type(n)  * static_size));
+      my_ptr = offset_pointer(my_ptr, n, true);
 
       return *this;
     }
 
   private:
+    static constexpr pointer offset_pointer(pointer ptr,
+                                             difference_type n,
+                                             bool subtract = false) noexcept
+    {
+      return ((n < 0) ? (subtract ? ptr + difference_type((size_type(0U) - size_type(n)) * static_size)
+                                  : ptr - difference_type((size_type(0U) - size_type(n)) * static_size))
+                      : (subtract ? ptr - difference_type(size_type(n) * static_size)
+                                  : ptr + difference_type(size_type(n) * static_size)));
+    }
+
     pointer my_ptr{};
+
+    template<typename>
+    friend class nonconst_address_ptr;
 
     friend inline auto operator-(const const_address_ptr& x,
                                  const const_address_ptr& y) noexcept -> difference_type
@@ -109,16 +121,20 @@
 
   } } // namespace mcal::memory
 
+  template<typename PointerType, typename ReferenceType>
+  constexpr typename mcal::memory::const_address_ptr<PointerType, ReferenceType>::size_type
+    mcal::memory::const_address_ptr<PointerType, ReferenceType>::static_size;
+
   namespace std
   {
     // Provide a template specialization of iterator_traits
     // for mcal::memory::const_address_ptr<>.
 
-    template<typename PointerType>
-    struct iterator_traits<mcal::memory::const_address_ptr<PointerType>>
+    template<typename PointerType, typename ReferenceType>
+    struct iterator_traits<mcal::memory::const_address_ptr<PointerType, ReferenceType>>
     {
     private:
-      using pointer_type = mcal::memory::const_address_ptr<PointerType>;
+      using pointer_type = mcal::memory::const_address_ptr<PointerType, ReferenceType>;
 
     public:
       using difference_type   = typename pointer_type::difference_type;
