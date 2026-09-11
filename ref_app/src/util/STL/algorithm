@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,6 +24,10 @@
              typename input_iterator2>
     STL_LOCAL_CONSTEXPR_ALGORITHMS void iter_swap(input_iterator1 left,
                                                   input_iterator2 right);
+
+    template<typename swap_type>
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(swap_type& left,
+                                             swap_type& right);
 
     template<typename value_type>
     STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (min)(value_type a,
@@ -223,6 +227,31 @@
       return ((first1 == last1) && (first2 != last2));
     }
 
+    template <typename input_iterator1,
+              typename input_iterator2,
+              typename binary_function_type>
+    bool lexicographical_compare(input_iterator1      first1,
+                                 input_iterator1      last1,
+                                 input_iterator2      first2,
+                                 input_iterator2      last2,
+                                 binary_function_type binary_function)
+    {
+      for( ; (first1 != last1) && (first2 != last2); ++first1, ++first2)
+      {
+        if(binary_function(*first1, *first2))
+        {
+          return true;
+        }
+
+        if(binary_function(*first2, *first1))
+        {
+          return false;
+        }
+      }
+
+      return (first1 == last1) && (first2 != last2);
+    }
+
     template<typename input_iterator,
              typename output_iterator>
     STL_LOCAL_CONSTEXPR_ALGORITHMS output_iterator copy(input_iterator  first,
@@ -231,9 +260,7 @@
     {
       for( ; first != last; ++result, ++first)
       {
-        using result_value_type = typename std::iterator_traits<output_iterator>::value_type;
-
-        *result = result_value_type(*first);
+        *result = *first;
       }
 
       return result;
@@ -247,12 +274,10 @@
     {
       while (first1 != last1)
       {
-        using out2_value_type = typename std::iterator_traits<bidirectional_output_iterator2>::value_type;
-
         --last1;
         --last2;
 
-        *last2 = out2_value_type(*last1);
+        *last2 = *last1;
       }
 
       return last2;
@@ -270,9 +295,7 @@
       {
         if(unary_function(*first))
         {
-          using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
-
-          *result = output_value_type(*first);
+          *result = *first;
 
           ++result;
         }
@@ -304,11 +327,14 @@
                                                           size_type         count,
                                                           const value_type& value)
     {
-      const output_iterator last(first + count);
+      while(count > size_type(0))
+      {
+        *first = value;
+        ++first;
+        --count;
+      }
 
-      fill(first, last, value);
-
-      return last;
+      return first;
     }
 
     template<typename forward_iterator,
@@ -319,9 +345,7 @@
     {
       while(first != last)
       {
-        using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
-
-        *first = forward_value_type(generator());
+        *first = generator();
 
         ++first;
       }
@@ -336,9 +360,7 @@
     {
       for(size_type i = size_type(0); i < count; ++i)
       {
-        using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
-
-        *first = output_value_type(generator());
+        *first = generator();
 
         ++first;
       }
@@ -365,9 +387,7 @@
     {
       for( ; first != last; ++first, ++result)
       {
-        using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
-
-        *result = output_value_type(unary_function(*first));
+        *result = unary_function(*first);
       }
 
       return result;
@@ -385,9 +405,7 @@
     {
       for( ; first1 != last1; ++first1, ++first2, ++result)
       {
-        using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
-
-        *result = output_value_type(binary_function(*first1, *first2));
+        *result = binary_function(*first1, *first2);
       }
 
       return result;
@@ -411,6 +429,22 @@
       }
 
       return (first1 == last1);
+    }
+
+    template<typename input_iterator1,
+             typename input_iterator2>
+    bool equal(input_iterator1 first1,
+               input_iterator1 last1,
+               input_iterator2 first2,
+               input_iterator2 last2)
+    {
+      while((first1 != last1) && (first2 != last2) && (*first1 == *first2))
+      {
+        ++first1;
+        ++first2;
+      }
+
+      return (first1 == last1) && (first2 == last2);
     }
 
     template<typename input_iterator1,
@@ -573,6 +607,21 @@
       return std::make_pair(first1, first2);
     }
 
+    template<class InputIt1, class InputIt2>
+    STL_LOCAL_CONSTEXPR_ALGORITHMS std::pair<InputIt1, InputIt2> mismatch(InputIt1 first1,
+                                                                          InputIt1 last1,
+                                                                          InputIt2 first2,
+                                                                          InputIt2 last2)
+    {
+      while((first1 != last1) && (first2 != last2) && (*first1 == *first2))
+      {
+        ++first1;
+        ++first2;
+      }
+
+      return std::make_pair(first1, first2);
+    }
+
     template<typename input_iterator,
              typename unary_function_type>
     typename std::iterator_traits<input_iterator>::difference_type
@@ -692,22 +741,17 @@
                               difference_type   count_value,
                               const value_type& search_value)
     {
-      forward_iterator limit = first;
-
-      difference_type index;
-
-      for(index = difference_type(0); index < difference_type((last - first) - count_value); ++index)
+      if(count_value <= difference_type(0))
       {
-        ++limit;
+        return first;
       }
 
-      while(first != limit)
+      while(first != last)
       {
         forward_iterator it = first;
+        difference_type index = difference_type(0);
 
-        index = difference_type(0);
-
-        while(*it == search_value)
+        while((it != last) && (*it == search_value))
         {
           ++it;
           ++index;
@@ -734,22 +778,17 @@
                               const value_type&    search_value,
                               binary_function_type binary_function)
     {
-      forward_iterator limit = first;
-
-      difference_type index;
-
-      for(index = difference_type(0); index < difference_type((last - first) - count_value); ++index)
+      if(count_value <= difference_type(0))
       {
-        ++limit;
+        return first;
       }
 
-      while(first != limit)
+      while(first != last)
       {
         forward_iterator it = first;
+        difference_type index = difference_type(0);
 
-        index = difference_type(0);
-
-        while(binary_function(*it, search_value))
+        while((it != last) && binary_function(*it, search_value))
         {
           ++it;
           ++index;
@@ -772,21 +811,11 @@
     {
       if(&left != &right)
       {
-        const swap_type tmp(left);
+        swap_type tmp(std::move(left));
 
-        left  = right;
-        right = tmp;
+        left  = std::move(right);
+        right = std::move(tmp);
       }
-    }
-
-    template<typename swap_type>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(swap_type&& left,
-                                             swap_type&& right)
-    {
-      const swap_type tmp(left);
-
-      left  = right;
-      right = tmp;
     }
 
     template<typename input_iterator1,
@@ -794,13 +823,7 @@
     STL_LOCAL_CONSTEXPR_ALGORITHMS void iter_swap(input_iterator1 left,
                                                   input_iterator2 right)
     {
-      typedef typename std::iterator_traits<input_iterator1>::value_type value_left_type;
-      typedef typename std::iterator_traits<input_iterator2>::value_type value_right_type;
-
-      const value_left_type tmp(*left);
-
-      *left  = value_left_type (*right);
-      *right = value_right_type(tmp);
+      swap(*left, *right);
     }
 
     template<typename input_iterator1,

@@ -28,7 +28,16 @@
     template<typename T>
     constexpr T&& forward(remove_reference_t<T>&& arg) noexcept
     {
+      static_assert(!is_lvalue_reference<T>::value,
+                    "std::forward cannot forward an rvalue as an lvalue");
+
       return static_cast<T&&>(arg);
+    }
+
+    template<typename T>
+    constexpr remove_reference_t<T>&& move(T&& arg) noexcept
+    {
+      return static_cast<remove_reference_t<T>&&>(arg);
     }
 
     template<typename T>
@@ -53,20 +62,28 @@
       pair(const first_type& t1, const second_type& t2) : first (t1),
                                                           second(t2) { }
 
+      pair(first_type&& t1, second_type&& t2) : first (std::forward<first_type>(t1)),
+                                                second(std::forward<second_type>(t2)) { }
+
       pair(const pair& other) : first (other.first),
                                 second(other.second) { }
 
-      pair(pair&& other) noexcept : first (other.first),
-                                    second(other.second) { }
+      pair(pair&& other) noexcept : first (std::forward<T1>(other.first)),
+                                    second(std::forward<T2>(other.second)) { }
 
       template<typename other_type1,
                typename other_type2>
       pair(const pair<other_type1, other_type2>& p) : first (T1(p.first)),
                                                       second(T2(p.second)) { }
 
+      template<typename other_type1,
+               typename other_type2>
+      pair(pair<other_type1, other_type2>&& p) : first (T1(std::forward<other_type1>(p.first))),
+                                                  second(T2(std::forward<other_type2>(p.second))) { }
+
       pair& operator=(const pair& other)
       {
-        if(*this != &other)
+        if(this != &other)
         {
           first  = other.first;
           second = other.second;
@@ -77,8 +94,11 @@
 
       pair& operator=(pair&& other) noexcept
       {
-        first  = other.first;
-        second = other.second;
+        if(this != &other)
+        {
+          first  = std::move(other.first);
+          second = std::move(other.second);
+        }
 
         return *this;
       }
@@ -96,9 +116,13 @@
     public:
       typedef       T1& nonconstant_reference_type;
       typedef const T1&    constant_reference_type;
+      typedef       T1&& nonconstant_rvalue_reference_type;
+      typedef const T1&&    constant_rvalue_reference_type;
 
       static nonconstant_reference_type my_value(      std::pair<T1, T2>& my_pair) { return my_pair.first; }
       static    constant_reference_type my_value(const std::pair<T1, T2>& my_pair) { return my_pair.first; }
+      static nonconstant_rvalue_reference_type my_value(std::pair<T1, T2>&& my_pair) { return std::move(my_pair.first); }
+      static    constant_rvalue_reference_type my_value(const std::pair<T1, T2>&& my_pair) { return std::move(my_pair.first); }
     };
 
     template<typename T1, typename T2>
@@ -107,9 +131,13 @@
     public:
       typedef       T2& nonconstant_reference_type;
       typedef const T2&    constant_reference_type;
+      typedef       T2&& nonconstant_rvalue_reference_type;
+      typedef const T2&&    constant_rvalue_reference_type;
 
       static nonconstant_reference_type my_value(      std::pair<T1, T2>& my_pair) { return my_pair.second; }
       static    constant_reference_type my_value(const std::pair<T1, T2>& my_pair) { return my_pair.second; }
+      static nonconstant_rvalue_reference_type my_value(std::pair<T1, T2>&& my_pair) { return std::move(my_pair.second); }
+      static    constant_rvalue_reference_type my_value(const std::pair<T1, T2>&& my_pair) { return std::move(my_pair.second); }
     };
   }
 
@@ -127,6 +155,20 @@
     get(const std::pair<T1, T2>& my_pair)
     {
       return (xpair_helper::xget<I, std::pair<T1, T2> >::my_value(my_pair));
+    }
+
+    template<int I, typename T1, typename T2>
+    typename xpair_helper::xget<I, std::pair<T1, T2> >::nonconstant_rvalue_reference_type
+    get(std::pair<T1, T2>&& my_pair)
+    {
+      return (xpair_helper::xget<I, std::pair<T1, T2> >::my_value(std::move(my_pair)));
+    }
+
+    template<int I, typename T1, typename T2>
+    typename xpair_helper::xget<I, std::pair<T1, T2> >::constant_rvalue_reference_type
+    get(const std::pair<T1, T2>&& my_pair)
+    {
+      return (xpair_helper::xget<I, std::pair<T1, T2> >::my_value(std::move(my_pair)));
     }
 
     template<typename tuple_type>
@@ -150,7 +192,7 @@
     };
 
     template<typename T1, typename T2>
-    class tuple_size<std::pair<T1, T2> >
+    class tuple_size<std::pair<T1, T2> > : integral_constant<std::size_t, 2U>
     {
     public:
       static const std::size_t value = 2;
@@ -159,9 +201,12 @@
     template<typename T1, typename T2>
     void swap(std::pair<T1, T2>& left, std::pair<T1, T2>& right)
     {
-      const std::pair<T1, T2> tmp(left);
-      left  = right;
-      right = tmp;
+      if(&left != &right)
+      {
+        std::pair<T1, T2> tmp(std::move(left));
+        left  = std::move(right);
+        right = std::move(tmp);
+      }
     }
 
     template<typename T1, typename T2>
@@ -205,9 +250,14 @@
     }
 
     template<typename T1, typename T2>
-    std::pair<T1, T2> make_pair(T1 value1, T2 value2)
+    std::pair<typename std::decay<T1>::type,
+              typename std::decay<T2>::type> make_pair(T1&& value1, T2&& value2)
     {
-      return std::pair<T1, T2>(value1, value2);
+      using first_type  = typename std::decay<T1>::type;
+      using second_type = typename std::decay<T2>::type;
+
+      return std::pair<first_type, second_type>(std::forward<T1>(value1),
+                                                std::forward<T2>(value2));
     }
   }
 
@@ -305,7 +355,7 @@
         std::is_integral<T>::value,
         "std::integer_sequence can only be instantiated with an integral type" );
 
-      static std::size_t size()
+      static constexpr std::size_t size() noexcept
       {
         return (sizeof...(N));
       }

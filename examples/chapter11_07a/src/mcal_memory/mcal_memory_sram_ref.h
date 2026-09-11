@@ -10,9 +10,7 @@
 
   #include <mcal_memory/mcal_memory_sram_access.h>
 
-#include <type_traits>
-
-  // Implement a specialized reference type for read-only program memory.
+  // Implement specialized reference types for read/write SRAM memory.
 
   namespace mcal { namespace memory { namespace sram {
 
@@ -69,7 +67,7 @@
     }
 
   private:
-    const address_type my_address;
+    address_type my_address;
   };
 
   template<typename ValueType,
@@ -102,7 +100,7 @@
     }
 
   private:
-    const address_type my_address;
+    address_type my_address;
   };
 
   } } } // namespace mcal::memory::sram

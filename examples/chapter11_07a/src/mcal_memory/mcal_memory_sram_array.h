@@ -8,7 +8,7 @@
 #ifndef MCAL_MEMORY_SRAM_ARRAY_2020_04_26_H
   #define MCAL_MEMORY_SRAM_ARRAY_2020_04_26_H
 
-#include <mcal_memory/mcal_memory_sram_iterator.h>
+  #include <mcal_memory/mcal_memory_sram_iterator.h>
 
   #include <algorithm>
   #include <cstddef>
@@ -66,8 +66,13 @@
       return *this;
     }
 
-    auto operator=(array&&) noexcept -> array&
+    auto operator=(array&& other) noexcept -> array&
     {
+      if(this != &other)
+      {
+        std::copy(other.cbegin(), other.cend(), begin());
+      }
+
       return *this;
     }
 
@@ -129,9 +134,9 @@
       return at(static_size - 1U);
     }
 
-    constexpr size_type size    () const  noexcept{ return static_size; }
-    constexpr bool      empty   () const  noexcept{ return (static_size == 0U); }
-    constexpr size_type max_size() const  noexcept{ return static_size; }
+    constexpr size_type size    () const noexcept { return static_size; }
+    constexpr bool      empty   () const noexcept { return (static_size == 0U); }
+    constexpr size_type max_size() const noexcept { return static_size; }
 
     auto data() noexcept -> pointer
     {
@@ -208,16 +213,45 @@
     return (!(right < left));
   }
 
-  template<typename T>
-  struct tuple_size;
+  template<mcal_sram_uintptr_t I,
+           typename T,
+           mcal_sram_uintptr_t N,
+           mcal_sram_uintptr_t Address>
+  auto get(array<T, N, Address>& source) noexcept -> typename array<T, N, Address>::reference
+  {
+    static_assert(I < N, "Sorry, get index is out of bounds.");
+    return source[I];
+  }
 
-  template<typename T,
-           const mcal_sram_uintptr_t N,
-           const mcal_sram_uintptr_t Address>
-  struct tuple_size<mcal::memory::sram::array<T, N, Address>>
-    : public std::integral_constant<mcal_sram_uintptr_t, N> { };
+  template<mcal_sram_uintptr_t I,
+           typename T,
+           mcal_sram_uintptr_t N,
+           mcal_sram_uintptr_t Address>
+  auto get(const array<T, N, Address>& source) noexcept -> typename array<T, N, Address>::const_reference
+  {
+    static_assert(I < N, "Sorry, get index is out of bounds.");
+    return source[I];
+  }
 
   } } } // namespace mcal::memory::sram
+
+  namespace std
+  {
+    template<typename T, mcal_sram_uintptr_t N, mcal_sram_uintptr_t Address>
+    struct tuple_size<mcal::memory::sram::array<T, N, Address>>
+      : integral_constant<std::size_t, static_cast<std::size_t>(N)> { };
+
+    template<std::size_t I,
+             typename T,
+             mcal_sram_uintptr_t N,
+             mcal_sram_uintptr_t Address>
+    struct tuple_element<I, mcal::memory::sram::array<T, N, Address>>
+    {
+      static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
+
+      using type = T;
+    };
+  }
 
   template<typename T, mcal_sram_uintptr_t N, mcal_sram_uintptr_t Address>
   constexpr mcal_sram_uintptr_t mcal::memory::sram::array<T, N, Address>::static_size;

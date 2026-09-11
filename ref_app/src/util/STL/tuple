@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -117,19 +117,6 @@
                                                 t10(p10),
                                                 t11(p11) { }
 
-      constexpr tuple(const tuple_type& t) : t0 (t.t0),
-                                             t1 (t.t1),
-                                             t2 (t.t2),
-                                             t3 (t.t3),
-                                             t4 (t.t4),
-                                             t5 (t.t5),
-                                             t6 (t.t6),
-                                             t7 (t.t7),
-                                             t8 (t.t8),
-                                             t9 (t.t9),
-                                             t10(t.t10),
-                                             t11(t.t11) { }
-
       constexpr tuple(tuple_type&& t) noexcept
         : t0 (t.t0),
           t1 (t.t1),
@@ -165,7 +152,7 @@
                typename U11>
       constexpr tuple& operator=(const tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9, U10, U11>& t)
       {
-        if(this != &t)
+        if(static_cast<const void*>(this) != static_cast<const void*>(&t))
         {
           t0  = T0 (t.t0);
           t1  = T1 (t.t1);
@@ -241,22 +228,6 @@
         }
       }
 
-      constexpr void swap(tuple&& other)
-      {
-        my_swap(static_cast<type0 &&>(t0) , static_cast<type0 &&>(other.t0));
-        my_swap(static_cast<type1 &&>(t1) , static_cast<type1 &&>(other.t1));
-        my_swap(static_cast<type2 &&>(t2) , static_cast<type2 &&>(other.t2));
-        my_swap(static_cast<type3 &&>(t3) , static_cast<type3 &&>(other.t3));
-        my_swap(static_cast<type4 &&>(t4) , static_cast<type4 &&>(other.t4));
-        my_swap(static_cast<type5 &&>(t5) , static_cast<type5 &&>(other.t5));
-        my_swap(static_cast<type6 &&>(t6) , static_cast<type6 &&>(other.t6));
-        my_swap(static_cast<type7 &&>(t7) , static_cast<type7 &&>(other.t7));
-        my_swap(static_cast<type8 &&>(t8) , static_cast<type8 &&>(other.t8));
-        my_swap(static_cast<type9 &&>(t9) , static_cast<type9 &&>(other.t9));
-        my_swap(static_cast<type10&&>(t10), static_cast<type10&&>(other.t10));
-        my_swap(static_cast<type11&&>(t11), static_cast<type11&&>(other.t11));
-      }
-
     private:
       type0  t0  { };
       type1  t1  { };
@@ -276,20 +247,11 @@
       {
         if(&left != &right)
         {
-          const swap_type tmp(left);
+          swap_type tmp(std::move(left));
 
-          left  = right;
-          right = tmp;
+          left  = std::move(right);
+          right = std::move(tmp);
         }
-      }
-
-      template<typename swap_type>
-      constexpr void my_swap(swap_type&& left, swap_type&& right)
-      {
-        const swap_type tmp(left);
-
-        left  = right;
-        right = tmp;
       }
     };
   }
@@ -306,6 +268,8 @@
       typedef typename xtuple_type::type##NUM xelem_type;                                            \
       static constexpr       xelem_type& get      (      xtuple_type& t) { return t.t##NUM ; } \
       static constexpr const xelem_type& get_const(const xtuple_type& t) { return t.t##NUM ; } \
+      static constexpr       xelem_type&& get_rvalue(      xtuple_type&& t) { return static_cast<xelem_type&&>(t.t##NUM); } \
+      static constexpr const xelem_type&& get_rvalue(const xtuple_type&& t) { return static_cast<const xelem_type&&>(t.t##NUM); } \
     }
 
     MAKE_XTUPLE_GET_HELPER(0);
@@ -370,7 +334,7 @@
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10>
     constexpr typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::xelem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
-    constexpr typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> >::xelem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> >::get(t); }
+     constexpr typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> >::xelem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> >::get(t); }
 
     template<const std::size_t N>
     constexpr const typename xtuple_helper::xget<N, tuple<> >::xelem_type& get(const tuple<>& t) { return xtuple_helper::xget<N, tuple<> >::get_const(t); }
@@ -397,7 +361,15 @@
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10>
     constexpr const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::xelem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
-    constexpr const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::xelem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> >::get_const(t); }
+     constexpr const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> >::xelem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> >::get_const(t); }
+
+     template<const std::size_t N, typename tuple_type>
+     constexpr auto get(tuple_type&& t)
+       -> decltype(xtuple_helper::xget<N, typename std::remove_cv<typename std::remove_reference<tuple_type>::type>::type>::get_rvalue(static_cast<tuple_type&&>(t)))
+     {
+       using bare_tuple_type = typename std::remove_cv<typename std::remove_reference<tuple_type>::type>::type;
+       return xtuple_helper::xget<N, bare_tuple_type>::get_rvalue(static_cast<tuple_type&&>(t));
+     }
 
     template<const std::size_t N,
              typename tuple_type>
@@ -432,7 +404,7 @@
     };
 
     template<typename tuple_type>
-    class tuple_size
+     class tuple_size : public std::integral_constant<std::size_t, xtuple_helper::xsize<tuple_type>::value>
     {
     public:
       static constexpr std::size_t value = xtuple_helper::xsize<tuple_type>::value;
@@ -446,6 +418,21 @@
 
     template<typename tuple_type>
     class tuple_size<const volatile tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value> { };
+
+     template<const std::size_t N, typename tuple_type>
+     using tuple_element_t = typename tuple_element<N, tuple_type>::type;
+
+     template<typename... Args>
+     constexpr tuple<typename std::decay<Args>::type...> make_tuple(Args&&... args)
+     {
+       return tuple<typename std::decay<Args>::type...>(std::forward<Args>(args)...);
+     }
+
+     template<typename... Args>
+     constexpr tuple<Args&&...> forward_as_tuple(Args&&... args) noexcept
+     {
+       return tuple<Args&&...>(std::forward<Args>(args)...);
+     }
 
     template<typename T0>
     constexpr tuple<T0> make_tuple(const T0&  p0  = T0 ())
@@ -626,6 +613,61 @@
                                                                                  const T10& p10 = T10(),
                                                                                  const T11& p11 = T11())
     { return tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); }
+
+     template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5,
+              typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
+     constexpr bool operator==(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& left,
+                               const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& right)
+     {
+       return get<0>(left) == get<0>(right) && get<1>(left) == get<1>(right) &&
+              get<2>(left) == get<2>(right) && get<3>(left) == get<3>(right) &&
+              get<4>(left) == get<4>(right) && get<5>(left) == get<5>(right) &&
+              get<6>(left) == get<6>(right) && get<7>(left) == get<7>(right) &&
+              get<8>(left) == get<8>(right) && get<9>(left) == get<9>(right) &&
+              get<10>(left) == get<10>(right) && get<11>(left) == get<11>(right);
+     }
+
+     template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5,
+              typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
+     constexpr bool operator!=(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& left,
+                               const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& right)
+     {
+       return !(left == right);
+     }
+
+     template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5,
+              typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
+     constexpr bool operator<(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& left,
+                              const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& right)
+     {
+       if(get<0>(left) != get<0>(right)) return get<0>(left) < get<0>(right);
+       if(get<1>(left) != get<1>(right)) return get<1>(left) < get<1>(right);
+       if(get<2>(left) != get<2>(right)) return get<2>(left) < get<2>(right);
+       if(get<3>(left) != get<3>(right)) return get<3>(left) < get<3>(right);
+       if(get<4>(left) != get<4>(right)) return get<4>(left) < get<4>(right);
+       if(get<5>(left) != get<5>(right)) return get<5>(left) < get<5>(right);
+       if(get<6>(left) != get<6>(right)) return get<6>(left) < get<6>(right);
+       if(get<7>(left) != get<7>(right)) return get<7>(left) < get<7>(right);
+       if(get<8>(left) != get<8>(right)) return get<8>(left) < get<8>(right);
+       if(get<9>(left) != get<9>(right)) return get<9>(left) < get<9>(right);
+       if(get<10>(left) != get<10>(right)) return get<10>(left) < get<10>(right);
+       return get<11>(left) < get<11>(right);
+     }
+
+     template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5,
+              typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
+     constexpr bool operator>(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& left,
+                              const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& right) { return right < left; }
+
+     template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5,
+              typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
+     constexpr bool operator<=(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& left,
+                               const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& right) { return !(right < left); }
+
+     template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5,
+              typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
+     constexpr bool operator>=(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& left,
+                               const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& right) { return !(left < right); }
   }
 
   namespace xtuple_helper

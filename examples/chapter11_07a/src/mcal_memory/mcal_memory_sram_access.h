@@ -19,8 +19,13 @@
   auto read(const mcal_sram_uintptr_t src_addr,
             const typename std::enable_if<(sizeof(ValueType) == 1U)>::type* = nullptr) noexcept -> ValueType
   {
+    static_assert(std::is_trivially_copyable<ValueType>::value,
+                  "SRAM values must be trivially copyable.");
+
     auto byte_to_read = std::uint8_t { };
 
+    // The backend status is intentionally ignored. SRAM proxy operations are
+    // value-oriented and do not expose a transaction status.
     const auto result_read_is_ok = mcal_memory_sram_device().read(src_addr, &byte_to_read);
 
     static_cast<void>(result_read_is_ok);
@@ -32,10 +37,15 @@
   auto read(const mcal_sram_uintptr_t src_addr,
             const typename std::enable_if<(sizeof(ValueType) != 1U)>::type* = nullptr) noexcept -> ValueType
   {
+    static_assert(std::is_trivially_copyable<ValueType>::value,
+                  "SRAM values must be trivially copyable.");
+
     using local_value_type = ValueType;
 
     auto value_to_read = local_value_type { };
 
+    // The backend status is intentionally ignored. SRAM proxy operations do
+    // not expose a transaction status.
     const auto result_read_is_ok =
       mcal_memory_sram_device().read_n(src_addr, reinterpret_cast<std::uint8_t*>(&value_to_read), sizeof(local_value_type));
 
@@ -49,6 +59,11 @@
              const mcal_sram_uintptr_t dest_addr,
              const typename std::enable_if<(sizeof(ValueType) == 1U)>::type* = nullptr) noexcept -> void
   {
+    static_assert(std::is_trivially_copyable<ValueType>::value,
+                  "SRAM values must be trivially copyable.");
+
+    // The backend status is intentionally ignored. SRAM proxy operations do
+    // not expose a transaction status.
     const auto result_write_is_ok = mcal_memory_sram_device().write(dest_addr, &src_value);
 
     static_cast<void>(result_write_is_ok);
@@ -59,6 +74,11 @@
              const mcal_sram_uintptr_t dest_addr,
              const typename std::enable_if<(sizeof(ValueType) != 1U)>::type* = nullptr) noexcept -> void
   {
+    static_assert(std::is_trivially_copyable<ValueType>::value,
+                  "SRAM values must be trivially copyable.");
+
+    // The backend status is intentionally ignored. SRAM proxy operations do
+    // not expose a transaction status.
     using local_value_type = ValueType;
 
     const auto result_write_is_ok = mcal_memory_sram_device().write_n(dest_addr, reinterpret_cast<const std::uint8_t*>(&src_value), sizeof(local_value_type));
