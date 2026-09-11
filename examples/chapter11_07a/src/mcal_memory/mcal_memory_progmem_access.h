@@ -8,11 +8,11 @@
 #ifndef MCAL_MEMORY_PROGMEM_ACCESS_2019_08_17_H
   #define MCAL_MEMORY_PROGMEM_ACCESS_2019_08_17_H
 
+  #include <mcal_memory_progmem.h>
+
   #include <cstddef>
   #include <cstdint>
   #include <type_traits>
-
-  #include <mcal_memory_progmem.h>
 
   namespace mcal { namespace memory { namespace progmem {
 

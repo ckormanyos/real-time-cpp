@@ -10,10 +10,11 @@
 
   #include <mcal_memory/mcal_memory_const_address_ptr.h>
   #include <mcal_memory/mcal_memory_nonconst_address_ptr.h>
-  #include <mcal_memory/mcal_memory_sram_ptr.h>
   #include <mcal_memory/mcal_memory_random_access_iterator_operations.h>
+  #include <mcal_memory/mcal_memory_sram_ptr.h>
 
   #include <iterator>
+  #include <type_traits>
 
   // Implement specialized iterator types for read/write SRAM memory
   // (such as a serial SRAM chip or a parallel SRAM brick).
@@ -65,11 +66,11 @@
     template<typename OtherIteratorType,
              typename OtherAddressType,
              typename OtherAddressDifferenceType,
-             typename std::enable_if<
+             typename std::enable_if_t<
                std::is_convertible<OtherIteratorType, ValueType>::value &&
                std::is_convertible<OtherAddressType, AddressType>::value &&
                std::is_convertible<OtherAddressDifferenceType, AddressDifferenceType>::value
-             >::type* = nullptr>
+             >* = nullptr>
     sram_iterator(const sram_iterator<OtherIteratorType, OtherAddressType, OtherAddressDifferenceType>& other) noexcept
       : current(static_cast<const pointer>(other.current)) { }
 
@@ -110,7 +111,7 @@
     }
 
     auto operator+=(difference_type n) noexcept -> sram_iterator& { operations::increment(current, n); return *this; }
-    auto operator-=(difference_type n) noexcept -> sram_iterator& { current = operations::subtract(current, n); return *this; }
+    auto operator-=(difference_type n) noexcept -> sram_iterator& { operations::increment(current, -n); return *this; }
 
   private:
     pointer current{};

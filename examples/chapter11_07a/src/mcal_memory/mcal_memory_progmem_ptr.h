@@ -10,6 +10,7 @@
 
   #include <mcal_memory/mcal_memory_progmem_ref.h>
 
+  #include <iterator>
   #include <type_traits>
 
   // Implement a specialized pointer type for read-only program memory.
@@ -33,7 +34,7 @@
 
     static constexpr size_type value_size = sizeof(value_type);
 
-    progmem_ptr() noexcept = default;
+    constexpr progmem_ptr() noexcept = default;
 
     explicit constexpr progmem_ptr(address_type addr) noexcept
       : my_address(addr) { }
@@ -41,11 +42,11 @@
     template<typename OtherValueType,
              typename OtherAddressType,
              typename OtherAddressDifferenceType,
-             typename std::enable_if<
+             typename std::enable_if_t<
                std::is_convertible<OtherValueType, ValueType>::value &&
                std::is_convertible<OtherAddressType, address_type>::value &&
                std::is_convertible<OtherAddressDifferenceType, AddressDifferenceType>::value
-             >::type* = nullptr>
+             >* = nullptr>
     progmem_ptr(const progmem_ptr<OtherValueType, OtherAddressType, OtherAddressDifferenceType>& other) noexcept
       : my_address(other.my_address) { }
 

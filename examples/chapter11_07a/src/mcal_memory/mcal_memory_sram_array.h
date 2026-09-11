@@ -8,10 +8,9 @@
 #ifndef MCAL_MEMORY_SRAM_ARRAY_2020_04_26_H
   #define MCAL_MEMORY_SRAM_ARRAY_2020_04_26_H
 
-#include <mcal_memory/mcal_memory_sram_iterator.h>
+  #include <mcal_memory/mcal_memory_sram_iterator.h>
 
   #include <algorithm>
-  #include <cstddef>
   #include <iterator>
   #include <type_traits>
 
@@ -66,8 +65,13 @@
       return *this;
     }
 
-    auto operator=(array&&) noexcept -> array&
+    auto operator=(array&& other) noexcept -> array&
     {
+      if(this != &other)
+      {
+        std::copy(other.cbegin(), other.cend(), begin());
+      }
+
       return *this;
     }
 
@@ -129,9 +133,9 @@
       return at(static_size - 1U);
     }
 
-    constexpr size_type size    () const  noexcept{ return static_size; }
-    constexpr bool      empty   () const  noexcept{ return (static_size == 0U); }
-    constexpr size_type max_size() const  noexcept{ return static_size; }
+    constexpr size_type size    () const noexcept{ return static_size; }
+    constexpr bool      empty   () const noexcept{ return (static_size == 0U); }
+    constexpr size_type max_size() const noexcept{ return static_size; }
 
     auto data() noexcept -> pointer
     {

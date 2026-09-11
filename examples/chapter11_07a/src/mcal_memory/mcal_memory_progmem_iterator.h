@@ -8,13 +8,12 @@
 #ifndef MCAL_MEMORY_PROGMEM_ITERATOR_2019_05_04_H
   #define MCAL_MEMORY_PROGMEM_ITERATOR_2019_05_04_H
 
-  #include <iterator>
-
-  #include <type_traits>
-
   #include <mcal_memory/mcal_memory_const_address_ptr.h>
   #include <mcal_memory/mcal_memory_progmem_ptr.h>
   #include <mcal_memory/mcal_memory_random_access_iterator_operations.h>
+
+  #include <iterator>
+  #include <type_traits>
 
   // Implement specialized iterator types for read-only program memory.
 
@@ -56,11 +55,11 @@
     template<typename OtherIteratorType,
              typename OtherAddressType,
              typename OtherAddressDifferenceType,
-             typename std::enable_if<
+             typename std::enable_if_t<
                std::is_convertible<OtherIteratorType, ValueType>::value &&
                std::is_convertible<OtherAddressType, AddressType>::value &&
                std::is_convertible<OtherAddressDifferenceType, AddressDifferenceType>::value
-             >::type* = nullptr>
+             >* = nullptr>
     progmem_iterator(const progmem_iterator<OtherIteratorType, OtherAddressType, OtherAddressDifferenceType>& other) noexcept
       : current(static_cast<const pointer>(other.current)) { }
 
@@ -91,7 +90,7 @@
     }
 
     auto operator+=(difference_type n) noexcept -> progmem_iterator& { operations::increment(current, n); return *this; }
-    auto operator-=(difference_type n) noexcept -> progmem_iterator& { current = operations::subtract(current, n); return *this; }
+    auto operator-=(difference_type n) noexcept -> progmem_iterator& { operations::increment(current, -n); return *this; }
 
   private:
     pointer current{};

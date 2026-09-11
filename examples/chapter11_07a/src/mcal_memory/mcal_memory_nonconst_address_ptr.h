@@ -53,14 +53,14 @@
 
     auto operator[](const difference_type i) noexcept -> reference
     {
-      reference value = *(my_ptr + (i * difference_type(static_size)));
+      reference value = *offset_ptr(my_ptr, i);
 
       return value;
     }
 
     auto operator[](const difference_type i) const noexcept -> const_reference
     {
-      const_reference value = *(my_ptr + (i * difference_type(static_size)));
+      const_reference value = *offset_ptr(my_ptr, i);
 
       return value;
     }
