@@ -8,11 +8,11 @@
 #ifndef MCAL_MEMORY_PROGMEM_ACCESS_2019_08_17_H
   #define MCAL_MEMORY_PROGMEM_ACCESS_2019_08_17_H
 
+  #include <mcal_memory_progmem.h>
+
   #include <cstddef>
   #include <cstdint>
   #include <type_traits>
-
-  #include <mcal_memory_progmem.h>
 
   namespace mcal { namespace memory { namespace progmem {
 
@@ -24,9 +24,12 @@
                                    && (sizeof(ValueType) != 4U)
     && (sizeof(ValueType) != 8U))>::type* = nullptr) noexcept -> ValueType
   {
+    static_assert(std::is_trivially_copyable<ValueType>::value,
+                  "Program-memory values must be trivially copyable.");
+
     using local_value_type = ValueType;
 
-    local_value_type dest;
+    local_value_type dest { };
 
     for(std::size_t i = 0U; i < sizeof(ValueType); ++i)
     {

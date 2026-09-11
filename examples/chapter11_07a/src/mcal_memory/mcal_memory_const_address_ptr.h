@@ -50,7 +50,7 @@
 
     auto operator[](const difference_type i) const noexcept -> reference
     {
-      return *offset_ptr(my_ptr, i);
+      return *offset_pointer(my_ptr, i);
     }
 
     auto operator++() noexcept -> const_address_ptr& { my_ptr += static_size; return *this; }

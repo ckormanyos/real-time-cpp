@@ -142,10 +142,6 @@
     <ClCompile Include="target\micros\avr\startup\crt1.cpp" />
     <ClCompile Include="target\micros\avr\startup\int_vect.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\mcal_memory\mcal_memory_random_access_iterator_operations.h" />
-    <ClInclude Include="src\mcal_memory\mcal_memory_sram_iterator.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

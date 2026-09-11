@@ -8,14 +8,13 @@
 #ifndef MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H
   #define MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H
 
+  #include <mcal_memory/mcal_memory_progmem_iterator.h>
+
   #include <algorithm>
-  #include <cstddef>
   #include <iterator>
   #include <type_traits>
 
-  #include <mcal_memory/mcal_memory_progmem_iterator.h>
-
-  // Implement most an std::array-like container for read-only program memory.
+  // Implement most of an std::array-like container for read-only program memory.
   // See ISO/IEC 14882:2011 Chapter 23.3.2.
 
   namespace mcal { namespace memory { namespace progmem {
@@ -136,27 +135,33 @@
     return (!(right < left));
   }
 
-  template<typename T>
-  struct tuple_size;
-
-  template<typename T, const mcal_progmem_uintptr_t N>
-  struct tuple_size<mcal::memory::progmem::array<T, N>>
-    : public std::integral_constant<mcal_progmem_uintptr_t, N> { };
-
-  template<mcal_progmem_uintptr_t N, typename T>
-  struct tuple_element;
-
   template<mcal_progmem_uintptr_t I,
            typename T,
            mcal_progmem_uintptr_t N>
-  struct tuple_element<I, mcal::memory::progmem::array<T, N>>
+  auto get(const array<T, N>& source) noexcept -> typename array<T, N>::const_reference
   {
-    static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
-
-    typedef T type;
-  };
+    static_assert(I < N, "Sorry, get index is out of bounds.");
+    return source[I];
+  }
 
   } } } // namespace mcal::memory::progmem
+
+  namespace std
+  {
+    template<typename T, mcal_progmem_uintptr_t N>
+    struct tuple_size<mcal::memory::progmem::array<T, N>>
+      : integral_constant<mcal_progmem_uintptr_t, N> { };
+
+    template<mcal_progmem_uintptr_t I,
+             typename T,
+             mcal_progmem_uintptr_t N>
+    struct tuple_element<I, mcal::memory::progmem::array<T, N>>
+    {
+      static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
+
+      using type = T;
+    };
+  }
 
   template<typename T, mcal_progmem_uintptr_t N>
   constexpr mcal_progmem_uintptr_t mcal::memory::progmem::array<T, N>::static_size;

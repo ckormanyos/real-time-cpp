@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2026.
+//  Copyright Christopher Kormanyos 2020 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -44,11 +44,11 @@
     template<typename OtherValueType,
              typename OtherAddressType,
              typename OtherAddressDifferenceType,
-             typename std::enable_if<
+             typename std::enable_if_t<
                std::is_convertible<OtherValueType, ValueType>::value &&
                std::is_convertible<OtherAddressType, address_type>::value &&
                std::is_convertible<OtherAddressDifferenceType, AddressDifferenceType>::value
-             >::type* = nullptr>
+             >* = nullptr>
     sram_ptr(const sram_ptr<OtherValueType, OtherAddressType, OtherAddressDifferenceType>& other) noexcept
       : my_address(other.my_address) { }
 
@@ -57,7 +57,7 @@
       return reference(my_address);
     }
 
-    auto operator*() const noexcept -> const reference
+    auto operator*() const noexcept -> reference
     {
       return reference(my_address);
     }

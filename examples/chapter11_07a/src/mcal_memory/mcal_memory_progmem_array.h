@@ -135,27 +135,33 @@
     return (!(right < left));
   }
 
-  template<typename T>
-  struct tuple_size;
-
-  template<typename T, const mcal_progmem_uintptr_t N>
-  struct tuple_size<mcal::memory::progmem::array<T, N>>
-    : public std::integral_constant<mcal_progmem_uintptr_t, N> { };
-
-  template<mcal_progmem_uintptr_t N, typename T>
-  struct tuple_element;
-
   template<mcal_progmem_uintptr_t I,
            typename T,
            mcal_progmem_uintptr_t N>
-  struct tuple_element<I, mcal::memory::progmem::array<T, N>>
+  auto get(const array<T, N>& source) noexcept -> typename array<T, N>::const_reference
   {
-    static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
-
-    using type = T;
-  };
+    static_assert(I < N, "Sorry, get index is out of bounds.");
+    return source[I];
+  }
 
   } } } // namespace mcal::memory::progmem
+
+  namespace std
+  {
+    template<typename T, mcal_progmem_uintptr_t N>
+    struct tuple_size<mcal::memory::progmem::array<T, N>>
+      : integral_constant<mcal_progmem_uintptr_t, N> { };
+
+    template<mcal_progmem_uintptr_t I,
+             typename T,
+             mcal_progmem_uintptr_t N>
+    struct tuple_element<I, mcal::memory::progmem::array<T, N>>
+    {
+      static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
+
+      using type = T;
+    };
+  }
 
   template<typename T, mcal_progmem_uintptr_t N>
   constexpr mcal_progmem_uintptr_t mcal::memory::progmem::array<T, N>::static_size;

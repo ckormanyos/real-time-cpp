@@ -53,14 +53,14 @@
 
     auto operator[](const difference_type i) noexcept -> reference
     {
-      reference value = *offset_ptr(my_ptr, i);
+      reference value = *offset_pointer(my_ptr, i);
 
       return value;
     }
 
     auto operator[](const difference_type i) const noexcept -> const_reference
     {
-      const_reference value = *offset_ptr(my_ptr, i);
+      const_reference value = *offset_pointer(my_ptr, i);
 
       return value;
     }
@@ -97,8 +97,8 @@
 
   private:
     static constexpr pointer offset_pointer(pointer ptr,
-                                             difference_type n,
-                                             bool subtract = false) noexcept
+                                            difference_type n,
+                                            bool subtract = false) noexcept
     {
       return ((n < 0) ? (subtract ? ptr + difference_type((size_type(0U) - size_type(n)) * static_size)
                                   : ptr - difference_type((size_type(0U) - size_type(n)) * static_size))

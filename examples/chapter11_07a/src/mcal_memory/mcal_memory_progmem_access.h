@@ -24,9 +24,12 @@
                                    && (sizeof(ValueType) != 4U)
     && (sizeof(ValueType) != 8U))>::type* = nullptr) noexcept -> ValueType
   {
+    static_assert(std::is_trivially_copyable<ValueType>::value,
+                  "Program-memory values must be trivially copyable.");
+
     using local_value_type = ValueType;
 
-    local_value_type dest;
+    local_value_type dest { };
 
     for(std::size_t i = 0U; i < sizeof(ValueType); ++i)
     {

@@ -60,8 +60,4 @@
       <Filter>micros\avr\startup</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\mcal_memory\mcal_memory_sram_iterator.h" />
-    <ClInclude Include="src\mcal_memory\mcal_memory_random_access_iterator_operations.h" />
-  </ItemGroup>
 </Project>
