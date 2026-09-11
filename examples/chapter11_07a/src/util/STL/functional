@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2022.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -49,13 +49,14 @@
       constexpr operator T& () const noexcept { return *my_ptr; }
       constexpr T& get() const noexcept { return *my_ptr; }
 
-      //template< class... ArgTypes >
-      //constexpr std::invoke_result_t<T&, ArgTypes...>
-      //operator() ( ArgTypes&&... args ) const
-      //{
-      //  return std::invoke(get(), std::forward<ArgTypes>(args)...);
-      //}
- 
+      template<class... ArgTypes>
+      constexpr auto operator()(ArgTypes&&... args) const
+        noexcept(noexcept(get()(std::forward<ArgTypes>(args)...)))
+        -> decltype(get()(std::forward<ArgTypes>(args)...))
+      {
+        return get()(std::forward<ArgTypes>(args)...);
+      }
+
     private:
       T* my_ptr;
     };
