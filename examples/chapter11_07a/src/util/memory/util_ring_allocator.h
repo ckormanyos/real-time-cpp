@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,162 +8,121 @@
 #ifndef UTIL_RING_ALLOCATOR_2010_02_23_H
   #define UTIL_RING_ALLOCATOR_2010_02_23_H
 
-  #include <util/utility/util_alignas.h>
-
+  #include <algorithm>
+  #include <array>
+  #include <cassert>
   #include <cstddef>
   #include <cstdint>
-  #include <memory>
+  #include <limits>
 
   namespace util
   {
-    class ring_allocator_base
-    {
-    public:
-      using size_type       = std::size_t;
-      using difference_type = std::ptrdiff_t;
+    template <const std::size_t ArenaSize,
+              const std::size_t BufferAlignment = alignof(std::max_align_t)>
+    struct ring_arena {
+        static_assert(ArenaSize != 0U, "The ring arena must not be empty.");
+        static_assert(BufferAlignment != 0U &&
+                      (BufferAlignment & (BufferAlignment - 1U)) == 0U,
+                      "The ring arena alignment must be a power of two.");
 
-      virtual ~ring_allocator_base() = default;
+        alignas(BufferAlignment) std::array<std::uint8_t, ArenaSize> buffer{};
 
-    protected:
-      ring_allocator_base() noexcept = default;
+        std::size_t head{};
+        // Diagnostic count only. It does not describe live storage after wrap.
+        std::size_t allocated_bytes{};
+        std::size_t peak_outstanding{};
+        std::size_t allocations{};
 
-      ring_allocator_base(const ring_allocator_base&) noexcept = default;
-
-      // The ring allocator's buffer type.
-      struct buffer_type
-      {
-        static constexpr size_type size = 64U;
-
-        std::uint8_t data[size];
-
-        buffer_type() noexcept : data() { }
-      };
-
-      // The ring allocator's memory allocation.
-      template<const std::uint_fast8_t buffer_alignment>
-      static auto do_allocate(size_type chunk_size) -> void*
-      {
-        ALIGNAS(16) static buffer_type buffer;
-
-        static std::uint8_t* get_ptr = buffer.data;
-
-        // Get the newly allocated pointer.
-        std::uint8_t* p = get_ptr;
-
-        // Increment the get-pointer for the next allocation.
-        // Be sure to handle the buffer alignment.
-
-        const std::uint_fast8_t misaligned_amount(chunk_size % buffer_alignment);
-
-        if(misaligned_amount != UINT8_C(0))
-        {
-          chunk_size += size_type(buffer_alignment - misaligned_amount);
-        }
-
-        get_ptr += chunk_size;
-
-        // Does this attempted allocation overflow the capacity of the buffer?
-        const bool is_overflow = (get_ptr >= (buffer.data + buffer_type::size));
-
-        if(is_overflow)
-        {
-          // The buffer has overflowed.
-
-          // Reset the allocated pointer to the bottom of the buffer
-          // and increment the next get-pointer.
-          p       = &buffer.data[0U];
-          get_ptr = &buffer.data[chunk_size];
-        }
-
-        return static_cast<void*>(p);
-      }
+        // A rebound allocator must use the same storage as its original type.
+        static ring_arena instance;
     };
 
-    // Global comparison operators (required by the standard).
-    inline auto operator==(const ring_allocator_base&,
-                           const ring_allocator_base&) noexcept -> bool
-    {
-      return true;
-    }
+    template <const std::size_t ArenaSize, const std::size_t BufferAlignment>
+    ring_arena<ArenaSize, BufferAlignment> ring_arena<ArenaSize, BufferAlignment>::instance;
 
-    inline auto operator!=(const ring_allocator_base&,
-                           const ring_allocator_base&) noexcept -> bool
-    {
-      return false;
-    }
-
-    template<typename T,
-             const std::uint_fast8_t buffer_alignment = UINT8_C(16)>
-    class ring_allocator;
-
-    template<const std::uint_fast8_t buffer_alignment>
-    class ring_allocator<void, buffer_alignment> : public ring_allocator_base
-    {
+    // Access must be externally serialized. This allocator is not interrupt- or
+    // thread-safe, and it does not provide its own critical section.
+    template <class T,
+              const std::size_t ArenaSize,
+              const std::size_t BufferAlignment = alignof(std::max_align_t)>
+    class ring_allocator {
     public:
-      using value_type    = void;
-      using pointer       = value_type*;
-      using const_pointer = const value_type*;
+        using value_type = T;
+        using size_type = std::size_t;
+        using difference_type = std::ptrdiff_t;
 
-      template<typename U>
-      struct rebind
-      {
-        using other = ring_allocator<U, buffer_alignment>;
-      };
-    };
+        static_assert(alignof(T) <= BufferAlignment,
+                      "The ring allocator buffer is insufficiently aligned for T");
 
-    template<typename T,
-             const std::uint_fast8_t buffer_alignment>
-    class ring_allocator : public ring_allocator_base
-    {
-    public:
-      static_assert(sizeof(T) <= buffer_type::size,
-                    "The size of the allocation object can not exceed the buffer size.");
+        ring_allocator() noexcept = default;
 
-      using value_type      = T;
-      using pointer         = value_type*;
-      using const_pointer   = const value_type*;
-      using reference       = value_type&;
-      using const_reference = const value_type&;
+        template <class U>
+        ring_allocator(const ring_allocator<U, ArenaSize, BufferAlignment>&) noexcept {}
 
-      ring_allocator() noexcept = default;
+        template<typename U> 
+        struct rebind {
+            using other = ring_allocator<U, ArenaSize, BufferAlignment>;
+        };
 
-      ring_allocator(const ring_allocator&) noexcept : ring_allocator_base(ring_allocator()) { }
+        auto allocate(const std::size_t n) noexcept -> T* {
+            if (n > (std::numeric_limits<std::size_t>::max)() / sizeof(T)) {
+                return nullptr;
+            }
 
-      template <typename U>
-      ring_allocator(const ring_allocator<U, buffer_alignment>&) noexcept { }
+            ring_arena<ArenaSize, BufferAlignment>* arena_ptr{
+                &ring_arena<ArenaSize, BufferAlignment>::instance};
 
-      template<typename U> 
-      struct rebind
-      {
-        using other = ring_allocator<U, buffer_alignment>;
-      };
+            const std::size_t bytes = n * sizeof(T);
+            std::size_t at = arena_ptr->head;
+            const std::size_t remainder = at % alignof(T);
 
-      auto max_size() const noexcept -> size_type
-      {
-        return buffer_type::size / sizeof(value_type);
-      }
+            if (remainder != 0U) {
+                at += alignof(T) - remainder;
+            }
 
-      auto address(      reference x) const ->       pointer { return &x; }
-      auto address(const_reference x) const -> const_pointer { return &x; }
+            // This is an overwrite-style ring allocator: when the remaining
+            // tail is too small, start again at the beginning regardless of
+            // outstanding allocations.
+            if (at > arena_ptr->buffer.size() ||
+                bytes > arena_ptr->buffer.size() - at) {
+                at = 0U;
+                if (bytes > arena_ptr->buffer.size()) {
+                    return nullptr;
+                }
+            }
 
-      auto allocate(size_type count,
-                    typename ring_allocator<void, buffer_alignment>::const_pointer = nullptr) -> pointer
-      {
-        const size_type chunk_size = count * sizeof(value_type);
+            arena_ptr->head = at + bytes;
+            arena_ptr->allocated_bytes += bytes;
+            arena_ptr->peak_outstanding = std::max(arena_ptr->peak_outstanding,
+                                                   arena_ptr->allocated_bytes);
+            ++arena_ptr->allocations;
+            return reinterpret_cast<T*>(static_cast<void*>(arena_ptr->buffer.data() + at));
+        }
 
-        void* p = do_allocate<buffer_alignment>(chunk_size);
+        auto deallocate(T*, const std::size_t n) noexcept -> void {
+            ring_arena<ArenaSize, BufferAlignment>* arena_ptr{
+                &ring_arena<ArenaSize, BufferAlignment>::instance};
 
-        return static_cast<pointer>(p);
-      }
+            if (n > (std::numeric_limits<std::size_t>::max)() / sizeof(T)) {
+                return;
+            }
 
-      auto construct(pointer p, const value_type& x) noexcept -> void
-      {
-        new(static_cast<void*>(p)) value_type(x);
-      }
+            const std::size_t bytes = n * sizeof(T);
+            if (bytes <= arena_ptr->allocated_bytes) {
+                arena_ptr->allocated_bytes -= bytes;
+            }
+        }
 
-      auto destroy(pointer p) noexcept -> void { p->~value_type(); }
+        static constexpr auto max_size() noexcept -> std::size_t {
+            return ArenaSize / sizeof(T);
+        }
 
-      auto deallocate(pointer, size_type) noexcept -> void { }
+    private:
+        friend auto operator==(const ring_allocator&, const ring_allocator&) noexcept -> bool {
+            return true; }
+
+        friend auto operator!=(const ring_allocator&, const ring_allocator&) noexcept -> bool {
+            return false; }
     };
   }
 
