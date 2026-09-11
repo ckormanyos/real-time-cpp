@@ -11,6 +11,7 @@
   #include <mcal_memory/mcal_memory_sram_iterator.h>
 
   #include <algorithm>
+  #include <cstddef>
   #include <iterator>
   #include <type_traits>
 
@@ -238,9 +239,9 @@
   {
     template<typename T, mcal_sram_uintptr_t N, mcal_sram_uintptr_t Address>
     struct tuple_size<mcal::memory::sram::array<T, N, Address>>
-      : integral_constant<mcal_sram_uintptr_t, N> { };
+      : integral_constant<std::size_t, static_cast<std::size_t>(N)> { };
 
-    template<mcal_sram_uintptr_t I,
+    template<std::size_t I,
              typename T,
              mcal_sram_uintptr_t N,
              mcal_sram_uintptr_t Address>

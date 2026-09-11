@@ -11,6 +11,7 @@
   #include <mcal_memory/mcal_memory_progmem_iterator.h>
 
   #include <algorithm>
+  #include <cstddef>
   #include <iterator>
   #include <type_traits>
 
@@ -150,9 +151,9 @@
   {
     template<typename T, mcal_progmem_uintptr_t N>
     struct tuple_size<mcal::memory::progmem::array<T, N>>
-      : integral_constant<mcal_progmem_uintptr_t, N> { };
+      : integral_constant<std::size_t, static_cast<std::size_t>(N)> { };
 
-    template<mcal_progmem_uintptr_t I,
+    template<std::size_t I,
              typename T,
              mcal_progmem_uintptr_t N>
     struct tuple_element<I, mcal::memory::progmem::array<T, N>>
