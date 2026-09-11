@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,6 +12,7 @@
   #include <initializer_list>
   #include <iterator>
   #include <memory>
+  #include <utility>
 
   #include "impl/allocator_impl.h"
 
@@ -24,90 +25,190 @@
     class vector
     {
     public:
-      typedef alloc                                    allocator_type;
-      typedef std::size_t                              size_type;
-      typedef std::ptrdiff_t                           difference_type;
-      typedef T                                        value_type;
-      typedef typename allocator_type::pointer         pointer;
-      typedef typename allocator_type::const_pointer   const_pointer;
-      typedef typename allocator_type::reference       reference;
-      typedef typename allocator_type::const_reference const_reference;
-      typedef pointer                                  iterator;
-      typedef const_pointer                            const_iterator;
-      typedef std::reverse_iterator<iterator>          reverse_iterator;
-      typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
+      using allocator_type = alloc;
+      using size_type = std::size_t;
+      using difference_type = std::ptrdiff_t;
+      using value_type = T;
+      using pointer = typename allocator_type::pointer;
+      using const_pointer = typename allocator_type::const_pointer;
+      using reference = typename allocator_type::reference;
+      using const_reference = typename allocator_type::const_reference;
+      using iterator = pointer;
+      using const_iterator = const_pointer;
+      using reverse_iterator = std::reverse_iterator<iterator>;
+      using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-      vector() : my_first(nullptr),
+    private:
+      allocator_type my_allocator;
+      iterator my_first;
+      iterator my_last;
+      iterator my_end;
+
+      static auto allocate_storage(allocator_type& a, size_type count) -> pointer
+      {
+        return (count == size_type(0U)) ? pointer(nullptr) : a.allocate(count);
+      }
+
+      static auto end_pointer(pointer first, size_type count) -> pointer
+      {
+        return (first == nullptr) ? pointer(nullptr) : first + count;
+      }
+
+    public:
+
+      vector() : my_allocator(),
+                 my_first(nullptr),
                  my_last (nullptr),
                  my_end  (nullptr) { }
 
-      explicit vector(size_type count) : my_first(allocator_type().allocate(count)),
-                                         my_last (my_first + count),
-                                         my_end  (my_last)
+      explicit vector(const allocator_type& a) : my_allocator(a),
+                                                 my_first(nullptr),
+                                                 my_last (nullptr),
+                                                 my_end  (nullptr) { }
+
+      vector(size_type count, const allocator_type& a) : my_allocator(a),
+                                                         my_first(allocate_storage(my_allocator, count)),
+                                                         my_last (end_pointer(my_first, count)),
+                                                         my_end  (my_last)
       {
-        std::fill(my_first, my_last, value_type());
+        fill_construct(my_first, my_last, value_type());
       }
 
-      vector(size_type count, const T& value) : my_first(allocator_type().allocate(count)),
-                                                my_last (my_first + count),
+      explicit vector(size_type count) : my_allocator(),
+                                         my_first(allocate_storage(my_allocator, count)),
+                                         my_last (end_pointer(my_first, count)),
+                                         my_end  (my_last)
+      {
+        fill_construct(my_first, my_last, value_type());
+      }
+
+      vector(size_type count, const T& value) : my_allocator(),
+                                                my_first(allocate_storage(my_allocator, count)),
+                                                my_last (end_pointer(my_first, count)),
                                                 my_end  (my_last)
       {
-        std::fill(my_first, my_last, value);
+        fill_construct(my_first, my_last, value);
       }
 
       vector(size_type count,
              const T& value,
-             const allocator_type& a) : my_first(allocator_type(a).allocate(count)),
-                                        my_last (my_first + count),
+             const allocator_type& a) : my_allocator(a),
+                                        my_first(allocate_storage(my_allocator, count)),
+                                        my_last (end_pointer(my_first, count)),
                                         my_end  (my_last)
       {
-        std::fill(my_first, my_last, value);
+        fill_construct(my_first, my_last, value);
       }
 
       template<typename input_iterator>
       vector(input_iterator first,
              input_iterator last,
-             const allocator_type& a = allocator_type()) : my_first(allocator_type(a).allocate(static_cast<size_type>(std::distance(first, last)))),
-                                                           my_last (my_first + static_cast<size_type>(std::distance(first, last))),
-                                                           my_end  (my_last)
+             const allocator_type& a = allocator_type()) : my_allocator(a),
+                                                           my_first(nullptr),
+                                                           my_last (nullptr),
+                                                           my_end  (nullptr)
       {
-        std::copy(first, last, my_first);
+        range_construct(first, last, typename std::iterator_traits<input_iterator>::iterator_category());
       }
 
-      vector(const vector& other) : my_first(allocator_type().allocate(other.size())),
-                                    my_last (my_first + other.size()),
-                                    my_end  (my_last)
+       vector(const vector& other) : my_allocator(other.my_allocator),
+                                     my_first(allocate_storage(my_allocator, other.size())),
+                                     my_last (end_pointer(my_first, other.size())),
+                                     my_end  (my_last)
       {
-        std::copy(other.my_first, other.my_last, my_first);
+        copy_construct(other.my_first, other.my_last, my_first);
       }
 
-      vector(std::initializer_list<T> lst,
-             const allocator_type& a = allocator_type()) : my_first(allocator_type(a).allocate(lst.size())),
-                                                           my_last (my_first + lst.size()),
+      vector(const vector& other, const allocator_type& a) : my_allocator(a),
+                                                              my_first(allocate_storage(my_allocator, other.size())),
+                                                              my_last (end_pointer(my_first, other.size())),
+                                                              my_end  (my_last)
+      {
+        copy_construct(other.my_first, other.my_last, my_first);
+      }
+
+      vector(vector&& other) noexcept : my_allocator(std::move(other.my_allocator)),
+                                        my_first(other.my_first),
+                                        my_last (other.my_last),
+                                        my_end  (other.my_end)
+      {
+        other.my_first = nullptr;
+        other.my_last  = nullptr;
+        other.my_end   = nullptr;
+      }
+
+      vector(vector&& other, const allocator_type& a) : my_allocator(a),
+                                                         my_first(nullptr),
+                                                         my_last (nullptr),
+                                                         my_end  (nullptr)
+      {
+        if(my_allocator == other.my_allocator)
+        {
+          my_first = other.my_first;
+          my_last  = other.my_last;
+          my_end   = other.my_end;
+          other.my_first = nullptr;
+          other.my_last  = nullptr;
+          other.my_end   = nullptr;
+        }
+        else
+        {
+          reserve(other.size());
+          move_construct(other.my_first, other.my_last, my_first);
+          my_last = end_pointer(my_first, other.size());
+          other.clear();
+        }
+      }
+
+       vector(std::initializer_list<T> lst,
+              const allocator_type& a = allocator_type()) : my_allocator(a),
+                                                            my_first(allocate_storage(my_allocator, lst.size())),
+                                                            my_last (end_pointer(my_first, lst.size())),
                                                            my_end  (my_last)
       {
-        std::copy(lst.begin(), lst.end(), my_first);
+        copy_construct(lst.begin(), lst.end(), my_first);
       }
 
       ~vector()
       {
-        std::destroy_range(my_first, my_last, allocator_type());
-        std::deallocate_range(my_first, my_end, allocator_type());
+        std::destroy_range(my_first, my_last, my_allocator);
+        deallocate_storage();
       }
 
       vector& operator=(const vector& other)
       {
         const size_type sz = other.size();
+        const bool same_size = (size() == sz);
 
-        if(size() != sz)
+        if(!same_size)
         {
-          clear();
-          my_first = allocator_type().allocate(sz);
-          my_last  = my_first + sz;
-          my_end   = my_first + sz;
+          destroy_and_deallocate();
+          my_first = allocate_storage(my_allocator, sz);
+          my_last  = end_pointer(my_first, sz);
+          my_end   = my_last;
         }
 
-        std::copy(other.begin(), other.end(), my_first);
+        if(this != &other)
+        {
+          if(same_size)
+          {
+            copy_assign(other.begin(), other.end());
+          }
+          else
+          {
+            copy_construct(other.begin(), other.end(), my_first);
+          }
+        }
+
+        return *this;
+      }
+
+      vector& operator=(vector&& other)
+      {
+        if(this != &other)
+        {
+          move_assign(other);
+        }
 
         return *this;
       }
@@ -115,37 +216,45 @@
       vector& operator=(std::initializer_list<T> lst)
       {
         const size_type sz = lst.size();
+        const bool same_size = (size() == sz);
 
-        if(size() != sz)
+        if(!same_size)
         {
-          clear();
-          my_first = allocator_type().allocate(sz);
-          my_last  = my_first + sz;
-          my_end   = my_first + sz;
+          destroy_and_deallocate();
+          my_first = allocate_storage(my_allocator, sz);
+          my_last  = end_pointer(my_first, sz);
+          my_end   = my_last;
         }
 
-        std::copy(lst.begin(), lst.end(), my_first);
+        if(same_size)
+        {
+          copy_assign(lst.begin(), lst.end());
+        }
+        else
+        {
+          copy_construct(lst.begin(), lst.end(), my_first);
+        }
 
         return *this;
       }
 
-      iterator begin() { return my_first; }
-      iterator end  () { return my_last; }
+      auto begin() -> iterator { return my_first; }
+      auto end  () -> iterator { return my_last; }
 
-      const_iterator begin() const { return my_first; }
-      const_iterator end  () const { return my_last; }
+      auto begin() const -> const_iterator { return my_first; }
+      auto end  () const -> const_iterator { return my_last; }
 
-      const_iterator cbegin() const { return my_first; }
-      const_iterator cend  () const { return my_last; }
+      auto cbegin() const -> const_iterator { return my_first; }
+      auto cend  () const -> const_iterator { return my_last; }
 
-      reverse_iterator rbegin() { return reverse_iterator(my_last); }
-      reverse_iterator rend  () { return reverse_iterator(my_first); }
+      auto rbegin() -> reverse_iterator { return reverse_iterator(my_last); }
+      auto rend  () -> reverse_iterator { return reverse_iterator(my_first); }
 
-      const_reverse_iterator rbegin() const { return const_reverse_iterator(my_last); }
-      const_reverse_iterator rend  () const { return const_reverse_iterator(my_first); }
+      auto rbegin() const -> const_reverse_iterator { return const_reverse_iterator(my_last); }
+      auto rend  () const -> const_reverse_iterator { return const_reverse_iterator(my_first); }
 
-      const_reverse_iterator crbegin() const { return const_reverse_iterator(my_last); }
-      const_reverse_iterator crend  () const { return const_reverse_iterator(my_first); }
+      auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(my_last); }
+      auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(my_first); }
 
       reference       operator[](const size_type i)       { return my_first[i]; }
       const_reference operator[](const size_type i) const { return my_first[i]; }
@@ -163,22 +272,32 @@
       const_reference back() const { return *(my_last - 1U); }
 
       bool      empty   () const { return (my_first == my_last); }
-      size_type size    () const { return static_cast<size_type>(std::distance(my_first, my_last)); }
-      size_type capacity() const { return static_cast<size_type>(std::distance(my_first, my_end)); }
+      size_type size() const
+      {
+        return (my_first == nullptr) ? size_type(0U) : static_cast<size_type>(std::distance(my_first, my_last));
+      }
+      size_type capacity() const
+      {
+        return (my_first == nullptr) ? size_type(0U) : static_cast<size_type>(std::distance(my_first, my_end));
+      }
+      auto max_size() const -> size_type { return my_allocator.max_size(); }
+
+      auto get_allocator() const -> allocator_type { return my_allocator; }
 
       void reserve(size_type count)
       {
         if(count > capacity())
         {
-          iterator new_first = allocator_type().allocate(count);
+          iterator new_first = allocate_storage(my_allocator, count);
 
-          std::copy(my_first, my_last, new_first);
-          std::destroy_range(my_first, my_last, allocator_type());
-          std::deallocate_range(my_first, my_end, allocator_type());
+          const size_type old_size = size();
+          move_construct(my_first, my_last, new_first);
+          std::destroy_range(my_first, my_last, my_allocator);
+          deallocate_storage();
 
-          my_last  = new_first + size();
+          my_last  = end_pointer(new_first, old_size);
           my_first = new_first;
-          my_end   = new_first + count;
+          my_end   = end_pointer(new_first, count);
         }
       }
 
@@ -187,7 +306,7 @@
         if     (count == size()) { }
         else if(count <  size())
         {
-          std::destroy_range(my_first + count, my_last, allocator_type());
+          std::destroy_range(my_first + count, my_last, my_allocator);
           my_last = my_first + count;
         }
         else
@@ -197,22 +316,24 @@
             reserve(count);
           }
 
-          std::fill(my_last, my_first + count, value);
+          fill_construct(my_last, my_first + count, value);
           my_last = my_first + count;
         }
       }
 
       void assign(size_type count, const T& value)
       {
-        resize(count);
-        std::fill(my_first, my_last, value);
+        clear();
+        reserve(count);
+        fill_construct(my_first, my_first + count, value);
+        my_last = my_first + count;
       }
 
       template<typename input_iterator>
       void assign(input_iterator first, input_iterator last)
       {
-        resize(static_cast<size_type>(std::distance(first, last)));
-        std::copy(first, last, my_first);
+        clear();
+        for(; first != last; ++first) { push_back(*first); }
       }
 
       void push_back(const value_type& value)
@@ -226,22 +347,221 @@
           reserve((std::max)(count, size_type(4U)));
         }
 
-        *my_last = value;
+        construct(my_last, value);
         ++my_last;
+      }
+
+      void push_back(value_type&& value)
+      {
+        if(size() == capacity()) { reserve((std::max)(size_type(4U), size() * 2U)); }
+        construct(my_last, std::move(value));
+        ++my_last;
+      }
+
+      template<typename... Args>
+      void emplace_back(Args&&... args)
+      {
+        if(size() == capacity()) { reserve((std::max)(size_type(4U), size() * 2U)); }
+        value_type value(std::forward<Args>(args)...);
+        construct(my_last, value);
+        ++my_last;
+      }
+
+      void pop_back()
+      {
+        if(!empty())
+        {
+          --my_last;
+          my_allocator.destroy(my_last);
+        }
       }
 
       void clear()
       {
-        std::destroy_range(my_first, my_last, allocator_type());
-        std::deallocate_range(my_first, my_last, allocator_type());
+        std::destroy_range(my_first, my_last, my_allocator);
         my_last = my_first;
       }
 
+      void move_construct(pointer first, pointer last, pointer destination)
+      {
+        while(first != last)
+        {
+          construct(destination, std::move(*first));
+          ++first;
+          ++destination;
+        }
+      }
+
+      void deallocate_storage()
+      {
+        if(my_first != nullptr)
+        {
+          std::deallocate_range(my_first, my_end, my_allocator);
+        }
+      }
+
     private:
-      iterator my_first; // begin()
-      iterator my_last;  // end()
-      iterator my_end;   // capacity()
+      void move_assign(vector& other)
+      {
+        if(my_allocator == other.my_allocator)
+        {
+          destroy_and_deallocate();
+          my_first = other.my_first;
+          my_last  = other.my_last;
+          my_end   = other.my_end;
+          other.my_first = nullptr;
+          other.my_last  = nullptr;
+          other.my_end   = nullptr;
+        }
+        else
+        {
+          clear();
+          reserve(other.size());
+          move_construct(other.my_first, other.my_last, my_first);
+          my_last = end_pointer(my_first, other.size());
+          other.clear();
+        }
+      }
+
+      void destroy_and_deallocate()
+      {
+        std::destroy_range(my_first, my_last, my_allocator);
+        deallocate_storage();
+        my_first = nullptr;
+        my_last  = nullptr;
+        my_end   = nullptr;
+      }
+
+      void construct(pointer p, const value_type& value)
+      {
+        my_allocator.construct(p, value);
+      }
+
+      void construct(pointer p, value_type&& value)
+      {
+        my_allocator.construct(p, value);
+      }
+
+      void copy_construct(const_pointer first, const_pointer last, pointer destination)
+      {
+        while(first != last)
+        {
+          construct(destination, *first);
+          ++first;
+          ++destination;
+        }
+      }
+
+      void fill_construct(pointer first, pointer last, const value_type& value)
+      {
+        while(first != last)
+        {
+          construct(first, value);
+          ++first;
+        }
+      }
+
+      template<typename input_iterator>
+      void copy_assign(input_iterator first, input_iterator last)
+      {
+        input_iterator source = first;
+        pointer destination = my_first;
+        while(source != last)
+        {
+          *destination = *source;
+          ++destination;
+          ++source;
+        }
+      }
+
+      template<typename input_iterator>
+      void range_construct(input_iterator first,
+                           input_iterator last,
+                           std::input_iterator_tag)
+      {
+        for(; first != last; ++first)
+        {
+          push_back(*first);
+        }
+      }
+
+      template<typename forward_iterator>
+      void range_construct(forward_iterator first,
+                           forward_iterator last,
+                           std::forward_iterator_tag)
+      {
+        const size_type count = static_cast<size_type>(std::distance(first, last));
+
+        my_first = allocate_storage(my_allocator, count);
+        my_last  = end_pointer(my_first, count);
+        my_end   = my_last;
+
+        for(pointer destination = my_first; first != last; ++first, ++destination)
+        {
+          construct(destination, *first);
+        }
+      }
+
     };
+
+    template<typename T, typename alloc>
+    auto operator==(const vector<T, alloc>& left, const vector<T, alloc>& right) -> bool
+    {
+      if(left.size() != right.size()) { return false; }
+
+      typename vector<T, alloc>::const_iterator left_it  = left.begin();
+      typename vector<T, alloc>::const_iterator right_it = right.begin();
+
+      while(left_it != left.end())
+      {
+        if(!(*left_it == *right_it)) { return false; }
+        ++left_it;
+        ++right_it;
+      }
+
+      return true;
+    }
+
+    template<typename T, typename alloc>
+    auto operator!=(const vector<T, alloc>& left, const vector<T, alloc>& right) -> bool
+    {
+      return (!(left == right));
+    }
+
+    template<typename T, typename alloc>
+    auto operator<(const vector<T, alloc>& left, const vector<T, alloc>& right) -> bool
+    {
+      typename vector<T, alloc>::const_iterator left_it  = left.begin();
+      typename vector<T, alloc>::const_iterator right_it = right.begin();
+
+      while(left_it != left.end() && right_it != right.end())
+      {
+        if(*left_it < *right_it) { return true; }
+        if(*right_it < *left_it) { return false; }
+        ++left_it;
+        ++right_it;
+      }
+
+      return (left.size() < right.size());
+    }
+
+    template<typename T, typename alloc>
+    auto operator>(const vector<T, alloc>& left, const vector<T, alloc>& right) -> bool
+    {
+      return (right < left);
+    }
+
+    template<typename T, typename alloc>
+    auto operator<=(const vector<T, alloc>& left, const vector<T, alloc>& right) -> bool
+    {
+      return (!(right < left));
+    }
+
+    template<typename T, typename alloc>
+    auto operator>=(const vector<T, alloc>& left, const vector<T, alloc>& right) -> bool
+    {
+      return (!(left < right));
+    }
   }
 
 #endif // VECTOR_2010_02_23_

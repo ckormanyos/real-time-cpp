@@ -15,6 +15,13 @@
     using ::size_t;
     using ::ptrdiff_t;
     using ::nullptr_t;
+
+    union max_align_t
+    {
+      long long   integer;
+      long double floating_point;
+      void*       pointer;
+    };
   }
 
 #endif // CSTDDEF_2010_02_23_
