@@ -10,6 +10,7 @@
 
   #include <cstddef>
   #include <iterator>
+  #include <memory>
 
   // Implement helper functions for some of std::allocator.
 
@@ -20,7 +21,7 @@
     {
       while(first != last)
       {
-        a.destroy(first);
+        std::allocator_traits<allocator_type>::destroy(a, first);
 
         ++first;
       }

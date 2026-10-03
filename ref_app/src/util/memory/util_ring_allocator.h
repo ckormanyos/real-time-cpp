@@ -29,11 +29,6 @@
 
       std::size_t head { };
 
-      // Diagnostic count only. It does not describe live storage after wrap.
-      std::size_t allocated_bytes { };
-      std::size_t peak_outstanding { };
-      std::size_t allocations { };
-
       // A rebound allocator must use the same storage as its original type.
       static ring_arena instance;
     };
@@ -52,6 +47,10 @@
       using value_type = T;
       using size_type = std::size_t;
       using difference_type = std::ptrdiff_t;
+      using pointer = T*;
+      using const_pointer = const T*;
+      using reference = T&;
+      using const_reference = const T&;
 
       static_assert(alignof(T) <= BufferAlignment,
                     "The ring allocator buffer is insufficiently aligned for T");
@@ -61,7 +60,7 @@
       template <class U>
       ring_allocator(const ring_allocator<U, ArenaSize, BufferAlignment>&) noexcept { }
 
-      template<typename U> 
+      template<typename U>
       struct rebind
       {
         using other = ring_allocator<U, ArenaSize, BufferAlignment>;
@@ -103,34 +102,18 @@
         }
 
         arena_ptr->head = at + bytes;
-        arena_ptr->allocated_bytes += bytes;
-        arena_ptr->peak_outstanding = (std::max)(arena_ptr->peak_outstanding, arena_ptr->allocated_bytes);
-
-        ++arena_ptr->allocations;
 
         return static_cast<T*>(static_cast<void*>(arena_ptr->buffer.data() + at));
       }
 
-      auto deallocate(T*, const std::size_t n) noexcept -> void
+      auto deallocate(T*, const std::size_t) noexcept -> void { }
+
+      void construct(pointer p, const value_type& x) noexcept
       {
-        ring_arena<ArenaSize, BufferAlignment>*
-          arena_ptr
-          {
-            &ring_arena<ArenaSize, BufferAlignment>::instance
-          };
-
-        if(n > (std::numeric_limits<std::size_t>::max)() / sizeof(T))
-        {
-          return;
-        }
-
-        const std::size_t bytes = n * sizeof(T);
-
-        if(bytes <= arena_ptr->allocated_bytes)
-        {
-          arena_ptr->allocated_bytes -= bytes;
-        }
+        new(static_cast<void*>(p)) value_type(x);
       }
+
+      void destroy(pointer p) noexcept { p->~value_type(); }
 
       static constexpr auto max_size() noexcept -> std::size_t
       {

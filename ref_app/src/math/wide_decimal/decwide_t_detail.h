@@ -16,8 +16,6 @@
 
   #include <math/wide_decimal/decwide_t_detail_namespace.h>
 
-  #include <util/utility/util_dynamic_array.h>
-
   #include <algorithm>
   #include <array>
   #include <cmath>
@@ -25,6 +23,7 @@
   #include <initializer_list>
   #include <limits>
   #include <memory>
+  #include <vector>
 
   #if defined(_MSC_VER)
     #if (_MSC_VER >= 1900) && defined(_HAS_CXX20) && (_HAS_CXX20 != 0)
@@ -515,10 +514,10 @@
   template<typename ValueType,
            const std::size_t MySize,
            typename AllocatorType>
-  class fixed_dynamic_array final : public util::dynamic_array<ValueType, AllocatorType, std::size_t, ptrdiff_t>
+  class fixed_dynamic_array final : public std::vector<ValueType, AllocatorType>
   {
   private:
-    using base_class_type = util::dynamic_array<ValueType, AllocatorType, std::size_t, ptrdiff_t>;
+    using base_class_type = std::vector<ValueType, AllocatorType>;
 
   public:
     // Type definitions.
@@ -537,42 +536,63 @@
 
     static constexpr auto static_size() -> size_type { return MySize; }
 
-    explicit constexpr fixed_dynamic_array(const size_type       s = size_type(),
-                                           const value_type&     v = value_type(),
-                                           const allocator_type& a = allocator_type()) noexcept
+    #if defined(__cpp_lib_constexpr_vector) && (__cpp_lib_constexpr_vector >= 201907L)
+    #define WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR constexpr // NOLINT(cppcoreguidelines-macro-usage)
+    #else
+    #define WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR
+    #endif
+
+    WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR auto fill(const value_type& value) -> void
+    {
+      std::fill(this->begin(), this->end(), value);
+    }
+
+    #if (defined(__GNUC__) && !defined(__clang__) && (__GNUC__ >= 12))
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Warray-bounds"
+    #pragma GCC diagnostic ignored "-Wstringop-overflow"
+    #endif
+    explicit WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR fixed_dynamic_array(const size_type       s = size_type(),
+                                                                      const value_type&     v = value_type(),
+                                                                      const allocator_type& a = allocator_type())
       : base_class_type(static_size(), v, a) { static_cast<void>(s); }
 
-    constexpr fixed_dynamic_array(const fixed_dynamic_array& other)
+    WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR fixed_dynamic_array(const fixed_dynamic_array& other)
       : base_class_type(static_cast<const base_class_type&>(other)) { }
 
-    constexpr fixed_dynamic_array(std::initializer_list<value_type> lst,
-                        const allocator_type& a = allocator_type())
+    WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR fixed_dynamic_array(std::initializer_list<value_type> lst,
+                                                             const allocator_type& a = allocator_type())
       : base_class_type(static_size(), value_type(), a)
     {
       std::copy(lst.begin(),
                 lst.begin() + (std::min)(static_cast<size_type>(lst.size()), static_size()),
                 base_class_type::begin());
     }
+    #if (defined(__GNUC__) && !defined(__clang__) && (__GNUC__ >= 12))
+    #pragma GCC diagnostic pop
+    #endif
 
-    constexpr fixed_dynamic_array(fixed_dynamic_array&& other) noexcept
+    WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR fixed_dynamic_array(fixed_dynamic_array&& other) noexcept
       : base_class_type(static_cast<base_class_type&&>(other)) { }
 
-    constexpr auto operator=(const fixed_dynamic_array& other) -> fixed_dynamic_array& // NOLINT(cert-oop54-cpp)
+    WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR auto operator=(const fixed_dynamic_array& other) -> fixed_dynamic_array& // NOLINT(cert-oop54-cpp)
     {
       static_cast<void>(base_class_type::operator=(static_cast<const base_class_type&>(other)));
 
       return *this;
     }
 
-    constexpr auto operator=(fixed_dynamic_array&& other) noexcept -> fixed_dynamic_array&
+    WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR auto operator=(fixed_dynamic_array&& other) noexcept -> fixed_dynamic_array&
     {
       static_cast<void>(base_class_type::operator=(static_cast<base_class_type&&>(other)));
 
       return *this;
     }
 
-    ~fixed_dynamic_array() override = default;
+    WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR ~fixed_dynamic_array() = default;
   };
+
+  #undef WIDE_DECIMAL_DETAIL_CONSTEXPR_VECTOR
 
   template<typename ValueType,
            const std::size_t MySize>

@@ -177,13 +177,19 @@
       using __has_construct = typename __construct_helper<_Tp, _Args...>::type;
 
       template<typename _Tp, typename... _Args>
-      static void _S_construct(AllocatorType& __a, _Tp* __p, _Args&&... __args)
+      static void _S_construct(AllocatorType& __a, _Tp* __p, true_type, _Args&&... __args)
       {
         __a.construct(__p, std::forward<_Args>(__args)...);
       }
 
+      template<typename _Tp, typename... _Args>
+      static void _S_construct(AllocatorType&, _Tp* __p, false_type, _Args&&... __args)
+      {
+        ::new (static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+      }
+
       template<typename _Alloc2, typename _Tp>
-      static void _S_destroy(_Alloc2& __a, _Tp* __p, int)
+      static auto _S_destroy(_Alloc2& __a, _Tp* __p, int) -> decltype(__a.destroy(__p), void())
       {
         __a.destroy(__p);
       }
@@ -235,9 +241,10 @@
       }
 
       template<typename _Tp, typename... _Args>
-      static auto construct(AllocatorType& __a, _Tp* __p, _Args&&... __args) -> decltype(_S_construct(__a, __p, std::forward<_Args>(__args)...))
+      static auto construct(AllocatorType& __a, _Tp* __p, _Args&&... __args)
+        -> decltype(_S_construct(__a, __p, __has_construct<_Tp, _Args...> { }, std::forward<_Args>(__args)...))
       {
-        _S_construct(__a, __p, std::forward<_Args>(__args)...);
+        _S_construct(__a, __p, __has_construct<_Tp, _Args...> { }, std::forward<_Args>(__args)...);
       }
 
       template<typename _Tp>
@@ -288,11 +295,11 @@
 
       template<typename _Up, typename... _Args>
       static void construct(allocator_type& __a, _Up* __p, _Args&&... __args)
-      { __a.construct(__p, std::forward<_Args>(__args)...); }
+      { ::new (static_cast<void*>(__p)) _Up(std::forward<_Args>(__args)...); }
 
       template<typename _Up>
-      static void destroy(allocator_type& __a, _Up* __p) noexcept(noexcept(__a.destroy(__p)))
-      { __a.destroy(__p); }
+      static void destroy(allocator_type&, _Up* __p) noexcept
+      { __p->~_Up(); }
 
       static size_type max_size(const allocator_type& __a) noexcept
       { return __a.max_size(); }

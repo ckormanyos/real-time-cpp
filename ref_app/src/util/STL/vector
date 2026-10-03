@@ -373,7 +373,7 @@
         if(!empty())
         {
           --my_last;
-          my_allocator.destroy(my_last);
+          std::allocator_traits<allocator_type>::destroy(my_allocator, my_last);
         }
       }
 
@@ -435,12 +435,12 @@
 
       void construct(pointer p, const value_type& value)
       {
-        my_allocator.construct(p, value);
+        std::allocator_traits<allocator_type>::construct(my_allocator, p, value);
       }
 
       void construct(pointer p, value_type&& value)
       {
-        my_allocator.construct(p, value);
+        std::allocator_traits<allocator_type>::construct(my_allocator, p, std::move(value));
       }
 
       void copy_construct(const_pointer first, const_pointer last, pointer destination)

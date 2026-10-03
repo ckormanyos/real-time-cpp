@@ -182,7 +182,7 @@
     template<typename T> using is_trivially_copyable_t = is_trivially_copyable<T>;
     template<typename T> struct is_trivial : std::integral_constant<bool, __is_trivial(T)> { };
     template<typename T> struct is_standard_layout : std::integral_constant<bool, __is_standard_layout(T)> { };
-    template<typename T> struct is_pod : std::integral_constant<bool, __is_pod(T)> { };
+    template<typename T> struct is_pod : std::integral_constant<bool, std::is_trivial<T>::value && std::is_standard_layout<T>::value> { };
     template<typename T> struct is_empty : std::integral_constant<bool, __is_empty(T)> { };
 
     template<typename T> using remove_cv_t       = typename remove_cv<T>::type;
@@ -489,6 +489,15 @@
       template<typename>
       static traits_helper::no_type test(...);
     };
+
+    struct is_assignable_imp
+    {
+      template<typename T, typename U>
+      static auto test(int) -> decltype(std::declval<T>() = std::declval<U>(), std::true_type { });
+
+      template<typename, typename>
+      static std::false_type test(...);
+    };
   }
 
   namespace std
@@ -551,6 +560,37 @@
     template <> struct is_constructible<void volatile>       : public false_type { };
 
     template <class T> struct is_constructible<T> : public is_default_constructible<T> { };
+
+    template <class T, class U>
+    struct is_assignable : decltype(traits_helper::is_assignable_imp::test<T, U>(0)) { };
+
+    template <class T>
+    struct is_copy_assignable
+      : is_assignable<typename add_lvalue_reference<T>::type,
+                      typename add_lvalue_reference<typename add_const<T>::type>::type> { };
+
+    template <class T>
+    struct is_move_assignable
+      : is_assignable<typename add_lvalue_reference<T>::type,
+                      typename add_rvalue_reference<T>::type> { };
+
+    template <class T>
+    struct is_copy_constructible
+      : is_constructible<T,
+                         typename add_lvalue_reference<typename add_const<T>::type>::type> { };
+
+    template <class T>
+    struct is_move_constructible
+      : is_constructible<T, typename add_rvalue_reference<T>::type> { };
+
+    template <> struct is_copy_constructible<void>                : false_type { };
+    template <> struct is_copy_constructible<void const>          : false_type { };
+    template <> struct is_copy_constructible<void volatile>       : false_type { };
+    template <> struct is_copy_constructible<void const volatile> : false_type { };
+    template <> struct is_move_constructible<void>                : false_type { };
+    template <> struct is_move_constructible<void const>          : false_type { };
+    template <> struct is_move_constructible<void volatile>       : false_type { };
+    template <> struct is_move_constructible<void const volatile> : false_type { };
   }
 
 #endif // TYPE_TRAITS_2013_09_01_

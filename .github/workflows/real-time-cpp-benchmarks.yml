@@ -41,9 +41,6 @@ jobs:
       - name: clone-boost-decimal
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/decimal.git ../boost-decimal-root
-      - name: clone-cppalliance-crypt
-        run: |
-          git clone -b develop --depth 1 https://github.com/cppalliance/crypt.git ../cppalliance-crypt-root
         working-directory: ./
       - name: benchmark_gcc-clang
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
@@ -191,9 +188,6 @@ jobs:
       - name: clone-boost-decimal
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/decimal.git ../boost-decimal-root
-      - name: clone-cppalliance-crypt
-        run: |
-          git clone -b develop --depth 1 https://github.com/cppalliance/crypt.git ../cppalliance-crypt-root
         working-directory: ./
       - name: benchmark_builds-stm32f446
         run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}

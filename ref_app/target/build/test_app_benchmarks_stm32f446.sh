@@ -44,7 +44,6 @@ $GCC -std=$STD -Werror -Wall         -O2 -g -gdwarf-2 -fno-exceptions -ffunction
 $GCC -std=$STD -Werror -Wall $wflags -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=128 -Wzero-as-null-pointer-constant -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffast-math -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src                                                             -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_HASH_SHA256                  -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_hash_sha256.cpp               ./target/micros/stm32f446/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_hash_sha256.map                -T ./target/micros/stm32f446/make/stm32f446.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_hash_sha256.elf
 $GCC -std=$STD -Werror -Wall $wflags -Os -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=128 -Wzero-as-null-pointer-constant -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffast-math -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src                                                             -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_ECC_GENERIC_ECC              -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_ecc_generic_ecc.cpp           ./target/micros/stm32f446/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_ecc_generic_ecc.map            -T ./target/micros/stm32f446/make/stm32f446.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_ecc_generic_ecc.elf
 $GCC -std=$STD -Werror -Wall         -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=128 -Wzero-as-null-pointer-constant -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffast-math -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src -I../../boost-decimal-root/include -I../../boost-root       -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_NON_STD_DECIMAL              -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_non_std_decimal.cpp           ./target/micros/stm32f446/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_non_std_decimal.map            -T ./target/micros/stm32f446/make/stm32f446.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_non_std_decimal.elf
-$GCC -std=$STD -Werror -Wall         -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=128 -Wzero-as-null-pointer-constant -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffast-math -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src -I../../cppalliance-crypt-root/include -I../../boost-root   -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_BOOST_CRYPT_HASHER           -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_boost_crypt_hasher.cpp        ./target/micros/stm32f446/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_boost_crypt_hasher.map         -T ./target/micros/stm32f446/make/stm32f446.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_boost_crypt_hasher.elf
 
 echo check existences of ELF-files and map-files
 echo
@@ -112,9 +111,6 @@ result_ls_ecc_generic_ecc=$?
 ls -la ./bin/app_benchmark_non_std_decimal.elf ./bin/app_benchmark_non_std_decimal.map
 result_ls_non_std_decimal=$?
 
-ls -la ./bin/app_benchmark_boost_crypt_hasher.elf ./bin/app_benchmark_boost_crypt_hasher.map
-result_ls_boost_crypt_hasher=$?
-
 echo "result_ls_complex                   : "  "$result_ls_complex"
 echo "result_ls_crc                       : "  "$result_ls_crc"
 echo "result_ls_fast_math                 : "  "$result_ls_fast_math"
@@ -136,12 +132,11 @@ echo "result_ls_boost_multiprecision_cbrt : "  "$result_ls_boost_multiprecision_
 echo "result_ls_hash_sha256               : "  "$result_ls_hash_sha256"
 echo "result_ls_ecc_generic_ecc           : "  "$result_ls_ecc_generic_ecc"
 echo "result_ls_non_std_decimal           : "  "$result_ls_non_std_decimal"
-echo "result_ls_boost_crypt_hasher        : "  "$result_ls_boost_crypt_hasher"
 
 echo verify result_total
 echo
 
-result_total=$((result_ls_complex+result_ls_crc+result_ls_fast_math+result_ls_filter+result_ls_fixed_point+result_ls_float+result_ls_hash+result_ls_none+result_ls_pi_agm+result_ls_pi_spigot+result_ls_pi_spigot_single+result_ls_soft_double_h2f1+result_ls_trapezoid_integral+result_ls_wide_decimal+result_ls_wide_integer+result_ls_boost_math_cbrt_tgamma+result_ls_boost_math_cyl_bessel_j+result_ls_boost_multiprecision_cbrt+result_ls_hash_sha256+$result_ls_ecc_generic_ecc+result_ls_non_std_decimal+result_ls_boost_crypt_hasher))
+result_total=$((result_ls_complex+result_ls_crc+result_ls_fast_math+result_ls_filter+result_ls_fixed_point+result_ls_float+result_ls_hash+result_ls_none+result_ls_pi_agm+result_ls_pi_spigot+result_ls_pi_spigot_single+result_ls_soft_double_h2f1+result_ls_trapezoid_integral+result_ls_wide_decimal+result_ls_wide_integer+result_ls_boost_math_cbrt_tgamma+result_ls_boost_math_cyl_bessel_j+result_ls_boost_multiprecision_cbrt+result_ls_hash_sha256+$result_ls_ecc_generic_ecc+result_ls_non_std_decimal))
 
 echo "result_total                        : "  "$result_total"
 

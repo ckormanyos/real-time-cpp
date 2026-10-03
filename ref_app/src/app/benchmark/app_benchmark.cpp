@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -119,10 +119,6 @@ auto app::benchmark::task_func() -> void
   #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NON_STD_DECIMAL))
 
   const bool result_is_ok = app::benchmark::run_non_std_decimal();
-
-  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_CRYPT_HASHER))
-
-  const bool result_is_ok = app::benchmark::run_boost_crypt_hasher();
 
   #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_STD_BIG_INT))
 
