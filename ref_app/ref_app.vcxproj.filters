@@ -1216,9 +1216,6 @@
     <ClCompile Include="src\mcal\rpi_pico2_rp2350\mcal_cpu_rp2350.cpp">
       <Filter>src\mcal\rpi_pico2_rp2350</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\benchmark\app_benchmark_boost_crypt_hasher.cpp">
-      <Filter>src\app\benchmark</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_cpu.cpp">
       <Filter>src\mcal\xtensa_esp32_s3</Filter>
     </ClCompile>

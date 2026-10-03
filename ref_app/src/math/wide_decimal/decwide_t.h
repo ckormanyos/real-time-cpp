@@ -36,6 +36,7 @@
   #include <functional>
   #endif
   #include <limits>
+  #include <vector>
   #if !defined(WIDE_DECIMAL_DISABLE_IOSTREAM)
   #include <iomanip>
   #include <ios>
@@ -2728,9 +2729,17 @@
                 tmp.cbegin() + static_cast<std::ptrdiff_t>((std::min)(static_cast<std::ptrdiff_t>(i), copy_limit)),
                 my_data.begin());
 
+      #if (defined(__GNUC__) && !defined(__clang__) && (__GNUC__ >= 12))
+      #pragma GCC diagnostic push
+      #pragma GCC diagnostic ignored "-Warray-bounds"
+      #pragma GCC diagnostic ignored "-Wstringop-overflow"
+      #endif
       std::fill(my_data.begin() + static_cast<std::ptrdiff_t>((std::min)(static_cast<std::ptrdiff_t>(i), copy_limit)),
                 my_data.end(),
                 static_cast<limb_type>(UINT8_C(0)));
+      #if (defined(__GNUC__) && !defined(__clang__) && (__GNUC__ >= 12))
+      #pragma GCC diagnostic pop
+      #endif
     }
 
     template<typename FloatingPointType>
@@ -2777,7 +2786,7 @@
 
       // Use school multiplication.
       #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
-      using school_mul_pool_type = util::dynamic_array<limb_type>;
+      using school_mul_pool_type = std::vector<limb_type>;
 
       auto my_school_mul_pool =
         school_mul_pool_type
@@ -2837,7 +2846,7 @@
       {
         // Use school multiplication.
         #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
-        using school_mul_pool_type = util::dynamic_array<limb_type>;
+        using school_mul_pool_type = std::vector<limb_type>;
 
         auto my_school_mul_pool =
           school_mul_pool_type
@@ -2890,7 +2899,7 @@
           detail::a029750::a029750_as_runtime_value(static_cast<std::uint32_t>(prec_elems_for_multiply));
 
         #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
-        using kara_mul_pool_type = util::dynamic_array<limb_type>;
+        using kara_mul_pool_type = std::vector<limb_type>;
 
         auto my_kara_mul_pool =
           kara_mul_pool_type
@@ -2958,7 +2967,7 @@
       {
         // Use school multiplication.
         #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
-        using school_mul_pool_type = util::dynamic_array<limb_type>;
+        using school_mul_pool_type = std::vector<limb_type>;
 
         auto my_school_mul_pool =
           school_mul_pool_type
@@ -3012,7 +3021,7 @@
           detail::a029750::a029750_as_runtime_value(static_cast<std::uint32_t>(prec_elems_for_multiply));
 
         #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
-        using kara_mul_pool_type = util::dynamic_array<limb_type>;
+        using kara_mul_pool_type = std::vector<limb_type>;
 
         auto my_kara_mul_pool =
           kara_mul_pool_type
@@ -3090,7 +3099,7 @@
           );
 
         #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
-        using fft_mul_storage_type = util::dynamic_array<fft_float_type>;
+        using fft_mul_storage_type = std::vector<fft_float_type>;
 
         auto my_af_fft_mul_pool = fft_mul_storage_type(static_cast<typename fft_mul_storage_type::size_type>(n_fft));
         auto my_bf_fft_mul_pool = fft_mul_storage_type(static_cast<typename fft_mul_storage_type::size_type>(n_fft));
@@ -3240,7 +3249,7 @@
 
           if(do_clear_lower_limbs)
           {
-            std::fill(my_data.begin() + static_cast<local_size_type>(least_digit_idx_plus_one),
+            std::fill(my_data.begin() + static_cast<typename representation_type::difference_type>(least_digit_idx_plus_one),
                       my_data.end(),
                       static_cast<local_limb_type>(UINT8_C(0)));
           }
@@ -3761,7 +3770,7 @@
 
       // Extract the digits following the decimal point from decwide_t,
       // beginning with the data element having index 1.
-      while(it_rep != (x.crepresentation().cbegin() + static_cast<std::size_t>(number_of_elements))) // NOLINT(altera-id-dependent-backward-branch)
+      while(it_rep != (x.crepresentation().cbegin() + static_cast<std::ptrdiff_t>(number_of_elements))) // NOLINT(altera-id-dependent-backward-branch)
       {
         p_end = util::baselexical_cast(*it_rep, data_elem_buf.data(), data_elem_buf.data() + data_elem_buf.size());
 
@@ -3799,7 +3808,7 @@
 
       // Extract the remaining digits from decwide_t after the decimal point.
 
-      util::dynamic_array<char>
+      std::vector<char>
         str_tmp_mem
         (
           static_cast<std::size_t>
@@ -3820,7 +3829,7 @@
       str.resize(count_retrieved);
 
       std::copy(str_tmp_mem.cbegin(),
-                str_tmp_mem.cbegin() + count_retrieved,
+                 str_tmp_mem.cbegin() + static_cast<std::ptrdiff_t>(count_retrieved),
                 str.begin());
 
       // Cut the output to the size of the precision.

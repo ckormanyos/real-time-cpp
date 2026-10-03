@@ -48,9 +48,9 @@
       using size_type = std::size_t;
       using difference_type = std::ptrdiff_t;
       using pointer = T*;
-      using const_pointer = const pointer;
+      using const_pointer = const T*;
       using reference = T&;
-      using const_reference = const reference;
+      using const_reference = const T&;
 
       static_assert(alignof(T) <= BufferAlignment,
                     "The ring allocator buffer is insufficiently aligned for T");
@@ -60,7 +60,7 @@
       template <class U>
       ring_allocator(const ring_allocator<U, ArenaSize, BufferAlignment>&) noexcept { }
 
-      template<typename U> 
+      template<typename U>
       struct rebind
       {
         using other = ring_allocator<U, ArenaSize, BufferAlignment>;
