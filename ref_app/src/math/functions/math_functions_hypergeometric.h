@@ -9,10 +9,7 @@
   #define MATH_FUNCTIONS_HYPERGEOMETRIC_2014_04_29_H
 
   #include <util/memory/util_ring_allocator.h>
-  #include <util/utility/util_dynamic_array.h>
 
-  #include <algorithm>
-  #include <array>
   #include <cmath>
   #include <cstdint>
   #include <functional>
@@ -36,7 +33,7 @@
         T pochhammer_sequence_b(b);
         T bp                   (b);
 
-        const T my_one(1);
+        constexpr T my_one { 1 };
 
         T hypergeometric_0f1_result = my_one + (x_pow_n_div_n_fact / pochhammer_sequence_b);
 
@@ -135,24 +132,25 @@
         const std::ptrdiff_t count_of_a_terms = std::distance(coefficients_a_begin, coefficients_a_end);
         const std::ptrdiff_t count_of_b_terms = std::distance(coefficients_b_begin, coefficients_b_end);
 
-        // Check for hypergeometric_0f1.
-        if(   (count_of_a_terms == static_cast<std::ptrdiff_t>(0))
-           && (count_of_b_terms == static_cast<std::ptrdiff_t>(1)))
+        if(count_of_b_terms == static_cast<std::ptrdiff_t>(1))
         {
-          // Use hypergeometric_0f1, which is explicitly implemented above.
-          return hypergeometric_0f1(*coefficients_b_begin, x, tolerance);
-        }
+          // Check for hypergeometric_0f1.
+          if(count_of_a_terms == static_cast<std::ptrdiff_t>(0))
+          {
+            // Use hypergeometric_0f1, which is explicitly implemented above.
+            return hypergeometric_0f1(*coefficients_b_begin, x, tolerance);
+          }
 
-        // Check for hypergeometric_2f1.
-        if(   (count_of_a_terms == static_cast<std::ptrdiff_t>(2))
-           && (count_of_b_terms == static_cast<std::ptrdiff_t>(1)))
-        {
-          // Use hypergeometric_2f1, which is explicitly implemented above.
-          return hypergeometric_2f1( *coefficients_a_begin,
-                                    *(coefficients_a_begin + std::size_t(1U)),
-                                     *coefficients_b_begin,
-                                    x,
-                                    tolerance);
+          // Check for hypergeometric_2f1.
+          if(count_of_a_terms == static_cast<std::ptrdiff_t>(2))
+          {
+            // Use hypergeometric_2f1, which is explicitly implemented above.
+            return hypergeometric_2f1( *coefficients_a_begin,
+                                      *(coefficients_a_begin + std::size_t(1U)),
+                                       *coefficients_b_begin,
+                                      x,
+                                      tolerance);
+          }
         }
 
         // Compute the Taylor series expansion of hypergeometric_pfq.
@@ -160,13 +158,8 @@
 
         T x_pow_n_div_n_fact(x);
 
-        constexpr std::size_t local_buffer_size { std::size_t { UINT8_C(64) } };
-
-        // Define an allocator type for use in the containers below.
-        using allocator_type = util::ring_allocator<T, local_buffer_size>;
-
         // Define a container type for the upcoming calculation.
-        using container_type = util::fixed_dynamic_array<T, local_buffer_size / sizeof(T), allocator_type>;
+        using container_type = std::vector<T, util::ring_allocator<T, std::size_t { 64U }>>;
 
         // The pochhammer symbols for the multiplications in the series expansion
         // will be stored in non-constant STL vectors.
@@ -177,7 +170,7 @@
         const bool count_of_a_terms_is_zero = (count_of_a_terms == static_cast<std::ptrdiff_t>(0));
         const bool count_of_b_terms_is_zero = (count_of_b_terms == static_cast<std::ptrdiff_t>(0));
 
-        const T my_one(1);
+        constexpr T my_one { 1 };
 
         // Initialize the pochhammer product terms with the products of the form:
         // [(a0)_1 * (a1)_1 * (a2)_1 * ...], or [(b0)_1 * (b1)_1 * (b2)_1 * ...].
@@ -202,12 +195,12 @@
         for(n = static_cast<std::uint_fast16_t>(2U); n < max_iteration; ++n)
         {
           x_pow_n_div_n_fact *= x;
-          x_pow_n_div_n_fact  = static_cast<float>(x_pow_n_div_n_fact / static_cast<float>(n));
+          x_pow_n_div_n_fact /= static_cast<float>(n);
 
           if(!count_of_a_terms_is_zero)
           {
             // Increment each of the pochhammer elements in {an}.
-            std::for_each(an.begin(), an.end(), [](T& a) { ++a; });
+            for(auto& an_elem : an) { ++an_elem; };
 
             // Multiply the pochhammer product terms with the products of the
             // incremented pochhammer elements. This is a product of the form:
@@ -218,7 +211,7 @@
           if(!count_of_b_terms_is_zero)
           {
             // Increment each of the pochhammer elements in {bm}.
-            std::for_each(bm.begin(), bm.end(), [](T& b) { ++b; });
+            for(auto& bm_elem : bm) { ++bm_elem; };
 
             // Multiply the pochhammer product terms with the products of the
             // incremented pochhammer elements. This is a product of the form:
