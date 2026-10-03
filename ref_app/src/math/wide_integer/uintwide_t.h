@@ -55,9 +55,7 @@
   #include <istream>
   #endif
   #include <limits>
-  #if !defined(WIDE_INTEGER_DISABLE_IMPLEMENT_UTIL_DYNAMIC_ARRAY)
   #include <memory>
-  #endif
   #if (defined(__cpp_lib_gcd_lcm) && (__cpp_lib_gcd_lcm >= 201606L))
   #include <numeric>
   #endif
@@ -661,12 +659,6 @@
   } // namespace math
   #endif
 
-  WIDE_INTEGER_NAMESPACE_END
-
-  #if !defined(WIDE_INTEGER_DISABLE_IMPLEMENT_UTIL_DYNAMIC_ARRAY)
-
-  WIDE_INTEGER_NAMESPACE_BEGIN
-
   namespace util {
 
   template<typename ValueType,
@@ -701,7 +693,7 @@
     using const_reverse_iterator =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<const_iterator>;
     #endif
 
-    static_assert(std::is_integral<value_type>::value, "Error: the value_type of dynamic_array must be a built-in integral");
+    static_assert((std::is_standard_layout<value_type>::value && std::is_trivial<value_type>::value), "Error: the value_type of dynamic_array must be POD");
 
     // Constructors.
     explicit constexpr dynamic_array(size_type count_in = size_type(),
@@ -714,14 +706,11 @@
       {
         elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
-        iterator it = begin();
-
-        while(it != end())
-        {
-          std::allocator_traits<allocator_type>::construct(my_alloc, it, value_in);
-
-          ++it;
-        }
+        #if defined(WIDE_INTEGER_NAMESPACE)
+        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::fill_unsafe(begin(), end(), value_in);
+        #else
+        ::math::wide_integer::detail::fill_unsafe(begin(), end(), value_in);
+        #endif
       }
     }
 
@@ -741,7 +730,24 @@
       }
     }
 
-    template<typename InputIterator>
+    constexpr dynamic_array(const dynamic_array& other, const allocator_type& alloc_in)
+      : elem_count(other.elem_count),
+        my_alloc(alloc_in)
+    {
+      if(elem_count > static_cast<size_type>(UINT8_C(0)))
+      {
+        elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
+
+        #if defined(WIDE_INTEGER_NAMESPACE)
+        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::copy_unsafe(other.elems, other.elems + elem_count, elems);
+        #else
+        ::math::wide_integer::detail::copy_unsafe(other.elems, other.elems + elem_count, elems);
+        #endif
+      }
+    }
+
+    template<typename InputIterator,
+             typename = std::enable_if_t<!std::is_integral<InputIterator>::value>>
     constexpr dynamic_array(InputIterator first,
                             InputIterator last,
                             const allocator_type& alloc_in = allocator_type())
@@ -789,22 +795,9 @@
     // Destructor.
     virtual ~dynamic_array()
     {
-      if(!empty())
+      if(elems != nullptr)
       {
-        // The destructors of the elements are called (in unspecified order)
-        // and the dynamically allocated storage (if any) is deallocated.
-
-        for(auto* itr { begin() }; itr != end(); ++itr) // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-        {
-          itr->~value_type();
-        }
-
-        using local_allocator_traits_type = std::allocator_traits<allocator_type>;
-
-        local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
-
-        elem_count = static_cast<size_type>(UINT8_C(0));
-        elems      = nullptr;
+        std::allocator_traits<allocator_type>::deallocate(my_alloc, elems, elem_count);
       }
     }
 
@@ -813,46 +806,50 @@
     {
       if(this != &other)
       {
-        #if defined(WIDE_INTEGER_NAMESPACE)
-        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::copy_unsafe
-        #else
-        ::math::wide_integer::detail::copy_unsafe
-        #endif
-        (
-          other.elems,
-          #if defined(WIDE_INTEGER_NAMESPACE)
-          other.elems + WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::min_unsafe
-          #else
-          other.elems + ::math::wide_integer::detail::min_unsafe
-          #endif
-                        (
-                          elem_count, other.elem_count
-                        ),
-          elems
-        );
+        using allocator_traits_type = std::allocator_traits<allocator_type>;
+
+        if(allocator_traits_type::propagate_on_container_copy_assignment::value)
+        {
+          dynamic_array temp(other, other.my_alloc);
+          release_storage();
+          my_alloc = other.my_alloc;
+          elems = temp.elems;
+          elem_count = temp.elem_count;
+          temp.elems = nullptr;
+          temp.elem_count = static_cast<size_type>(UINT8_C(0));
+        }
+        else
+        {
+          dynamic_array temp(other, my_alloc);
+          swap_storage(temp);
+        }
       }
 
       return *this;
     }
 
     // Move assignment operator.
-    constexpr auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
+    constexpr auto operator=(dynamic_array&& other) -> dynamic_array&
     {
       if(this != &other)
       {
-        if(!empty())
+        using allocator_traits_type = std::allocator_traits<allocator_type>;
+
+        if(allocator_traits_type::propagate_on_container_move_assignment::value)
         {
-          using local_allocator_traits_type = std::allocator_traits<allocator_type>;
-
-          // Deallocate the range of *this.
-          local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
+          release_storage();
+          my_alloc = other.my_alloc;
+          take_storage(other);
         }
-
-        elem_count = other.elem_count;
-        elems      = other.elems;
-
-        other.elem_count = static_cast<size_type>(UINT8_C(0));
-        other.elems      = nullptr;
+        else if(my_alloc == other.my_alloc)
+        {
+          release_storage();
+          take_storage(other);
+        }
+        else
+        {
+          *this = static_cast<const dynamic_array&>(other);
+        }
       }
 
       return *this;
@@ -860,16 +857,16 @@
 
     // Iterator members:
     WIDE_INTEGER_NODISCARD constexpr auto begin  ()       noexcept -> iterator               { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto end    ()       noexcept -> iterator               { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto end    ()       noexcept -> iterator               { return (elems != nullptr) ? elems + elem_count : elems; }
     WIDE_INTEGER_NODISCARD constexpr auto begin  () const noexcept -> const_iterator         { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto end    () const noexcept -> const_iterator         { return elems + elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto end    () const noexcept -> const_iterator         { return (elems != nullptr) ? elems + elem_count : elems; }
     WIDE_INTEGER_NODISCARD constexpr auto cbegin () const noexcept -> const_iterator         { return elems; }
-    WIDE_INTEGER_NODISCARD constexpr auto cend   () const noexcept -> const_iterator         { return elems + elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto rbegin ()       noexcept -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto cend   () const noexcept -> const_iterator         { return (elems != nullptr) ? elems + elem_count : elems; }
+    WIDE_INTEGER_NODISCARD constexpr auto rbegin ()       noexcept -> reverse_iterator       { return reverse_iterator(end()); }
     WIDE_INTEGER_NODISCARD constexpr auto rend   ()       noexcept -> reverse_iterator       { return reverse_iterator(elems); }
-    WIDE_INTEGER_NODISCARD constexpr auto rbegin () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto rbegin () const noexcept -> const_reverse_iterator { return const_reverse_iterator(end()); }
     WIDE_INTEGER_NODISCARD constexpr auto rend   () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
-    WIDE_INTEGER_NODISCARD constexpr auto crbegin() const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_NODISCARD constexpr auto crbegin() const noexcept -> const_reverse_iterator { return const_reverse_iterator(end()); }
     WIDE_INTEGER_NODISCARD constexpr auto crend  () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
 
     // Raw pointer access.
@@ -878,8 +875,15 @@
 
     // Size and capacity.
     WIDE_INTEGER_NODISCARD constexpr auto size    () const noexcept -> size_type { return  elem_count; }
-    WIDE_INTEGER_NODISCARD constexpr auto max_size() const noexcept -> size_type { return  elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto capacity() const noexcept -> size_type { return  elem_count; }
+    WIDE_INTEGER_NODISCARD constexpr auto max_size() const noexcept -> size_type
+    {
+      const auto allocator_max = std::allocator_traits<allocator_type>::max_size(my_alloc);
+      const auto size_type_max = static_cast<std::make_unsigned_t<size_type>>(std::numeric_limits<size_type>::max());
+      return static_cast<size_type>((allocator_max < size_type_max) ? allocator_max : size_type_max);
+    }
     WIDE_INTEGER_NODISCARD constexpr auto empty   () const noexcept -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
+    WIDE_INTEGER_NODISCARD constexpr auto get_allocator() const -> allocator_type { return my_alloc; }
 
     // Element access members.
     WIDE_INTEGER_NODISCARD constexpr auto operator[](const size_type i)       noexcept -> reference       { return elems[i]; }
@@ -891,36 +895,60 @@
     WIDE_INTEGER_NODISCARD constexpr auto back()       noexcept -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
     WIDE_INTEGER_NODISCARD constexpr auto back() const noexcept -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
-    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i)       noexcept -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
-    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i) const noexcept -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i)       noexcept -> reference       { return elems[(i < elem_count) ? i : static_cast<size_type>(UINT8_C(0))]; }
+    WIDE_INTEGER_NODISCARD constexpr auto at(const size_type i) const noexcept -> const_reference { return elems[(i < elem_count) ? i : static_cast<size_type>(UINT8_C(0))]; }
 
     // Element manipulation members.
     constexpr auto fill(const value_type& value_in) -> void
     {
       #if defined(WIDE_INTEGER_NAMESPACE)
-      WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::fill_unsafe(begin(), begin() + elem_count, value_in);
+      WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::fill_unsafe(begin(), end(), value_in);
       #else
-      ::math::wide_integer::detail::fill_unsafe(begin(), begin() + elem_count, value_in);
+      ::math::wide_integer::detail::fill_unsafe(begin(), end(), value_in);
       #endif
     }
 
-    constexpr auto swap(dynamic_array& other) noexcept -> void
+    constexpr auto swap(dynamic_array& other) -> void
     {
       if(this != &other)
       {
-        #if defined(WIDE_INTEGER_NAMESPACE)
-        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(elems, other.elems);
-        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(elem_count, other.elem_count);
-        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::swap_unsafe(my_alloc, other.my_alloc);
-        #else
-        ::math::wide_integer::detail::swap_unsafe(elems, other.elems);
-        ::math::wide_integer::detail::swap_unsafe(elem_count, other.elem_count);
-        ::math::wide_integer::detail::swap_unsafe(my_alloc, other.my_alloc);
-        #endif
+        if(std::allocator_traits<allocator_type>::propagate_on_container_swap::value)
+        {
+          using std::swap;
+          swap(my_alloc, other.my_alloc);
+        }
+
+        swap_storage(other);
       }
     }
 
   private:
+    constexpr auto release_storage() -> void
+    {
+      if(elems != nullptr)
+      {
+        std::allocator_traits<allocator_type>::deallocate(my_alloc, elems, elem_count);
+      }
+
+      elem_count = static_cast<size_type>(UINT8_C(0));
+      elems = nullptr;
+    }
+
+    constexpr auto take_storage(dynamic_array& other) -> void
+    {
+      elem_count = other.elem_count;
+      elems = other.elems;
+      other.elem_count = static_cast<size_type>(UINT8_C(0));
+      other.elems = nullptr;
+    }
+
+    constexpr auto swap_storage(dynamic_array& other) noexcept -> void
+    {
+      using std::swap;
+      swap(elem_count, other.elem_count);
+      swap(elems, other.elems);
+    }
+
     size_type      elem_count { static_cast<size_type>(UINT8_C(0)) }; // NOLINT(readability-identifier-naming)
     pointer        elems      { nullptr };                            // NOLINT(readability-identifier-naming,altera-id-dependent-backward-branch)
     allocator_type my_alloc;                                          // NOLINT(readability-identifier-naming)
@@ -964,15 +992,11 @@
     friend constexpr auto operator>=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(lhs < rhs)); }
     friend constexpr auto operator<=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(rhs < lhs)); }
 
-    friend constexpr auto swap(dynamic_array& x, dynamic_array& y) noexcept -> void { x.swap(y); }
+    friend constexpr auto swap(dynamic_array& x, dynamic_array& y) noexcept(noexcept(x.swap(y))) -> void { x.swap(y); }
   };
 
   } // namespace util
 
-  WIDE_INTEGER_NAMESPACE_END
-
-  WIDE_INTEGER_NAMESPACE_BEGIN
-
   #if(__cplusplus >= 201703L)
   namespace math::wide_integer::detail {
   #else
@@ -991,31 +1015,6 @@
 
   WIDE_INTEGER_NAMESPACE_END
 
-  #else
-
-  #include <util/utility/util_dynamic_array.h>
-
-  WIDE_INTEGER_NAMESPACE_BEGIN
-
-  #if(__cplusplus >= 201703L)
-  namespace math::wide_integer::detail {
-  #else
-  namespace math { namespace wide_integer { namespace detail { // NOLINT(modernize-concat-nested-namespaces)
-  #endif
-
-  using util::dynamic_array;
-
-  #if(__cplusplus >= 201703L)
-  } // namespace math::wide_integer::detail
-  #else
-  } // namespace detail
-  } // namespace wide_integer
-  } // namespace math
-  #endif
-
-  WIDE_INTEGER_NAMESPACE_END
-
-  #endif
 
   WIDE_INTEGER_NAMESPACE_BEGIN
 
@@ -1444,6 +1443,22 @@
            const bool IsSignedRight>
   constexpr auto divmod(const uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft >& a,
                         const uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>& b) -> std::enable_if_t<(IsSignedLeft || IsSignedRight), std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>>;
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSignedLeft,
+           const bool IsSignedRight>
+  constexpr auto div_rem_to_neg_inf(const uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft >& a,
+                                    const uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>& b) -> std::enable_if_t<((!IsSignedLeft) && (!IsSignedRight)), std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>>;
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSignedLeft,
+           const bool IsSignedRight>
+  constexpr auto div_rem_to_neg_inf(const uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft >& a,
+                                    const uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>& b) -> std::enable_if_t<(IsSignedLeft || IsSignedRight), std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>>;
 
   template<const size_t Width2,
            typename LimbType = uint_defaultlimb_t,
@@ -2271,11 +2286,7 @@
     #endif
 
     // Copy constructor.
-    #if !defined(WIDE_INTEGER_DISABLE_TRIVIAL_COPY_AND_STD_LAYOUT_CHECKS)
     constexpr uintwide_t(const uintwide_t& other) = default;
-    #else
-    constexpr uintwide_t(const uintwide_t& other) : values(other.values) { }
-    #endif
 
     // Copy-like constructor from the other signed-ness type.
     template<const bool RePhraseIsSigned,
@@ -5594,7 +5605,6 @@
   using  int32768_t = uintwide_t<static_cast<size_t>(UINT32_C(32768)), uint_defaultlimb_t, void, true>;
   using  int65536_t = uintwide_t<static_cast<size_t>(UINT32_C(65536)), uint_defaultlimb_t, void, true>;
 
-  #if !defined(WIDE_INTEGER_DISABLE_TRIVIAL_COPY_AND_STD_LAYOUT_CHECKS)
   static_assert(std::is_trivially_copyable<uint64_t   >::value, "uintwide_t must be trivially copyable.");
   static_assert(std::is_trivially_copyable<uint128_t  >::value, "uintwide_t must be trivially copyable.");
   static_assert(std::is_trivially_copyable<uint256_t  >::value, "uintwide_t must be trivially copyable.");
@@ -5618,9 +5628,7 @@
   static_assert(std::is_standard_layout<uint16384_t>::value, "uintwide_t must have standard layout.");
   static_assert(std::is_standard_layout<uint32768_t>::value, "uintwide_t must have standard layout.");
   static_assert(std::is_standard_layout<uint65536_t>::value, "uintwide_t must have standard layout.");
-  #endif
 
-  #if !defined(WIDE_INTEGER_DISABLE_TRIVIAL_COPY_AND_STD_LAYOUT_CHECKS)
   static_assert(std::is_trivially_copyable<int64_t   >::value, "uintwide_t must be trivially copyable.");
   static_assert(std::is_trivially_copyable<int128_t  >::value, "uintwide_t must be trivially copyable.");
   static_assert(std::is_trivially_copyable<int256_t  >::value, "uintwide_t must be trivially copyable.");
@@ -5644,7 +5652,6 @@
   static_assert(std::is_standard_layout<int16384_t>::value, "uintwide_t must have standard layout.");
   static_assert(std::is_standard_layout<int32768_t>::value, "uintwide_t must have standard layout.");
   static_assert(std::is_standard_layout<int65536_t>::value, "uintwide_t must have standard layout.");
-  #endif
 
   // Insert a base class for numeric_limits<> support.
   // This class inherits from std::numeric_limits<unsigned int>
@@ -6794,6 +6801,28 @@
     }
 
     return result;
+  }
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSignedLeft,
+           const bool IsSignedRight>
+  constexpr auto div_rem_to_neg_inf(const uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft >& a,
+                                    const uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>& b) -> std::enable_if_t<((!IsSignedLeft) && (!IsSignedRight)), std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>>
+  {
+    return divmod(a, b);
+  }
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSignedLeft,
+           const bool IsSignedRight>
+  constexpr auto div_rem_to_neg_inf(const uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft >& a,
+                                    const uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>& b) -> std::enable_if_t<(IsSignedLeft || IsSignedRight), std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>>
+  {
+    return divmod(a, b);
   }
 
   template<const size_t Width2,

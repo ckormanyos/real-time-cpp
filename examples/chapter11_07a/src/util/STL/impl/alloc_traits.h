@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021 - 2022.
+//  Copyright Christopher Kormanyos 2021 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -138,6 +138,7 @@
       using difference_type    = typename _Diff<AllocatorType, pointer>::type;
       using size_type          = typename _Size<AllocatorType, difference_type>::type;
 
+      using propagate_on_container_copy_assignment = __detected_or_t<false_type, __pocca, AllocatorType>;
       using propagate_on_container_swap = __detected_or_t<false_type, __pocs, AllocatorType>;
 
       template<typename _Tp>
