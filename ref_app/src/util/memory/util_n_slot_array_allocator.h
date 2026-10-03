@@ -30,12 +30,21 @@
     using value_type    = void;
     using pointer       = value_type*;
     using const_pointer = const value_type*;
+    using size_type     = std::size_t;
+
+    constexpr auto max_slot_count() const noexcept -> size_type { return SlotCount; }
 
     template<typename RebindType>
     struct rebind
     {
       using other = n_slot_array_allocator<RebindType, SlotWidth, SlotCount>;
     };
+
+    template<typename RebindType>
+    static auto high_water_mark() noexcept -> size_type
+    {
+      return n_slot_array_allocator<RebindType, SlotWidth, SlotCount>::high_water_mark();
+    }
   };
 
   template<typename T,
@@ -87,6 +96,8 @@
     constexpr auto max_size() const noexcept -> size_type { return static_cast<size_type>(slot_width); }
     constexpr auto max_slot_count() const noexcept -> size_type { return slot_count; }
 
+    static auto high_water_mark() noexcept -> size_type { return slot_high_water_mark(); }
+
     constexpr auto address(      reference x) const ->       pointer { return &x; }
     constexpr auto address(const_reference x) const -> const_pointer { return &x; }
 
@@ -122,6 +133,20 @@
 
         my_slot_flags[allocated_slot_index] = static_cast<local_flags_value_type>(UINT8_C(1)); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         p = static_cast<pointer>(my_slot_array_memory[allocated_slot_index].data()); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+
+        auto allocated_slot_count = static_cast<size_type>(0U);
+
+        for(const auto slot_flag : my_slot_flags)
+        {
+          allocated_slot_count += static_cast<size_type>(slot_flag != static_cast<local_flags_value_type>(UINT8_C(0)));
+        }
+
+        auto& my_high_water_mark = slot_high_water_mark();
+
+        if(allocated_slot_count > my_high_water_mark)
+        {
+          my_high_water_mark = allocated_slot_count;
+        }
 
         my_next_free_slot = slot_count;
 
@@ -191,6 +216,7 @@
     static auto slot_array_memory() -> slot_array_memory_type& { static slot_array_memory_type my_mem_instance; return my_mem_instance; }
     static auto slot_flags       () -> slot_array_flags_type&  { static slot_array_flags_type  my_flg_instance; return my_flg_instance; }
     static auto next_free_slot   () -> std::size_t&            { static std::size_t            my_idx_instance; return my_idx_instance; }
+    static auto slot_high_water_mark() -> size_type&           { static size_type              my_count_instance; return my_count_instance; }
   };
 
   // Global comparison operators (required by the standard).

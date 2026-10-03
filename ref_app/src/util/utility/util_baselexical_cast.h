@@ -14,14 +14,6 @@
   #include <cstdint>
   #include <type_traits>
 
-  #if ((defined(__cplusplus) && (__cplusplus >= 201703L)) || (defined(_MSVC_LANG) && (_MSVC_LANG >= 201703L))) && !defined(__AVR__)
-    #include <charconv>
-    #include <system_error>
-    #if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L)
-      #define UTIL_BASELEXICAL_CAST_HAS_CHARCONV // NOLINT(cppcoreguidelines-macro-usage)
-    #endif
-  #endif
-
   namespace util {
 
   template<typename UnsignedIntegerType,
@@ -44,28 +36,6 @@
       return nullptr;
     }
 
-    #if defined(UTIL_BASELEXICAL_CAST_HAS_CHARCONV)
-    constexpr auto my_base = static_cast<int>(BaseRepresentation);
-    const auto result = std::to_chars(first, last, u, my_base);
-
-    if(result.ec != std::errc { })
-    {
-      return nullptr;
-    }
-
-    if(UpperCase)
-    {
-      for(auto* p = first; p != result.ptr; ++p)
-      {
-        if((*p >= 'a') && (*p <= 'z'))
-        {
-          *p = static_cast<char>(*p - ('a' - 'A'));
-        }
-      }
-    }
-
-    return result.ptr;
-    #else
     auto* out = first;
     auto value = static_cast<local_integer_type>(u);
     constexpr auto base = static_cast<local_integer_type>(BaseRepresentation);
@@ -88,13 +58,8 @@
     std::reverse(first, out);
 
     return out;
-    #endif
   }
 
   } // namespace util
-
-  #if defined(UTIL_BASELEXICAL_CAST_HAS_CHARCONV)
-    #undef UTIL_BASELEXICAL_CAST_HAS_CHARCONV
-  #endif
 
 #endif // UTIL_BASELEXICAL_CAST_2020_06_28_H
