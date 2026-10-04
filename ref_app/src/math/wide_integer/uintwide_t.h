@@ -807,49 +807,19 @@
       if(this != &other)
       {
         using allocator_traits_type = std::allocator_traits<allocator_type>;
-
-        if(allocator_traits_type::propagate_on_container_copy_assignment::value)
-        {
-          dynamic_array temp(other, other.my_alloc);
-          release_storage();
-          my_alloc = other.my_alloc;
-          elems = temp.elems;
-          elem_count = temp.elem_count;
-          temp.elems = nullptr;
-          temp.elem_count = static_cast<size_type>(UINT8_C(0));
-        }
-        else
-        {
-          dynamic_array temp(other, my_alloc);
-          swap_storage(temp);
-        }
+        copy_assign(other, typename allocator_traits_type::propagate_on_container_copy_assignment());
       }
 
       return *this;
     }
 
     // Move assignment operator.
-    constexpr auto operator=(dynamic_array&& other) -> dynamic_array&
+    constexpr auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
     {
       if(this != &other)
       {
         using allocator_traits_type = std::allocator_traits<allocator_type>;
-
-        if(allocator_traits_type::propagate_on_container_move_assignment::value)
-        {
-          release_storage();
-          my_alloc = other.my_alloc;
-          take_storage(other);
-        }
-        else if(my_alloc == other.my_alloc)
-        {
-          release_storage();
-          take_storage(other);
-        }
-        else
-        {
-          *this = static_cast<const dynamic_array&>(other);
-        }
+        move_assign(other, typename allocator_traits_type::propagate_on_container_move_assignment());
       }
 
       return *this;
@@ -908,21 +878,58 @@
       #endif
     }
 
-    constexpr auto swap(dynamic_array& other) -> void
+    constexpr auto swap(dynamic_array& other) noexcept -> void
     {
       if(this != &other)
       {
-        if(std::allocator_traits<allocator_type>::propagate_on_container_swap::value)
-        {
-          using std::swap;
-          swap(my_alloc, other.my_alloc);
-        }
-
+        swap_allocators(other, typename std::allocator_traits<allocator_type>::propagate_on_container_swap());
         swap_storage(other);
       }
     }
 
   private:
+    constexpr auto copy_assign(const dynamic_array& other, std::true_type) -> void // NOLINT(hicpp-named-parameter,readability-named-parameter)
+    {
+      dynamic_array temp(other, other.my_alloc);
+      release_storage();
+      my_alloc = other.my_alloc;
+      take_storage(temp);
+    }
+
+    constexpr auto copy_assign(const dynamic_array& other, std::false_type) -> void // NOLINT(hicpp-named-parameter,readability-named-parameter)
+    {
+      dynamic_array temp(other, my_alloc);
+      swap_storage(temp);
+    }
+
+    constexpr auto move_assign(dynamic_array& other, std::true_type) -> void // NOLINT(hicpp-named-parameter,readability-named-parameter)
+    {
+      release_storage();
+      my_alloc = other.my_alloc;
+      take_storage(other);
+    }
+
+    constexpr auto move_assign(dynamic_array& other, std::false_type) -> void // NOLINT(hicpp-named-parameter,readability-named-parameter)
+    {
+      if(my_alloc == other.my_alloc)
+      {
+        release_storage();
+        take_storage(other);
+      }
+      else
+      {
+        *this = static_cast<const dynamic_array&>(other);
+      }
+    }
+
+    constexpr auto swap_allocators(dynamic_array& other, std::true_type) -> void // NOLINT(hicpp-named-parameter,readability-named-parameter)
+    {
+      using std::swap;
+      swap(my_alloc, other.my_alloc);
+    }
+
+    constexpr auto swap_allocators(dynamic_array&, std::false_type) const -> void { } // NOLINT(hicpp-named-parameter,readability-named-parameter)
+
     constexpr auto release_storage() -> void
     {
       if(elems != nullptr)
@@ -992,7 +999,7 @@
     friend constexpr auto operator>=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(lhs < rhs)); }
     friend constexpr auto operator<=(const dynamic_array& lhs, const dynamic_array& rhs) -> bool { return (!(rhs < lhs)); }
 
-    friend constexpr auto swap(dynamic_array& x, dynamic_array& y) noexcept(noexcept(x.swap(y))) -> void { x.swap(y); }
+    friend constexpr auto swap(dynamic_array& x, dynamic_array& y) noexcept -> void { x.swap(y); }
   };
 
   } // namespace util
@@ -1650,16 +1657,21 @@
     constexpr fixed_dynamic_array(std::initializer_list<value_type> lst, const allocator_type& alloc_in  = allocator_type())
       : base_class_type(static_size(), size_type(), alloc_in)
     {
-      #if defined(WIDE_INTEGER_NAMESPACE)
-      WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::copy_unsafe
-      #else
-      ::math::wide_integer::detail::copy_unsafe
-      #endif
-      (
-        lst.begin(),
-        lst.begin() + (detail::min_unsafe)(static_cast<size_type>(lst.size()), static_size()),
-        base_class_type::data()
-      );
+      if(lst.size() > static_cast<size_type>(UINT8_C(0)))
+      {
+        const auto init_count = (lst.size() < static_size()) ? static_cast<size_type>(lst.size()) : static_size();
+
+        #if defined(WIDE_INTEGER_NAMESPACE)
+        WIDE_INTEGER_NAMESPACE::math::wide_integer::detail::copy_unsafe
+        #else
+        ::math::wide_integer::detail::copy_unsafe
+        #endif
+        (
+          lst.begin(),
+          lst.begin() + init_count,
+          base_class_type::data()
+        );
+      }
     }
 
     ~fixed_dynamic_array() override = default;

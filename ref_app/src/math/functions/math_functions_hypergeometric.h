@@ -9,13 +9,13 @@
   #define MATH_FUNCTIONS_HYPERGEOMETRIC_2014_04_29_H
 
   #include <util/memory/util_ring_allocator.h>
+  #include <util/utility/util_dynamic_array.h>
 
   #include <cmath>
   #include <cstdint>
   #include <functional>
   #include <limits>
   #include <numeric>
-  #include <vector>
 
   namespace math
   {
@@ -159,7 +159,7 @@
         T x_pow_n_div_n_fact(x);
 
         // Define a container type for the upcoming calculation.
-        using container_type = std::vector<T, util::ring_allocator<T, std::size_t { 64U }>>;
+        using container_type = util::dynamic_array<T, util::ring_allocator<T, std::size_t { 64U }>>;
 
         // The pochhammer symbols for the multiplications in the series expansion
         // will be stored in non-constant STL vectors.
