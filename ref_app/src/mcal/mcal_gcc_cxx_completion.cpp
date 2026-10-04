@@ -66,6 +66,8 @@ extern "C"
   // Also provide stubbed copies of certain empirically found library functions
   // and objects.
 
+  struct stat;
+
   int         fprintf             (FILE*, const char*, ... );
   void        abort               ()                        __attribute__((noreturn));
   int         atexit              (void (*)());
@@ -75,15 +77,16 @@ extern "C"
   void        quick_exit          (int)                     __attribute__((noreturn));
   void        _exit               (int)                     __attribute__((noreturn));
   int         _isatty             (int);
-  int         _lseek              (int, int, int);
+  int         _lseek              (int, long, int);
   int         _open               (const char*, int, int);
   int         _close              (int);
   int         _read               (int, char*, int);
-  int         _write              (int, char*, int);
-  int         _fstat              (int, void*);
+  int         _write              (int, const char*, int);
+  int         _fstat(              int, struct stat*);
   const void* _sbrk               (int);
   int         _getpid             ();
   int         _kill               (int, int);
+  int         _getentropy         (void*, std::size_t);
   void        __cxa_pure_virtual  ();
   char*       __cxa_demangle      (const char*, char*, size_t*, int*);
 
@@ -98,15 +101,16 @@ extern "C"
   void        quick_exit          (int)                               { _Exit(0); }
   void        _exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
   int         _isatty             (int)                               { return  1; }
-  int         _lseek              (int, int, int)                     { return  0; }
+  int         _lseek              (int, long, int)                    { return  0; }
   int         _open               (const char*, int, int)             { return -1; }
   int         _close              (int)                               { return -1; }
   int         _read               (int, char*, int)                   { return  0; }
-  int         _write              (int, char*, int)                   { return  0; }
-  int         _fstat              (int, void*)                        { return  0; }
+  int         _write              (int, const char*, int)             { return  0; }
+  int         _fstat              (int, struct stat*)                 { return  0; }
   const void* _sbrk               (int)                               { return  nullptr; }
   int         _getpid             ()                                  { return  1; }
   int         _kill               (int, int)                          { return -1; }
+  int         _getentropy         (void*, std::size_t)                { return -1; }
   void        __cxa_pure_virtual  ()                                  { }
   char*       __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
 
