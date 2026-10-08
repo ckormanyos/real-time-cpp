@@ -254,14 +254,14 @@
     using fast_signed_type    = std::intmax_t;
   };
 
-  template<const std::size_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if<                                                       (BitCount <= static_cast<std::size_t>(UINT8_C(  8)))>::type> { using exact_unsigned_type = std::uint8_t;  using exact_signed_type = std::int8_t;  using fast_unsigned_type = std::uint_fast8_t;  using fast_signed_type = std::int_fast8_t;  };
-  template<const std::size_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= static_cast<std::size_t>(UINT8_C( 9))) && (BitCount <= static_cast<std::size_t>(UINT8_C( 16)))>::type> { using exact_unsigned_type = std::uint16_t; using exact_signed_type = std::int16_t; using fast_unsigned_type = std::uint_fast16_t; using fast_signed_type = std::int_fast16_t; };
-  template<const std::size_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= static_cast<std::size_t>(UINT8_C(17))) && (BitCount <= static_cast<std::size_t>(UINT8_C( 32)))>::type> { using exact_unsigned_type = std::uint32_t; using exact_signed_type = std::int32_t; using fast_unsigned_type = std::uint_fast32_t; using fast_signed_type = std::int_fast32_t; };
-  template<const std::size_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= static_cast<std::size_t>(UINT8_C(33))) && (BitCount <= static_cast<std::size_t>(UINT8_C( 64)))>::type> { using exact_unsigned_type = std::uint64_t; using exact_signed_type = std::int64_t; using fast_unsigned_type = std::uint_fast64_t; using fast_signed_type = std::int_fast64_t; };
+  template<const std::size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<                                                       (BitCount <= static_cast<std::size_t>(UINT8_C(  8)))>> { using exact_unsigned_type = std::uint8_t;  using exact_signed_type = std::int8_t;  using fast_unsigned_type = std::uint_fast8_t;  using fast_signed_type = std::int_fast8_t;  };
+  template<const std::size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<std::size_t>(UINT8_C( 9))) && (BitCount <= static_cast<std::size_t>(UINT8_C( 16)))>> { using exact_unsigned_type = std::uint16_t; using exact_signed_type = std::int16_t; using fast_unsigned_type = std::uint_fast16_t; using fast_signed_type = std::int_fast16_t; };
+  template<const std::size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<std::size_t>(UINT8_C(17))) && (BitCount <= static_cast<std::size_t>(UINT8_C( 32)))>> { using exact_unsigned_type = std::uint32_t; using exact_signed_type = std::int32_t; using fast_unsigned_type = std::uint_fast32_t; using fast_signed_type = std::int_fast32_t; };
+  template<const std::size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<std::size_t>(UINT8_C(33))) && (BitCount <= static_cast<std::size_t>(UINT8_C( 64)))>> { using exact_unsigned_type = std::uint64_t; using exact_signed_type = std::int64_t; using fast_unsigned_type = std::uint_fast64_t; using fast_signed_type = std::int_fast64_t; };
 
   template<typename UnsignedIntegralType>
-  constexpr auto negate(UnsignedIntegralType u) -> typename std::enable_if<(   std::is_integral<UnsignedIntegralType>::value
-                                                                            && std::is_unsigned<UnsignedIntegralType>::value), UnsignedIntegralType>::type
+  constexpr auto negate(UnsignedIntegralType u) -> std::enable_if_t<(   std::is_integral_v<UnsignedIntegralType>
+                                                                              && std::is_unsigned_v<UnsignedIntegralType>), UnsignedIntegralType>
   {
     using local_unsigned_integral_type = UnsignedIntegralType;
 
@@ -273,8 +273,8 @@
   }
 
   template<typename SignedIntegralType>
-  constexpr auto negate(SignedIntegralType n) -> typename std::enable_if<(   std::is_integral<SignedIntegralType>::value
-                                                                          && std::is_signed  <SignedIntegralType>::value), SignedIntegralType>::type
+  constexpr auto negate(SignedIntegralType n) -> std::enable_if_t<(   std::is_integral_v<SignedIntegralType>
+                                                                            && std::is_signed_v  <SignedIntegralType>), SignedIntegralType>
   {
     using local_signed_integral_type = SignedIntegralType;
 
@@ -420,11 +420,11 @@
     // function. So this must be taken into account at the calling point
     // of this subroutine if needed.
 
-    static_assert(std::is_integral<IntegralType>::value, "Error: This template is intended for IntegralType to be of actual integral type");
-    static_assert(std::is_integral<ExponentType>::value, "Error: This template is intended for ExponentType to be of actual integral type");
+    static_assert(std::is_integral_v<IntegralType>, "Error: This template is intended for IntegralType to be of actual integral type");
+    static_assert(std::is_integral_v<ExponentType>, "Error: This template is intended for ExponentType to be of actual integral type");
 
-    using local_unsigned_integral_type = typename uint_type_helper<std::numeric_limits<IntegralType>::digits + (std::is_signed<IntegralType>::value ? 1 : 0)>::exact_unsigned_type;
-    using local_unsigned_exponent_type = typename uint_type_helper<std::numeric_limits<ExponentType>::digits + (std::is_signed<ExponentType>::value ? 1 : 0)>::exact_unsigned_type;
+    using local_unsigned_integral_type = typename uint_type_helper<std::numeric_limits<IntegralType>::digits + (std::is_signed_v<IntegralType> ? 1 : 0)>::exact_unsigned_type;
+    using local_unsigned_exponent_type = typename uint_type_helper<std::numeric_limits<ExponentType>::digits + (std::is_signed_v<ExponentType> ? 1 : 0)>::exact_unsigned_type;
 
     auto expval = static_cast<unsigned>(UINT8_C(0));
     auto p10    = static_cast<local_unsigned_exponent_type>(UINT8_C(1));
@@ -461,10 +461,10 @@
 
   public:
     static constexpr std::int32_t elem_digits10 =
-      (std::is_same<local_limb_type, std::uint32_t>::value
+      (std::is_same_v<local_limb_type, std::uint32_t>
         ? static_cast<std::int32_t>(INT8_C(8))
-        : (std::is_same<local_limb_type, std::uint16_t>::value ? static_cast<std::int32_t>(INT8_C(4))
-                                                               : static_cast<std::int32_t>(INT8_C(2))));
+        : (std::is_same_v<local_limb_type, std::uint16_t> ? static_cast<std::int32_t>(INT8_C(4))
+                                                          : static_cast<std::int32_t>(INT8_C(2))));
 
     static constexpr std::int32_t elem_mask      = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10)));
     static constexpr std::int32_t elem_mask_half = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10 / 2)));

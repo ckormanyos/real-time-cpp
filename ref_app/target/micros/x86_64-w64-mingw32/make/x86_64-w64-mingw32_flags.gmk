@@ -31,7 +31,7 @@ TGT_ALLFLAGS  = -O3                                            \
                 -pthread                                       \
                 -lpthread
 
-TGT_CFLAGS    = -std=c99                                       \
+TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 

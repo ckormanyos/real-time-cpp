@@ -25,7 +25,7 @@ TGT_ALLFLAGS  = -Os                                            \
                 -msmall-data-limit=0                           \
                 -falign-functions=4
 
-TGT_CFLAGS    = -std=c99                                       \
+TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 
