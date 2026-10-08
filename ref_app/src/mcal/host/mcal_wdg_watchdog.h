@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2025.
+//  Copyright Christopher Kormanyos 2013 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,7 +25,7 @@
   #define  MCAL_WDG_NORETURN [[noreturn]]
   #endif
 
-  namespace mcal
+  namespace mcal // NOLINT(modernize-concat-nested-namespaces)
   {
     namespace wdg
     {
@@ -74,7 +74,7 @@
         static watchdog         my_watchdog; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
         static std::atomic_flag my_lock;     // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
-        auto get_watchdog_timeout() const -> bool
+        auto get_watchdog_timeout() const -> bool // NOLINT(modernize-use-nodiscard)
         {
           while(my_lock.test_and_set()) { mcal::cpu::nop(); }
           const auto timeout_result = my_timer.timeout();

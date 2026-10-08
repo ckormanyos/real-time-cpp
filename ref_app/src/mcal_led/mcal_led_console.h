@@ -16,7 +16,7 @@
   #include <iostream>
   #include <sstream>
 
-  namespace mcal { namespace led {
+  namespace mcal { namespace led { // NOLINT(modernize-concat-nested-namespaces)
 
   class led_console final : public mcal::led::led_boolean_state_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {

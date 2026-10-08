@@ -9,7 +9,7 @@
 #include <mcal_benchmark.h>
 #include <mcal_cpu.h>
 
-namespace app { namespace benchmark {
+namespace app { namespace benchmark { // NOLINT(modernize-concat-nested-namespaces)
 
 using port_type = mcal::benchmark::benchmark_port_type;
 

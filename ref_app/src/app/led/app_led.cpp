@@ -8,7 +8,7 @@
 #include <mcal/mcal.h>
 #include <util/utility/util_time.h>
 
-namespace app { namespace led {
+namespace app { namespace led { // NOLINT(modernize-concat-nested-namespaces)
 
 auto task_init() -> void;
 auto task_func() -> void;
