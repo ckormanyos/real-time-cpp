@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -91,12 +91,12 @@
         my_tick = my_now() + tick_value;
       }
 
-      constexpr auto timeout() const -> bool
+      [[nodiscard]] constexpr auto timeout() const -> bool
       {
         return (static_cast<tick_type>(my_now() - my_tick) <= timer_mask);
       }
 
-      constexpr auto timeout_of_specific_timepoint(const tick_type timepoint) const -> bool
+      [[nodiscard]] constexpr auto timeout_of_specific_timepoint(const tick_type timepoint) const -> bool
       {
         return (static_cast<tick_type>(timepoint - my_tick) <= timer_mask);
       }
@@ -111,7 +111,7 @@
         return my_now();
       }
 
-      constexpr auto get_ticks_since_mark() const -> tick_type
+      [[nodiscard]] constexpr auto get_ticks_since_mark() const -> tick_type
       {
         return my_now() - my_tick;
       }
