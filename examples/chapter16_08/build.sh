@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright Christopher Kormanyos 2014 - 2021.
+# Copyright Christopher Kormanyos 2014 - 2026.
 # Distributed under the Boost Software License,
 # Version 1.0. (See accompanying file LICENSE_1_0.txt
 # or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -48,7 +48,7 @@ else
 fi
 
 CFLAGS="-Wall -Wextra -Wpedantic -mmcu=atmega328p -fsigned-char -Os -fno-exceptions -gdwarf-2 -finline-functions -ffunction-sections -fdata-sections -flto"
-CPPFLAGS="-std=c++14 -fno-rtti -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32"
+CPPFLAGS="-std=c++17 -fno-rtti -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32"
 CINCLUDES="-Isrc/mcal/avr -Isrc/util/STL -Isrc"
 CDEFINES="-DWIDE_INTEGER_NAMESPACE=ckormanyos"
 

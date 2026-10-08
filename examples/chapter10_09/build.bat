@@ -1,6 +1,6 @@
 
 @rem
-@rem Copyright Christopher Kormanyos 2014 - 2021.
+@rem Copyright Christopher Kormanyos 2014 - 2026.
 @rem Distributed under the Boost Software License,
 @rem Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -28,7 +28,7 @@
 @set TOOL_PREFIX=%2
 
 @set CFLAGS=-Wall -Wextra -pedantic -marm -march=armv6zk -mtune=arm1176jzf-s -mfpu=vfpv2 -mfloat-abi=hard -finline-functions -finline-limit=32 -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections
-@set CPPFLAGS=-std=c++14 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
+@set CPPFLAGS=-std=c++17 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
 @set AFLAGS=
 @set CINCLUDES=-Isrc/util/STL -Isrc/mcal/bcm2835_raspi_b -Isrc
 
