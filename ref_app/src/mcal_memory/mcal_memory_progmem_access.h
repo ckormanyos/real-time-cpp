@@ -12,9 +12,28 @@
 
   #include <cstddef>
   #include <cstdint>
+  #include <cstring>
   #include <type_traits>
 
   namespace mcal { namespace memory { namespace progmem {
+
+  namespace detail {
+
+  template<typename ValueType, typename RepresentationType>
+  auto read_value(const RepresentationType representation) noexcept -> ValueType
+  {
+    static_assert(std::is_trivially_copyable<ValueType>::value,
+                  "Program-memory values must be trivially copyable.");
+    static_assert(sizeof(ValueType) == sizeof(RepresentationType),
+                  "Program-memory representations must have matching sizes.");
+
+    ValueType value { };
+    std::memcpy(&value, &representation, sizeof(value));
+
+    return value;
+  }
+
+  } // namespace detail
 
   template<typename ValueType>
   auto read(const mcal_progmem_uintptr_t src_addr) noexcept
@@ -44,28 +63,28 @@
   auto read(const mcal_progmem_uintptr_t src_addr) noexcept
     -> typename std::enable_if_t<(sizeof(ValueType) == 1U), ValueType>
   {
-    return mcal_memory_progmem_read_byte(src_addr);
+    return detail::read_value<ValueType>(mcal_memory_progmem_read_byte(src_addr));
   }
 
   template<typename ValueType>
   auto read(const mcal_progmem_uintptr_t src_addr) noexcept
     -> typename std::enable_if_t<(sizeof(ValueType) == 2U), ValueType>
   {
-    return mcal_memory_progmem_read_word(src_addr);
+    return detail::read_value<ValueType>(mcal_memory_progmem_read_word(src_addr));
   }
 
   template<typename ValueType>
   auto read(const mcal_progmem_uintptr_t src_addr) noexcept
     -> typename std::enable_if_t<(sizeof(ValueType) == 4U), ValueType>
   {
-    return mcal_memory_progmem_read_dword(src_addr);
+    return detail::read_value<ValueType>(mcal_memory_progmem_read_dword(src_addr));
   }
 
   template<typename ValueType>
   auto read(const mcal_progmem_uintptr_t src_addr) noexcept
     -> typename std::enable_if_t<(sizeof(ValueType) == 8U), ValueType>
   {
-    return mcal_memory_progmem_read_qword(src_addr);
+    return detail::read_value<ValueType>(mcal_memory_progmem_read_qword(src_addr));
   }
 
   } } } // namespace mcal::memory::progmem

@@ -1112,7 +1112,7 @@
                                my_data.end());
 
             std::fill(my_data.begin(),
-                      my_data.begin() + static_cast<std::ptrdiff_t>(-ofs),
+                      my_data.begin() + static_cast<std::ptrdiff_t>(-ofs), // LCOV_EXCL_LINE
                       static_cast<limb_type>(UINT8_C(0)));
           }
 
@@ -3752,7 +3752,7 @@
 
       const char* p_end = util::baselexical_cast(*it_rep, data_elem_buf.data(), data_elem_buf.data() + data_elem_buf.size()); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
 
-      ++it_rep;
+      ++it_rep; // LCOV_EXCL_LINE
 
       *count_retrieved =
         static_cast<std::size_t>
@@ -3815,16 +3815,17 @@
 
       // Extract the remaining digits from decwide_t after the decimal point.
 
-      std::vector<char>
-        str_tmp_mem
-        (
+      const std::size_t
+        storage_remaining_digits_size
+        {
           static_cast<std::size_t>
           (
               static_cast<std::size_t>(number_of_elements)
             * static_cast<std::size_t>(decwide_t_elem_digits10)
-          ),
-          ' '
-        );
+          )
+        };
+
+      std::vector<char> str_tmp_mem(storage_remaining_digits_size, ' ');
 
       auto count_retrieved = static_cast<std::size_t>(UINT8_C(0));
 

@@ -91,12 +91,12 @@
         my_tick = my_now() + tick_value;
       }
 
-      constexpr auto timeout() const -> bool // NOLINT(modernize-use-nodiscard)
+      [[nodiscard]] constexpr auto timeout() const -> bool
       {
         return (static_cast<tick_type>(my_now() - my_tick) <= timer_mask);
       }
 
-      constexpr auto timeout_of_specific_timepoint(const tick_type timepoint) const -> bool // NOLINT(modernize-use-nodiscard)
+      [[nodiscard]] constexpr auto timeout_of_specific_timepoint(const tick_type timepoint) const -> bool
       {
         return (static_cast<tick_type>(timepoint - my_tick) <= timer_mask);
       }
@@ -111,7 +111,7 @@
         return my_now();
       }
 
-      constexpr auto get_ticks_since_mark() const -> tick_type // NOLINT(modernize-use-nodiscard)
+      [[nodiscard]] constexpr auto get_ticks_since_mark() const -> tick_type
       {
         return my_now() - my_tick;
       }

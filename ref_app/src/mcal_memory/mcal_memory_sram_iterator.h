@@ -67,9 +67,9 @@
     template<typename OtherValueType,
              typename OtherAddressType,
              typename OtherAddressDifferenceType,
-             typename std::enable_if_t<   std::is_convertible_v<OtherValueType, ValueType>
-                                       && std::is_convertible_v<OtherAddressType, AddressType>
-                                       && std::is_convertible_v<OtherAddressDifferenceType, AddressDifferenceType>>* = nullptr>
+             typename std::enable_if_t<   std::is_convertible<OtherValueType, ValueType>::value
+                                       && std::is_convertible<OtherAddressType, AddressType>::value
+                                       && std::is_convertible<OtherAddressDifferenceType, AddressDifferenceType>::value>* = nullptr>
     sram_iterator(const sram_iterator<OtherValueType, OtherAddressType, OtherAddressDifferenceType>& other) noexcept
       : current(static_cast<const pointer>(other.current)) { }
 

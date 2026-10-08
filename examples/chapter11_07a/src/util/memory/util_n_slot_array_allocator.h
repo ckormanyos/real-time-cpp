@@ -32,7 +32,7 @@
     using const_pointer = const value_type*;
     using size_type     = std::size_t;
 
-    constexpr auto max_slot_count() const noexcept -> size_type { return SlotCount; }
+    [[nodiscard]] constexpr auto max_slot_count() const noexcept -> size_type { return SlotCount; }
 
     template<typename RebindType>
     struct rebind
@@ -55,12 +55,9 @@
   private:
     static_assert(SlotWidth > 0U, "SlotWidth must be greater than zero.");
     static_assert(SlotCount > 0U, "SlotCount must be greater than zero.");
-    static_assert(std::is_trivial<T>::value && std::is_standard_layout<T>::value,
-                  "T must be a POD-like type.");
-    static_assert(std::is_default_constructible<T>::value,
-                  "T must be default constructible for the fixed slot storage.");
-    static_assert(std::is_copy_constructible<T>::value,
-                  "T must be copy constructible for allocator construction.");
+    static_assert(std::is_trivial_v<T> && std::is_standard_layout_v<T>, "T must be a POD-like type.");
+    static_assert(std::is_default_constructible_v<T>, "T must be default constructible for the fixed slot storage.");
+    static_assert(std::is_copy_constructible_v<T>, "T must be copy constructible for allocator construction.");
 
     static constexpr std::uint_fast32_t slot_width = SlotWidth;
     static constexpr std::size_t        slot_count = SlotCount;
@@ -85,7 +82,7 @@
     constexpr n_slot_array_allocator(const n_slot_array_allocator&) = default; // LCOV_EXCL_LINE
 
     template <class U>
-    constexpr n_slot_array_allocator(const n_slot_array_allocator<U, SlotWidth, SlotCount>&) noexcept { }
+    constexpr explicit n_slot_array_allocator(const n_slot_array_allocator<U, SlotWidth, SlotCount>&) noexcept { }
 
     template<typename RebindType>
     struct rebind
@@ -93,13 +90,13 @@
       using other = n_slot_array_allocator<RebindType, SlotWidth, SlotCount>;
     };
 
-    constexpr auto max_size() const noexcept -> size_type { return static_cast<size_type>(slot_width); }
-    constexpr auto max_slot_count() const noexcept -> size_type { return slot_count; }
+    [[nodiscard]] constexpr auto max_size() const noexcept -> size_type { return static_cast<size_type>(slot_width); }
+    [[nodiscard]] constexpr auto max_slot_count() const noexcept -> size_type { return slot_count; }
 
     static auto high_water_mark() noexcept -> size_type { return slot_high_water_mark(); }
 
-    constexpr auto address(      reference x) const ->       pointer { return &x; }
-    constexpr auto address(const_reference x) const -> const_pointer { return &x; }
+    [[nodiscard]] constexpr auto address(      reference x) const ->       pointer { return &x; }
+    [[nodiscard]] constexpr auto address(const_reference x) const -> const_pointer { return &x; }
 
     auto allocate(size_type count, const_void_pointer p_hint = nullptr) -> pointer
     {
@@ -141,9 +138,7 @@
           allocated_slot_count += static_cast<size_type>(slot_flag != static_cast<local_flags_value_type>(UINT8_C(0)));
         }
 
-        auto& my_high_water_mark = slot_high_water_mark();
-
-        if(allocated_slot_count > my_high_water_mark)
+        if(auto& my_high_water_mark = slot_high_water_mark(); allocated_slot_count > my_high_water_mark)
         {
           my_high_water_mark = allocated_slot_count;
         }
