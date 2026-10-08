@@ -24,7 +24,7 @@ TGT_ALLFLAGS  = -O2                                            \
                 -mno-unaligned-access                          \
                 -mno-long-calls
 
-TGT_CFLAGS    = -std=c99                                       \
+TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 

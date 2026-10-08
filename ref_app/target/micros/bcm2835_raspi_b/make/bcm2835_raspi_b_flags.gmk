@@ -22,7 +22,7 @@ TGT_ALLFLAGS  = -O2                                            \
                 -mfpu=vfpv2                                    \
                 -mfloat-abi=hard
 
-TGT_CFLAGS    = -std=c99                                       \
+TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 

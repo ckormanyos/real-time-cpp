@@ -32,7 +32,7 @@
     using const_pointer = const value_type*;
     using size_type     = std::size_t;
 
-    constexpr auto max_slot_count() const noexcept -> size_type { return SlotCount; }
+    [[nodiscard]] constexpr auto max_slot_count() const noexcept -> size_type { return SlotCount; }
 
     template<typename RebindType>
     struct rebind
@@ -90,13 +90,13 @@
       using other = n_slot_array_allocator<RebindType, SlotWidth, SlotCount>;
     };
 
-    constexpr auto max_size() const noexcept -> size_type { return static_cast<size_type>(slot_width); }
-    constexpr auto max_slot_count() const noexcept -> size_type { return slot_count; }
+    [[nodiscard]] constexpr auto max_size() const noexcept -> size_type { return static_cast<size_type>(slot_width); }
+    [[nodiscard]] constexpr auto max_slot_count() const noexcept -> size_type { return slot_count; }
 
     static auto high_water_mark() noexcept -> size_type { return slot_high_water_mark(); }
 
-    constexpr auto address(      reference x) const ->       pointer { return &x; }
-    constexpr auto address(const_reference x) const -> const_pointer { return &x; }
+    [[nodiscard]] constexpr auto address(      reference x) const ->       pointer { return &x; }
+    [[nodiscard]] constexpr auto address(const_reference x) const -> const_pointer { return &x; }
 
     auto allocate(size_type count, const_void_pointer p_hint = nullptr) -> pointer
     {

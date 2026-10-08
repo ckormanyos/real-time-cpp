@@ -398,7 +398,13 @@
     inline constexpr bool is_unsigned_v = is_unsigned<T>::value;
 
     template<typename T>
+    inline constexpr bool is_signed_v = is_signed<T>::value;
+
+    template<typename T>
     inline constexpr bool is_floating_point_v = is_floating_point<T>::value;
+
+    template<typename T>
+    inline constexpr bool is_arithmetic_v = is_arithmetic<T>::value;
 
     template<typename T>
     inline constexpr bool is_trivial_v = is_trivial<T>::value;

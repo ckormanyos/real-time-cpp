@@ -30,16 +30,16 @@ TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                 
                 -mlong-double=64
 
 INC_PREFIX   := -isystem
-STD_C        := c11
 STD_CPP      := c++20
 
 else
 
 INC_PREFIX   := -I
-STD_C        := c99
 STD_CPP      := c++17
 
 endif
+
+STD_C        := c11
 
 TGT_CFLAGS    = -std=$(STD_C)                                                     \
                 $(TGT_ALLFLAGS)
