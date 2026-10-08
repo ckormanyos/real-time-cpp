@@ -12,7 +12,7 @@
 
 #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_STD_BIG_INT))
 
-#include <beman/big_int/big_int.hpp>
+#include <beman/big_int/basic_big_int.hpp>
 #include <beman/big_int/literals.hpp>
 
 #include <util/memory/util_ring_allocator.h>
@@ -55,32 +55,32 @@ static auto do_one_test() -> bool
 {
   using ring_allocator_type = util::ring_allocator<beman::big_int::uint_multiprecision_t, std::size_t{0x2000U}>;
 
-  using ring_big_int_type = beman::big_int::basic_big_int<beman::big_int::big_int::inplace_bits,
-                                                          beman::big_int::uint_multiprecision_t,
-                                                          ring_allocator_type>;
+  using ring_big_int_type = BEMAN_BIG_INT_NAMESPACE::basic_big_int<BEMAN_BIG_INT_NAMESPACE::big_int::inplace_bits,
+                                                                   BEMAN_BIG_INT_NAMESPACE::uint_multiprecision_t,
+                                                                   ring_allocator_type>;
 
-  using namespace beman::big_int::literals;
+  using namespace BEMAN_BIG_INT_NAMESPACE::literals;
 
-  ring_big_int_type val_a{};
-  ring_big_int_type val_b{};
-  ring_big_int_type val_ctrl{};
+  ring_big_int_type val_a { };
+  ring_big_int_type val_b { };
+  ring_big_int_type val_ctrl { };
 
   static_cast<void>(from_chars(pstr_a, pstr_a + std::strlen(pstr_a), val_a, 16));
   static_cast<void>(from_chars(pstr_b, pstr_b + std::strlen(pstr_b), val_b, 16));
   static_cast<void>(from_chars(pstr_ctrl, pstr_ctrl + std::strlen(pstr_ctrl), val_ctrl, 16));
 
-  const ring_big_int_type val_c{val_a * val_b};
+  const ring_big_int_type val_c { val_a * val_b };
 
-  const bool result_is_ok{(val_ctrl == val_c)};
+  const bool result_is_ok { (val_ctrl == val_c) };
 
   return result_is_ok;
 }
 
 auto app::benchmark::run_std_big_int() -> bool
 {
-  const bool result_is_ok{::do_one_test()};
+  const bool result_is_ok { ::do_one_test() };
 
-    return result_is_ok;
+  return result_is_ok;
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)

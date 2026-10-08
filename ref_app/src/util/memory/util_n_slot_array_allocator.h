@@ -55,12 +55,9 @@
   private:
     static_assert(SlotWidth > 0U, "SlotWidth must be greater than zero.");
     static_assert(SlotCount > 0U, "SlotCount must be greater than zero.");
-    static_assert(std::is_trivial<T>::value && std::is_standard_layout<T>::value,
-                  "T must be a POD-like type.");
-    static_assert(std::is_default_constructible<T>::value,
-                  "T must be default constructible for the fixed slot storage.");
-    static_assert(std::is_copy_constructible<T>::value,
-                  "T must be copy constructible for allocator construction.");
+    static_assert(std::is_trivial_v<T> && std::is_standard_layout_v<T>, "T must be a POD-like type.");
+    static_assert(std::is_default_constructible_v<T>, "T must be default constructible for the fixed slot storage.");
+    static_assert(std::is_copy_constructible_v<T>, "T must be copy constructible for allocator construction.");
 
     static constexpr std::uint_fast32_t slot_width = SlotWidth;
     static constexpr std::size_t        slot_count = SlotCount;
@@ -85,7 +82,7 @@
     constexpr n_slot_array_allocator(const n_slot_array_allocator&) = default; // LCOV_EXCL_LINE
 
     template <class U>
-    constexpr n_slot_array_allocator(const n_slot_array_allocator<U, SlotWidth, SlotCount>&) noexcept { }
+    constexpr explicit n_slot_array_allocator(const n_slot_array_allocator<U, SlotWidth, SlotCount>&) noexcept { } // NOLINT(hicpp-named-parameter,readability-named-parameter)
 
     template<typename RebindType>
     struct rebind
@@ -141,9 +138,7 @@
           allocated_slot_count += static_cast<size_type>(slot_flag != static_cast<local_flags_value_type>(UINT8_C(0)));
         }
 
-        auto& my_high_water_mark = slot_high_water_mark();
-
-        if(allocated_slot_count > my_high_water_mark)
+        if(auto& my_high_water_mark = slot_high_water_mark(); allocated_slot_count > my_high_water_mark)
         {
           my_high_water_mark = allocated_slot_count;
         }

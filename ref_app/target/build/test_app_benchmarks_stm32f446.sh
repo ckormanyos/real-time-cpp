@@ -9,7 +9,7 @@
 if [[ "$1" != "" ]]; then
     STD="$1"
 else
-    STD=c++14
+    STD=c++17
 fi
 
 GCC=arm-none-eabi-g++

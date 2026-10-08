@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,7 +15,7 @@
   #include <limits>
 
   // Declare the task initialization and the task function of the idle process.
-  namespace sys { namespace idle {
+  namespace sys { namespace idle { // NOLINT(modernize-concat-nested-namespaces)
 
   auto task_init() noexcept -> void; auto task_func() -> void;
 
@@ -27,21 +27,21 @@
   #define OS_IDLE_TASK_FUNC() sys::idle::task_func()
 
   // Declare all of the task initializations and the task functions.
-  namespace app { namespace led {
+  namespace app { namespace led { // NOLINT(modernize-concat-nested-namespaces)
 
   auto task_init() -> void; auto task_func() -> void;
 
   } // namespace led
   } // namespace app
 
-  namespace app { namespace benchmark {
+  namespace app { namespace benchmark { // NOLINT(modernize-concat-nested-namespaces)
 
   auto task_init() -> void; auto task_func() -> void;
 
   } // namespace benchmark
   } // namespace app
 
-  namespace sys { namespace mon {
+  namespace sys { namespace mon { // NOLINT(modernize-concat-nested-namespaces)
 
   auto task_init() -> void; auto task_func() -> void;
 

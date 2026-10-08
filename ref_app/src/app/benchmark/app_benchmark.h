@@ -64,7 +64,7 @@
   #define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
   #endif
 
-  namespace app { namespace benchmark {
+  namespace app { namespace benchmark { // NOLINT(modernize-concat-nested-namespaces)
 
   #if   (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
   auto run_none() -> bool;

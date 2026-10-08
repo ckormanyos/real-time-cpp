@@ -42,9 +42,9 @@
     template<typename OtherValueType,
              typename OtherAddressType,
              typename OtherAddressDifferenceType,
-             typename std::enable_if_t<   std::is_convertible_v<OtherValueType, value_type>
-                                       && std::is_convertible_v<OtherAddressType, address_type>
-                                       && std::is_convertible_v<OtherAddressDifferenceType, AddressDifferenceType>>* = nullptr>
+             typename std::enable_if_t<   std::is_convertible<OtherValueType, value_type>::value
+                                       && std::is_convertible<OtherAddressType, address_type>::value
+                                       && std::is_convertible<OtherAddressDifferenceType, AddressDifferenceType>::value>* = nullptr>
     progmem_ptr(const progmem_ptr<OtherValueType, OtherAddressType, OtherAddressDifferenceType>& other) noexcept
       : my_address(other.my_address) { }
 

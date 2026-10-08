@@ -4306,6 +4306,7 @@
 
   #if ((defined(__GNUC__) && (__GNUC__ >= 12)) && !defined(__clang__))
   #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Warray-bounds"
   #pragma GCC diagnostic ignored "-Wstringop-overread"
   #endif
   template<const ::std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>

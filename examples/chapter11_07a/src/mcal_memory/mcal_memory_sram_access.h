@@ -17,32 +17,17 @@
 
   template<typename ValueType>
   auto read(const mcal_sram_uintptr_t src_addr) noexcept
-    -> typename std::enable_if_t<(sizeof(ValueType) == 1U), ValueType>
+    -> ValueType
   {
     static_assert(std::is_trivially_copyable<ValueType>::value, "SRAM values must be trivially copyable.");
 
-    std::uint8_t byte_to_read;
+    ValueType value_to_read { };
 
     // The backend status is intentionally ignored. SRAM proxy operations are
     // value-oriented and do not expose a transaction status.
-    static_cast<void>(mcal_memory_sram_device().read(src_addr, &byte_to_read));
-
-    return byte_to_read;
-  }
-
-  template<typename ValueType>
-  auto read(const mcal_sram_uintptr_t src_addr) noexcept
-    -> typename std::enable_if_t<(sizeof(ValueType) != 1U), ValueType>
-  {
-    static_assert(std::is_trivially_copyable<ValueType>::value, "SRAM values must be trivially copyable.");
-
-    using local_value_type = ValueType;
-
-    local_value_type value_to_read;
-
-    // The backend status is intentionally ignored. SRAM proxy operations do
-    // not expose a transaction status.
-    static_cast<void>(mcal_memory_sram_device().read_n(src_addr, reinterpret_cast<std::uint8_t*>(&value_to_read), sizeof(local_value_type)));
+    static_cast<void>(mcal_memory_sram_device().read_n(src_addr,
+                                                      reinterpret_cast<std::uint8_t*>(&value_to_read),
+                                                      sizeof(value_to_read)));
 
     return value_to_read;
   }

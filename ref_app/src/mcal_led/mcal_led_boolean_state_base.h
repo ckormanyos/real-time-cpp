@@ -10,12 +10,12 @@
 
   #include <mcal_led/mcal_led_base.h>
 
-  namespace mcal { namespace led {
+  namespace mcal { namespace led { // NOLINT(modernize-concat-nested-namespaces)
 
   class led_boolean_state_base : public mcal::led::led_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   public:
-    auto state_is_on() const noexcept -> bool override { return is_on; }
+    auto state_is_on() const noexcept -> bool override { return is_on; } // NOLINT(modernize-use-nodiscard)
 
   protected:
     constexpr led_boolean_state_base() = default;
