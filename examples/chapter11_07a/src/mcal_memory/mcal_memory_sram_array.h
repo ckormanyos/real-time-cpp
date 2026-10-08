@@ -42,37 +42,6 @@
     using const_pointer          = mcal::memory::const_address_ptr<pointer, const_reference>;
     using reference              = typename iterator::reference;
 
-    constexpr array() noexcept = default;
-
-    array(const array& other) noexcept
-    {
-      std::copy(other.cbegin(), other.cend(), begin());
-    }
-
-    array(array&&) noexcept = default;
-
-    ~array() noexcept = default;
-
-    array& operator=(const array& other) noexcept
-    {
-      if(this != &other)
-      {
-        std::copy(other.cbegin(), other.cend(), begin());
-      }
-
-      return *this;
-    }
-
-    auto operator=(array&& other) noexcept -> array&
-    {
-      if(this != &other)
-      {
-        std::copy(other.cbegin(), other.cend(), begin());
-      }
-
-      return *this;
-    }
-
     auto begin() noexcept -> iterator { return iterator(iterator(Address) + 0U); }
     auto end  () noexcept -> iterator { return iterator(iterator(Address) + static_size); }
 
