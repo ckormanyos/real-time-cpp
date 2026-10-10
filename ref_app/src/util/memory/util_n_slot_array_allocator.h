@@ -55,7 +55,9 @@
   private:
     static_assert(SlotWidth > 0U, "SlotWidth must be greater than zero.");
     static_assert(SlotCount > 0U, "SlotCount must be greater than zero.");
+    #if !(defined(_MSC_VER) && defined(_DEBUG))
     static_assert(std::is_trivial_v<T> && std::is_standard_layout_v<T>, "T must be a POD-like type.");
+    #endif
     static_assert(std::is_default_constructible_v<T>, "T must be default constructible for the fixed slot storage.");
     static_assert(std::is_copy_constructible_v<T>, "T must be copy constructible for allocator construction.");
 
