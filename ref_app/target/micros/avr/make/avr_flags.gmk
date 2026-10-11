@@ -12,7 +12,7 @@
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
-GCC_VERSION   = 15.2.0
+GCC_VERSION   = 16.2.0
 
 TGT_SUFFIX    = elf
 
@@ -30,7 +30,7 @@ TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                 
                 -mlong-double=64
 
 INC_PREFIX   := -isystem
-STD_CPP      := c++20
+STD_CPP      := c++23
 
 else
 
@@ -39,7 +39,7 @@ STD_CPP      := c++17
 
 endif
 
-STD_C        := c11
+STD_C        := c20
 
 TGT_CFLAGS    = -std=$(STD_C)                                                     \
                 $(TGT_ALLFLAGS)
@@ -47,9 +47,9 @@ TGT_CFLAGS    = -std=$(STD_C)                                                   
 TGT_CXXFLAGS  = -std=$(STD_CPP)                                                   \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = $(INC_PREFIX)$(PATH_APP)/util/STL
+TGT_INCLUDES := $(INC_PREFIX)$(PATH_APP)/util/STL
 
-#TGT_INCLUDES  = $(INC_PREFIX)C:/ChrisGitRepos/avr-libstdcpp/include
+#TGT_INCLUDES := $(INC_PREFIX)C:/ChrisGitRepos/avr-libstdcpp/gcc16/include
 
 TGT_AFLAGS    =
 

@@ -32,12 +32,6 @@
   #include <__msvc_int128.hpp>
   #endif
 
-  #if ((__cplusplus < 202002L) || (defined(WIDE_INTEGER_GCC) && defined(WIDE_INTEGER_AVR)))
-  #include <ciso646>
-  #else
-  #include <version>
-  #endif
-
   #if (defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L))
   #include <charconv>
   #endif
@@ -68,6 +62,7 @@
   #endif
   #include <type_traits>
   #include <utility>
+  #include <version>
 
   #if (defined(WIDE_INTEGER_CLANG) && (WIDE_INTEGER_CLANG <= 9))
   #define WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE struct // NOLINT(cppcoreguidelines-macro-usage)
@@ -693,7 +688,11 @@
     using const_reverse_iterator =       ::math::wide_integer::detail::iterator_detail::reverse_iterator<const_iterator>;
     #endif
 
-    static_assert((std::is_standard_layout<value_type>::value && std::is_trivial<value_type>::value), "Error: the value_type of dynamic_array must be POD");
+    #if(__cplusplus > 202302L)
+    static_assert(std::is_trivially_default_constructible_v<value_type> && std::is_trivially_copyable_v<value_type>, "Error: the value_type of dynamic_array must be POD");
+    #else
+    static_assert(std::is_trivial_v<value_type> && std::is_standard_layout_v<value_type>, "Error: the value_type of dynamic_array must be POD");
+    #endif
 
     // Constructors.
     explicit constexpr dynamic_array(size_type count_in = size_type(),
