@@ -32,6 +32,8 @@
   #include <__msvc_int128.hpp>
   #endif
 
+  #include <version> // This is needed here for feature testing.
+
   #if (defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L))
   #include <charconv>
   #endif
@@ -62,7 +64,6 @@
   #endif
   #include <type_traits>
   #include <utility>
-  #include <version>
 
   #if (defined(WIDE_INTEGER_CLANG) && (WIDE_INTEGER_CLANG <= 9))
   #define WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE struct // NOLINT(cppcoreguidelines-macro-usage)
