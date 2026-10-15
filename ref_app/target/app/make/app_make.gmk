@@ -78,14 +78,6 @@ PATH_ERR             = $(PATH_TMP)/err
 
 
 # ------------------------------------------------------------------------------
-# include the target-specific make files
-# ------------------------------------------------------------------------------
-include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
-include $(PATH_TGT_MAKE)/$(TGT)_files.gmk   # Target filelist
-include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
-
-
-# ------------------------------------------------------------------------------
 # standard shell tools
 # ------------------------------------------------------------------------------
 
@@ -134,6 +126,14 @@ WARN_FLAGS :=
 # linker definition file
 # ------------------------------------------------------------------------------
 LINKER_DEFINITION_FILE   := $(PATH_TGT_MAKE)/$(TGT).ld
+
+
+# ------------------------------------------------------------------------------
+# include the target-specific make files
+# ------------------------------------------------------------------------------
+include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
+include $(PATH_TGT_MAKE)/$(TGT)_files.gmk   # Target filelist
+include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 
 
 # ------------------------------------------------------------------------------
