@@ -49,7 +49,7 @@ TGT_CXXFLAGS  = -std=$(STD_CPP)                                                 
 
 TGT_INCLUDES := $(INC_PREFIX)$(PATH_APP)/util/STL
 
-#TGT_INCLUDES := $(INC_PREFIX)C:/ChrisGitRepos/avr-libstdcpp/gcc16/include
+#TGT_INCLUDES := $(INC_PREFIX)$(PATH_APP)/util/STL_avr-libstdcpp/90ddfd4a/gcc16/include
 
 TGT_AFLAGS    =
 

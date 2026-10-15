@@ -25,8 +25,7 @@ TGT_ALLFLAGS  = -O2                                            \
                 -mabi=ilp32                                    \
                 -msmall-data-limit=0                           \
                 -falign-functions=4                            \
-                -fomit-frame-pointer                           \
-                -ffreestanding
+                -fomit-frame-pointer
 
 
 TGT_CFLAGS    = -std=c11                                       \

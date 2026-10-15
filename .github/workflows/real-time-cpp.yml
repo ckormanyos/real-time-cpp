@@ -252,6 +252,30 @@ jobs:
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
         working-directory: ./ref_app/
+  target-v850xx:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ v850es_fx2 ]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: |
+          wget --no-check-certificate https://github.com/ckormanyos/gcc-v850-unknown-elf/releases/download/v16.2.0/gcc-16.2.0-v850-unknown-elf.tar.gz
+          tar -xzf gcc-16.2.0-v850-unknown-elf.tar.gz -C ${{ runner.workspace }}
+        working-directory: ./
+      - name: target-v850xx-${{ matrix.suite }}
+        run: |
+          PATH="${{ runner.workspace }}/gcc-16.2.0-v850-unknown-elf/bin:$PATH"
+          ./target/build/build.sh ${{ matrix.suite }} rebuild
+          ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
+        working-directory: ./ref_app/
   target-xtensa32:
     runs-on: ubuntu-latest
     defaults:
