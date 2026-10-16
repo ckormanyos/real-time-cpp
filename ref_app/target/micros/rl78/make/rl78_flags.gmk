@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2014 -2025.
+#  Copyright Christopher Kormanyos 2014 -2026.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 15.1.0
+GCC_VERSION   = 16.2.0
 GCC_TARGET    = rl78-unknown-elf
 GCC_PREFIX    = rl78-unknown-elf
 
@@ -18,8 +18,7 @@ TGT_SUFFIX    = elf
 TGT_ALLFLAGS  = -Os                                            \
                 -mcpu=g13                                      \
                 -mmul=g13                                      \
-                -fno-inline-functions                          \
-                -ffreestanding
+                -fno-inline-functions
 
 TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \

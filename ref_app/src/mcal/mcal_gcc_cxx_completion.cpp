@@ -143,8 +143,9 @@ void mcal_gcc_cxx_dummy()
 
 namespace std
 {
-  [[noreturn]]
-  void __throw_out_of_range_fmt(char const*, ...)  { for(;;) { ; } }
+  [[noreturn]] auto __throw_out_of_range_fmt(char const*, ...) -> void { for(;;) { ; } }
+
+  [[noreturn]] auto __throw_length_error(const char*) -> void { for(;;) { ; } }
 
   using ::fprintf;
 
