@@ -57,7 +57,7 @@
 
     ~spi_software_port_driver() override = default;
 
-    auto send(const std::uint8_t byte_to_send) -> bool override
+    auto send(const std::uint8_t byte_to_send) noexcept -> bool override
     {
       base_class_type::recv_buffer = static_cast<typename base_class_type::buffer_type>(UINT8_C(0));
 
@@ -126,7 +126,7 @@
 
     ~spi_software_port_driver() override = default;
 
-    auto send(const std::uint8_t byte_to_send) -> bool override
+    auto send(const std::uint8_t byte_to_send) noexcept -> bool override
     {
       for(auto bit_mask  = static_cast<std::uint_fast8_t>(UINT8_C(0x80));
                bit_mask != static_cast<std::uint_fast8_t>(UINT8_C(0));
