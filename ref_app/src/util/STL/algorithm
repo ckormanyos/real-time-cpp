@@ -30,17 +30,17 @@
                                              swap_type& right);
 
     template<typename value_type>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (min)(value_type a,
-                                                    value_type b)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS const value_type& (min)(const value_type& a,
+                                                           const value_type& b)
     {
       return ((a < b) ? a : b);
     }
 
     template<typename value_type,
              typename binary_function_type>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (min)(value_type a,
-                                                    value_type b,
-                                                    binary_function_type binary_function)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS const value_type& (min)(const value_type& a,
+                                                           const value_type& b,
+                                                           binary_function_type binary_function)
     {
       return (binary_function(b, a) ? b : a);
     }
@@ -108,19 +108,19 @@
     }
 
     template<typename value_type>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (max)(value_type a,
-                                                    value_type b)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS const value_type& (max)(const value_type& a,
+                                                           const value_type& b)
     {
-      return ((a > b) ? a : b);
+      return ((a < b) ? b : a);
     }
 
     template<typename value_type,
              typename binary_function_type>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (max)(value_type           a,
-                                                    value_type           b,
-                                                    binary_function_type binary_function)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS const value_type& (max)(const value_type& a,
+                                                           const value_type& b,
+                                                           binary_function_type binary_function)
     {
-      return (binary_function(a, b) ? a : b);
+      return (binary_function(a, b) ? b : a);
     }
 
     template<typename forward_iterator>
@@ -134,7 +134,7 @@
 
         for( ; first != last; ++first)
         {
-          if((*first) > (*maximum_value))
+          if((*maximum_value) < (*first))
           {
             maximum_value = first;
           }
@@ -469,6 +469,24 @@
       return (first1 == last1);
     }
 
+    template<typename input_iterator1,
+             typename input_iterator2,
+             typename binary_function_type>
+    bool equal(input_iterator1      first1,
+               input_iterator1      last1,
+               input_iterator2      first2,
+               input_iterator2      last2,
+               binary_function_type binary_function)
+    {
+      while((first1 != last1) && (first2 != last2) && binary_function(*first1, *first2))
+      {
+        ++first1;
+        ++first2;
+      }
+
+      return (first1 == last1) && (first2 == last2);
+    }
+
     template<typename iterator_type,
              typename unary_function_type>
     STL_LOCAL_CONSTEXPR_ALGORITHMS bool all_of(iterator_type       first,
@@ -614,6 +632,37 @@
                                                                           InputIt2 last2)
     {
       while((first1 != last1) && (first2 != last2) && (*first1 == *first2))
+      {
+        ++first1;
+        ++first2;
+      }
+
+      return std::make_pair(first1, first2);
+    }
+
+    template<class InputIt1, class InputIt2, class BinaryPredicate>
+    STL_LOCAL_CONSTEXPR_ALGORITHMS std::pair<InputIt1, InputIt2> mismatch(InputIt1 first1,
+                                                                          InputIt1 last1,
+                                                                          InputIt2 first2,
+                                                                          BinaryPredicate binary_predicate)
+    {
+      while((first1 != last1) && binary_predicate(*first1, *first2))
+      {
+        ++first1;
+        ++first2;
+      }
+
+      return std::make_pair(first1, first2);
+    }
+
+    template<class InputIt1, class InputIt2, class BinaryPredicate>
+    STL_LOCAL_CONSTEXPR_ALGORITHMS std::pair<InputIt1, InputIt2> mismatch(InputIt1 first1,
+                                                                          InputIt1 last1,
+                                                                          InputIt2 first2,
+                                                                          InputIt2 last2,
+                                                                          BinaryPredicate binary_predicate)
+    {
+      while((first1 != last1) && (first2 != last2) && binary_predicate(*first1, *first2))
       {
         ++first1;
         ++first2;
@@ -851,35 +900,30 @@
       swap_ranges(&left[0U], &left[N], &right[0U]);
     }
 
-    template<typename random_access_iterator,
+    template<typename forward_iterator,
              typename unary_function_type>
-    random_access_iterator partition(random_access_iterator first,
-                                     random_access_iterator last,
-                                     unary_function_type    unary_function)
+    forward_iterator partition(forward_iterator     first,
+                               forward_iterator     last,
+                               unary_function_type  unary_function)
     {
-      for( ; ; ++first)
+      while((first != last) && unary_function(*first))
       {
-        for( ; (first != last) && unary_function(*first); ++first)
-        {
-          ;
-        }
+        ++first;
+      }
 
-        if(first == last)
-        {
-          break;
-        }
+      if(first != last)
+      {
+        forward_iterator current = first;
+        ++current;
 
-        for( ; (first != --last) && (!unary_function(*last)); )
+        for( ; current != last; ++current)
         {
-          ;
+          if(unary_function(*current))
+          {
+            iter_swap(first, current);
+            ++first;
+          }
         }
-
-        if(first == last)
-        {
-          break;
-        }
-
-        iter_swap(first, last);
       }
 
       return first;

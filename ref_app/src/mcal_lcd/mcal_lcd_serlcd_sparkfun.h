@@ -113,7 +113,7 @@
       transfer(setting);
     }
 
-    auto set_line_index(const std::uint8_t index) const -> bool override
+    auto set_line_index(const std::uint8_t index) -> bool override
     {
       // Set the active cursor position to the beginning of the line index.
 

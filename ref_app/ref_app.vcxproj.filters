@@ -290,6 +290,9 @@
     <Filter Include="src\mcal\esp32p4_riscv_soc">
       <UniqueIdentifier>{cc6519dd-1588-4aed-9bd1-c4cc22a5e560}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\STL\test">
+      <UniqueIdentifier>{6879f9c9-3ebc-4eb4-9d99-f203448c3249}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1401,6 +1404,18 @@
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_std_big_int.cpp">
       <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\test\test_stl_string.cpp">
+      <Filter>src\util\STL\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\test\test_stl_vector.cpp">
+      <Filter>src\util\STL\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\test\test_stl_all.cpp">
+      <Filter>src\util\STL\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\test\test_stl_algorithm.cpp">
+      <Filter>src\util\STL\test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3433,6 +3448,9 @@
     </None>
     <None Include="cmake\r7fa4m1ab.cmake">
       <Filter>src\cmake</Filter>
+    </None>
+    <None Include="src\util\STL\new">
+      <Filter>src\util\STL</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

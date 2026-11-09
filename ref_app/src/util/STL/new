@@ -1,0 +1,17 @@
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2026.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef NEW_2026_11_09_
+  #define NEW_2026_11_09_
+
+  #include <cstddef>
+
+  // Provide the default placement versions of operator new.
+  inline void* operator new  (std::size_t, void* my_p) noexcept { return my_p; }
+  inline void* operator new[](std::size_t, void* my_p) noexcept { return my_p; }
+
+#endif // NEW_2026_11_09_

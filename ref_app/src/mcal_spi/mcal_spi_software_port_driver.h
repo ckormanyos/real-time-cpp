@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2022.
+//  Copyright Christopher Kormanyos 2020 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,10 +8,9 @@
 #ifndef MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H
   #define MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H
 
+  #include <mcal/mcal_helper.h>
   #include <mcal_port.h>
   #include <mcal_port_pin_dummy.h>
-  #include <mcal/mcal_helper.h>
-
   #include <util/utility/util_communication.h>
 
   namespace mcal { namespace spi {
@@ -60,14 +59,16 @@
 
     auto send(const std::uint8_t byte_to_send) noexcept -> bool override
     {
-      base_class_type::recv_buffer = 0U;
+      base_class_type::recv_buffer = static_cast<typename base_class_type::buffer_type>(UINT8_C(0));
 
-      for(std::uint_fast8_t bit_mask = UINT8_C(0x80); bit_mask != UINT8_C(0); bit_mask = std::uint_fast8_t(bit_mask >> 1U))
+      for(auto bit_mask  = static_cast<std::uint_fast8_t>(UINT8_C(0x80));
+               bit_mask != static_cast<std::uint_fast8_t>(UINT8_C(0));
+               bit_mask  = static_cast<std::uint_fast8_t>(bit_mask >> static_cast<unsigned>(UINT8_C(1))))
       {
-        ((std::uint_fast8_t(byte_to_send & bit_mask) != UINT8_C(0)) ? port_pin_mosi_type::set_pin_high()
-                                                                    : port_pin_mosi_type::set_pin_low());
+        const auto bit_is_high =
+          (static_cast<std::uint_fast8_t>(byte_to_send & bit_mask) != static_cast<std::uint_fast8_t>(UINT8_C(0)));
 
-        mcal::helper::disable_all_interrupts<has_disable_enable_interrupts>();
+        (bit_is_high ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low());
 
         port_pin_sck__type::set_pin_high();
         mcal::helper::nop_maker<nop_count>();
@@ -78,28 +79,38 @@
         if(port_pin_miso_type::read_input_value())
         {
           base_class_type::recv_buffer =
-            base_class_type::buffer_type(base_class_type::recv_buffer | bit_mask);
+            static_cast<base_class_type::buffer_type>(base_class_type::recv_buffer | bit_mask);
         }
-
-        mcal::helper::enable_all_interrupts<has_disable_enable_interrupts>();
       }
 
       return true;
     }
 
-    auto   select() -> void override { port_pin_csn__type::set_pin_low(); }
-    auto deselect() -> void override { port_pin_csn__type::set_pin_high(); }
+    auto select() -> void override
+    {
+      mcal::helper::disable_all_interrupts<has_disable_enable_interrupts>();
+
+      port_pin_csn__type::set_pin_low();
+    }
+
+    auto deselect() -> void override
+    {
+      port_pin_csn__type::set_pin_high();
+
+      mcal::helper::enable_all_interrupts<has_disable_enable_interrupts>();
+    }
   };
 
   template<typename port_pin_sck__type,
            typename port_pin_mosi_type,
-           typename port_pin_csn__type>
+           typename port_pin_csn__type,
+           const bool has_disable_enable_interrupts>
   class spi_software_port_driver<port_pin_sck__type,
                                  port_pin_mosi_type,
                                  port_pin_csn__type,
                                  mcal::port::port_pin_dummy,
-                                 0U,
-                                 true> : public util::communication_buffer_depth_one_byte
+                                 static_cast<std::uint_fast16_t>(UINT8_C(0)),
+                                 has_disable_enable_interrupts> : public util::communication_buffer_depth_one_byte
   {
   public:
     spi_software_port_driver()
@@ -117,26 +128,35 @@
 
     auto send(const std::uint8_t byte_to_send) noexcept -> bool override
     {
-      for(std::uint_fast8_t bit_mask  = UINT8_C(0x80);
-                            bit_mask != UINT8_C(0);
-                            bit_mask  = std::uint_fast8_t(bit_mask >> 1U))
+      for(auto bit_mask  = static_cast<std::uint_fast8_t>(UINT8_C(0x80));
+               bit_mask != static_cast<std::uint_fast8_t>(UINT8_C(0));
+               bit_mask  = static_cast<std::uint_fast8_t>(bit_mask >> static_cast<unsigned>(UINT8_C(1))))
       {
-        ((std::uint_fast8_t(byte_to_send & bit_mask) != UINT8_C(0)) ? port_pin_mosi_type::set_pin_high()
-                                                                    : port_pin_mosi_type::set_pin_low());
+        const auto bit_is_high =
+          (static_cast<std::uint_fast8_t>(byte_to_send & bit_mask) != static_cast<std::uint_fast8_t>(UINT8_C(0)));
 
-        mcal::helper::disable_all_interrupts<true>();
+        (bit_is_high ? port_pin_mosi_type::set_pin_high() : port_pin_mosi_type::set_pin_low());
 
         port_pin_sck__type::set_pin_high();
         port_pin_sck__type::set_pin_low();
-
-        mcal::helper::enable_all_interrupts<true>();
       }
 
       return true;
     }
 
-    auto   select() -> void override { port_pin_csn__type::set_pin_low(); }
-    auto deselect() -> void override { port_pin_csn__type::set_pin_high(); }
+    auto select() -> void override
+    {
+      mcal::helper::disable_all_interrupts<has_disable_enable_interrupts>();
+
+      port_pin_csn__type::set_pin_low();
+    }
+
+    auto deselect() -> void override
+    {
+      port_pin_csn__type::set_pin_high();
+
+      mcal::helper::enable_all_interrupts<has_disable_enable_interrupts>();
+    }
   };
 
   } // namespace spi

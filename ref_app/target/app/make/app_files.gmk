@@ -48,3 +48,10 @@ FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                            
              $(PATH_APP)/sys/idle/sys_idle                                           \
              $(PATH_APP)/sys/mon/sys_mon                                             \
              $(PATH_APP)/sys/start/sys_start
+
+FILES_STL  = $(PATH_APP)/util/STL/test/test_stl_algorithm                            \
+             $(PATH_APP)/util/STL/test/test_stl_all                                  \
+             $(PATH_APP)/util/STL/test/test_stl_string                               \
+             $(PATH_APP)/util/STL/test/test_stl_vector
+
+FILES_CPP += $(FILES_STL)
