@@ -1542,6 +1542,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\util\STL\test\test_stl_algorithm.cpp" />
+    <ClCompile Include="src\util\STL\test\test_stl_all.cpp" />
+    <ClCompile Include="src\util\STL\test\test_stl_string.cpp" />
+    <ClCompile Include="src\util\STL\test\test_stl_vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\benchmark\app_benchmark.h" />
@@ -3760,6 +3764,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="src\util\STL\memory">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="src\util\STL\new">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>

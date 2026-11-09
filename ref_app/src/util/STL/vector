@@ -8,15 +8,17 @@
 #ifndef VECTOR_2010_02_23_
   #define VECTOR_2010_02_23_
 
+  #include "impl/allocator_impl.h"
+
   #include <algorithm>
   #include <initializer_list>
   #include <iterator>
   #include <memory>
+  #include <type_traits>
   #include <utility>
 
-  #include "impl/allocator_impl.h"
-
   // Implement some of std::vector for compilers that do not yet support it.
+  // Element and allocator operations are required not to throw.
 
   namespace std
   {
@@ -111,7 +113,7 @@
         range_construct(first, last, typename std::iterator_traits<input_iterator>::iterator_category());
       }
 
-      vector(const vector& other) : my_allocator(other.my_allocator),
+      vector(const vector& other) : my_allocator(std::allocator_traits<allocator_type>::select_on_container_copy_construction(other.my_allocator)),
                                     my_first(allocate_storage(my_allocator, other.size())),
                                     my_last (end_pointer(my_first, other.size())),
                                     my_end  (my_last)
@@ -127,10 +129,10 @@
         copy_construct(other.my_first, other.my_last, my_first);
       }
 
-      vector(vector&& other) noexcept : my_allocator(std::move(other.my_allocator)),
-                                        my_first(other.my_first),
-                                        my_last (other.my_last),
-                                        my_end  (other.my_end)
+      vector(vector&& other) noexcept(std::is_nothrow_move_constructible<allocator_type>::value) : my_allocator(std::move(other.my_allocator)),
+                                                                                                   my_first(other.my_first),
+                                                                                                   my_last (other.my_last),
+                                                                                                   my_end  (other.my_end)
       {
         other.my_first = nullptr;
         other.my_last  = nullptr;
@@ -177,27 +179,10 @@
 
       vector& operator=(const vector& other)
       {
-        const size_type sz = other.size();
-        const bool same_size = (size() == sz);
-
-        if(!same_size)
-        {
-          destroy_and_deallocate();
-          my_first = allocate_storage(my_allocator, sz);
-          my_last  = end_pointer(my_first, sz);
-          my_end   = my_last;
-        }
-
         if(this != &other)
         {
-          if(same_size)
-          {
-            copy_assign(other.begin(), other.end());
-          }
-          else
-          {
-            copy_construct(other.begin(), other.end(), my_first);
-          }
+          copy_assign_vector(other,
+                             typename std::allocator_traits<allocator_type>::propagate_on_container_copy_assignment());
         }
 
         return *this;
@@ -313,20 +298,36 @@
         {
           if(count > capacity())
           {
+            size_type value_index = size_type(0U);
+            const bool value_aliases_element = find_element(std::addressof(value), value_index);
+
             reserve(count);
+
+            const value_type& fill_value = value_aliases_element ? my_first[value_index] : value;
+            fill_construct(my_last, my_first + count, fill_value);
+          }
+          else
+          {
+            fill_construct(my_last, my_first + count, value);
           }
 
-          fill_construct(my_last, my_first + count, value);
           my_last = my_first + count;
         }
       }
 
       void assign(size_type count, const T& value)
       {
-        clear();
-        reserve(count);
-        fill_construct(my_first, my_first + count, value);
-        my_last = my_first + count;
+        size_type value_index = size_type(0U);
+
+        if(find_element(std::addressof(value), value_index))
+        {
+          const value_type value_copy(value);
+          assign_fill(count, value_copy);
+        }
+        else
+        {
+          assign_fill(count, value);
+        }
       }
 
       template<typename input_iterator>
@@ -339,33 +340,32 @@
 
       void push_back(const value_type& value)
       {
-        const size_type the_size = size();
-
-        if(capacity() <= the_size)
-        {
-          const size_type count = the_size * 2U;
-
-          reserve((std::max)(count, size_type(4U)));
-        }
-
-        construct(my_last, value);
-        ++my_last;
+        emplace_back(value);
       }
 
       void push_back(value_type&& value)
       {
-        if(size() == capacity()) { reserve((std::max)(size_type(4U), size() * 2U)); }
-        construct(my_last, std::move(value));
-        ++my_last;
+        emplace_back(std::move(value));
       }
 
       template<typename... Args>
-      void emplace_back(Args&&... args)
+      reference emplace_back(Args&&... args)
       {
-        if(size() == capacity()) { reserve((std::max)(size_type(4U), size() * 2U)); }
-        value_type value(std::forward<Args>(args)...);
-        construct(my_last, value);
+        if(size() == capacity())
+        {
+          value_type value(std::forward<Args>(args)...);
+          reserve((std::max)(size_type(4U), size() * 2U));
+          construct(my_last, std::move(value));
+        }
+        else
+        {
+          std::allocator_traits<allocator_type>::construct(my_allocator,
+                                                           my_last,
+                                                           std::forward<Args>(args)...);
+        }
+
         ++my_last;
+        return back();
       }
 
       void pop_back()
@@ -402,17 +402,47 @@
       }
 
     private:
+      bool find_element(const value_type* value, size_type& index) const
+      {
+        index = size_type(0U);
+
+        for(const_iterator current = begin(); current != end(); ++current, ++index)
+        {
+          if(std::addressof(*current) == value) { return true; }
+        }
+
+        return false;
+      }
+
+      void assign_fill(size_type count, const value_type& value)
+      {
+        clear();
+        reserve(count);
+
+        const iterator new_last = end_pointer(my_first, count);
+        fill_construct(my_first, new_last, value);
+        my_last = new_last;
+      }
+
       void move_assign(vector& other)
+      {
+        move_assign(other,
+                    typename std::allocator_traits<allocator_type>::propagate_on_container_move_assignment());
+      }
+
+      void move_assign(vector& other, std::true_type)
+      {
+        destroy_and_deallocate();
+        my_allocator = std::move(other.my_allocator);
+        take_storage(other);
+      }
+
+      void move_assign(vector& other, std::false_type)
       {
         if(my_allocator == other.my_allocator)
         {
           destroy_and_deallocate();
-          my_first = other.my_first;
-          my_last  = other.my_last;
-          my_end   = other.my_end;
-          other.my_first = nullptr;
-          other.my_last  = nullptr;
-          other.my_end   = nullptr;
+          take_storage(other);
         }
         else
         {
@@ -421,6 +451,55 @@
           move_construct(other.my_first, other.my_last, my_first);
           my_last = end_pointer(my_first, other.size());
           other.clear();
+        }
+      }
+
+      void take_storage(vector& other)
+      {
+        my_first = other.my_first;
+        my_last  = other.my_last;
+        my_end   = other.my_end;
+        other.my_first = nullptr;
+        other.my_last  = nullptr;
+        other.my_end   = nullptr;
+      }
+
+      void copy_assign_vector(const vector& other, std::false_type)
+      {
+        copy_assign_vector_contents(other);
+      }
+
+      void copy_assign_vector(const vector& other, std::true_type)
+      {
+        if(my_allocator != other.my_allocator)
+        {
+          destroy_and_deallocate();
+        }
+
+        my_allocator = other.my_allocator;
+        copy_assign_vector_contents(other);
+      }
+
+      void copy_assign_vector_contents(const vector& other)
+      {
+        const size_type sz = other.size();
+        const bool same_size = (size() == sz);
+
+        if(!same_size)
+        {
+          destroy_and_deallocate();
+          my_first = allocate_storage(my_allocator, sz);
+          my_last  = end_pointer(my_first, sz);
+          my_end   = my_last;
+        }
+
+        if(same_size)
+        {
+          copy_assign(other.begin(), other.end());
+        }
+        else
+        {
+          copy_construct(other.begin(), other.end(), my_first);
         }
       }
 

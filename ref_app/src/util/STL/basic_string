@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,10 +7,6 @@
 
 #ifndef BASIC_STRING_2010_02_23_
   #define BASIC_STRING_2010_02_23_
-
-  #if defined(__GNUC__)
-  #pragma GCC system_header
-  #endif
 
   #include <impl/stl_local_constexpr.h>
   #include <impl/stl_local_noexcept.h>
@@ -20,6 +16,7 @@
   #include <initializer_list>
   #include <iterator>
   #include <memory>
+  #include <utility>
 
   #include <string.h>
 
@@ -108,110 +105,125 @@
 
       static STL_LOCAL_CONSTEXPR size_type npos = static_cast<size_type>(-1);
 
-      basic_string() : my_first(allocator_type().allocate(1U)),
-                       my_last (my_first)
+      basic_string() : my_allocator(), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U) { }
+
+      explicit basic_string(const allocator_type& a)
+        : my_allocator(a), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U) { }
+
+      explicit basic_string(size_type count, const allocator_type& a = allocator_type())
+        : my_allocator(a), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U)
       {
-        *my_last = static_cast<value_type>(0);
+        if(reserve(count))
+        {
+          std::fill(my_first, my_first + count, value_type());
+          my_size = count;
+          terminate();
+        }
       }
 
-      explicit basic_string(size_type count) : my_first(allocator_type().allocate(count + 1U)),
-                                               my_last (my_first + count)
+      basic_string(size_type count, const T& value, const allocator_type& a = allocator_type())
+        : my_allocator(a), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U)
       {
-        std::fill(my_first, my_last, value_type());
-        *my_last = static_cast<value_type>(0);
+        if(reserve(count))
+        {
+          std::fill(my_first, my_first + count, value);
+          my_size = count;
+          terminate();
+        }
       }
 
-      basic_string(size_type count, const T& value) : my_first(allocator_type().allocate(count + 1U)),
-                                                      my_last (my_first + count)
+      basic_string(const_pointer p, size_type count, const allocator_type& a = allocator_type())
+        : my_allocator(a), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U)
       {
-        std::fill(my_first, my_last, value);
-        *my_last = static_cast<value_type>(0);
+        append(p, count);
       }
 
-      basic_string(const_pointer p)
+      basic_string(const_pointer p, const allocator_type& a = allocator_type())
+        : my_allocator(a), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U)
       {
-        const size_type count = traits_type::length(p);
-        my_first = allocator_type().allocate(count + 1U);
-        my_last = my_first + count;
-        std::copy(p, p + count, my_first);
-        *my_last = static_cast<value_type>(0);
+        if(p != nullptr)
+        {
+          append(p, traits_type::length(p));
+        }
       }
 
       basic_string(const basic_string& str)
+        : my_allocator(str.my_allocator), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U)
       {
-        const size_type count = str.length();
-        my_first = allocator_type().allocate(count + 1U);
-        my_last = my_first + count;
-        std::copy(str.begin(), str.end(), my_first);
-        *my_last = static_cast<value_type>(0);
+        append(str.my_first, str.my_size);
       }
 
-      basic_string(std::initializer_list<T> lst)
+      basic_string(const basic_string& str, const allocator_type& a)
+        : my_allocator(a), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U)
       {
-        const size_type count = lst.size();
-        my_first = allocator_type().allocate(count + 1U);
-        my_last = my_first + count;
-        std::copy(lst.begin(), lst.end(), my_first);
-        *my_last = static_cast<value_type>(0);
+        append(str.my_first, str.my_size);
       }
 
-      basic_string(size_type count,
-                   const T& value,
-                   const allocator_type& a) : my_first(allocator_type(a).allocate(count + 1U)),
-                                              my_last (my_first + count)
+      basic_string(basic_string&& str)
+        : my_allocator(str.my_allocator),
+          my_empty(),
+          my_first((str.my_first == str.my_empty) ? my_empty : str.my_first),
+          my_size(str.my_size),
+          my_capacity(str.my_capacity)
       {
-        std::fill(my_first, my_last, value);
-        *my_last = static_cast<value_type>(0);
+        str.my_first = str.my_empty;
+        str.my_size = 0U;
+        str.my_capacity = 0U;
+      }
+
+      basic_string(std::initializer_list<T> lst, const allocator_type& a = allocator_type())
+        : my_allocator(a), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U)
+      {
+        append(lst.begin(), static_cast<size_type>(lst.size()));
       }
 
       template<typename input_iterator>
       basic_string(input_iterator first,
                    input_iterator last,
                    const allocator_type& a = allocator_type())
+        : my_allocator(a), my_empty(), my_first(my_empty), my_size(0U), my_capacity(0U)
       {
-        const size_type sz = static_cast<size_type>(std::distance(first, last));
-        my_first = allocator_type(a).allocate(sz + 1U);
-        my_last  = my_first + sz;
-        std::copy(first, last, my_first);
-        *my_last = static_cast<value_type>(0);
+        for(; first != last; ++first)
+        {
+          push_back(static_cast<value_type>(*first));
+        }
       }
 
-      basic_string(std::initializer_list<T> lst,
-                   const allocator_type& a = allocator_type())
-      {
-        const size_type sz = (size_type) (lst.size());
-        my_first = allocator_type(a).allocate(sz + 1U);
-        my_last  = my_first + sz;
-        std::copy(lst.begin(), lst.end(), my_first);
-        *my_last = static_cast<value_type>(0);
-      }
-
-      ~basic_string()
-      {
-        std::destroy_range   (my_first, my_last + 1U, allocator_type());
-        std::deallocate_range(my_first, my_last + 1U, allocator_type());
-      }
+      ~basic_string() { release(); }
 
       basic_string& operator=(const basic_string& str)
       {
-        if(this == &str)
+        if(this != &str)
         {
-        }
-        else
-        {
-          const size_type sz = str.length();
-
-          if(length() != sz)
+          if((str.my_size <= my_capacity) || reserve(str.my_size))
           {
-            std::destroy_range   (my_first, my_last + 1U, allocator_type());
-            std::deallocate_range(my_first, my_last + 1U, allocator_type());
-
-            my_first = allocator_type().allocate(sz + 1U);
-            my_last  = my_first + sz;
+            std::copy(str.my_first, str.my_first + str.my_size, my_first);
+            my_size = str.my_size;
+            terminate();
           }
+        }
 
-          std::copy(str.begin(), str.end(), my_first);
-          *my_last = static_cast<value_type>(0);
+        return *this;
+      }
+
+      basic_string& operator=(basic_string&& str)
+      {
+        if(this != &str)
+        {
+          if(my_allocator == str.my_allocator)
+          {
+            release_buffer();
+            my_first = (str.my_first == str.my_empty) ? my_empty : str.my_first;
+            my_size = str.my_size;
+            my_capacity = str.my_capacity;
+            str.my_first = str.my_empty;
+            str.my_size = 0U;
+            str.my_capacity = 0U;
+          }
+          else
+          {
+            *this = static_cast<const basic_string&>(str);
+          }
         }
 
         return *this;
@@ -219,59 +231,159 @@
 
       basic_string& operator=(const_pointer p)
       {
-        const size_type sz = traits_type::length(p);
-
-        if(length() != sz)
+        if(p != nullptr)
         {
-          std::destroy_range   (my_first, my_last + 1U, allocator_type());
-          std::deallocate_range(my_first, my_last + 1U, allocator_type());
-
-          my_first = allocator_type().allocate(sz + 1U);
-          my_last  = my_first + sz;
+          const size_type count = traits_type::length(p);
+          if((count <= my_capacity) || reserve(count))
+          {
+            std::copy(p, p + count, my_first);
+            my_size = count;
+            terminate();
+          }
         }
-
-        std::copy(p, p + sz, my_first);
-        *my_last = static_cast<value_type>(0);
+        else
+        {
+          clear();
+        }
 
         return *this;
       }
 
       basic_string& operator=(std::initializer_list<T> lst)
       {
-        const size_type sz = lst.size();
-
-        if(length() != sz)
+        const size_type count = static_cast<size_type>(lst.size());
+        if((count <= my_capacity) || reserve(count))
         {
-          std::destroy_range   (my_first, my_last + 1U, allocator_type());
-          std::deallocate_range(my_first, my_last + 1U, allocator_type());
-
-          my_first = allocator_type().allocate(sz + 1U);
-          my_last  = my_first + sz;
+          std::copy(lst.begin(), lst.end(), my_first);
+          my_size = count;
+          terminate();
         }
-
-        std::copy(lst.begin(), lst.end(), my_first);
-        *my_last = static_cast<value_type>(0);
-
         return *this;
       }
 
+      basic_string& operator+=(const basic_string& str) { append(str); return *this; }
+      basic_string& operator+=(const_pointer p)
+      {
+        if(p != nullptr)
+        {
+          append(p, traits_type::length(p));
+        }
+        return *this;
+      }
+      basic_string& operator+=(const T& value) { push_back(value); return *this; }
+
+      bool reserve(size_type requested_capacity)
+      {
+        if(requested_capacity <= my_capacity)
+        {
+          return true;
+        }
+
+        if(requested_capacity > max_size())
+        {
+          return false;
+        }
+
+        pointer const new_data = my_allocator.allocate(requested_capacity + 1U);
+        if(new_data == nullptr)
+        {
+          return false;
+        }
+
+        std::copy(my_first, my_first + my_size, new_data);
+        new_data[my_size] = value_type();
+        release_buffer();
+        my_first = new_data;
+        my_capacity = requested_capacity;
+        return true;
+      }
+
+      void clear() STL_LOCAL_NOEXCEPT
+      {
+        my_size = 0U;
+        terminate();
+      }
+
+      void push_back(const T& value)
+      {
+        const value_type value_copy = value;
+
+        if(my_size == my_capacity)
+        {
+          const size_type limit = max_size();
+          if(my_capacity >= limit)
+          {
+            return;
+          }
+
+          const size_type next_capacity = (my_capacity == 0U)
+                                          ? 1U
+                                          : ((my_capacity > limit / 2U) ? limit : my_capacity * 2U);
+          if(!reserve(next_capacity))
+          {
+            return;
+          }
+        }
+
+        my_first[my_size] = value_copy;
+        ++my_size;
+        terminate();
+      }
+
+      void append(const_pointer p, size_type count)
+      {
+        if((p == nullptr) || (count == 0U) || (count > (max_size() - my_size)))
+        {
+          return;
+        }
+
+        const size_type old_size = my_size;
+        const size_type required_capacity = my_size + count;
+        if((required_capacity > my_capacity) && !reserve(required_capacity))
+        {
+          return;
+        }
+
+        std::copy(p, p + count, my_first + old_size);
+        my_size = required_capacity;
+        terminate();
+      }
+
+      void append(const basic_string& str)
+      {
+        if(this == &str)
+        {
+          const size_type old_size = my_size;
+          if((old_size <= (max_size() - old_size)) && reserve(old_size * 2U))
+          {
+            std::copy_backward(my_first, my_first + old_size, my_first + old_size * 2U);
+            my_size = old_size * 2U;
+            terminate();
+          }
+        }
+        else
+        {
+          append(str.my_first, str.my_size);
+        }
+      }
+
       iterator begin() { return my_first; }
-      iterator end  () { return my_last; }
+      iterator end  () { return my_first + my_size; }
 
       const_iterator begin() const { return my_first; }
-      const_iterator end  () const { return my_last; }
+      const_iterator end  () const { return my_first + my_size; }
 
       const_iterator cbegin() const { return my_first; }
-      const_iterator cend  () const { return my_last; }
+      const_iterator cend  () const { return my_first + my_size; }
 
-      reverse_iterator rbegin() { return reverse_iterator(my_last); }
-      reverse_iterator rend  () { return reverse_iterator(my_first); }
+      reverse_iterator rbegin() { return reverse_iterator(end()); }
+      reverse_iterator rend  () { return reverse_iterator(begin()); }
 
-      const_reverse_iterator rbegin() const { return const_reverse_iterator(my_last); }
-      const_reverse_iterator rend  () const { return const_reverse_iterator(my_first); }
+      const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+      const_reverse_iterator rend  () const { return const_reverse_iterator(begin()); }
 
-      const_reverse_iterator crbegin() const { return const_reverse_iterator(my_last); }
-      const_reverse_iterator crend  () const { return const_reverse_iterator(my_first); }
+      const_reverse_iterator crbegin() const { return const_reverse_iterator(end()); }
+      const_reverse_iterator crend  () const { return const_reverse_iterator(begin()); }
 
       reference operator[](const size_type i)             { return my_first[i]; }
       const_reference operator[](const size_type i) const { return my_first[i]; }
@@ -279,19 +391,38 @@
       reference at(const size_type i)             { return my_first[i]; }
       const_reference at(const size_type i) const { return my_first[i]; }
 
-      bool      empty () const STL_LOCAL_NOEXCEPT { return (my_first == my_last); }
-      size_type length() const STL_LOCAL_NOEXCEPT { return static_cast<size_type>(my_last - my_first); }
-      size_type size  () const STL_LOCAL_NOEXCEPT { return static_cast<size_type>(my_last - my_first); }
+      bool      empty () const STL_LOCAL_NOEXCEPT { return (my_size == 0U); }
+      size_type length() const STL_LOCAL_NOEXCEPT { return my_size; }
+      size_type size  () const STL_LOCAL_NOEXCEPT { return my_size; }
+      size_type capacity() const STL_LOCAL_NOEXCEPT { return my_capacity; }
+      size_type max_size() const STL_LOCAL_NOEXCEPT
+      {
+        const size_type allocation_limit = my_allocator.max_size();
+        return ((allocation_limit == 0U) ? 0U : allocation_limit - 1U);
+      }
 
+      pointer data() { return my_first; }
+      const_pointer data() const { return my_first; }
       const_pointer c_str() const { return my_first; }
 
-      allocator_type get_allocator() const { return allocator_type(); }
+      allocator_type get_allocator() const { return my_allocator; }
 
       bool operator==(const basic_string& other) const
       {
-        const bool the_lengths_are_equal = (length() == other.length());
+        if(length() != other.length())
+        {
+          return false;
+        }
 
-        return (the_lengths_are_equal && std::equal(my_first, my_last, other.my_first));
+        for(size_type index = 0U; index < my_size; ++index)
+        {
+          if(my_first[index] != other.my_first[index])
+          {
+            return false;
+          }
+        }
+
+        return true;
       }
 
       int compare(const basic_string& other_string) const
@@ -313,8 +444,29 @@
       }
 
     private:
-      iterator my_first;
-      iterator my_last;
+      void terminate() STL_LOCAL_NOEXCEPT { my_first[my_size] = value_type(); }
+
+      void release_buffer()
+      {
+        if(my_first != my_empty)
+        {
+          my_allocator.deallocate(my_first, my_capacity + 1U);
+        }
+      }
+
+      void release()
+      {
+        release_buffer();
+        my_first = my_empty;
+        my_size = 0U;
+        my_capacity = 0U;
+      }
+
+      allocator_type my_allocator;
+      value_type my_empty[1];
+      pointer my_first;
+      size_type my_size;
+      size_type my_capacity;
     };
 
     template<typename T, typename char_traits, typename allocator_type>

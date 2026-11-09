@@ -145,6 +145,8 @@ namespace std
 {
   [[noreturn]] auto __throw_out_of_range_fmt(char const*, ...) -> void { for(;;) { ; } }
 
+  [[noreturn]] auto __throw_logic_error(const char*) -> void { for(;;) { ; } }
+
   [[noreturn]] auto __throw_length_error(const char*) -> void { for(;;) { ; } }
 
   using ::fprintf;

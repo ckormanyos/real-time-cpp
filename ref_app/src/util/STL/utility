@@ -62,8 +62,10 @@
       pair(const first_type& t1, const second_type& t2) : first (t1),
                                                           second(t2) { }
 
-      pair(first_type&& t1, second_type&& t2) : first (std::forward<first_type>(t1)),
-                                                second(std::forward<second_type>(t2)) { }
+      template<typename other_type1,
+               typename other_type2>
+      pair(other_type1&& t1, other_type2&& t2) : first (std::forward<other_type1>(t1)),
+                                                 second(std::forward<other_type2>(t2)) { }
 
       pair(const pair& other) : first (other.first),
                                 second(other.second) { }
