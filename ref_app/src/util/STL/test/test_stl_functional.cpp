@@ -168,7 +168,7 @@ auto test_stl_sanity_functional() -> bool
   }
 #endif
 
-#if !defined(_MSC_VER) && (__cplusplus < 202002L)
+#if !defined(_MSC_VER) && (__cplusplus < 201703L)
   if(!std::is_same<std::identity<int>::type, int>::value)
   {
     return false;

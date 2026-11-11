@@ -49,7 +49,7 @@
       template<typename T>
       auto hash_floating(T value) noexcept -> std::size_t
       {
-        if(value == T(0))
+        if(!(value < T(0)) && !(value > T(0)))
         {
           value = T(0);
         }
@@ -128,8 +128,8 @@
 
       template<class... ArgTypes>
       constexpr auto operator()(ArgTypes&&... args) const
-        noexcept(noexcept(get()(std::forward<ArgTypes>(args)...)))
-        -> decltype(get()(std::forward<ArgTypes>(args)...))
+        noexcept(noexcept(std::declval<const reference_wrapper&>().get()(std::forward<ArgTypes>(args)...)))
+        -> decltype(std::declval<const reference_wrapper&>().get()(std::forward<ArgTypes>(args)...))
       {
         return get()(std::forward<ArgTypes>(args)...);
       }
