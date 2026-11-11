@@ -93,6 +93,19 @@
 
       constexpr tuple() = default;
 
+      tuple(const tuple& t) : t0 (t.t0),
+                              t1 (t.t1),
+                              t2 (t.t2),
+                              t3 (t.t3),
+                              t4 (t.t4),
+                              t5 (t.t5),
+                              t6 (t.t6),
+                              t7 (t.t7),
+                              t8 (t.t8),
+                              t9 (t.t9),
+                              t10(t.t10),
+                              t11(t.t11) { }
+
       constexpr tuple(const T0&  p0,
                       const T1&  p1  = T1 (),
                       const T2&  p2  = T2 (),

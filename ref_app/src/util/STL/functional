@@ -8,26 +8,104 @@
 #ifndef FUNCTIONAL_2013_08_30_
   #define FUNCTIONAL_2013_08_30_
 
+  #include <cstddef>
+  #include <cstdint>
+  #include <cstring>
+  #include <cstdlib>
   #include <memory>
+  #include <tuple>
   #include <type_traits>
   #include <utility>
 
   namespace std
   {
+    namespace xfunctional_impl
+    {
+      inline auto hash_u64(std::uint64_t value) noexcept -> std::size_t
+      {
+        std::size_t result = static_cast<std::size_t>(2166136261UL);
+
+        for(std::size_t index = 0U; index < sizeof(value); ++index)
+        {
+          result ^= static_cast<std::size_t>(value & std::uint64_t { 0xFFU });
+          result = static_cast<std::size_t>(static_cast<std::uint64_t>(result) * std::uint64_t { 16777619U });
+          value >>= 8U;
+        }
+
+        return result;
+      }
+
+      inline auto hash_bytes(const unsigned char* bytes, std::size_t count) noexcept -> std::size_t
+      {
+        std::size_t result = static_cast<std::size_t>(2166136261UL);
+
+        for(std::size_t index = 0U; index < count; ++index)
+        {
+          result ^= static_cast<std::size_t>(bytes[index]);
+          result = static_cast<std::size_t>(static_cast<std::uint64_t>(result) * std::uint64_t { 16777619U });
+        }
+
+        return result;
+      }
+
+      template<typename T>
+      auto hash_floating(T value) noexcept -> std::size_t
+      {
+        if(!(value < T(0)) && !(value > T(0)))
+        {
+          value = T(0);
+        }
+
+        unsigned char bytes[sizeof(T)] { };
+        std::memcpy(bytes, &value, sizeof(value));
+
+        return hash_bytes(bytes, sizeof(value));
+      }
+
+      template<typename T>
+      auto hash_dispatch(const T& value, std::false_type) noexcept -> std::size_t
+      {
+        return hash_u64(static_cast<std::uint64_t>(value));
+      }
+
+      template<typename T>
+      auto hash_dispatch(T value, std::true_type) noexcept -> std::size_t
+      {
+        return hash_floating(value);
+      }
+    }
+
     template <typename T>
     struct hash
     {
-        // Since the underlying type is a std::uint64_t we will rely on its hash function from the STL
-        auto operator()(const T&) const noexcept -> std::size_t
+        auto operator()(const T& value) const noexcept -> std::size_t
         {
-          return std::size_t { };
+          return xfunctional_impl::hash_dispatch(value, std::is_floating_point<T> { });
         }
+    };
+
+    template <typename T>
+    struct hash<T*>
+    {
+      auto operator()(T* value) const noexcept -> std::size_t
+      {
+        return xfunctional_impl::hash_u64(static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(value)));
+      }
+    };
+
+    template <>
+    struct hash<std::nullptr_t>
+    {
+      auto operator()(std::nullptr_t) const noexcept -> std::size_t
+      {
+        return xfunctional_impl::hash_u64(0U);
+      }
     };
 
     namespace xfunctional_impl
     {
-      template <typename T> constexpr T& func_ref_or_moveref(T& t) noexcept { return t; }
-      template <typename T> void func_ref_or_moveref(T&&) = delete;
+      template <typename T> constexpr auto func_ref_or_moveref(T& t) noexcept -> T& { return t; }
+      template <typename T> auto func_ref_or_moveref(T&&) -> void = delete;
     }
 
     template<typename T>
@@ -38,21 +116,22 @@
 
       template<typename U,
                class = decltype(xfunctional_impl::func_ref_or_moveref<T>(std::declval<U>()),
-                                std::enable_if_t<(!std::is_same<reference_wrapper, std::remove_cvref_t<U>>::value)>())>
+                                std::enable_if_t<(!std::is_same<reference_wrapper,
+                                                               typename std::remove_cv<typename std::remove_reference<U>::type>::type>::value)>())>
       constexpr reference_wrapper(U&& u) noexcept(noexcept(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u))))
         : my_ptr(std::addressof(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u)))) { }
 
       reference_wrapper(const reference_wrapper&) noexcept = default;
 
-      reference_wrapper& operator=(const reference_wrapper& x) noexcept = default;
+      auto operator=(const reference_wrapper& x) noexcept -> reference_wrapper& = default;
 
       constexpr operator T& () const noexcept { return *my_ptr; }
-      constexpr T& get() const noexcept { return *my_ptr; }
+      constexpr auto get() const noexcept -> T& { return *my_ptr; }
 
       template<class... ArgTypes>
       constexpr auto operator()(ArgTypes&&... args) const
-        noexcept(noexcept(get()(std::forward<ArgTypes>(args)...)))
-        -> decltype(get()(std::forward<ArgTypes>(args)...))
+        noexcept(noexcept(std::declval<const reference_wrapper&>().get()(std::forward<ArgTypes>(args)...)))
+        -> decltype(std::declval<const reference_wrapper&>().get()(std::forward<ArgTypes>(args)...))
       {
         return get()(std::forward<ArgTypes>(args)...);
       }
@@ -61,15 +140,647 @@
       T* my_ptr;
     };
 
+    namespace xfunctional_impl
+    {
+      template<typename T>
+      struct is_reference_wrapper : std::false_type { };
+
+      template<typename T>
+      struct is_reference_wrapper<std::reference_wrapper<T>> : std::true_type { };
+
+      template<typename C, typename Obj>
+      constexpr auto member_object_direct(Obj&& object, std::true_type) noexcept
+        -> decltype(std::forward<Obj>(object))
+      {
+        return std::forward<Obj>(object);
+      }
+
+      template<typename C, typename Obj>
+      constexpr auto member_object_direct(Obj&& object, std::false_type)
+        noexcept(noexcept(*std::forward<Obj>(object)))
+        -> decltype(*std::forward<Obj>(object))
+      {
+        return *std::forward<Obj>(object);
+      }
+
+      template<typename C, typename Obj>
+      constexpr auto member_object(Obj&& object, std::true_type)
+        noexcept(noexcept(std::forward<Obj>(object).get()))
+        -> decltype(std::forward<Obj>(object).get())
+      {
+        return std::forward<Obj>(object).get();
+      }
+
+      template<typename C, typename Obj>
+      constexpr auto member_object(Obj&& object, std::false_type)
+        noexcept(noexcept(member_object_direct<C>(std::forward<Obj>(object),
+                       std::is_base_of<C, typename std::remove_cv<typename std::remove_reference<Obj>::type>::type> { })))
+        -> decltype(member_object_direct<C>(std::forward<Obj>(object),
+                     std::is_base_of<C, typename std::remove_cv<typename std::remove_reference<Obj>::type>::type> { }))
+      {
+        return member_object_direct<C>(std::forward<Obj>(object),
+                 std::is_base_of<C, typename std::remove_cv<typename std::remove_reference<Obj>::type>::type> { });
+      }
+
+      template<typename T>
+      struct is_member_function_pointer : std::false_type { };
+
+      template<typename M, typename C>
+      struct is_member_function_pointer<M C::*> : std::is_function<M> { };
+
+      template<typename MemberPointer, bool = is_member_function_pointer<MemberPointer>::value>
+      struct member_pointer_invoker;
+
+      template<typename M, typename C>
+      struct member_pointer_invoker<M C::*, true>
+      {
+        template<typename Obj, typename... Args>
+        static constexpr auto call(M C::* member, Obj&& object, Args&&... args)
+          noexcept(noexcept((member_object<C>(std::forward<Obj>(object),
+                                 is_reference_wrapper<typename std::decay<Obj>::type> { }).*member)
+                            (std::forward<Args>(args)...)))
+          -> decltype((member_object<C>(std::forward<Obj>(object),
+                                        is_reference_wrapper<typename std::decay<Obj>::type> { }).*member)
+                      (std::forward<Args>(args)...))
+        {
+          return (member_object<C>(std::forward<Obj>(object),
+                                   is_reference_wrapper<typename std::decay<Obj>::type> { }).*member)
+                 (std::forward<Args>(args)...);
+        }
+      };
+
+      template<typename M, typename C>
+      struct member_pointer_invoker<M C::*, false>
+      {
+        template<typename Obj>
+        static constexpr auto call(M C::* member, Obj&& object)
+          noexcept(noexcept(member_object<C>(std::forward<Obj>(object),
+                                 is_reference_wrapper<typename std::decay<Obj>::type> { }).*member))
+          -> decltype(member_object<C>(std::forward<Obj>(object),
+                                       is_reference_wrapper<typename std::decay<Obj>::type> { }).*member)
+        {
+          return member_object<C>(std::forward<Obj>(object),
+                                  is_reference_wrapper<typename std::decay<Obj>::type> { }).*member;
+        }
+      };
+
+      template<typename MemberPointer>
+      class mem_fn_wrapper
+      {
+      public:
+        explicit constexpr mem_fn_wrapper(MemberPointer member) noexcept : my_member_pointer(member) { }
+
+        template<typename Obj, typename... Args>
+        constexpr auto operator()(Obj&& object, Args&&... args) const
+          noexcept(noexcept(member_pointer_invoker<MemberPointer>::call(std::declval<MemberPointer>(),
+                                    std::forward<Obj>(object), std::forward<Args>(args)...)))
+          -> decltype(member_pointer_invoker<MemberPointer>::call(std::declval<MemberPointer>(),
+                             std::forward<Obj>(object), std::forward<Args>(args)...))
+        {
+          return member_pointer_invoker<MemberPointer>::call(this->my_member_pointer,
+                   std::forward<Obj>(object), std::forward<Args>(args)...);
+        }
+
+      private:
+        MemberPointer my_member_pointer;
+      };
+    }
+
+    template<typename M, typename C>
+    constexpr auto mem_fn(M C::* member) noexcept
+      -> xfunctional_impl::mem_fn_wrapper<M C::*>
+    {
+      return xfunctional_impl::mem_fn_wrapper<M C::*>(member);
+    }
+
+    template<typename T>
+    auto ref(T& value) noexcept -> reference_wrapper<T>
+    {
+      return reference_wrapper<T>(value);
+    }
+
+    template<typename T>
+    auto ref(reference_wrapper<T> value) noexcept -> reference_wrapper<T>
+    {
+      return value;
+    }
+
+    template<typename T>
+    auto ref(const T&&) -> void = delete;
+
+    template<typename T>
+    auto cref(const T& value) noexcept -> reference_wrapper<const T>
+    {
+      return reference_wrapper<const T>(value);
+    }
+
+    template<typename T>
+    auto cref(reference_wrapper<T> value) noexcept -> reference_wrapper<const T>
+    {
+      return reference_wrapper<const T>(value.get());
+    }
+
+    template<typename T>
+    auto cref(const T&&) -> void = delete;
+
+    namespace xfunctional_impl
+    {
+      template<typename Return>
+      struct function_invoke
+      {
+        template<typename Callable, typename... Args>
+        static auto call(Callable& callable, Args&&... args) -> Return
+        {
+          return callable(std::forward<Args>(args)...);
+        }
+      };
+
+      template<>
+      struct function_invoke<void>
+      {
+        template<typename Callable, typename... Args>
+        static auto call(Callable& callable, Args&&... args) -> void
+        {
+          callable(std::forward<Args>(args)...);
+        }
+      };
+    }
+
+    template<typename Signature>
+    class function;
+
+    template<typename Return, typename... Args>
+    class function<Return(Args...)>
+    {
+    public:
+      using result_type = Return;
+      using function_pointer = Return (*)(Args...);
+
+      function() noexcept : my_vtable(nullptr) { }
+
+      function(std::nullptr_t) noexcept : my_vtable(nullptr) { }
+
+      function(function_pointer callable) : my_vtable(nullptr)
+      {
+        if(callable != nullptr)
+        {
+          initialize<function_pointer>(callable);
+        }
+      }
+
+      function(const function& other) : my_vtable(other.my_vtable)
+      {
+        if(my_vtable != nullptr)
+        {
+          my_vtable->copy(static_cast<void*>(my_storage.bytes),
+                          static_cast<const void*>(other.my_storage.bytes));
+        }
+      }
+
+      function(function&& other) : my_vtable(nullptr)
+      {
+        if(other.my_vtable != nullptr)
+        {
+          const vtable_type* const other_vtable = other.my_vtable;
+          other_vtable->move(static_cast<void*>(my_storage.bytes),
+                             static_cast<void*>(other.my_storage.bytes));
+          my_vtable = other_vtable;
+          other.my_vtable = nullptr;
+        }
+      }
+
+      template<typename Callable,
+               typename StoredCallable = typename std::decay<Callable>::type,
+               typename = std::enable_if_t<!std::is_same<StoredCallable, function>::value>>
+      function(Callable&& callable) : my_vtable(nullptr)
+      {
+        initialize<StoredCallable>(std::forward<Callable>(callable));
+      }
+
+      ~function() { reset(); }
+
+      auto operator=(const function& other) -> function&
+      {
+        if(this != &other)
+        {
+          function copy(other);
+          *this = std::move(copy);
+        }
+
+        return *this;
+      }
+
+      auto operator=(function&& other) -> function&
+      {
+        if(this != &other)
+        {
+          reset();
+
+          if(other.my_vtable != nullptr)
+          {
+            const vtable_type* const other_vtable = other.my_vtable;
+            other_vtable->move(static_cast<void*>(my_storage.bytes),
+                               static_cast<void*>(other.my_storage.bytes));
+            my_vtable = other_vtable;
+            other.my_vtable = nullptr;
+          }
+        }
+
+        return *this;
+      }
+
+      auto operator=(std::nullptr_t) noexcept -> function&
+      {
+        reset();
+        return *this;
+      }
+
+      template<typename Callable>
+      auto operator=(Callable&& callable) -> function&
+      {
+        function temporary(std::forward<Callable>(callable));
+        *this = std::move(temporary);
+        return *this;
+      }
+
+      explicit operator bool() const noexcept { return (my_vtable != nullptr); }
+
+      auto operator()(Args... args) const -> Return
+      {
+        if(my_vtable == nullptr)
+        {
+          std::abort();
+        }
+
+        return my_vtable->invoke(const_cast<void*>(static_cast<const void*>(my_storage.bytes)),
+                                 std::forward<Args>(args)...);
+      }
+
+      auto swap(function& other) -> void
+      {
+        if(this != &other)
+        {
+          function temporary(std::move(*this));
+          *this = std::move(other);
+          other = std::move(temporary);
+        }
+      }
+
+      template<typename Target>
+      auto target() noexcept -> Target*
+      {
+        using stored_type = typename std::remove_cv<Target>::type;
+
+        return((my_vtable != nullptr) && (my_vtable->type_key() == type_key<stored_type>()))
+            ? static_cast<Target*>(static_cast<void*>(my_storage.bytes))
+            : nullptr;
+      }
+
+      template<typename Target>
+      auto target() const noexcept -> const Target*
+      {
+        using stored_type = typename std::remove_cv<Target>::type;
+
+        return((my_vtable != nullptr) && (my_vtable->type_key() == type_key<stored_type>()))
+            ? static_cast<const Target*>(static_cast<const void*>(my_storage.bytes))
+            : nullptr;
+      }
+
+    private:
+      static constexpr std::size_t storage_size = (sizeof(void*) * 3U);
+
+      struct storage_type
+      {
+        alignas(std::max_align_t) unsigned char bytes[storage_size];
+      };
+
+      struct vtable_type
+      {
+        Return (*invoke)(void*, Args...);
+        void (*copy)(void*, const void*);
+        void (*move)(void*, void*);
+        void (*destroy)(void*);
+        const void* (*type_key)();
+      };
+
+      template<typename Callable>
+      static auto invoke_target(void* target, Args... args) -> Return
+      {
+        return xfunctional_impl::function_invoke<Return>::call(
+          *static_cast<Callable*>(target), std::forward<Args>(args)...);
+      }
+
+      template<typename Callable>
+      static auto copy_target(void* destination, const void* source) -> void
+      {
+        new(destination) Callable(*static_cast<const Callable*>(source));
+      }
+
+      template<typename Callable>
+      static auto move_target(void* destination, void* source) -> void
+      {
+        Callable* const source_callable = static_cast<Callable*>(source);
+        new(destination) Callable(*source_callable);
+        source_callable->~Callable();
+      }
+
+      template<typename Callable>
+      static auto destroy_target(void* target) -> void
+      {
+        static_cast<Callable*>(target)->~Callable();
+      }
+
+      template<typename Callable>
+      static const void* type_key() noexcept
+      {
+        static const unsigned char key = 0U;
+        return static_cast<const void*>(&key);
+      }
+
+      template<typename Callable>
+      static const vtable_type* vtable_for() noexcept
+      {
+        static const vtable_type table =
+        {
+          &invoke_target<Callable>,
+          &copy_target<Callable>,
+          &move_target<Callable>,
+          &destroy_target<Callable>,
+          &type_key<Callable>
+        };
+
+        return &table;
+      }
+
+      template<typename Callable, typename Value>
+      auto initialize(Value&& callable) -> void
+      {
+        static_assert(std::is_copy_constructible<Callable>::value,
+                      "std::function targets must be copy constructible");
+        static_assert(sizeof(Callable) <= storage_size,
+                      "std::function target exceeds inline storage capacity");
+        static_assert(alignof(Callable) <= alignof(storage_type),
+                      "std::function target alignment exceeds inline storage alignment");
+
+        new(static_cast<void*>(my_storage.bytes)) Callable(std::forward<Value>(callable));
+        my_vtable = vtable_for<Callable>();
+      }
+
+      auto reset() noexcept -> void
+      {
+        if(my_vtable != nullptr)
+        {
+          my_vtable->destroy(static_cast<void*>(my_storage.bytes));
+          my_vtable = nullptr;
+        }
+      }
+
+      storage_type          my_storage;
+      const vtable_type*     my_vtable;
+    };
+
+    namespace xfunctional_impl
+    {
+      template<std::size_t... Indices>
+      struct index_sequence { };
+
+      template<std::size_t N, std::size_t... Indices>
+      struct make_index_sequence : make_index_sequence<N - 1U, N - 1U, Indices...> { };
+
+      template<std::size_t... Indices>
+      struct make_index_sequence<0U, Indices...>
+      {
+        using type = index_sequence<Indices...>;
+      };
+
+      template<typename... Args>
+      class bind_call_arguments
+      {
+      public:
+        static constexpr std::size_t size = sizeof...(Args);
+
+        explicit bind_call_arguments(Args&&... args) : values(args...) { }
+
+        std::tuple<typename std::remove_reference<Args>::type&...> values;
+      };
+
+      template<std::size_t N, typename... Args>
+      auto get_call_argument(bind_call_arguments<Args...>&& args)
+        -> typename std::tuple_element<N, std::tuple<Args...>>::type&&
+      {
+        using result_type = typename std::tuple_element<N, std::tuple<Args...>>::type&&;
+        return static_cast<result_type>(std::get<N>(args.values));
+      }
+
+      template<int N>
+      struct placeholder_getter
+      {
+        template<typename Tuple>
+        static auto get(Tuple&& args)
+          -> decltype(get_call_argument<static_cast<std::size_t>(N - 1)>(std::forward<Tuple>(args)))
+        {
+          return get_call_argument<static_cast<std::size_t>(N - 1)>(std::forward<Tuple>(args));
+        }
+      };
+
+      template<>
+      struct placeholder_getter<0> { };
+
+      template<typename T>
+      struct bind_call_argument_count;
+
+      template<typename... Args>
+      struct bind_call_argument_count<bind_call_arguments<Args...>>
+        : std::integral_constant<std::size_t, sizeof...(Args)> { };
+
+      template<int N>
+      struct placeholder { };
+
+      template<typename Callable, typename... BoundArgs>
+      class bind_wrapper;
+    }
+
+    template<typename T>
+    struct is_placeholder : std::integral_constant<int, 0> { };
+
+    template<int N>
+    struct is_placeholder<xfunctional_impl::placeholder<N>> : std::integral_constant<int, N> { };
+
+    template<typename T>
+    struct is_placeholder<const T> : is_placeholder<T> { };
+
+    template<typename T>
+    struct is_placeholder<volatile T> : is_placeholder<T> { };
+
+    template<typename T>
+    struct is_placeholder<const volatile T> : is_placeholder<T> { };
+
+    namespace placeholders
+    {
+      constexpr xfunctional_impl::placeholder<1>  _1 { };
+      constexpr xfunctional_impl::placeholder<2>  _2 { };
+      constexpr xfunctional_impl::placeholder<3>  _3 { };
+      constexpr xfunctional_impl::placeholder<4>  _4 { };
+      constexpr xfunctional_impl::placeholder<5>  _5 { };
+      constexpr xfunctional_impl::placeholder<6>  _6 { };
+      constexpr xfunctional_impl::placeholder<7>  _7 { };
+      constexpr xfunctional_impl::placeholder<8>  _8 { };
+      constexpr xfunctional_impl::placeholder<9>  _9 { };
+      constexpr xfunctional_impl::placeholder<10> _10 { };
+    }
+
+    template<typename T>
+    struct is_bind_expression : std::false_type { };
+
+    template<typename T>
+    struct is_bind_expression<const T> : is_bind_expression<T> { };
+
+    template<typename T>
+    struct is_bind_expression<volatile T> : is_bind_expression<T> { };
+
+    template<typename T>
+    struct is_bind_expression<const volatile T> : is_bind_expression<T> { };
+
+    template<typename Callable, typename... BoundArgs>
+    struct is_bind_expression<xfunctional_impl::bind_wrapper<Callable, BoundArgs...>> : std::true_type { };
+
+    namespace xfunctional_impl
+    {
+      template<typename Callable, typename... Args>
+      auto bind_invoke(Callable&& callable, std::false_type, Args&&... args)
+        -> decltype(std::forward<Callable>(callable)(std::forward<Args>(args)...))
+      {
+        return std::forward<Callable>(callable)(std::forward<Args>(args)...);
+      }
+
+      template<typename Callable, typename... Args>
+      auto bind_invoke(Callable&& callable, std::true_type, Args&&... args)
+        -> decltype(std::mem_fn(std::forward<Callable>(callable))(std::forward<Args>(args)...))
+      {
+        return std::mem_fn(std::forward<Callable>(callable))(std::forward<Args>(args)...);
+      }
+
+      template<typename Bound, typename Tuple, std::size_t... Indices>
+      auto invoke_nested(Bound&& bound, Tuple&& args, index_sequence<Indices...>)
+        -> decltype(std::forward<Bound>(bound)(get_call_argument<Indices>(std::forward<Tuple>(args))...))
+      {
+        return std::forward<Bound>(bound)(get_call_argument<Indices>(std::forward<Tuple>(args))...);
+      }
+
+      template<typename Bound, typename Tuple>
+      auto resolve_bound(Bound&& bound, Tuple&& args,
+                         std::integral_constant<int, 0>, std::false_type, std::false_type)
+        -> decltype(std::forward<Bound>(bound))
+      {
+        return std::forward<Bound>(bound);
+      }
+
+      template<typename Bound, typename Tuple>
+      auto resolve_bound(Bound&& bound, Tuple&&,
+                         std::integral_constant<int, 0>, std::true_type, std::false_type)
+        -> decltype(std::forward<Bound>(bound).get())
+      {
+        return std::forward<Bound>(bound).get();
+      }
+
+      template<int N, typename Bound, typename Tuple, std::enable_if_t<(N > 0), int> = 0>
+      auto resolve_bound(Bound&&, Tuple&& args,
+                         std::integral_constant<int, N>, std::false_type, std::false_type)
+        -> decltype(placeholder_getter<N>::get(std::forward<Tuple>(args)))
+      {
+        return placeholder_getter<N>::get(std::forward<Tuple>(args));
+      }
+
+      template<typename Bound, typename Tuple>
+      auto resolve_bound(Bound&& bound, Tuple&& args,
+                         std::integral_constant<int, 0>, std::false_type, std::true_type)
+        -> decltype(invoke_nested(std::forward<Bound>(bound), std::forward<Tuple>(args),
+                     typename make_index_sequence<bind_call_argument_count<typename std::decay<Tuple>::type>::value>::type { }))
+      {
+        return invoke_nested(std::forward<Bound>(bound), std::forward<Tuple>(args),
+                 typename make_index_sequence<bind_call_argument_count<typename std::decay<Tuple>::type>::value>::type { });
+      }
+
+      template<typename Bound, typename Tuple>
+      auto resolve_bound(Bound&& bound, Tuple&& args)
+        -> decltype(resolve_bound(std::forward<Bound>(bound), std::forward<Tuple>(args),
+                     std::integral_constant<int, std::is_placeholder<typename std::decay<Bound>::type>::value> { },
+                     is_reference_wrapper<typename std::decay<Bound>::type> { },
+                     std::is_bind_expression<typename std::decay<Bound>::type> { }))
+      {
+        return resolve_bound(std::forward<Bound>(bound), std::forward<Tuple>(args),
+                 std::integral_constant<int, std::is_placeholder<typename std::decay<Bound>::type>::value> { },
+                 is_reference_wrapper<typename std::decay<Bound>::type> { },
+                 std::is_bind_expression<typename std::decay<Bound>::type> { });
+      }
+
+      template<typename Callable, typename BoundTuple, typename CallTuple, std::size_t... Indices>
+      auto invoke_bound(Callable&& callable, BoundTuple&& bound_args, CallTuple&& call_args,
+                        index_sequence<Indices...>)
+        -> decltype(bind_invoke(std::forward<Callable>(callable),
+                     std::is_member_pointer<typename std::decay<Callable>::type> { },
+                     resolve_bound(std::get<Indices>(std::forward<BoundTuple>(bound_args)),
+                                   std::forward<CallTuple>(call_args))...))
+      {
+        return bind_invoke(std::forward<Callable>(callable),
+                 std::is_member_pointer<typename std::decay<Callable>::type> { },
+                 resolve_bound(std::get<Indices>(std::forward<BoundTuple>(bound_args)),
+                               std::forward<CallTuple>(call_args))...);
+      }
+
+      template<typename Callable, typename... BoundArgs>
+      class bind_wrapper
+      {
+      public:
+        template<typename F, typename... Args>
+        explicit bind_wrapper(F&& callable, Args&&... args)
+          : my_callable(std::forward<F>(callable)),
+            my_bound_args(std::forward<Args>(args)...) { }
+
+        template<typename... CallArgs>
+        auto operator()(CallArgs&&... args) const
+          -> decltype(invoke_bound(std::declval<const Callable&>(),
+                       std::declval<const std::tuple<BoundArgs...>&>(),
+                       std::declval<bind_call_arguments<CallArgs...>&&>(),
+                       typename make_index_sequence<sizeof...(BoundArgs)>::type { }))
+        {
+          bind_call_arguments<CallArgs...> call_args(std::forward<CallArgs>(args)...);
+
+          return invoke_bound(my_callable,
+                   my_bound_args,
+                   std::move(call_args),
+                   typename make_index_sequence<sizeof...(BoundArgs)>::type { });
+        }
+
+      private:
+        Callable my_callable;
+        std::tuple<BoundArgs...> my_bound_args;
+      };
+    }
+
+    template<typename Callable, typename... BoundArgs>
+    auto bind(Callable&& callable, BoundArgs&&... args)
+      -> xfunctional_impl::bind_wrapper<typename std::decay<Callable>::type,
+                                        typename std::decay<BoundArgs>::type...>
+    {
+      using bind_type = xfunctional_impl::bind_wrapper<typename std::decay<Callable>::type,
+                                                       typename std::decay<BoundArgs>::type...>;
+
+      return bind_type(std::forward<Callable>(callable), std::forward<BoundArgs>(args)...);
+    }
+
     //template<typename T>
     //reference_wrapper(T&) -> reference_wrapper<T>;
 
+    #if (__cplusplus < 202002L)
     template<typename T>
     struct identity
     {
       using type = T;
     };
+    #endif
 
+    #if (__cplusplus < 201703L)
     template<typename argument1,
              typename result>
     struct unary_function
@@ -87,106 +798,225 @@
       typedef argument2 second_argument_type;
       typedef result    result_type;
     };
+    #endif
 
-    template<typename operand_type>
-    struct plus : public std::binary_function<operand_type, operand_type, operand_type>
+    namespace xfunctional_impl
     {
-      operand_type operator()(const operand_type& left, const operand_type& right) const
+#if (__cplusplus < 201703L)
+      template<typename argument1, typename argument2, typename result>
+      struct binary_function_base : std::binary_function<argument1, argument2, result> { };
+
+      template<typename argument, typename result>
+      struct unary_function_base : std::unary_function<argument, result> { };
+#else
+      template<typename, typename, typename>
+      struct binary_function_base { };
+
+      template<typename, typename>
+      struct unary_function_base { };
+#endif
+    }
+
+    template<typename operand_type = void>
+    struct plus : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
+    {
+      auto operator()(const operand_type& left, const operand_type& right) const -> operand_type
       {
         return left + right;
       }
     };
 
-    template<typename operand_type>
-    struct minus : public std::binary_function<operand_type, operand_type, operand_type>
+    template<>
+    struct plus<void>
     {
-      operand_type operator()(const operand_type& left, const operand_type& right) const
+      using is_transparent = void;
+
+      template<typename Left, typename Right>
+      constexpr auto operator()(Left&& left, Right&& right) const
+        noexcept(noexcept(std::forward<Left>(left) + std::forward<Right>(right)))
+        -> decltype(std::forward<Left>(left) + std::forward<Right>(right))
+      {
+        return std::forward<Left>(left) + std::forward<Right>(right);
+      }
+    };
+
+    template<typename operand_type>
+    struct minus : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
+    {
+      auto operator()(const operand_type& left, const operand_type& right) const -> operand_type
       {
         return left - right;
       }
     };
 
     template<typename operand_type>
-    struct multiplies : public std::binary_function<operand_type, operand_type, operand_type>
+    struct negate : public xfunctional_impl::unary_function_base<operand_type, operand_type>
     {
-      operand_type operator()(const operand_type& left, const operand_type& right) const
+      auto operator()(const operand_type& value) const -> operand_type
+      {
+        return -value;
+      }
+    };
+
+    template<typename operand_type>
+    struct logical_and : public xfunctional_impl::binary_function_base<operand_type, operand_type, bool>
+    {
+      auto operator()(const operand_type& left, const operand_type& right) const -> bool
+      {
+        return left && right;
+      }
+    };
+
+    template<typename operand_type>
+    struct logical_or : public xfunctional_impl::binary_function_base<operand_type, operand_type, bool>
+    {
+      auto operator()(const operand_type& left, const operand_type& right) const -> bool
+      {
+        return left || right;
+      }
+    };
+
+    template<typename operand_type>
+    struct logical_not : public xfunctional_impl::unary_function_base<operand_type, bool>
+    {
+      auto operator()(const operand_type& value) const -> bool
+      {
+        return !value;
+      }
+    };
+
+    template<typename operand_type>
+    struct bit_and : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
+    {
+      auto operator()(const operand_type& left, const operand_type& right) const -> operand_type
+      {
+        return left & right;
+      }
+    };
+
+    template<typename operand_type>
+    struct bit_or : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
+    {
+      auto operator()(const operand_type& left, const operand_type& right) const -> operand_type
+      {
+        return left | right;
+      }
+    };
+
+    template<typename operand_type>
+    struct bit_xor : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
+    {
+      auto operator()(const operand_type& left, const operand_type& right) const -> operand_type
+      {
+        return left ^ right;
+      }
+    };
+
+    template<typename operand_type>
+    struct bit_not : public xfunctional_impl::unary_function_base<operand_type, operand_type>
+    {
+      auto operator()(const operand_type& value) const -> operand_type
+      {
+        return static_cast<operand_type>(~value);
+      }
+    };
+
+    template<typename operand_type>
+    struct multiplies : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
+    {
+      auto operator()(const operand_type& left, const operand_type& right) const -> operand_type
       {
         return left * right;
       }
     };
 
     template<typename operand_type>
-    struct divides : public std::binary_function<operand_type, operand_type, operand_type>
+    struct divides : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
     {
-      operand_type operator()(const operand_type& left, const operand_type& right) const
+      auto operator()(const operand_type& left, const operand_type& right) const -> operand_type
       {
         return left / right;
       }
     };
 
     template<typename operand_type>
-    struct modulus : public std::binary_function<operand_type, operand_type, operand_type>
+    struct modulus : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
     {
-      operand_type operator()(const operand_type& left, const operand_type& right) const
+      auto operator()(const operand_type& left, const operand_type& right) const -> operand_type
       {
         return left % right;
       }
     };
 
     template<typename T>
-    struct equal_to : public binary_function<T, T, bool>
+    struct equal_to : public xfunctional_impl::binary_function_base<T, T, bool>
     {
-      bool operator()(const T& left, const T& right) const
+      auto operator()(const T& left, const T& right) const -> bool
       {
         return (left == right);
       }
     };
 
     template<typename T>
-    struct not_equal_to : public binary_function<T, T, bool>
+    struct not_equal_to : public xfunctional_impl::binary_function_base<T, T, bool>
     {
-      bool operator()(const T& left, const T& right) const
+      auto operator()(const T& left, const T& right) const -> bool
       {
         return (left != right);
       }
     };
 
-    template<typename T>
-    struct less : public binary_function<T, T, bool>
+    template<typename T = void>
+    struct less : public xfunctional_impl::binary_function_base<T, T, bool>
     {
-      bool operator()(const T& left, const T& right) const
+      auto operator()(const T& left, const T& right) const -> bool
       {
         return (left < right);
       }
     };
 
-    template<typename T>
-    struct less_equal : public binary_function<T, T, bool>
+    template<>
+    struct less<void>
     {
-      bool operator()(const T& left, const T& right) const
+      using is_transparent = void;
+
+      template<typename Left, typename Right>
+      constexpr auto operator()(Left&& left, Right&& right) const
+        noexcept(noexcept(std::forward<Left>(left) < std::forward<Right>(right)))
+        -> decltype(std::forward<Left>(left) < std::forward<Right>(right))
+      {
+        return std::forward<Left>(left) < std::forward<Right>(right);
+      }
+    };
+
+    template<typename T>
+    struct less_equal : public xfunctional_impl::binary_function_base<T, T, bool>
+    {
+      auto operator()(const T& left, const T& right) const -> bool
       {
         return (left <= right);
       }
     };
 
     template<typename T>
-    struct greater : public binary_function<T, T, bool>
+    struct greater : public xfunctional_impl::binary_function_base<T, T, bool>
     {
-      bool operator()(const T& left, const T& right) const
+      auto operator()(const T& left, const T& right) const -> bool
       {
         return (left > right);
       }
     };
 
     template<typename T>
-    struct greater_equal : public binary_function<T, T, bool>
+    struct greater_equal : public xfunctional_impl::binary_function_base<T, T, bool>
     {
-      bool operator()(const T& left, const T& right) const
+      auto operator()(const T& left, const T& right) const -> bool
       {
         return (left >= right);
       }
     };
 
+#if (__cplusplus < 201703L)
     template<typename function_type>
     class unary_binder : public std::unary_function<typename function_type::second_argument_type,
                                                     typename function_type::result_type>
@@ -196,19 +1026,19 @@
                                   typename function_type::result_type>
       base_type;
 
-      typedef typename base_type::first_argument_type argument_type;
+      typedef typename base_type::argument_type      argument_type;
       typedef typename base_type::result_type         result_type;
 
       unary_binder(const function_type& function,
                    const typename function_type::first_argument_type& left) : operation(function),
                                                                               value    (left) { }
 
-      result_type operator()(const argument_type& right) const
+      auto operator()(const argument_type& right) const -> result_type
       {
         return (operation(value, right));
       }
 
-      result_type operator()(argument_type& right) const
+      auto operator()(argument_type& right) const -> result_type
       {
         return (operation(value, right));
       }
@@ -221,7 +1051,7 @@
 
     template<typename function_type,
              typename value_type>
-    unary_binder<function_type> bind1st(const function_type& function, const value_type& left)
+    auto bind1st(const function_type& function, const value_type& left) -> unary_binder<function_type>
     {
       typename function_type::first_argument_type the_value(left);
 
@@ -244,12 +1074,12 @@
         : my_function(function),
           my_value   (right) { }
 
-      result_type operator()(const argument_type& left) const
+      auto operator()(const argument_type& left) const -> result_type
       {
         return my_function(left, my_value);
       }
 
-      result_type operator()(argument_type& left) const
+      auto operator()(argument_type& left) const -> result_type
       {
         return my_function(left, my_value);
       }
@@ -260,12 +1090,13 @@
     };
 
     template<typename function_type, typename T>
-    binder2nd<function_type> bind2nd(const function_type& function, const T& right)
+    auto bind2nd(const function_type& function, const T& right) -> binder2nd<function_type>
     {
       typename function_type::second_argument_type value(right);
 
       return binder2nd<function_type>(function, value);
     }
+#endif
   }
 
 #endif // FUNCTIONAL_2013_08_30_
