@@ -8,20 +8,96 @@
 #ifndef FUNCTIONAL_2013_08_30_
   #define FUNCTIONAL_2013_08_30_
 
+  #include <cstddef>
+  #include <cstdint>
+  #include <cstring>
   #include <memory>
   #include <type_traits>
   #include <utility>
 
   namespace std
   {
+    namespace xfunctional_impl
+    {
+      inline auto hash_u64(std::uint64_t value) noexcept -> std::size_t
+      {
+        std::size_t result = static_cast<std::size_t>(2166136261UL);
+
+        for(std::size_t index = 0U; index < sizeof(value); ++index)
+        {
+          result ^= static_cast<std::size_t>(value & std::uint64_t { 0xFFU });
+          result *= static_cast<std::size_t>(16777619UL);
+          value >>= 8U;
+        }
+
+        return result;
+      }
+
+      inline auto hash_bytes(const unsigned char* bytes, std::size_t count) noexcept -> std::size_t
+      {
+        std::size_t result = static_cast<std::size_t>(2166136261UL);
+
+        for(std::size_t index = 0U; index < count; ++index)
+        {
+          result ^= static_cast<std::size_t>(bytes[index]);
+          result *= static_cast<std::size_t>(16777619UL);
+        }
+
+        return result;
+      }
+
+      template<typename T>
+      auto hash_floating(T value) noexcept -> std::size_t
+      {
+        if(value == T(0))
+        {
+          value = T(0);
+        }
+
+        unsigned char bytes[sizeof(T)] { };
+        std::memcpy(bytes, &value, sizeof(value));
+
+        return hash_bytes(bytes, sizeof(value));
+      }
+
+      template<typename T>
+      auto hash_dispatch(const T& value, std::false_type) noexcept -> std::size_t
+      {
+        return hash_u64(static_cast<std::uint64_t>(value));
+      }
+
+      template<typename T>
+      auto hash_dispatch(T value, std::true_type) noexcept -> std::size_t
+      {
+        return hash_floating(value);
+      }
+    }
+
     template <typename T>
     struct hash
     {
-        // Since the underlying type is a std::uint64_t we will rely on its hash function from the STL
-        auto operator()(const T&) const noexcept -> std::size_t
+        auto operator()(const T& value) const noexcept -> std::size_t
         {
-          return std::size_t { };
+          return xfunctional_impl::hash_dispatch(value, std::is_floating_point<T> { });
         }
+    };
+
+    template <typename T>
+    struct hash<T*>
+    {
+      auto operator()(T* value) const noexcept -> std::size_t
+      {
+        return xfunctional_impl::hash_u64(static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(value)));
+      }
+    };
+
+    template <>
+    struct hash<std::nullptr_t>
+    {
+      auto operator()(std::nullptr_t) const noexcept -> std::size_t
+      {
+        return xfunctional_impl::hash_u64(0U);
+      }
     };
 
     namespace xfunctional_impl
@@ -38,7 +114,8 @@
 
       template<typename U,
                class = decltype(xfunctional_impl::func_ref_or_moveref<T>(std::declval<U>()),
-                                std::enable_if_t<(!std::is_same<reference_wrapper, std::remove_cvref_t<U>>::value)>())>
+                                std::enable_if_t<(!std::is_same<reference_wrapper,
+                                                               typename std::remove_cv<typename std::remove_reference<U>::type>::type>::value)>())>
       constexpr reference_wrapper(U&& u) noexcept(noexcept(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u))))
         : my_ptr(std::addressof(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u)))) { }
 
@@ -61,15 +138,161 @@
       T* my_ptr;
     };
 
+    namespace xfunctional_impl
+    {
+      template<typename T>
+      struct is_reference_wrapper : std::false_type { };
+
+      template<typename T>
+      struct is_reference_wrapper<std::reference_wrapper<T>> : std::true_type { };
+
+      template<typename C, typename Obj>
+      constexpr auto member_object_direct(Obj&& object, std::true_type) noexcept
+        -> decltype(std::forward<Obj>(object))
+      {
+        return std::forward<Obj>(object);
+      }
+
+      template<typename C, typename Obj>
+      constexpr auto member_object_direct(Obj&& object, std::false_type)
+        noexcept(noexcept(*std::forward<Obj>(object)))
+        -> decltype(*std::forward<Obj>(object))
+      {
+        return *std::forward<Obj>(object);
+      }
+
+      template<typename C, typename Obj>
+      constexpr auto member_object(Obj&& object, std::true_type)
+        noexcept(noexcept(std::forward<Obj>(object).get()))
+        -> decltype(std::forward<Obj>(object).get())
+      {
+        return std::forward<Obj>(object).get();
+      }
+
+      template<typename C, typename Obj>
+      constexpr auto member_object(Obj&& object, std::false_type)
+        noexcept(noexcept(member_object_direct<C>(std::forward<Obj>(object),
+                       std::is_base_of<C, typename std::remove_cv<typename std::remove_reference<Obj>::type>::type> { })))
+        -> decltype(member_object_direct<C>(std::forward<Obj>(object),
+                     std::is_base_of<C, typename std::remove_cv<typename std::remove_reference<Obj>::type>::type> { }))
+      {
+        return member_object_direct<C>(std::forward<Obj>(object),
+                 std::is_base_of<C, typename std::remove_cv<typename std::remove_reference<Obj>::type>::type> { });
+      }
+
+      template<typename T>
+      struct is_member_function_pointer : std::false_type { };
+
+      template<typename M, typename C>
+      struct is_member_function_pointer<M C::*> : std::is_function<M> { };
+
+      template<typename MemberPointer, bool = is_member_function_pointer<MemberPointer>::value>
+      struct member_pointer_invoker;
+
+      template<typename M, typename C>
+      struct member_pointer_invoker<M C::*, true>
+      {
+        template<typename Obj, typename... Args>
+        static constexpr auto call(M C::* member, Obj&& object, Args&&... args)
+          noexcept(noexcept((member_object<C>(std::forward<Obj>(object),
+                                 is_reference_wrapper<typename std::decay<Obj>::type> { }).*member)
+                            (std::forward<Args>(args)...)))
+          -> decltype((member_object<C>(std::forward<Obj>(object),
+                                        is_reference_wrapper<typename std::decay<Obj>::type> { }).*member)
+                      (std::forward<Args>(args)...))
+        {
+          return (member_object<C>(std::forward<Obj>(object),
+                                   is_reference_wrapper<typename std::decay<Obj>::type> { }).*member)
+                 (std::forward<Args>(args)...);
+        }
+      };
+
+      template<typename M, typename C>
+      struct member_pointer_invoker<M C::*, false>
+      {
+        template<typename Obj>
+        static constexpr auto call(M C::* member, Obj&& object)
+          noexcept(noexcept(member_object<C>(std::forward<Obj>(object),
+                                 is_reference_wrapper<typename std::decay<Obj>::type> { }).*member))
+          -> decltype(member_object<C>(std::forward<Obj>(object),
+                                       is_reference_wrapper<typename std::decay<Obj>::type> { }).*member)
+        {
+          return member_object<C>(std::forward<Obj>(object),
+                                  is_reference_wrapper<typename std::decay<Obj>::type> { }).*member;
+        }
+      };
+
+      template<typename MemberPointer>
+      class mem_fn_wrapper
+      {
+      public:
+        explicit constexpr mem_fn_wrapper(MemberPointer member) noexcept : my_member_pointer(member) { }
+
+        template<typename Obj, typename... Args>
+        constexpr auto operator()(Obj&& object, Args&&... args) const
+          noexcept(noexcept(member_pointer_invoker<MemberPointer>::call(std::declval<MemberPointer>(),
+                                    std::forward<Obj>(object), std::forward<Args>(args)...)))
+          -> decltype(member_pointer_invoker<MemberPointer>::call(std::declval<MemberPointer>(),
+                             std::forward<Obj>(object), std::forward<Args>(args)...))
+        {
+          return member_pointer_invoker<MemberPointer>::call(this->my_member_pointer,
+                   std::forward<Obj>(object), std::forward<Args>(args)...);
+        }
+
+      private:
+        MemberPointer my_member_pointer;
+      };
+    }
+
+    template<typename M, typename C>
+    constexpr auto mem_fn(M C::* member) noexcept
+      -> xfunctional_impl::mem_fn_wrapper<M C::*>
+    {
+      return xfunctional_impl::mem_fn_wrapper<M C::*>(member);
+    }
+
+    template<typename T>
+    constexpr reference_wrapper<T> ref(T& value) noexcept
+    {
+      return reference_wrapper<T>(value);
+    }
+
+    template<typename T>
+    constexpr reference_wrapper<T> ref(reference_wrapper<T> value) noexcept
+    {
+      return value;
+    }
+
+    template<typename T>
+    void ref(const T&&) = delete;
+
+    template<typename T>
+    constexpr reference_wrapper<const T> cref(const T& value) noexcept
+    {
+      return reference_wrapper<const T>(value);
+    }
+
+    template<typename T>
+    constexpr reference_wrapper<const T> cref(reference_wrapper<T> value) noexcept
+    {
+      return reference_wrapper<const T>(value.get());
+    }
+
+    template<typename T>
+    void cref(const T&&) = delete;
+
     //template<typename T>
     //reference_wrapper(T&) -> reference_wrapper<T>;
 
+    #if (__cplusplus < 202002L)
     template<typename T>
     struct identity
     {
       using type = T;
     };
+    #endif
 
+    #if (__cplusplus < 201703L)
     template<typename argument1,
              typename result>
     struct unary_function
@@ -87,9 +310,27 @@
       typedef argument2 second_argument_type;
       typedef result    result_type;
     };
+    #endif
 
-    template<typename operand_type>
-    struct plus : public std::binary_function<operand_type, operand_type, operand_type>
+    namespace xfunctional_impl
+    {
+#if (__cplusplus < 201703L)
+      template<typename argument1, typename argument2, typename result>
+      struct binary_function_base : std::binary_function<argument1, argument2, result> { };
+
+      template<typename argument, typename result>
+      struct unary_function_base : std::unary_function<argument, result> { };
+#else
+      template<typename, typename, typename>
+      struct binary_function_base { };
+
+      template<typename, typename>
+      struct unary_function_base { };
+#endif
+    }
+
+    template<typename operand_type = void>
+    struct plus : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
@@ -97,8 +338,22 @@
       }
     };
 
+    template<>
+    struct plus<void>
+    {
+      using is_transparent = void;
+
+      template<typename Left, typename Right>
+      constexpr auto operator()(Left&& left, Right&& right) const
+        noexcept(noexcept(std::forward<Left>(left) + std::forward<Right>(right)))
+        -> decltype(std::forward<Left>(left) + std::forward<Right>(right))
+      {
+        return std::forward<Left>(left) + std::forward<Right>(right);
+      }
+    };
+
     template<typename operand_type>
-    struct minus : public std::binary_function<operand_type, operand_type, operand_type>
+    struct minus : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
@@ -107,7 +362,79 @@
     };
 
     template<typename operand_type>
-    struct multiplies : public std::binary_function<operand_type, operand_type, operand_type>
+    struct negate : public xfunctional_impl::unary_function_base<operand_type, operand_type>
+    {
+      operand_type operator()(const operand_type& value) const
+      {
+        return -value;
+      }
+    };
+
+    template<typename operand_type>
+    struct logical_and : public xfunctional_impl::binary_function_base<operand_type, operand_type, bool>
+    {
+      bool operator()(const operand_type& left, const operand_type& right) const
+      {
+        return left && right;
+      }
+    };
+
+    template<typename operand_type>
+    struct logical_or : public xfunctional_impl::binary_function_base<operand_type, operand_type, bool>
+    {
+      bool operator()(const operand_type& left, const operand_type& right) const
+      {
+        return left || right;
+      }
+    };
+
+    template<typename operand_type>
+    struct logical_not : public xfunctional_impl::unary_function_base<operand_type, bool>
+    {
+      bool operator()(const operand_type& value) const
+      {
+        return !value;
+      }
+    };
+
+    template<typename operand_type>
+    struct bit_and : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
+    {
+      operand_type operator()(const operand_type& left, const operand_type& right) const
+      {
+        return left & right;
+      }
+    };
+
+    template<typename operand_type>
+    struct bit_or : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
+    {
+      operand_type operator()(const operand_type& left, const operand_type& right) const
+      {
+        return left | right;
+      }
+    };
+
+    template<typename operand_type>
+    struct bit_xor : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
+    {
+      operand_type operator()(const operand_type& left, const operand_type& right) const
+      {
+        return left ^ right;
+      }
+    };
+
+    template<typename operand_type>
+    struct bit_not : public xfunctional_impl::unary_function_base<operand_type, operand_type>
+    {
+      operand_type operator()(const operand_type& value) const
+      {
+        return static_cast<operand_type>(~value);
+      }
+    };
+
+    template<typename operand_type>
+    struct multiplies : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
@@ -116,7 +443,7 @@
     };
 
     template<typename operand_type>
-    struct divides : public std::binary_function<operand_type, operand_type, operand_type>
+    struct divides : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
@@ -125,7 +452,7 @@
     };
 
     template<typename operand_type>
-    struct modulus : public std::binary_function<operand_type, operand_type, operand_type>
+    struct modulus : public xfunctional_impl::binary_function_base<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
@@ -134,7 +461,7 @@
     };
 
     template<typename T>
-    struct equal_to : public binary_function<T, T, bool>
+    struct equal_to : public xfunctional_impl::binary_function_base<T, T, bool>
     {
       bool operator()(const T& left, const T& right) const
       {
@@ -143,7 +470,7 @@
     };
 
     template<typename T>
-    struct not_equal_to : public binary_function<T, T, bool>
+    struct not_equal_to : public xfunctional_impl::binary_function_base<T, T, bool>
     {
       bool operator()(const T& left, const T& right) const
       {
@@ -151,8 +478,8 @@
       }
     };
 
-    template<typename T>
-    struct less : public binary_function<T, T, bool>
+    template<typename T = void>
+    struct less : public xfunctional_impl::binary_function_base<T, T, bool>
     {
       bool operator()(const T& left, const T& right) const
       {
@@ -160,8 +487,22 @@
       }
     };
 
+    template<>
+    struct less<void>
+    {
+      using is_transparent = void;
+
+      template<typename Left, typename Right>
+      constexpr auto operator()(Left&& left, Right&& right) const
+        noexcept(noexcept(std::forward<Left>(left) < std::forward<Right>(right)))
+        -> decltype(std::forward<Left>(left) < std::forward<Right>(right))
+      {
+        return std::forward<Left>(left) < std::forward<Right>(right);
+      }
+    };
+
     template<typename T>
-    struct less_equal : public binary_function<T, T, bool>
+    struct less_equal : public xfunctional_impl::binary_function_base<T, T, bool>
     {
       bool operator()(const T& left, const T& right) const
       {
@@ -170,7 +511,7 @@
     };
 
     template<typename T>
-    struct greater : public binary_function<T, T, bool>
+    struct greater : public xfunctional_impl::binary_function_base<T, T, bool>
     {
       bool operator()(const T& left, const T& right) const
       {
@@ -179,7 +520,7 @@
     };
 
     template<typename T>
-    struct greater_equal : public binary_function<T, T, bool>
+    struct greater_equal : public xfunctional_impl::binary_function_base<T, T, bool>
     {
       bool operator()(const T& left, const T& right) const
       {
@@ -187,6 +528,7 @@
       }
     };
 
+#if (__cplusplus < 201703L)
     template<typename function_type>
     class unary_binder : public std::unary_function<typename function_type::second_argument_type,
                                                     typename function_type::result_type>
@@ -196,7 +538,7 @@
                                   typename function_type::result_type>
       base_type;
 
-      typedef typename base_type::first_argument_type argument_type;
+      typedef typename base_type::argument_type      argument_type;
       typedef typename base_type::result_type         result_type;
 
       unary_binder(const function_type& function,
@@ -266,6 +608,7 @@
 
       return binder2nd<function_type>(function, value);
     }
+#endif
   }
 
 #endif // FUNCTIONAL_2013_08_30_

@@ -1417,6 +1417,9 @@
     <ClCompile Include="src\util\STL\test\test_stl_algorithm.cpp">
       <Filter>src\util\STL\test</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\STL\test\test_stl_functional.cpp">
+      <Filter>src\util\STL\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
