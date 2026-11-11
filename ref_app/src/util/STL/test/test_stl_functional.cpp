@@ -28,19 +28,26 @@ struct functional_member_target
 {
   int value;
 
-  int add(int amount)
+  auto add(int amount) -> int
   {
     value += amount;
     return value;
   }
 
-  int read() const
+  auto read() const -> int
   {
     return value;
   }
 };
 
 struct functional_member_derived : functional_member_target { };
+
+auto functional_test_increment(int value) -> int;
+
+auto functional_test_increment(int value) -> int
+{
+  return value + 1;
+}
 
 auto test_stl_sanity_functional() -> bool;
 
@@ -53,7 +60,7 @@ auto test_stl_sanity_functional() -> bool
   const int const_value = 11;
   std::reference_wrapper<const int> const_reference(const_value);
 
-  auto increment = [](int number) { return number + 1; };
+  auto increment = [](int number) -> int { return number + 1; };
   std::reference_wrapper<decltype(increment)> callable(increment);
 
   const std::reference_wrapper<int> copied_reference(reference);
@@ -104,6 +111,23 @@ auto test_stl_sanity_functional() -> bool
     return false;
   }
 
+  using namespace std::placeholders;
+  const auto partially_bound = std::bind(std::plus<int>(), 5, _1);
+  const auto reordered = std::bind(std::minus<int>(), _2, _1);
+  const auto repeated = std::bind(std::plus<int>(), _1, _1);
+  const auto nested = std::bind(std::plus<int>(), _1,
+                                std::bind(std::multiplies<int>(), _2, 2));
+
+  if(   (partially_bound(2) != 7)
+     || (reordered(3, 8) != 5)
+     || (repeated(4) != 8)
+     || (nested(3, 4) != 11)
+     || (std::is_placeholder<decltype(_1)>::value != 1)
+     || (!std::is_bind_expression<decltype(nested)>::value))
+  {
+    return false;
+  }
+
   functional_member_derived member_target { };
   member_target.value = 6;
   const auto member_value = std::mem_fn(&functional_member_target::value);
@@ -125,6 +149,69 @@ auto test_stl_sanity_functional() -> bool
      || (member_add(&member_target, 2) != 13)
      || (member_add(std::ref(member_target), 1) != 14)
      || (member_read(const_member_target) != 14))
+  {
+    return false;
+  }
+
+  const auto bound_member_add = std::bind(&functional_member_target::add,
+                                          std::ref(member_target), _1);
+  if(bound_member_add(2) != 16)
+  {
+    return false;
+  }
+
+  const auto bound_reference = std::bind(functional_test_increment, std::ref(value));
+  if(bound_reference() != 8)
+  {
+    return false;
+  }
+
+  std::function<int(int)> empty_function;
+  std::function<int(int)> null_function(static_cast<int (*)(int)>(nullptr));
+  if(empty_function || null_function)
+  {
+    return false;
+  }
+
+  auto offset_callable = [offset = 4](int input) -> int { return input + offset; };
+  std::function<int(int)> callable_function(offset_callable);
+  const std::function<int(int)> copied_function(callable_function);
+
+  if(   (!callable_function)
+     || (callable_function(3) != 7)
+     || (copied_function(5) != 9)
+     || (copied_function.target<decltype(offset_callable)>() == nullptr))
+  {
+    return false;
+  }
+
+  std::function<int(int)> moved_function(std::move(callable_function));
+  if(callable_function || (!moved_function) || (moved_function(6) != 10))
+  {
+    return false;
+  }
+
+  moved_function = nullptr;
+  if(moved_function)
+  {
+    return false;
+  }
+
+  std::function<int(int)> function_pointer(&functional_test_increment);
+  if(function_pointer(8) != 9)
+  {
+    return false;
+  }
+
+  int call_count = 0;
+  std::function<void()> void_function([&call_count]() -> void { ++call_count; });
+  const std::function<void()>& const_void_function = void_function;
+  const_void_function();
+
+  auto stateful_callable = [state = 0]() mutable -> int { return ++state; };
+  const std::function<int()> stateful_function(stateful_callable);
+
+  if((call_count != 1) || (stateful_function() != 1) || (stateful_function() != 2))
   {
     return false;
   }
