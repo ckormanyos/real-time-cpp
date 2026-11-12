@@ -297,7 +297,7 @@
 
       template<typename _Up, typename... _Args>
       static void construct(allocator_type& __a, _Up* __p, _Args&&... __args)
-      { ::new (static_cast<void*>(__p)) _Up(std::forward<_Args>(__args)...); }
+      { static_cast<void>(__a); ::new (static_cast<void*>(__p)) _Up(std::forward<_Args>(__args)...); }
 
       template<typename _Up>
       static void destroy(allocator_type&, _Up* __p) noexcept

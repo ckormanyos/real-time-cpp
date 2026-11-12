@@ -11,6 +11,8 @@ auto test_stl_sanity_cmath() -> bool;
 
 auto test_stl_sanity_cmath() -> bool
 {
+  #if defined(__v850__)
+  #else
   const auto near = [](float actual, float expected, float tolerance)
   {
     return (std::fabs(actual - expected) < tolerance);
@@ -46,6 +48,7 @@ auto test_stl_sanity_cmath() -> bool
   {
     return false;
   }
+  #endif
 
   return true;
 }

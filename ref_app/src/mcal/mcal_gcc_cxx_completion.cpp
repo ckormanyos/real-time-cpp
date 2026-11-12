@@ -149,6 +149,23 @@ namespace std
 
   [[noreturn]] auto __throw_length_error(const char*) -> void { for(;;) { ; } }
 
+  [[noreturn]] auto __throw_bad_alloc() -> void { for(;;) { ; } }
+
+  [[noreturn]] auto __throw_bad_function_call() -> void { for(;;) { ; } }
+
+  auto _Hash_bytes(const void* ptr, std::size_t len, std::size_t seed) -> std::size_t
+  {
+    const auto* bytes = static_cast<const unsigned char*>(ptr);
+    std::uint64_t hash = seed;
+
+    for(std::size_t index = 0U; index < len; ++index)
+    {
+      hash = (hash ^ static_cast<std::size_t>(bytes[index])) * std::uint64_t(16777619U);
+    }
+
+    return static_cast<std::size_t>(hash);
+  }
+
   using ::fprintf;
 
   using ::atexit;

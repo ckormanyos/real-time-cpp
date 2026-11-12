@@ -428,16 +428,8 @@
   {
   #endif
     // These are (most of) the functions from <math.h> having C-linkage.
-    int         isinff     (float);
-    int         isinfl     (long double);
-    int         isnanf     (float);
-    int         isnanl     (long double);
-    int         isfinitef  (float);
-    int         isfinitel  (long double);
     int         ilogbf     (float);
     int         ilogbl     (long double);
-    int         isnanf     (float);
-    int         isnanl     (long double);
     float       fabsf      (float x);
     long double fabsl      (long double x);
     float       fmodf      (float x, float y);
@@ -499,6 +491,32 @@
   #if defined(__cplusplus)
   }
   #endif
+
+  namespace cmath_fallback_detail {
+
+  template<typename FloatType>
+  inline bool isfinite_impl(FloatType x)
+  {
+    const FloatType max_value((std::numeric_limits<FloatType>::max)());
+
+    return ((x >= -max_value) && (x <= max_value));
+  }
+
+  template<typename FloatType>
+  inline bool isinf_impl(FloatType x)
+  {
+    const FloatType max_value((std::numeric_limits<FloatType>::max)());
+
+    return ((x > max_value) || (x < -max_value));
+  }
+
+  template<typename FloatType>
+  inline bool isnan_impl(FloatType x)
+  {
+    return ((!isfinite_impl(x)) && (!isinf_impl(x)));
+  }
+
+  } // namespace cmath_fallback_detail
 
   #if defined(__cplusplus)
   extern "C++"
@@ -587,17 +605,17 @@
     inline double        tanh      (double      x)                 { return __builtin_tanh  (x); }
     inline long double   tanh      (long double x)                 { return __builtin_tanhl (x); }
     #else
-    inline     bool          isnan     (float x)                       { return (::isnanf)(x); }
-               bool          isnan     (double x);
-    inline     bool          isnan     (long double x)                 { return (::isnanl)(x); }
-     inline     bool          isinf     (float x)                       { return (::isinff)(x); }
-               bool          isinf     (double x);
-     inline     bool          isinf     (long double x)                 { return (::isinfl)(x); }
+     inline     bool          isnan     (float x)                       { return ::cmath_fallback_detail::isnan_impl(x); }
+     inline     bool          isnan     (double x)                      { return ::cmath_fallback_detail::isnan_impl(x); }
+     inline     bool          isnan     (long double x)                 { return ::cmath_fallback_detail::isnan_impl(x); }
+     inline     bool          isinf     (float x)                       { return ::cmath_fallback_detail::isinf_impl(x); }
+     inline     bool          isinf     (double x)                      { return ::cmath_fallback_detail::isinf_impl(x); }
+     inline     bool          isinf     (long double x)                 { return ::cmath_fallback_detail::isinf_impl(x); }
     inline     float         abs       (float       x)                 { return ::fabsf(x); }
-    extern "C" double        abs       (double      x);
+     extern "C" double        fabs      (double      x);
+     inline     double        abs       (double      x)                 { return ::fabs(x); }
     inline     long double   abs       (long double x)                 { return ::fabsl(x); }
     inline     float         fabs      (float       x)                 { return ::fabsf(x); }
-    extern "C" double        fabs      (double      x);
     inline     long double   fabs      (long double x)                 { return ::fabsl(x); }
     inline     float         fmod      (float       x, float       y)  { return ::fmodf(x, y); }
     extern "C" double        fmod      (double      x, double      y);
@@ -669,9 +687,9 @@
     extern "C" double        tanh      (double      x);
     inline     long double   tanh      (long double x)                 { return ::tanhl(x); }
     #endif
-    inline     bool          isfinite  (float x)                       { return ((!(::isinff)(x)) && (!(::isnanf)(x))); }
-    extern "C" bool          isfinite  (double x);
-    inline     bool          isfinite  (long double x)                 { return ((!(::isinfl)(x)) && (!(::isnanl)(x))); }
+     inline     bool          isfinite  (float x)                       { return ::cmath_fallback_detail::isfinite_impl(x); }
+     inline     bool          isfinite  (double x)                      { return ::cmath_fallback_detail::isfinite_impl(x); }
+     inline     bool          isfinite  (long double x)                 { return ::cmath_fallback_detail::isfinite_impl(x); }
     inline     float         asinh     (float       x)                 { return ::asinhf(x); }
     extern "C" double        asinh     (double      x);
     inline     long double   asinh     (long double x)                 { return ::asinhl(x); }

@@ -23,29 +23,29 @@
     {
       inline auto hash_u64(std::uint64_t value) noexcept -> std::size_t
       {
-        std::size_t result = static_cast<std::size_t>(2166136261UL);
+        std::uint64_t result = static_cast<std::uint64_t>(2166136261UL);
 
         for(std::size_t index = 0U; index < sizeof(value); ++index)
         {
-          result ^= static_cast<std::size_t>(value & std::uint64_t { 0xFFU });
-          result = static_cast<std::size_t>(static_cast<std::uint64_t>(result) * std::uint64_t { 16777619U });
+          result ^= static_cast<std::uint64_t>(value & std::uint64_t { 0xFFU });
+          result = static_cast<std::uint64_t>(static_cast<std::uint64_t>(result) * std::uint64_t { 16777619U });
           value >>= 8U;
         }
 
-        return result;
+        return static_cast<std::size_t>(result);
       }
 
       inline auto hash_bytes(const unsigned char* bytes, std::size_t count) noexcept -> std::size_t
       {
-        std::size_t result = static_cast<std::size_t>(2166136261UL);
+        std::uint64_t result = static_cast<std::uint64_t>(2166136261UL);
 
         for(std::size_t index = 0U; index < count; ++index)
         {
-          result ^= static_cast<std::size_t>(bytes[index]);
-          result = static_cast<std::size_t>(static_cast<std::uint64_t>(result) * std::uint64_t { 16777619U });
+          result ^= static_cast<std::uint64_t>(bytes[index]);
+          result = static_cast<std::uint64_t>(static_cast<std::uint64_t>(result) * std::uint64_t { 16777619U });
         }
 
-        return result;
+        return static_cast<std::size_t>(result);
       }
 
       template<typename T>
@@ -672,6 +672,7 @@
                          std::integral_constant<int, 0>, std::false_type, std::false_type)
         -> decltype(std::forward<Bound>(bound))
       {
+        static_cast<void>(args);
         return std::forward<Bound>(bound);
       }
 

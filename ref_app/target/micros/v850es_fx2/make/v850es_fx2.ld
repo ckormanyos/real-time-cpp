@@ -1,5 +1,5 @@
 /*
- Copyright Christopher Kormanyos 2014 - 2025.
+ Copyright Christopher Kormanyos 2014 - 2026.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -107,6 +107,8 @@ SECTIONS
   .got              : { *(.got.plt) *(.got) } > ROM
   .dynamic          : { *(.dynamic) } > ROM
 
+  _rom_data_begin = ALIGN(., 4);
+
   . = 0x03FFD800;
   . = ALIGN(4);
 
@@ -114,7 +116,7 @@ SECTIONS
   __gp = . ;
 
   /* The ROM-to-RAM initialized data section */
-  .data ALIGN (4) :
+  .data ALIGN (4) : AT (_rom_data_begin)
   {
     _data_begin = .;
     *(.data)
@@ -130,7 +132,7 @@ SECTIONS
     . = ALIGN(4);
     KEEP (*(.rosdata*))
     _data_end = .;
-  } > RAM AT > ROM
+  } > RAM
 
   .bss ALIGN (4) :
   {
@@ -156,6 +158,4 @@ SECTIONS
   {
     *(.stack)
   } > STACK
-
-  _rom_data_begin = LOADADDR(.data);
 }
