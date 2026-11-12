@@ -1136,9 +1136,6 @@
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt0_init_ram.cpp">
       <Filter>micros\xtensa_esp32_s3\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\Std\StdLib.cpp">
-      <Filter>micros\xtensa_esp32_s3\startup\Std</Filter>
-    </ClCompile>
     <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\crt0_init_ram.cpp">
       <Filter>micros\xtensa_esp32_s3_riscv_cop\startup</Filter>
     </ClCompile>
