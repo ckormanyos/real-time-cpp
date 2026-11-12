@@ -49,6 +49,11 @@ TGT_INCLUDES  =  -isystem $(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
+TGT_LIBS     := -lc_call0_abi                                                     \
+                -lg_call0_abi                                                     \
+                -lgcc_call0_abi                                                   \
+                -lm_call0_abi                                                     \
+
 TGT_LDFLAGS   = -nostdlib                                                         \
                 -nostartfiles                                                     \
                 -L$(PATH_TGT)/startup/Std/lib_call0_abi                           \
@@ -56,7 +61,6 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -T $(LINKER_DEFINITION_FILE)                                      \
                 --specs=nano.specs                                                \
                 --specs=nosys.specs
-
 
 # ------------------------------------------------------------------------------
 # Rule to assemble source file (*.S) to object file (*.o).

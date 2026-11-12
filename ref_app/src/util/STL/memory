@@ -28,7 +28,7 @@
       allocator_base(const allocator_base&) throw() { }
 
       // The allocator's default buffer size.
-      static constexpr size_type buffer_size = 96U;
+      static constexpr size_type buffer_size { 96U };
 
       // The allocator's buffer type.
       struct buffer_type

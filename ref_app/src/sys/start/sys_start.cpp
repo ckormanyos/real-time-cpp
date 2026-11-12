@@ -24,17 +24,16 @@ auto app_main_loop() -> int
 auto main() -> int
 #endif
 {
-  #if defined(TEST_STL_SANITY)
-  extern auto test_stl_sanity_all() -> bool;
-
-  const bool stl_tests_pass = test_stl_sanity_all();
-  #endif
-
   // Initialize the microcontroller abstraction layer.
   mcal::init();
 
   #if defined(TEST_STL_SANITY)
-  if(stl_tests_pass)
+  // Perform sanity tests of the STL if activated.
+  // Depending on the situation, this could be the
+  // self-written STL or the compiler's own STL.
+
+  extern auto test_stl_sanity_all() -> bool;
+  if(test_stl_sanity_all())
   #endif
   {
     // Start the multitasking scheduler. This does not return.

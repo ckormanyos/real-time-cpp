@@ -126,7 +126,7 @@ WARN_FLAGS :=
 # linker definition file
 # ------------------------------------------------------------------------------
 LINKER_DEFINITION_FILE   := $(PATH_TGT_MAKE)/$(TGT).ld
-
+TGT_LIBS                  =
 
 # ------------------------------------------------------------------------------
 # include the target-specific make files
@@ -371,7 +371,7 @@ endif
 # ------------------------------------------------------------------------------
 $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
-	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
+	@-$(CC) $(LDFLAGS) $(FILES_O) $(TGT_LIBS) -o $(APP).$(TGT_SUFFIX)
 
 
 # ------------------------------------------------------------------------------

@@ -1,13 +1,15 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014.
+//  Copyright Christopher Kormanyos 2014 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include "xcmath_impl.h"
+
 #include <cmath>
 #include <cstdint>
-#include "xcmath_impl.h"
+#include <limits>
 
 #if defined(__GNUC__) && defined(__AVR__)
 extern "C" float asinhf(float x);
@@ -27,12 +29,23 @@ extern "C" float atanhf(float x);
 extern "C"
 float asinhf(float x)
 {
-  // Implement a naive hyperbolic arc-sine function.
+  const bool is_negative = (x < 0.0F);
+  const float abs_x = ((!is_negative) ? x : -x);
+
+  if(abs_x < std::sqrt(std::numeric_limits<float>::epsilon()))
+  {
+    return x;
+  }
 
   using std::log;
   using std::sqrt;
 
-  return log(x + sqrt((x * x) + 1.0F));
+  const float result =
+    (abs_x > 1.0F)
+      ? log(abs_x) + log(1.0F + sqrt(1.0F + ((1.0F / abs_x) * (1.0F / abs_x))))
+      : log(abs_x + sqrt((abs_x * abs_x) + 1.0F));
+
+  return ((!is_negative) ? result : -result);
 }
 
 extern "C"
@@ -40,13 +53,13 @@ float acoshf(float x)
 {
   const float x_minus_one = x - 1.0F;
 
-  if(x_minus_one < -std::numeric_limits<float>::epsilon())
+  if(x < 1.0F)
   {
     return std::numeric_limits<float>::quiet_NaN();
   }
   else if(x_minus_one < std::numeric_limits<float>::epsilon())
   {
-    return 1.0F;
+    return 0.0F;
   }
   else
   {

@@ -1,14 +1,14 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include "xcmath_impl.h"
+
 #include <cmath>
 #include <cstdint>
-
-#include "xcmath_impl.h"
 
 #if defined(__GNUC__) && defined(__AVR__)
 extern "C" float tgammaf(float x);
@@ -107,14 +107,27 @@ float tgammaf(float x)
 
   // Evaluate the number of recursions needed in order to reach
   // the range 0 < x < 1, and scale the argument accordingly.
-  const std::uint_least8_t n_recur = static_cast<std::uint_least8_t>(::floorf(x));
+  const float floor_x = ::floorf(x);
+  std::uint_least8_t n_recur = static_cast<std::uint_least8_t>(floor_x);
+  const bool is_integer = ((floor_x <= x) && (x <= floor_x));
 
-  x -= n_recur;
+  float gamma_value;
 
-  // Obtain an approximation of tgamma(x), where x has
-  // perhaps been negated and/or scaled to a lower value.
-  float gamma_value = ((x < 0.1F) ? xcmath_impl::tgamma_inverse_taylor_series(x)
-                                  : xcmath_impl::tgamma_polynomial_approximation(x));
+  if((!b_neg) && is_integer)
+  {
+    --n_recur;
+    x = 1.0F;
+    gamma_value = 1.0F;
+  }
+  else
+  {
+    x -= n_recur;
+
+    // Obtain an approximation of tgamma(x), where x has
+    // perhaps been negated and/or scaled to a lower value.
+    gamma_value = ((x < 0.1F) ? xcmath_impl::tgamma_inverse_taylor_series(x)
+                              : xcmath_impl::tgamma_polynomial_approximation(x));
+  }
 
   // Scale up the result via recursion if necessary.
   for(std::uint_least8_t k = static_cast<std::uint_least8_t>(0U); k < n_recur; ++k)
