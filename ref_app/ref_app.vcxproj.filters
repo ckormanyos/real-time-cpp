@@ -3458,6 +3458,9 @@
     <None Include="src\util\STL\new">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="src\util\STL\numbers">
+      <Filter>src\util\STL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />

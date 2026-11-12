@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -18,7 +18,7 @@
   #include <math.h>
 
   #if !defined(_HUGE_ENUF)
-    #define _HUGE_ENUF  1e+300  // _HUGE_ENUF*_HUGE_ENUF must overflow
+    #define _HUGE_ENUF  1.0e+300  // _HUGE_ENUF*_HUGE_ENUF must overflow
   #endif
 
   #if !defined(INFINITY)
@@ -605,15 +605,15 @@
     inline double        tanh      (double      x)                 { return __builtin_tanh  (x); }
     inline long double   tanh      (long double x)                 { return __builtin_tanhl (x); }
     #else
-     inline     bool          isnan     (float x)                       { return ::cmath_fallback_detail::isnan_impl(x); }
-     inline     bool          isnan     (double x)                      { return ::cmath_fallback_detail::isnan_impl(x); }
-     inline     bool          isnan     (long double x)                 { return ::cmath_fallback_detail::isnan_impl(x); }
-     inline     bool          isinf     (float x)                       { return ::cmath_fallback_detail::isinf_impl(x); }
-     inline     bool          isinf     (double x)                      { return ::cmath_fallback_detail::isinf_impl(x); }
-     inline     bool          isinf     (long double x)                 { return ::cmath_fallback_detail::isinf_impl(x); }
+    inline     bool          isnan     (float x)                       { return ::cmath_fallback_detail::isnan_impl(x); }
+    inline     bool          isnan     (double x)                      { return ::cmath_fallback_detail::isnan_impl(x); }
+    inline     bool          isnan     (long double x)                 { return ::cmath_fallback_detail::isnan_impl(x); }
+    inline     bool          isinf     (float x)                       { return ::cmath_fallback_detail::isinf_impl(x); }
+    inline     bool          isinf     (double x)                      { return ::cmath_fallback_detail::isinf_impl(x); }
+    inline     bool          isinf     (long double x)                 { return ::cmath_fallback_detail::isinf_impl(x); }
     inline     float         abs       (float       x)                 { return ::fabsf(x); }
-     extern "C" double        fabs      (double      x);
-     inline     double        abs       (double      x)                 { return ::fabs(x); }
+    extern "C" double        fabs      (double      x);
+    inline     double        abs       (double      x)                 { return ::fabs(x); }
     inline     long double   abs       (long double x)                 { return ::fabsl(x); }
     inline     float         fabs      (float       x)                 { return ::fabsf(x); }
     inline     long double   fabs      (long double x)                 { return ::fabsl(x); }
@@ -687,9 +687,9 @@
     extern "C" double        tanh      (double      x);
     inline     long double   tanh      (long double x)                 { return ::tanhl(x); }
     #endif
-     inline     bool          isfinite  (float x)                       { return ::cmath_fallback_detail::isfinite_impl(x); }
-     inline     bool          isfinite  (double x)                      { return ::cmath_fallback_detail::isfinite_impl(x); }
-     inline     bool          isfinite  (long double x)                 { return ::cmath_fallback_detail::isfinite_impl(x); }
+    inline     bool          isfinite  (float x)                       { return ::cmath_fallback_detail::isfinite_impl(x); }
+    inline     bool          isfinite  (double x)                      { return ::cmath_fallback_detail::isfinite_impl(x); }
+    inline     bool          isfinite  (long double x)                 { return ::cmath_fallback_detail::isfinite_impl(x); }
     inline     float         asinh     (float       x)                 { return ::asinhf(x); }
     extern "C" double        asinh     (double      x);
     inline     long double   asinh     (long double x)                 { return ::asinhl(x); }
