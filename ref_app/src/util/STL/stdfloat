@@ -39,7 +39,18 @@
     #endif
   }
 
-  static_assert((std::numeric_limits<std::float32_t>::digits == 24), "Error: Incorrect float32_t type definition");
-  static_assert((std::numeric_limits<std::float64_t>::digits == 53), "Error: Incorrect float64_t type definition");
+  static_assert((   (std::numeric_limits<std::float32_t>::radix == 2)
+                 && (std::numeric_limits<std::float32_t>::digits == 24)
+                 && (std::numeric_limits<std::float32_t>::min_exponent == -125)
+                 && (std::numeric_limits<std::float32_t>::max_exponent == 128)),
+                "Error: Incorrect float32_t type definition");
+
+  #if defined(__STDCPP_FLOAT64_T__)
+  static_assert((   (std::numeric_limits<std::float64_t>::radix == 2)
+                 && (std::numeric_limits<std::float64_t>::digits == 53)
+                 && (std::numeric_limits<std::float64_t>::min_exponent == -1021)
+                 && (std::numeric_limits<std::float64_t>::max_exponent == 1024)),
+                "Error: Incorrect float64_t type definition");
+  #endif
 
 #endif // STDFLOAT_2024_07_12

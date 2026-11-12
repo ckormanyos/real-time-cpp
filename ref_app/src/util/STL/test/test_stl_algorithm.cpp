@@ -167,7 +167,7 @@ auto test_stl_sanity_algorithm() -> bool
   }
 
   if(   (!std::equal(values.begin(), values.end(), values.begin()))
-     || std::equal(values.begin(), values.end(), values.begin() + 1)
+     || std::equal(values.begin(), values.end() - 1, values.begin() + 1)
      || (!std::equal(values.begin(), values.begin() + 2, values.begin(), values.begin() + 2))
      || std::equal(values.begin(), values.begin() + 2, values.begin(), values.begin() + 1)
      || (!std::equal(values.begin(), values.end(), values.begin(),

@@ -257,9 +257,9 @@
     using float_t = float;
     using double_t = double;
 
-    inline bool        isnan     (float x)                            { return (__BUILTIN_ISNANF(x) == 1); }
-    inline bool        isnan     (double x)                           { return (__BUILTIN_ISNAN (x) == 1); }
-    inline bool        isnan     (long double x)                      { return (__BUILTIN_ISNANL(x) == 1); }
+    inline bool        isnan     (float x)                            { return (__BUILTIN_ISNANF(x) != 0); }
+    inline bool        isnan     (double x)                           { return (__BUILTIN_ISNAN (x) != 0); }
+    inline bool        isnan     (long double x)                      { return (__BUILTIN_ISNANL(x) != 0); }
     inline float       abs       (float x)                            { return __BUILTIN_FABSF (x); }
     inline double      abs       (double x)                           { return __BUILTIN_FABS  (x); }
     inline long double abs       (long double x)                      { return __BUILTIN_FABSL (x); }
@@ -269,9 +269,9 @@
 
     namespace cmath_detail {
 
-    __attribute__((always_inline)) static inline bool isinf_impl(float x)       { return (__BUILTIN_ISINFF(x) == 1); }
-    __attribute__((always_inline)) static inline bool isinf_impl(double x)      { return (__BUILTIN_ISINF (x) == 1); }
-    __attribute__((always_inline)) static inline bool isinf_impl(long double x) { return (__BUILTIN_ISINFL(x) == 1); }
+    __attribute__((always_inline)) static inline bool isinf_impl(float x)       { return (__BUILTIN_ISINFF(x) != 0); }
+    __attribute__((always_inline)) static inline bool isinf_impl(double x)      { return (__BUILTIN_ISINF (x) != 0); }
+    __attribute__((always_inline)) static inline bool isinf_impl(long double x) { return (__BUILTIN_ISINFL(x) != 0); }
 
     } // namespace cmath_detail
 
@@ -410,9 +410,9 @@
     inline float       acosh     (float x)                            { return ::acoshf(x); }
     inline double      acosh     (double x)                           { return ::acosh (x); }
     inline long double acosh     (long double x)                      { return ::acoshl(x); }
-    inline float       atanh     (float x)                            { return ::asinhf(x); }
-    inline double      atanh     (double x)                           { return ::asinh (x); }
-    inline long double atanh     (long double x)                      { return ::asinhl(x); }
+    inline float       atanh     (float x)                            { return ::atanhf(x); }
+    inline double      atanh     (double x)                           { return ::atanh (x); }
+    inline long double atanh     (long double x)                      { return ::atanhl(x); }
     inline float       tgamma    (float x)                            { return ::tgammaf(x); }
     inline double      tgamma    (double x)                           { return ::tgamma (x); }
     inline long double tgamma    (long double x)                      { return ::tgammal(x); }
@@ -590,9 +590,9 @@
     inline     bool          isnan     (float x)                       { return (::isnanf)(x); }
                bool          isnan     (double x);
     inline     bool          isnan     (long double x)                 { return (::isnanl)(x); }
-    inline     bool          isinf     (float x)                       { return (::isnanf)(x); }
+     inline     bool          isinf     (float x)                       { return (::isinff)(x); }
                bool          isinf     (double x);
-    inline     bool          isinf     (long double x)                 { return (::isnanl)(x); }
+     inline     bool          isinf     (long double x)                 { return (::isinfl)(x); }
     inline     float         abs       (float       x)                 { return ::fabsf(x); }
     extern "C" double        abs       (double      x);
     inline     long double   abs       (long double x)                 { return ::fabsl(x); }
