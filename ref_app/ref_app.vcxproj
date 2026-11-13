@@ -1546,6 +1546,7 @@
     <ClCompile Include="src\util\STL\test\test_stl_all.cpp" />
     <ClCompile Include="src\util\STL\test\test_stl_cmath.cpp" />
     <ClCompile Include="src\util\STL\test\test_stl_functional.cpp" />
+    <ClCompile Include="src\util\STL\test\test_stl_numbers.cpp" />
     <ClCompile Include="src\util\STL\test\test_stl_string.cpp" />
     <ClCompile Include="src\util\STL\test\test_stl_vector.cpp" />
   </ItemGroup>

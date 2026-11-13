@@ -33,7 +33,7 @@
       template <typename T> constexpr T log10e_v     { static_cast<T>(0.4342944819032518276511289189166050822944L) };
       template <typename T> constexpr T pi_v         { static_cast<T>(3.141592653589793238462643383279502884197L)  };
       template <typename T> constexpr T inv_pi_v     { static_cast<T>(0.3183098861837906715377675267450287240689L) };
-      template <typename T> constexpr T inv_sqrtpi_v { static_cast<T>(1.772453850905516027298167483341145182798L)  };
+      template <typename T> constexpr T inv_sqrtpi_v { static_cast<T>(0.5641895835477562869480794515607725858441L)  };
       template <typename T> constexpr T ln2_v        { static_cast<T>(0.6931471805599453094172321214581765680755L) };
       template <typename T> constexpr T ln10_v       { static_cast<T>(2.302585092994045684017991454684364207601L)  };
       template <typename T> constexpr T sqrt2_v      { static_cast<T>(1.414213562373095048801688724209698078570L)  };
