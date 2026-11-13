@@ -28,7 +28,7 @@ TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++17                                     \
+TGT_CXXFLAGS  = -std=c++20                                     \
                 -Wno-psabi                                     \
                 $(TGT_ALLFLAGS)
 

@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2025.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -18,7 +18,7 @@
   #include <math.h>
 
   #if !defined(_HUGE_ENUF)
-    #define _HUGE_ENUF  1e+300  // _HUGE_ENUF*_HUGE_ENUF must overflow
+    #define _HUGE_ENUF  1.0e+300  // _HUGE_ENUF*_HUGE_ENUF must overflow
   #endif
 
   #if !defined(INFINITY)
@@ -131,6 +131,9 @@
   #define __BUILTIN_LOGF          __builtin_log
   #define __BUILTIN_LOG           __builtin_log
   #define __BUILTIN_LOGL          __builtin_logl
+  #define __BUILTIN_LOG2F         __builtin_log2
+  #define __BUILTIN_LOG2          __builtin_log2
+  #define __BUILTIN_LOG2L         __builtin_log2l
   #define __BUILTIN_LOG10F        __builtin_log10
   #define __BUILTIN_LOG10         __builtin_log10
   #define __BUILTIN_LOG10L        __builtin_log10l
@@ -210,6 +213,9 @@
   #define __BUILTIN_LOGF          __builtin_logf
   #define __BUILTIN_LOG           __builtin_logl
   #define __BUILTIN_LOGL          __builtin_logl
+  #define __BUILTIN_LOG2F         __builtin_log2f
+  #define __BUILTIN_LOG2          __builtin_log2l
+  #define __BUILTIN_LOG2L         __builtin_log2l
   #define __BUILTIN_LOG10F        __builtin_log10f
   #define __BUILTIN_LOG10         __builtin_log10l
   #define __BUILTIN_LOG10L        __builtin_log10l
@@ -386,12 +392,18 @@
     inline float       exp       (float x)                            { return __BUILTIN_EXPF  (x); }
     inline double      exp       (double x)                           { return __BUILTIN_EXP   (x); }
     inline long double exp       (long double x)                      { return __BUILTIN_EXPL  (x); }
+    inline float       exp2      (float x)                            { return __BUILTIN_POWF  (2.0F, x); }
+    inline double      exp2      (double x)                           { return __BUILTIN_POW   (2.0,  x); }
+    inline long double exp2      (long double x)                      { return __BUILTIN_POWL  (2.0L, x); }
     inline float       pow       (float x, float a)                   { return __BUILTIN_POWF  (x, a); }
     inline double      pow       (double x, double a)                 { return __BUILTIN_POW   (x, a); }
     inline long double pow       (long double x, long double a)       { return __BUILTIN_POWL  (x, a); }
     inline float       log       (float x)                            { return __BUILTIN_LOGF  (x); }
     inline double      log       (double x)                           { return __BUILTIN_LOG   (x); }
     inline long double log       (long double x)                      { return __BUILTIN_LOGL  (x); }
+    inline float       log2      (float x)                            { return __BUILTIN_LOG2F(x); }
+    inline double      log2      (double x)                           { return __BUILTIN_LOG2 (x); }
+    inline long double log2      (long double x)                      { return __BUILTIN_LOG2L(x); }
     inline float       log10     (float x)                            { return __BUILTIN_LOG10F(x); }
     inline double      log10     (double x)                           { return __BUILTIN_LOG10 (x); }
     inline long double log10     (long double x)                      { return __BUILTIN_LOG10L(x); }
@@ -470,6 +482,8 @@
     long double powl       (long double x, long double a);
     float       logf       (float x);
     long double logl       (long double x);
+    float       log2f      (float x);
+    long double log2l      (long double x);
     float       log10f     (float x);
     long double log10l     (long double x);
     float       sinhf      (float x);
@@ -586,12 +600,18 @@
     inline float         exp       (float       x)                 { return __builtin_expf  (x); }
     inline double        exp       (double      x)                 { return __builtin_exp   (x); }
     inline long double   exp       (long double x)                 { return __builtin_expl  (x); }
+    inline float         exp2      (float       x)                 { return __builtin_powf  (2.0F, x); }
+    inline double        exp2      (double      x)                 { return __builtin_pow   (2.0,  x); }
+    inline long double   exp2      (long double x)                 { return __builtin_powl  (2.0L, x); }
     inline float         pow       (float       x, float       a)  { return __builtin_powf  (x, a); }
     inline double        pow       (double      x, double      a)  { return __builtin_pow   (x, a); }
     inline long double   pow       (long double x, long double a)  { return __builtin_powl  (x, a); }
     inline float         log       (float       x)                 { return __builtin_logf  (x); }
     inline double        log       (double      x)                 { return __builtin_log   (x); }
     inline long double   log       (long double x)                 { return __builtin_logl  (x); }
+    inline float         log2      (float       x)                 { return __builtin_log2f(x); }
+    inline double        log2      (double      x)                 { return __builtin_log2 (x); }
+    inline long double   log2      (long double x)                 { return __builtin_log2l(x); }
     inline float         log10     (float       x)                 { return __builtin_log10f(x); }
     inline double        log10     (double      x)                 { return __builtin_log10 (x); }
     inline long double   log10     (long double x)                 { return __builtin_log10l(x); }
@@ -605,15 +625,15 @@
     inline double        tanh      (double      x)                 { return __builtin_tanh  (x); }
     inline long double   tanh      (long double x)                 { return __builtin_tanhl (x); }
     #else
-     inline     bool          isnan     (float x)                       { return ::cmath_fallback_detail::isnan_impl(x); }
-     inline     bool          isnan     (double x)                      { return ::cmath_fallback_detail::isnan_impl(x); }
-     inline     bool          isnan     (long double x)                 { return ::cmath_fallback_detail::isnan_impl(x); }
-     inline     bool          isinf     (float x)                       { return ::cmath_fallback_detail::isinf_impl(x); }
-     inline     bool          isinf     (double x)                      { return ::cmath_fallback_detail::isinf_impl(x); }
-     inline     bool          isinf     (long double x)                 { return ::cmath_fallback_detail::isinf_impl(x); }
+    inline     bool          isnan     (float x)                       { return ::cmath_fallback_detail::isnan_impl(x); }
+    inline     bool          isnan     (double x)                      { return ::cmath_fallback_detail::isnan_impl(x); }
+    inline     bool          isnan     (long double x)                 { return ::cmath_fallback_detail::isnan_impl(x); }
+    inline     bool          isinf     (float x)                       { return ::cmath_fallback_detail::isinf_impl(x); }
+    inline     bool          isinf     (double x)                      { return ::cmath_fallback_detail::isinf_impl(x); }
+    inline     bool          isinf     (long double x)                 { return ::cmath_fallback_detail::isinf_impl(x); }
     inline     float         abs       (float       x)                 { return ::fabsf(x); }
-     extern "C" double        fabs      (double      x);
-     inline     double        abs       (double      x)                 { return ::fabs(x); }
+    extern "C" double        fabs      (double      x);
+    inline     double        abs       (double      x)                 { return ::fabs(x); }
     inline     long double   abs       (long double x)                 { return ::fabsl(x); }
     inline     float         fabs      (float       x)                 { return ::fabsf(x); }
     inline     long double   fabs      (long double x)                 { return ::fabsl(x); }
@@ -668,12 +688,18 @@
     inline     float         exp       (float       x)                 { return ::expf(x); }
     extern "C" double        exp       (double      x);
     inline     long double   exp       (long double x)                 { return ::expl(x); }
+    inline     float         exp2      (float       x)                 { return ::exp2f(x); }
+    extern "C" double        exp2      (double      x);
+    inline     long double   exp2      (long double x)                 { return ::exp2l(x); }
     inline     float         pow       (float       x, float       a)  { return ::powf(x, a); }
     extern "C" double        pow       (double      x, double      a);
     inline     long double   pow       (long double x, long double a)  { return ::powl(x, a); }
     inline     float         log       (float       x)                 { return ::logf(x); }
     extern "C" double        log       (double      x);
     inline     long double   log       (long double x)                 { return ::logl(x); }
+    inline     float         log2      (float       x)                 { return ::log2f(x); }
+    extern "C" double        log2      (double      x);
+    inline     long double   log2      (long double x)                 { return ::log2l(x); }
     inline     float         log10     (float       x)                 { return ::log10f(x); }
     extern "C" double        log10     (double      x);
     inline     long double   log10     (long double x)                 { return ::log10l(x); }
@@ -687,9 +713,9 @@
     extern "C" double        tanh      (double      x);
     inline     long double   tanh      (long double x)                 { return ::tanhl(x); }
     #endif
-     inline     bool          isfinite  (float x)                       { return ::cmath_fallback_detail::isfinite_impl(x); }
-     inline     bool          isfinite  (double x)                      { return ::cmath_fallback_detail::isfinite_impl(x); }
-     inline     bool          isfinite  (long double x)                 { return ::cmath_fallback_detail::isfinite_impl(x); }
+    inline     bool          isfinite  (float x)                       { return ::cmath_fallback_detail::isfinite_impl(x); }
+    inline     bool          isfinite  (double x)                      { return ::cmath_fallback_detail::isfinite_impl(x); }
+    inline     bool          isfinite  (long double x)                 { return ::cmath_fallback_detail::isfinite_impl(x); }
     inline     float         asinh     (float       x)                 { return ::asinhf(x); }
     extern "C" double        asinh     (double      x);
     inline     long double   asinh     (long double x)                 { return ::asinhl(x); }
@@ -837,8 +863,10 @@
     using ::atan;
     using ::atan2;
     using ::exp;
+    using ::exp2;
     using ::pow;
     using ::log;
+    using ::log2;
     using ::log10;
     using ::sinh;
     using ::cosh;

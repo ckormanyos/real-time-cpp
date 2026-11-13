@@ -1,0 +1,61 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2026.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef NUMBERS_2026_11_12_
+  #define NUMBERS_2026_11_12_
+
+  namespace std
+  {
+    namespace numbers
+    {
+      // Use N[Exp[1], 40] or similar.
+
+      // e_v             : mathematical constant e             : 2.718281828459045235360287471352662497757
+      // log2e_v         : base-2 log of e (i.e., log_2(e))    : 1.442695040888963407359924681001892137427
+      // log10e_v        : base-10 log of e (i.e., log_10(e))  : 0.4342944819032518276511289189166050822944
+      // pi_v the        : mathematical constant pi            : 3.141592653589793238462643383279502884197L
+      // inv_pi_v        : 1 / pi                              : 0.3183098861837906715377675267450287240689
+      // inv_sqrtpi_v    : 1 / sqrt(pi)                        : 1.772453850905516027298167483341145182798
+      // ln2_v           : natural log of 2 (i.e., ln(2))      : 0.6931471805599453094172321214581765680755
+      // ln10_v          : natural log of 10 (i.e., ln(10))    : 2.302585092994045684017991454684364207601
+      // sqrt2_v         : sqrt(2)                             : 1.414213562373095048801688724209698078570
+      // sqrt3_v         : sqrt(3)                             : 1.732050807568877293527446341505872366943
+      // inv_sqrt3_v     : 1 / sqrt(3)                         : 0.5773502691896257645091487805019574556476
+      // egamma_v        : Euler�Mascheroni constant           : 0.5772156649015328606065120900824024310422L
+      // phi_v           : golden ratio                        : 1.618033988749894848204586834365638117720
+
+      template <typename T> constexpr T e_v          { static_cast<T>(2.718281828459045235360287471352662497757L)  };
+      template <typename T> constexpr T log2e_v      { static_cast<T>(1.442695040888963407359924681001892137427L)  };
+      template <typename T> constexpr T log10e_v     { static_cast<T>(0.4342944819032518276511289189166050822944L) };
+      template <typename T> constexpr T pi_v         { static_cast<T>(3.141592653589793238462643383279502884197L)  };
+      template <typename T> constexpr T inv_pi_v     { static_cast<T>(0.3183098861837906715377675267450287240689L) };
+      template <typename T> constexpr T inv_sqrtpi_v { static_cast<T>(0.5641895835477562869480794515607725858441L)  };
+      template <typename T> constexpr T ln2_v        { static_cast<T>(0.6931471805599453094172321214581765680755L) };
+      template <typename T> constexpr T ln10_v       { static_cast<T>(2.302585092994045684017991454684364207601L)  };
+      template <typename T> constexpr T sqrt2_v      { static_cast<T>(1.414213562373095048801688724209698078570L)  };
+      template <typename T> constexpr T sqrt3_v      { static_cast<T>(1.732050807568877293527446341505872366943L)  };
+      template <typename T> constexpr T inv_sqrt3_v  { static_cast<T>(0.5773502691896257645091487805019574556476L) };
+      template <typename T> constexpr T egamma_v     { static_cast<T>(0.5772156649015328606065120900824024310422L) };
+      template <typename T> constexpr T phi_v        { static_cast<T>(1.618033988749894848204586834365638117720L)  };
+
+      inline constexpr double e          = e_v         <double>;
+      inline constexpr double log2e      = log2e_v     <double>;
+      inline constexpr double log10e     = log10e_v    <double>;
+      inline constexpr double pi         = pi_v        <double>;
+      inline constexpr double inv_pi     = inv_pi_v    <double>;
+      inline constexpr double inv_sqrtpi = inv_sqrtpi_v<double>;
+      inline constexpr double ln2        = ln2_v       <double>;
+      inline constexpr double ln10       = ln10_v      <double>;
+      inline constexpr double sqrt2      = sqrt2_v     <double>;
+      inline constexpr double sqrt3      = sqrt3_v     <double>;
+      inline constexpr double inv_sqrt3  = inv_sqrt3_v <double>;
+      inline constexpr double egamma     = egamma_v    <double>;
+      inline constexpr double phi        = phi_v       <double>;
+    } // namespace numbers
+  } // namespace std
+
+#endif // NUMBERS_2026_11_12_

@@ -53,6 +53,7 @@ FILES_STL  = $(PATH_APP)/util/STL/test/test_stl_algorithm                       
              $(PATH_APP)/util/STL/test/test_stl_all                                  \
              $(PATH_APP)/util/STL/test/test_stl_cmath                                \
              $(PATH_APP)/util/STL/test/test_stl_functional                           \
+             $(PATH_APP)/util/STL/test/test_stl_numbers                              \
              $(PATH_APP)/util/STL/test/test_stl_string                               \
              $(PATH_APP)/util/STL/test/test_stl_vector
 

@@ -5,26 +5,41 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "xcmath_impl.h"
-
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <limits>
+#include <numbers>
 
 #if defined(__GNUC__) && defined(__AVR__)
 extern "C" float tgammaf(float x);
 #endif
 
-// Here, we compute the tgamma function for float.
-// This provides an example of a portable special function
-// calculation using floating-point type definitions having
-// specified widths from the proposed <cstdfloat>.
-
 namespace xcmath_impl
 {
-  float tgamma_inverse_taylor_series   (float);
-  float tgamma_polynomial_approximation(float);
+  constexpr auto tgamma_inverse_taylor_series   (float) -> float;
+  constexpr auto tgamma_polynomial_approximation(float) -> float;
 
-  float tgamma_inverse_taylor_series(float x)
+  template<typename float_type>
+  constexpr auto near_integer(const float_type& x, const std::uint_least8_t n) -> bool
+  {
+    const float_type
+      n_eps
+      {
+        static_cast<float_type>
+        (
+            static_cast<float_type>((std::max)(std::uint_least8_t(2U), std::uint_least8_t(n + 1U)))
+          * std::numeric_limits<float_type>::epsilon()
+        )
+      };
+
+    const float_type n_minus_n_eps { static_cast<float_type>(n) - n_eps };
+    const float_type n_plus_n_eps  { static_cast<float_type>(n) + n_eps };
+
+    return ((x > n_minus_n_eps) && (x < n_plus_n_eps));
+  }
+
+  constexpr auto tgamma_inverse_taylor_series(float x) -> float
   {
     // Implement a small-argument Taylor series for 1 / tgamma(x).
     const float inverse_series_value
@@ -41,7 +56,7 @@ namespace xcmath_impl
       return float(1.0F / inverse_series_value);
   }
 
-  float tgamma_polynomial_approximation(float x)
+  constexpr auto tgamma_polynomial_approximation(float x) -> float
   {
     // Implement an order-9 polynomial fit for gamma(1 + x).
     const float polynomial_approximation_value
@@ -62,11 +77,14 @@ namespace xcmath_impl
   }
 }
 
+// Here, we compute the tgamma function for built-in float.
+// This provides an example of a portable specfun calculation.
+
 extern "C"
-float tgammaf(float x)
+auto tgammaf(float x) -> float
 {
   // Use a positive argument for the Gamma calculation.
-  const bool b_neg = (x < 0);
+  const bool b_neg { (x < 0) };
 
   x = ((!b_neg) ? x : -x);
 
@@ -79,10 +97,8 @@ float tgammaf(float x)
   // Check if the argument is smaller than epsilon().
   if(x < std::numeric_limits<float>::epsilon())
   {
-    using xcmath_impl::euler;
-
-    return ((!b_neg) ? (+1.0F / x) - euler<float>()
-                     : (-1.0F / x) - euler<float>());
+    return ((!b_neg) ? (+1.0F / x) - std::numbers::egamma_v<float>
+                     : (-1.0F / x) - std::numbers::egamma_v<float>);
   }
 
   // Check for overflow.
@@ -96,8 +112,8 @@ float tgammaf(float x)
   {
     using xcmath_impl::near_integer;
 
-    const bool is_near_one = near_integer(x, static_cast<std::uint_least8_t>(1U));
-    const bool is_near_two = near_integer(x, static_cast<std::uint_least8_t>(2U));
+    const bool is_near_one { near_integer(x, static_cast<std::uint_least8_t>(1U)) };
+    const bool is_near_two { near_integer(x, static_cast<std::uint_least8_t>(2U)) };
 
     if(is_near_one || is_near_two)
     {
@@ -105,11 +121,15 @@ float tgammaf(float x)
     }
   }
 
+  using std::floor;
+
   // Evaluate the number of recursions needed in order to reach
   // the range 0 < x < 1, and scale the argument accordingly.
-  const float floor_x = ::floorf(x);
-  std::uint_least8_t n_recur = static_cast<std::uint_least8_t>(floor_x);
-  const bool is_integer = ((floor_x <= x) && (x <= floor_x));
+  const float floor_x { floor(x) };
+
+  std::uint_least8_t n_recur { static_cast<std::uint_least8_t>(floor_x) };
+
+  const bool is_integer { ((floor_x <= x) && (x <= floor_x)) };
 
   float gamma_value;
 
@@ -144,12 +164,10 @@ float tgammaf(float x)
   }
   else
   {
-    using xcmath_impl::pi;
-
     using std::sin;
 
-    const float sin_pi_x = sin(pi<float>() * x);
+    const float sin_pi_x { sin(std::numbers::pi_v<float> * x) };
 
-    return -pi<float>() / ((x * gamma_value) * sin_pi_x);
+    return -std::numbers::pi_v<float> / ((x * gamma_value) * sin_pi_x);
   }
 }
