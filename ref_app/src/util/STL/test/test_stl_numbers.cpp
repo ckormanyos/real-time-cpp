@@ -15,6 +15,16 @@ auto test_stl_sanity_numbers() -> bool;
 auto test_stl_sanity_numbers() -> bool
 {
   constexpr bool
+    result_float_type_is_ok
+    {
+         (std::numeric_limits<float>::radix == 2)
+      && (std::numeric_limits<float>::digits >= 24)
+      && (std::numeric_limits<float>::min_exponent <= -125)
+      && (std::numeric_limits<float>::max_exponent >= 128)
+    };
+
+
+  constexpr bool
     result_double_type_is_ok
     {
          (std::numeric_limits<double>::radix == 2)
@@ -23,14 +33,14 @@ auto test_stl_sanity_numbers() -> bool
       && (std::numeric_limits<double>::max_exponent >= 1024)
     };
 
-  static_assert(result_double_type_is_ok, "Error: Insufficient width of double type");
+  static_assert(result_float_type_is_ok && result_double_type_is_ok, "Error: Insufficient width of double type");
 
   using namespace std::numbers;
 
   const auto x = std::sqrt(inv_pi) / inv_sqrtpi + std::ceil(std::exp2(log2e)) + sqrt3 * inv_sqrt3 + std::exp(0.0);
   const auto v = (phi * phi - phi) + 1 / std::log2(sqrt2) + log10e * ln10 + std::pow(e, ln2) - std::cos(pi);
 
-  const int the_answer { static_cast<int>(static_cast<std::float32_t>(x * v)) };
+  const int the_answer { static_cast<int>(static_cast<float>(x * v)) };
 
   const bool result_the_answer_is_ok { (the_answer == 42) };
 
