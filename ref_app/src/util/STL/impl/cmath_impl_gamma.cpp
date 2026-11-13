@@ -5,25 +5,41 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "xcmath_impl.h"
-
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <limits>
 #include <numbers>
 
 #if defined(__GNUC__) && defined(__AVR__)
 extern "C" float tgammaf(float x);
 #endif
 
-// Here, we compute the tgamma function for built-in float.
-// This provides an example of a portable specfun calculation.
-
 namespace xcmath_impl
 {
-  auto tgamma_inverse_taylor_series   (float) -> float;
-  auto tgamma_polynomial_approximation(float) -> float;
+  constexpr auto tgamma_inverse_taylor_series   (float) -> float;
+  constexpr auto tgamma_polynomial_approximation(float) -> float;
 
-  auto tgamma_inverse_taylor_series(float x) -> float
+  template<typename float_type>
+  constexpr auto near_integer(const float_type& x, const std::uint_least8_t n) -> bool
+  {
+    const float_type
+      n_eps
+      {
+        static_cast<float_type>
+        (
+            static_cast<float_type>((std::max)(std::uint_least8_t(2U), std::uint_least8_t(n + 1U)))
+          * std::numeric_limits<float_type>::epsilon()
+        )
+      };
+
+    const float_type n_minus_n_eps { static_cast<float_type>(n) - n_eps };
+    const float_type n_plus_n_eps  { static_cast<float_type>(n) + n_eps };
+
+    return ((x > n_minus_n_eps) && (x < n_plus_n_eps));
+  }
+
+  constexpr auto tgamma_inverse_taylor_series(float x) -> float
   {
     // Implement a small-argument Taylor series for 1 / tgamma(x).
     const float inverse_series_value
@@ -40,7 +56,7 @@ namespace xcmath_impl
       return float(1.0F / inverse_series_value);
   }
 
-  auto tgamma_polynomial_approximation(float x) -> float
+  constexpr auto tgamma_polynomial_approximation(float x) -> float
   {
     // Implement an order-9 polynomial fit for gamma(1 + x).
     const float polynomial_approximation_value
@@ -60,6 +76,9 @@ namespace xcmath_impl
     return float(polynomial_approximation_value / x);
   }
 }
+
+// Here, we compute the tgamma function for built-in float.
+// This provides an example of a portable specfun calculation.
 
 extern "C"
 auto tgammaf(float x) -> float
