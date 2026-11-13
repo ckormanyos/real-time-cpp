@@ -35,7 +35,7 @@ STD_CPP      := c++23
 else
 
 INC_PREFIX   := -I
-STD_CPP      := c++17
+STD_CPP      := c++20
 
 endif
 

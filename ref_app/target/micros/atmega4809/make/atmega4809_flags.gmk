@@ -33,7 +33,7 @@ endif
 TGT_CFLAGS    = -std=c11                                                          \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++17                                                        \
+TGT_CXXFLAGS  = -std=c++20                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
