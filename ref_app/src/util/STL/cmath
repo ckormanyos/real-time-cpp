@@ -609,6 +609,9 @@
     inline float         log       (float       x)                 { return __builtin_logf  (x); }
     inline double        log       (double      x)                 { return __builtin_log   (x); }
     inline long double   log       (long double x)                 { return __builtin_logl  (x); }
+    inline float         log2      (float       x)                 { return __builtin_log2f(x); }
+    inline double        log2      (double      x)                 { return __builtin_log2 (x); }
+    inline long double   log2      (long double x)                 { return __builtin_log2l(x); }
     inline float         log10     (float       x)                 { return __builtin_log10f(x); }
     inline double        log10     (double      x)                 { return __builtin_log10 (x); }
     inline long double   log10     (long double x)                 { return __builtin_log10l(x); }
@@ -694,6 +697,9 @@
     inline     float         log       (float       x)                 { return ::logf(x); }
     extern "C" double        log       (double      x);
     inline     long double   log       (long double x)                 { return ::logl(x); }
+    inline     float         log2      (float       x)                 { return ::log2f(x); }
+    extern "C" double        log2      (double      x);
+    inline     long double   log2      (long double x)                 { return ::log2l(x); }
     inline     float         log10     (float       x)                 { return ::log10f(x); }
     extern "C" double        log10     (double      x);
     inline     long double   log10     (long double x)                 { return ::log10l(x); }
