@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2025.
+//  Copyright Christopher Kormanyos 2017 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,19 +10,19 @@
 #include <iostream>
 
 inline constexpr auto
-operator"" _inch(long double inches) -> float
+operator""_inch(long double inches) -> float
 {
   return static_cast<float>(inches * 0.0254L);
 }
 
 inline constexpr auto
-operator"" _foot(long double feet) -> float
+operator""_foot(long double feet) -> float
 {
   return static_cast<float>(feet * 0.294L);
 }
 
 inline constexpr auto
-operator"" _yard(long double yards) -> float
+operator""_yard(long double yards) -> float
 {
   return static_cast<float>(yards * 0.9144L);
 }
