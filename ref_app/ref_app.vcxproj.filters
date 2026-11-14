@@ -913,9 +913,6 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_boost_math_cbrt_tgamma.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\benchmark\app_benchmark_cnl_scaled_integer.cpp">
-      <Filter>src\app\benchmark</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_soft_double_h2f1.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>

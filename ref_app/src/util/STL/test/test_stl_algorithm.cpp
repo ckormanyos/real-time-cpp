@@ -35,18 +35,18 @@ auto test_stl_sanity_algorithm() -> bool
 
   std::reverse(values.begin(), values.begin());
   std::reverse(values.begin(), values.begin() + 1);
-  if(   (std::max_element(values.begin(), values.begin()) != values.begin())
-     || (!std::all_of(values.begin(), values.begin(), [](int value) { return value > 0; }))
-     || std::any_of(values.begin(), values.begin(), [](int value) { return value > 0; })
-     || (!std::none_of(values.begin(), values.begin(), [](int value) { return value > 0; }))
-     || (std::find_if(values.begin(), values.begin(), [](int value) { return value > 0; }) != values.begin())
-     || (!std::all_of(values.begin(), values.begin() + 1, [](int value) { return value > 0; }))
-     || (!std::any_of(values.begin(), values.begin() + 1, [](int value) { return value == 4; }))
-     || (!std::none_of(values.begin(), values.begin() + 1, [](int value) { return value < 0; }))
-     || (std::find_if_not(values.begin(), values.begin() + 1,
-                          [](int value) { return value > 0; }) != values.begin() + 1)
-     || (std::count(values.begin(), values.begin(), 1) != 0)
-     || (!std::equal(values.begin(), values.begin(), values.begin(), values.begin())))
+  if(   (std::max_element(values.cbegin(), values.cbegin()) != values.cbegin())
+     || (!std::all_of(values.cbegin(), values.cbegin(), [](int value) { return value > 0; }))
+     || std::any_of(values.cbegin(), values.cbegin(), [](int value) { return value > 0; })
+     || (!std::none_of(values.cbegin(), values.cbegin(), [](int value) { return value > 0; }))
+     || (std::find_if(values.cbegin(), values.cbegin(), [](int value) { return value > 0; }) != values.cbegin())
+     || (!std::all_of(values.cbegin(), values.cbegin() + 1, [](int value) { return value > 0; }))
+     || (!std::any_of(values.cbegin(), values.cbegin() + 1, [](int value) { return value == 4; }))
+     || (!std::none_of(values.cbegin(), values.cbegin() + 1, [](int value) { return value < 0; }))
+     || (std::find_if_not(values.cbegin(), values.cbegin() + 1,
+                          [](int value) { return value > 0; }) != values.cbegin() + 1)
+     || (std::count(values.cbegin(), values.cbegin(), 1) != 0)
+     || (!std::equal(values.cbegin(), values.cbegin(), values.cbegin(), values.cbegin())))
   {
     return false;
   }
@@ -246,7 +246,7 @@ auto test_stl_sanity_algorithm() -> bool
     return false;
   }
 
-  if((std::partition(values.begin(), values.begin(), [](int value) { return value > 0; }) != values.begin())
+  if(   (std::partition(values.begin(), values.begin(), [](int value) { return value > 0; }) != values.begin())
      || (std::partition(values.begin(), values.begin() + 1,
                         [](int value) { return value > 0; }) != values.begin() + 1)
      || (std::partition(values.begin(), values.begin() + 3, [](int value) { return value > 0; }) != values.begin() + 3)

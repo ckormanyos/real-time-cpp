@@ -20,7 +20,6 @@ TGT_ALLFLAGS  = -Os                                                             
                 -mtune=cortex-m7                                                  \
                 -mthumb                                                           \
                 -mfloat-abi=hard                                                  \
-                -ffast-math                                                       \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -mno-unaligned-access                                             \

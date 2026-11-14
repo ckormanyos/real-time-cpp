@@ -21,7 +21,6 @@ TGT_ALLFLAGS  = -Os                                                             
                 -mthumb                                                           \
                 -mfloat-abi=hard                                                  \
                 -mfpu=fpv4-sp-d16                                                 \
-                -ffast-math                                                       \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -mno-unaligned-access                                             \

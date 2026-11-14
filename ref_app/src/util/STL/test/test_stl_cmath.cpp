@@ -12,6 +12,9 @@ auto test_stl_sanity_cmath() -> bool;
 auto test_stl_sanity_cmath() -> bool
 {
   #if defined(__v850__)
+
+  // TBD: Something is going wrong with building this test on gcc-v850-unknown-elf.
+
   #else
 
   const auto
@@ -59,7 +62,8 @@ auto test_stl_sanity_cmath() -> bool
      || (!is_near_checker(std::asinh(-1.0F), -0.8813736F, 0.001F))
      || (!is_near_checker(std::asinh(-1.0E20F), -46.74485F, 0.01F))
      || (!is_near_checker(std::acosh(1.0F), 0.0F, 0.001F))
-     || (!is_near_checker(std::acosh(2.0F), 1.3169579F, 0.001F))
+     || (!is_near_checker(std::acosh(2.0F), 1.3169579F, 0.0001F))
+     || (!is_near_checker(std::acosh(4.1F), 2.0889189F, 0.0001F))
      || (!std::isnan(std::acosh(0.5F)))
      || (!is_near_checker(std::atanh(0.0F), 0.0F, 0.001F))
      || (!is_near_checker(std::atanh(0.5F), 0.5493061F, 0.001F))

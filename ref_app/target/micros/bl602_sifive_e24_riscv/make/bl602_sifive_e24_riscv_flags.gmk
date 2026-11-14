@@ -16,7 +16,6 @@ GCC_VERSION  := 14.2.0
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -O2                                            \
-                -ffast-math                                    \
                 -mcpu=sifive-e24                               \
                 -mabi=ilp32                                    \
                 -msmall-data-limit=32                          \

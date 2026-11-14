@@ -34,28 +34,31 @@ C_INCLUDES  :=$(addprefix -I,$(C_INCLUDES))
 
 
 TIDY_CHECKS  = "*,                                                             \
+                -altera-struct-pack-align,                                     \
+                -altera-unroll-loops,                                          \
+                -boost-use-ranges,                                             \
                 -cert-dcl58-cpp,                                               \
-                -cppcoreguidelines-rvalue-reference-param-not-moved,           \
                 -cppcoreguidelines-avoid-do-while,                             \
-                -llvm-header-guard,                                            \
                 -cppcoreguidelines-macro-usage,                                \
+                -cppcoreguidelines-rvalue-reference-param-not-moved,           \
+                -fuchsia-*,                                                    \
                 -hicpp-named-parameter,                                        \
+                -llvm-header-guard,                                            \
+                -llvmlibc-*,                                                   \
+                -misc-const-correctness,                                       \
+                -misc-header-include-cycle,                                    \
+                -misc-include-cleaner,                                         \
+                -misc-use-internal-linkage,                                    \
                 -modernize-type-traits,                                        \
                 -modernize-use-constraints,                                    \
                 -modernize-use-trailing-return-type,                           \
-                -misc-header-include-cycle,                                    \
-                -misc-include-cleaner,                                         \
-                -misc-const-correctness,                                       \
                 -performance-avoid-endl,                                       \
                 -readability-avoid-const-params-in-decls,                      \
                 -readability-identifier-length,                                \
                 -readability-identifier-naming,                                \
                 -readability-named-parameter,                                  \
                 -readability-redundant-casting,                                \
-                -altera-struct-pack-align,                                     \
-                -altera-unroll-loops,                                          \
-                -fuchsia-*,                                                    \
-                -llvmlibc-*"
+                -readability-use-concise-preprocessor-directives"
 
 TIDY_FLAGS   = --extra-arg-before=--driver-mode=g++                            \
                -warnings-as-errors=*                                           \

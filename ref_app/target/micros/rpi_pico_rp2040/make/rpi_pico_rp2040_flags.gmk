@@ -21,8 +21,7 @@ TGT_ALLFLAGS  = -O2                                            \
                 -mthumb                                        \
                 -mabi=aapcs                                    \
                 -finline-functions                             \
-                -finline-limit=64                              \
-                -ffast-math
+                -finline-limit=64
 
 TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
