@@ -241,28 +241,6 @@ jobs:
           arm-none-eabi-objcopy ./bin/app_benchmark_crc.elf -O ihex ./bin/app_benchmark_crc.hex
           ls -la ./bin/app_benchmark_crc.elf ./bin/app_benchmark_crc.hex ./bin/app_benchmark_crc.map
         working-directory: ./ref_app/
-  benchmark_single-cnl:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler: [ g++, clang++ ]
-        standard: [ c++20 ]
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: '0'
-      - name: benchmark_single-cnl
-        run: |
-          git clone -b main --depth 1 https://github.com/johnmcfarlane/cnl.git ../cnl-root
-          mkdir -p bin
-          ${{ matrix.compiler }} -std=${{ matrix.standard }} -Wall -Werror -O2 -I./src -I../cnl-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_cnl_scaled_integer.cpp -o ./bin/app_benchmark_cnl_scaled_integer.exe
-          ls -la ./bin/app_benchmark_cnl_scaled_integer.exe
-          ./bin/app_benchmark_cnl_scaled_integer.exe
-        working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu:
     runs-on: ubuntu-latest
     defaults:

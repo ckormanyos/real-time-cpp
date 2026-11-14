@@ -22,8 +22,7 @@ TGT_ALLFLAGS  = -O2                                                             
                 -mtune=cortex-a8                                                  \
                 -marm                                                             \
                 -mfloat-abi=hard                                                  \
-                -mfpu=neon                                                        \
-                -ffast-math
+                -mfpu=neon
 
 TGT_CFLAGS    = -std=c11                                                          \
                 -Wunsuffixed-float-constants                                      \

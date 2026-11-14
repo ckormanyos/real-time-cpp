@@ -16,7 +16,6 @@ GCC_VERSION  := 14.2.0
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -O2                                            \
-                -ffast-math                                    \
                 -march=rv32imafc                               \
                 -mabi=ilp32f                                   \
                 -msmall-data-limit=16                          \

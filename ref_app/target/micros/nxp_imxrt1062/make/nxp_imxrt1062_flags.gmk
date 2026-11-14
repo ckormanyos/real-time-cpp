@@ -21,7 +21,6 @@ TGT_ALLFLAGS  = -O2                                                             
                 -mthumb                                                           \
                 -mfloat-abi=hard                                                  \
                 -march=armv7e-m+fpv5-d16                                          \
-                -ffast-math                                                       \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -mno-unaligned-access                                             \

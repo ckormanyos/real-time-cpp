@@ -12,6 +12,9 @@ auto test_stl_sanity_cmath() -> bool;
 auto test_stl_sanity_cmath() -> bool
 {
   #if defined(__v850__)
+
+  // TBD: Something is going wrong with building this test on gcc-v850-unknown-elf.
+
   #else
 
   const auto

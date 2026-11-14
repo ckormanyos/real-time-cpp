@@ -246,7 +246,7 @@ auto test_stl_sanity_algorithm() -> bool
     return false;
   }
 
-  if((std::partition(values.begin(), values.begin(), [](int value) { return value > 0; }) != values.begin())
+  if(   (std::partition(values.begin(), values.begin(), [](int value) { return value > 0; }) != values.begin())
      || (std::partition(values.begin(), values.begin() + 1,
                         [](int value) { return value > 0; }) != values.begin() + 1)
      || (std::partition(values.begin(), values.begin() + 3, [](int value) { return value > 0; }) != values.begin() + 3)
