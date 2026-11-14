@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -37,8 +37,8 @@ OS_NORETURN auto os::start_os() -> void
   auto& task_list = local::os_task_list();
 
   // Initialize each task once (and only once) before the task scheduling begins.
-  const auto it_init_func = std::for_each(task_list.cbegin(),
-                                          task_list.cend(),
+  const auto it_init_func = std::for_each(task_list.cbegin(), // NOLINT(modernize-use-ranges)
+                                          task_list.cend(),   // NOLINT(modernize-use-ranges)
                                           [](const task_control_block& the_tcb)
                                           {
                                             the_tcb.initialize();
@@ -62,9 +62,9 @@ OS_NORETURN auto os::start_os() -> void
 
     local::os_task_index = static_cast<local::task_index_type>(0U);
 
-    const auto it_ready_task = // NOLINT(llvm-qualified-auto,readability-qualified-auto)
-      std::find_if(task_list.begin(),
-                   task_list.end(),
+    const auto it_ready_task =        // NOLINT(llvm-qualified-auto,readability-qualified-auto)
+      std::find_if(task_list.begin(), // NOLINT(modernize-use-ranges)
+                   task_list.end(),   // NOLINT(modernize-use-ranges)
                    [&timepoint_of_ckeck_ready](task_control_block& tcb) // NOLINT(modernize-use-trailing-return-type)
                    {
                      const auto task_is_ready = tcb.execute(timepoint_of_ckeck_ready);
@@ -93,7 +93,7 @@ auto os::set_event(const task_id_type task_id, const event_type& event_to_set) -
     // Get the iterator of the control block corresponding to
     // the task id that has been supplied to this subroutine.
     const auto it_task_id = (  task_list.begin() // NOLINT(llvm-qualified-auto,readability-qualified-auto)
-                             + static_cast<local::task_list_type::size_type>(task_id));
+                             + static_cast<local::task_list_type::size_type>(task_id)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
     // Set the event of the corresponding task.
     mcal::irq::disable_all();
@@ -113,7 +113,7 @@ auto os::get_event(event_type& event_to_get) -> void
   const auto& task_list = local::os_task_list();
 
   // Get the iterator of the control block of the running task.
-  const auto it_running_task = (task_list.cbegin() + local::os_task_index); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
+  const auto it_running_task = (task_list.cbegin() + local::os_task_index); // NOLINT(llvm-qualified-auto,readability-qualified-auto,cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
   if(it_running_task != task_list.cend())
   {
@@ -137,7 +137,7 @@ auto os::clear_event(const event_type& event_to_clear) -> void
   auto& task_list = local::os_task_list();
 
   // Get the iterator of the control block of the running task.
-  const auto it_running_task = (task_list.begin() + local::os_task_index); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
+  const auto it_running_task = (task_list.begin() + local::os_task_index); // NOLINT(llvm-qualified-auto,readability-qualified-auto,cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
   if(it_running_task != task_list.end())
   {
