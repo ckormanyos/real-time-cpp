@@ -29,6 +29,7 @@
       // phi_v           : golden ratio                        : 1.618033988749894848204586834365638117720
 
       template <typename T> constexpr T e_v          { static_cast<T>(2.718281828459045235360287471352662497757L)  };
+      template <typename T> constexpr T egamma_v     { static_cast<T>(0.5772156649015328606065120900824024310422L) };
       template <typename T> constexpr T log2e_v      { static_cast<T>(1.442695040888963407359924681001892137427L)  };
       template <typename T> constexpr T log10e_v     { static_cast<T>(0.4342944819032518276511289189166050822944L) };
       template <typename T> constexpr T pi_v         { static_cast<T>(3.141592653589793238462643383279502884197L)  };
@@ -39,7 +40,6 @@
       template <typename T> constexpr T sqrt2_v      { static_cast<T>(1.414213562373095048801688724209698078570L)  };
       template <typename T> constexpr T sqrt3_v      { static_cast<T>(1.732050807568877293527446341505872366943L)  };
       template <typename T> constexpr T inv_sqrt3_v  { static_cast<T>(0.5773502691896257645091487805019574556476L) };
-      template <typename T> constexpr T egamma_v     { static_cast<T>(0.5772156649015328606065120900824024310422L) };
       template <typename T> constexpr T phi_v        { static_cast<T>(1.618033988749894848204586834365638117720L)  };
 
       inline constexpr double e          = e_v         <double>;
