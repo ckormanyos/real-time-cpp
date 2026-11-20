@@ -46,7 +46,7 @@ The result is LED on for one second, LED off for one second.
 The LED application runs cyclically and perpetually
 without break or pause.
 
-The reference application is compatible with C++14, 17, 20, 23 and beyond.
+The reference application is compatible with C++20, 23 and beyond.
 
 ## Portability
 
