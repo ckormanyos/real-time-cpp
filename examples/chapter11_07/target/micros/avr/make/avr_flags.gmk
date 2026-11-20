@@ -34,7 +34,7 @@ TGT_CFLAGS    = -O1                                                             
                 $(TGT_ALLFLAGS)
 
 TGT_CXXFLAGS  = -Os                                                               \
-                -std=c++14                                                        \
+                -std=c++20                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/os/FreeRTOS/Source/include/cfg/GCC-ATMega328        \

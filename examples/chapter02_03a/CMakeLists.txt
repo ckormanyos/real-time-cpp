@@ -45,7 +45,7 @@ if (NOT    CMAKE_VERSION VERSION_LESS 3.1)
   set(CMAKE_CXX_STANDARD   14)
   set(CMAKE_CXX_EXTENSIONS OFF)
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
 endif()
 
 

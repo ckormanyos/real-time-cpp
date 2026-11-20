@@ -84,7 +84,7 @@
         <avrgcccpp.compiler.optimization.level>Optimize more (-O2)</avrgcccpp.compiler.optimization.level>
         <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
         <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
-        <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++14 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++20 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
         <avrgcccpp.linker.general.DoNotUseStandardStartFiles>True</avrgcccpp.linker.general.DoNotUseStandardStartFiles>
         <avrgcccpp.linker.general.DoNotUseDefaultLibraries>True</avrgcccpp.linker.general.DoNotUseDefaultLibraries>
         <avrgcccpp.linker.general.NoStartupOrDefaultLibs>True</avrgcccpp.linker.general.NoStartupOrDefaultLibs>
@@ -127,7 +127,7 @@
         <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
         <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
         <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
-        <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++14 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++20 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
         <avrgcccpp.linker.general.DoNotUseStandardStartFiles>True</avrgcccpp.linker.general.DoNotUseStandardStartFiles>
         <avrgcccpp.linker.general.DoNotUseDefaultLibraries>True</avrgcccpp.linker.general.DoNotUseDefaultLibraries>
         <avrgcccpp.linker.general.NoStartupOrDefaultLibs>True</avrgcccpp.linker.general.NoStartupOrDefaultLibs>
