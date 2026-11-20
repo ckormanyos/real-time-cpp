@@ -40,7 +40,7 @@
       static void* do_allocate(const size_type size,
                                const size_type alignment)
       {
-        static buffer_type buffer;
+        alignas(alignof(std::max_align_t)) static buffer_type buffer;
 
         static size_type get_offset = 0U;
 
@@ -59,7 +59,7 @@
           allocation_offset += (alignment - misalignment);
         }
 
-        if((allocation_offset > buffer_size)
+        if(   (allocation_offset > buffer_size)
            || (size > (buffer_size - allocation_offset)))
         {
           // Wrap to the beginning of the buffer. Its alignment supports

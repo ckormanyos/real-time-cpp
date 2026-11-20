@@ -19,24 +19,35 @@ TGT_SUFFIX    = elf
 TGT_ALLFLAGS  = -O2                                                               \
                 -mmcu=atmega4809                                                  \
                 -mrelax                                                           \
-                -mdouble=32                                                       \
                 -finline-functions                                                \
                 -finline-limit=16                                                 \
                 -fsigned-char                                                     \
-
-ifeq ($(TYP_OS),WIN)
-TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
                 -mdouble=64                                                       \
                 -mlong-double=64
+
+ifeq ($(TYP_OS),WIN)
+
+INC_PREFIX   := -isystem
+STD_CPP      := c++23
+
+else
+
+INC_PREFIX   := -I
+STD_CPP      := c++20
+
 endif
 
-TGT_CFLAGS    = -std=c11                                                          \
+STD_C        := c20
+
+TGT_CFLAGS    = -std=$(STD_C)                                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++17                                                        \
+TGT_CXXFLAGS  = -std=$(STD_CPP)                                                   \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES := $(INC_PREFIX)$(PATH_APP)/util/STL
+
+#TGT_INCLUDES := $(INC_PREFIX)$(PATH_APP)/util/STL_avr-libstdcpp/90ddfd4a/gcc16/include
 
 TGT_AFLAGS    =
 

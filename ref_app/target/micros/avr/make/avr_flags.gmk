@@ -20,14 +20,12 @@ TGT_ALLFLAGS  = -O2                                                             
                 -mmcu=atmega328p                                                  \
                 -mrelax                                                           \
                 -finline-functions                                                \
-                -finline-limit=64                                                 \
-                -fsigned-char
-
-ifeq ($(TYP_OS),WIN)
-
-TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
+                -finline-limit=16                                                 \
+                -fsigned-char                                                     \
                 -mdouble=64                                                       \
                 -mlong-double=64
+
+ifeq ($(TYP_OS),WIN)
 
 INC_PREFIX   := -isystem
 STD_CPP      := c++23
@@ -35,7 +33,7 @@ STD_CPP      := c++23
 else
 
 INC_PREFIX   := -I
-STD_CPP      := c++17
+STD_CPP      := c++20
 
 endif
 
