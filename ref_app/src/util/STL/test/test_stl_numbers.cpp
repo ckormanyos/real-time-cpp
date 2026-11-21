@@ -9,7 +9,9 @@
 #pragma GCC optimize ("O0")
 #endif
 
+#if !defined(__AVR__)
 #define USE_COMPLEX_TGAMMA_CHECK
+#endif
 
 #include <cmath>
 #include <complex>
@@ -169,7 +171,7 @@ auto local::test_stl_numbers_egamma() -> bool
     result_egamma_is_ok = (rel_error < tolerance);
   }
 
-  #if !defined(__AVR__)
+  #if defined(USE_COMPLEX_TGAMMA_CHECK)
   {
     using namespace std::complex_literals;
 
