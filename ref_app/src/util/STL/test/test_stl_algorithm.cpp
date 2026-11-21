@@ -15,9 +15,14 @@ namespace local
 {
   std::array<int, std::size_t { 6U }> values { 4, 1, 3, 1, 5, 2 };
 
+  #if defined(__GNUC__)
+  __attribute__((noinline))
+  #endif
   auto test_stl_sanity_algorithm_part_01() -> bool;
-  auto test_stl_sanity_algorithm_part_02() -> bool;
 
+  #if defined(__GNUC__)
+  __attribute__((noinline))
+  #endif
   auto test_stl_sanity_algorithm_part_01() -> bool
   {
     if(   ((std::min)(4, 2) != 2)
@@ -82,6 +87,14 @@ namespace local
     return true;
   }
 
+  #if defined(__GNUC__)
+  __attribute__((noinline))
+  #endif
+  auto test_stl_sanity_algorithm_part_02() -> bool;
+
+  #if defined(__GNUC__)
+  __attribute__((noinline))
+  #endif
   auto test_stl_sanity_algorithm_part_02() -> bool
   {
     std::vector<int> scratch(6U, 0);
