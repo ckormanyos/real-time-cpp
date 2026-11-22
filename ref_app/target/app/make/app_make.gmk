@@ -264,7 +264,7 @@ endif
 GCCFLAGS    = -g                                \
               $(WARN_FLAGS)                     \
               -Wno-comment                      \
-              -gdwarf-2                         \
+              -gdwarf-4                         \
               -fno-exceptions                   \
               -fdata-sections                   \
               -ffunction-sections

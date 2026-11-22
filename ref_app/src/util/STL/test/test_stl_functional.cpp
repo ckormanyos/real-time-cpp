@@ -5,6 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <util/utility/util_attribute.h>
+
 #include <cstdint>
 #include <functional>
 #include <type_traits>
@@ -51,14 +53,10 @@ namespace local
     return value + 1;
   }
 
-  #if defined(__GNUC__)
-  __attribute__((noinline))
-  #endif
+  ATTRIBUTE(noinline)
   auto test_stl_sanity_functional_part_01() -> bool;
 
-  #if defined(__GNUC__)
-  __attribute__((noinline))
-  #endif
+  ATTRIBUTE(noinline)
   auto test_stl_sanity_functional_part_01() -> bool
   {
     int value = 5;
@@ -177,14 +175,10 @@ namespace local
     return true;
   }
 
-  #if defined(__GNUC__)
-  __attribute__((noinline))
-  #endif
+  ATTRIBUTE(noinline)
   auto test_stl_sanity_functional_part_02() -> bool;
 
-  #if defined(__GNUC__)
-  __attribute__((noinline))
-  #endif
+  ATTRIBUTE(noinline)
   auto test_stl_sanity_functional_part_02() -> bool
   {
     std::function<int(int)> empty_function;
