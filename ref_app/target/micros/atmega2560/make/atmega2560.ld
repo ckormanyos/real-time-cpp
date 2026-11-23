@@ -32,7 +32,7 @@ So the first usable physical SRAM address is 0x0100.
 MEMORY
 {
   VEC(rx)  : ORIGIN = 0x00000000, LENGTH = 0x00000100
-  ROM(rx)  : ORIGIN = 0x00000100, LENGTH = 64K - 0x00000100
+  ROM(rx)  : ORIGIN = 0x00000100, LENGTH = 256K - 0x00000100
   RAM(rwx) : ORIGIN = 0x00800100, LENGTH = 0x1E00
 }
 
@@ -49,6 +49,9 @@ SECTIONS
     KEEP(*(.isr_vector))
   } > VEC = 0x5555
 
+  . = 0x00000100;
+  . = ALIGN(4);
+
   /* Startup code */
   .startup :
   {
@@ -62,22 +65,22 @@ SECTIONS
   {
     _ctors_begin = .;
     *(.ctors)
-    . = ALIGN(2);
+    . = ALIGN(4);
     KEEP (*(SORT(.ctors)))
     _ctors_end = .;
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.progmem*)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.trampolines*)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.text)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.text*)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.jumptables.*)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.trampolines*)
-    . = ALIGN(2);
+    . = ALIGN(4);
   } > ROM
 
   . = 0x00800100;
