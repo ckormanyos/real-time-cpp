@@ -6,10 +6,8 @@
 //
 
 #include <mcal_memory/mcal_memory_progmem_access.h>
+#include <mcal_reg.h>
 #include <util/utility/util_utype_helper.h>
-
-#include <avr/io.h>
-#include <avr/pgmspace.h>
 
 #include <cstdint>
 
@@ -50,7 +48,10 @@ void crt::init_ctors()
   {
     // Ensure EIND is 0 before each indirect call (EICALL) so that 16-bit
     // function pointers / trampolines resolve in the lower 128 KB word space.
-    EIND = 0U;
+    mcal::reg::reg_access_static<std::uint8_t,
+                                 std::uint8_t,
+                                 mcal::reg::eind,
+                                 UINT8_C(0)>::reg_set();
 
     // Read the 16-bit function pointer entry from anywhere in the 256 KB flash
     // using ELPM (via pgm_read_word_far, or your own ELPM-based progmem::read).
@@ -62,5 +63,8 @@ void crt::init_ctors()
   }
 
   // Leave RAMPZ cleared so standard 16-bit LPM operations in user code work as expected.
-  RAMPZ = 0U;
+  mcal::reg::reg_access_static<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::rampz,
+                               UINT8_C(0)>::reg_set();
 }

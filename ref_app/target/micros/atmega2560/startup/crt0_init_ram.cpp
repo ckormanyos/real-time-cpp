@@ -6,8 +6,7 @@
 //
 
 #include <mcal_memory/mcal_memory_progmem_access.h>
-#include <avr/io.h>
-#include <avr/pgmspace.h>
+#include <mcal_reg.h>
 
 #include <algorithm>
 #include <cstddef>
@@ -54,7 +53,10 @@ void crt::init_ram()
                 });
 
   // Restore RAMPZ to 0 so subsequent 16-bit LPM reads in user code are unaffected.
-  RAMPZ = 0U;
+  mcal::reg::reg_access_static<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::rampz,
+                               UINT8_C(0)>::reg_set();
 
   // Clear the bss segment.
   // Note that the bss segment is aligned by 2.
