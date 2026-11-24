@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2012 - 2020.
+//  Copyright Christopher Kormanyos 2012 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -46,7 +46,7 @@ void __vector_timer7()
 
   // Increment the 64-bit system tick with 0x100000000, representing (2^32) [microseconds/24].
 
-  mcal_gpt_system_tick += UINT64_C(0x100000000);
+  mcal_gpt_system_tick = static_cast<mcal::gpt::value_type>(mcal_gpt_system_tick + UINT64_C(0x100000000));
 
   // Signal the end of the dmtimer7 interrupt.
   mcal::reg::reg_access_static<std::uint32_t,
