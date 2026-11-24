@@ -18,7 +18,7 @@ _stack_begin = 0x00800800;
 _stack_end   = 0x00800900;
 
 /* The initial stack pointer (top of stack) is at the top of the 2K RAM */
-__initial_stack_pointer = 0x00800900 - 2;
+__initial_stack_pointer = _stack_end - 1;
 
 /*
 avr-gcc links RAM at 0x00800100, initially based on where the physical

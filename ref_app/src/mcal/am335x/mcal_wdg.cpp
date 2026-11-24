@@ -151,5 +151,5 @@ void mcal::wdg::secure::trigger()
                                                     next_watchdog_trigger_value);
 
   // Increment the prime number sequence index for the following cycle.
-  ++prime_sequence_index;
+  prime_sequence_index = std::size_t { prime_sequence_index + 1U };
 }

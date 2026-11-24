@@ -1,25 +1,29 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <cstdint>
-
 #include <mcal_memory/mcal_memory_progmem_access.h>
+#include <mcal_reg.h>
 #include <util/utility/util_utype_helper.h>
+
+#include <cstdint>
 
 extern "C"
 {
   struct constructor_function_type
   {
-    using pointer = void(*)();
+    // Function pointers remain 16-bit on avr-gcc (pointing either directly
+    // to <128KB flash or to a linker-generated entry in .trampolines).
+    using pointer      = void(*)();
+    using pointer_type = util::utype_helper<sizeof(pointer) * 8U>::exact_type;
 
-    using size_type =
-      util::utype_helper<sizeof(pointer) * 8U>::exact_type;
+    // Flash byte addresses on ATmega2560 require 24 bits (stored in 32-bit).
+    using address_type = std::uint32_t;
 
-    static constexpr size_type static_size = static_cast<size_type>(sizeof(size_type));
+    static constexpr address_type static_size = static_cast<address_type>(sizeof(pointer_type));
   };
 
   extern constructor_function_type::pointer _ctors_end[];
@@ -33,19 +37,34 @@ namespace crt
 
 void crt::init_ctors()
 {
-  for(constructor_function_type::size_type rom_source
-                  = reinterpret_cast<constructor_function_type::size_type>(static_cast<void*>(_ctors_end));
-      rom_source  > reinterpret_cast<constructor_function_type::size_type>(static_cast<void*>(_ctors_begin));
+  // Retrieve true 24-bit far byte addresses of the linker symbols
+  // using avr-libc's pgm_get_far_address (handles hh8/hi8/lo8).
+  const constructor_function_type::address_type begin_addr = pgm_get_far_address(_ctors_begin);
+  const constructor_function_type::address_type end_addr   = pgm_get_far_address(_ctors_end);
+
+  for(constructor_function_type::address_type rom_source = end_addr;
+      rom_source > begin_addr;
       rom_source -= constructor_function_type::static_size)
   {
-    // Note that particular care needs to be taken to read program
-    // memory with the function mcal::memory::progmem::read.
+    // Ensure EIND is 0 before each indirect call (EICALL) so that 16-bit
+    // function pointers / trampolines resolve in the lower 128 KB word space.
+    mcal::reg::reg_access_static<std::uint8_t,
+                                 std::uint8_t,
+                                 mcal::reg::eind,
+                                 UINT8_C(0)>::reg_set();
 
-    // Acquire the next constructor function address.
-    const constructor_function_type::size_type pf =
-      mcal::memory::progmem::read<constructor_function_type::size_type>(rom_source - constructor_function_type::static_size);
+    // Read the 16-bit function pointer entry from anywhere in the 256 KB flash
+    // using ELPM (via pgm_read_word_far, or your own ELPM-based progmem::read).
+    const constructor_function_type::pointer_type pf =
+      pgm_read_word_far(rom_source - constructor_function_type::static_size);
 
     // Call the constructor function.
     (reinterpret_cast<constructor_function_type::pointer>(pf))();
   }
+
+  // Leave RAMPZ cleared so standard 16-bit LPM operations in user code work as expected.
+  mcal::reg::reg_access_static<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::rampz,
+                               UINT8_C(0)>::reg_set();
 }

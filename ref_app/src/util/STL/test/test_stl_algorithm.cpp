@@ -7,6 +7,8 @@
 
 #include <mcal_cpu.h>
 
+#include <util/utility/util_attribute.h>
+
 #include <algorithm>
 #include <array>
 #include <vector>
@@ -15,14 +17,10 @@ namespace local
 {
   std::array<int, std::size_t { 6U }> values { 4, 1, 3, 1, 5, 2 };
 
-  #if defined(__GNUC__)
-  __attribute__((noinline))
-  #endif
+  ATTRIBUTE(noinline)
   auto test_stl_sanity_algorithm_part_01() -> bool;
 
-  #if defined(__GNUC__)
-  __attribute__((noinline))
-  #endif
+  ATTRIBUTE(noinline)
   auto test_stl_sanity_algorithm_part_01() -> bool
   {
     if(   ((std::min)(4, 2) != 2)
@@ -75,10 +73,14 @@ namespace local
       return false;
     }
 
-    if(   (!std::lexicographical_compare(values.begin() + 1, values.begin() + 3,
-                                         values.begin() + 3, values.begin() + 5))
-       || (!std::lexicographical_compare(values.begin() + 1, values.begin() + 2,
-                                         values.begin() + 3, values.begin() + 5,
+    if(   (!std::lexicographical_compare(values.begin() + 1,
+                                         values.begin() + 3,
+                                         values.begin() + 3,
+                                         values.begin() + 5))
+       || (!std::lexicographical_compare(values.begin() + 1,
+                                         values.begin() + 2,
+                                         values.begin() + 3,
+                                         values.begin() + 5,
                                          [](int left, int right) { return left < right; })))
     {
       return false;
@@ -87,14 +89,10 @@ namespace local
     return true;
   }
 
-  #if defined(__GNUC__)
-  __attribute__((noinline))
-  #endif
+  ATTRIBUTE(noinline)
   auto test_stl_sanity_algorithm_part_02() -> bool;
 
-  #if defined(__GNUC__)
-  __attribute__((noinline))
-  #endif
+  ATTRIBUTE(noinline)
   auto test_stl_sanity_algorithm_part_02() -> bool
   {
     std::vector<int> scratch(6U, 0);
@@ -105,7 +103,9 @@ namespace local
       return false;
     }
 
-    const auto even_end = std::copy_if(values.begin(), values.end(), scratch.begin(),
+    const auto even_end = std::copy_if(values.begin(),
+                                       values.end(),
+                                       scratch.begin(),
                                        [](int value) { return (value % 2) == 0; });
 
     if((even_end != scratch.begin() + 2) || (scratch[0U] != 4) || (scratch[1U] != 2))
@@ -113,7 +113,9 @@ namespace local
       return false;
     }
 
-    const auto no_even_end = std::copy_if(values.begin(), values.end(), scratch.begin(),
+    const auto no_even_end = std::copy_if(values.begin(),
+                                          values.end(),
+                                          scratch.begin(),
                                           [](int value) { return value < 0; });
 
     if(no_even_end != scratch.begin())
@@ -123,7 +125,9 @@ namespace local
 
     std::copy(values.begin(), values.end(), scratch.begin());
 
-    if(   (std::copy_backward(scratch.begin(), scratch.begin() + 4, scratch.end()) != scratch.begin() + 2)
+    if(   (std::copy_backward(scratch.begin(),
+                              scratch.begin() + 4,
+                              scratch.end()) != scratch.begin() + 2)
        || (scratch[0U] != 4)
        || (scratch[1U] != 1)
        || (scratch[2U] != 4)
@@ -151,8 +155,14 @@ namespace local
     }
 
     int generated = 0;
-    std::generate(scratch.begin(), scratch.begin() + 3, [&generated]() { return ++generated; });
-    const auto generated_end = std::generate_n(scratch.begin() + 3, 3, [&generated]() { return ++generated; });
+
+    std::generate(scratch.begin(),
+                  scratch.begin() + 3,
+                  [&generated]() { return ++generated; });
+
+    const auto generated_end = std::generate_n(scratch.begin() + 3,
+                                               3,
+                                               [&generated]() { return ++generated; });
 
     if(   (generated_end != scratch.end())
        || (scratch[0U] != 1)
@@ -175,15 +185,22 @@ namespace local
     scratch[1U] = 2;
     scratch[2U] = 3;
 
-    if((std::transform(values.begin(), values.begin() + 3, scratch.begin(), scratch.begin() + 3,
-                       [](int left, int right) { return left + right; }) != scratch.end())
-       || (scratch[3U] != 5) || (scratch[4U] != 3) || (scratch[5U] != 6))
+    if(   (std::transform(values.begin(),
+                          values.begin() + 3,
+                          scratch.begin(),
+                          scratch.begin() + 3,
+                          [](int left, int right) { return left + right; }) != scratch.end())
+       || (scratch[3U] != 5)
+       || (scratch[4U] != 3)
+       || (scratch[5U] != 6))
     {
       return false;
     }
 
-    if((std::transform(values.begin(), values.end(), scratch.begin(),
-                       [](int value) { return value * 2; }) != scratch.end())
+    if(   (std::transform(values.begin(),
+                          values.end(),
+                          scratch.begin(),
+                          [](int value) { return value * 2; }) != scratch.end())
        || (scratch[0U] != 8)
        || (scratch[4U] != 10))
     {
@@ -206,10 +223,14 @@ namespace local
     scratch[2U] = 9;
     const auto mismatch = std::mismatch(values.begin(), values.end(), scratch.begin());
     const auto mismatch_with_ranges = std::mismatch(values.begin(), values.end(), scratch.begin(), scratch.end());
-    const auto mismatch_with_predicate = std::mismatch(values.begin(), values.end(), scratch.begin(),
+    const auto mismatch_with_predicate = std::mismatch(values.begin(),
+                                                       values.end(),
+                                                       scratch.begin(),
                                                        [](int left, int right) { return left == right; });
-    const auto mismatch_with_ranges_and_predicate = std::mismatch(values.begin(), values.end(),
-                                                                  scratch.begin(), scratch.end(),
+    const auto mismatch_with_ranges_and_predicate = std::mismatch(values.begin(),
+                                                                  values.end(),
+                                                                  scratch.begin(),
+                                                                  scratch.end(),
                                                                   [](int left, int right) { return left == right; });
     if(   (mismatch.first != values.begin() + 2) || (mismatch.second != scratch.begin() + 2)
        || (mismatch_with_ranges.first != values.begin() + 2) || (mismatch_with_ranges.second != scratch.begin() + 2)
@@ -315,15 +336,22 @@ namespace local
     scratch[0U] = 4;
     scratch[1U] = 5;
     scratch[2U] = 6;
-    if((std::swap_ranges(values.begin(), values.begin() + 3, scratch.begin()) != scratch.begin() + 3)
-       || (values[0U] != 4) || (values[2U] != 6) || (scratch[0U] != 1) || (scratch[2U] != 3))
+    if(   (std::swap_ranges(values.begin(), values.begin() + 3, scratch.begin()) != scratch.begin() + 3)
+       || (values[0U] != 4)
+       || (values[2U] != 6)
+       || (scratch[0U] != 1)
+       || (scratch[2U] != 3))
     {
       return false;
     }
 
-    const auto partition_point = std::partition(values.begin(), values.begin() + 3,
+    const auto partition_point = std::partition(values.begin(),
+                                                values.begin() + 3,
                                                 [](int value) { return value < 6; });
-    if((partition_point != values.begin() + 2) || (values[0U] >= 6) || (values[1U] >= 6) || (values[2U] != 6))
+    if(   (partition_point != values.begin() + 2)
+       || (values[0U] >= 6)
+       || (values[1U] >= 6)
+       || (values[2U] != 6))
     {
       return false;
     }
@@ -335,7 +363,11 @@ namespace local
     raw_right[0U] = 3;
     raw_right[1U] = 4;
     std::swap(raw_left, raw_right);
-    if((raw_left[0U] != 3) || (raw_left[1U] != 4) || (raw_right[0U] != 1) || (raw_right[1U] != 2))
+
+    if(   (raw_left[0U] != 3)
+       || (raw_left[1U] != 4)
+       || (raw_right[0U] != 1)
+       || (raw_right[1U] != 2))
     {
       return false;
     }

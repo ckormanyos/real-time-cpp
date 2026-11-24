@@ -6,14 +6,14 @@
 //
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <limits>
 #include <numbers>
 
-#if defined(__GNUC__) && defined(__AVR__)
-extern "C" float tgammaf(float x);
-#endif
+extern "C" float  tgammaf(float x);
+extern "C" double tgamma (double z);
 
 namespace xcmath_impl
 {
@@ -121,15 +121,13 @@ auto tgammaf(float x) -> float
     }
   }
 
-  using std::floor;
+  const float floor_x { std::floor(x) };
+
+  const bool is_integer { ((floor_x <= x) && (x <= floor_x)) };
 
   // Evaluate the number of recursions needed in order to reach
   // the range 0 < x < 1, and scale the argument accordingly.
-  const float floor_x { floor(x) };
-
   std::uint_least8_t n_recur { static_cast<std::uint_least8_t>(floor_x) };
-
-  const bool is_integer { ((floor_x <= x) && (x <= floor_x)) };
 
   float gamma_value;
 
@@ -170,4 +168,77 @@ auto tgammaf(float x) -> float
 
     return -std::numbers::pi_v<float> / ((x * gamma_value) * sin_pi_x);
   }
+}
+
+namespace detail
+{
+  // 9-term Lanczos coefficients for g = 7 (IEEE 754 binary64 precision)
+  inline constexpr std::array<double, 9> lanczos_p =
+  {
+    0.99999999999980993,
+    676.5203681218851,
+    -1259.1392167224028,
+    771.32342877765313,
+    -176.61502916214059,
+    12.507343278686905,
+    -0.13857109526572012,
+    9.9843695780195716e-6,
+    1.5056327351493116e-7
+  };
+
+  // sqrt(2 * pi) derived from std::numbers::pi_v<double>
+  // Note: std::sqrt is constexpr in C++26, or evaluated at compile-time by GCC
+  inline constexpr double sqrt_2pi = 2.50662827463100050242;
+} // namespace detail
+
+extern "C"
+double tgamma(double z)
+{
+  using std::numbers::pi_v;
+  constexpr double inf = std::numeric_limits<double>::infinity();
+  constexpr double nan = std::numeric_limits<double>::quiet_NaN();
+
+  const int fpc_result { std::fpclassify(z) };
+
+  const bool is_neg { z < 0.0 };
+
+  // Handle special values and poles.
+  if(std::isnan(z) || ((fpc_result == FP_INFINITE) && is_neg)) { return nan; }
+  if(fpc_result == FP_INFINITE) { return inf; }
+  if(fpc_result == FP_ZERO)     { return is_neg ? -inf : inf; }
+
+  // Reflection formula: Gamma(z) = pi / (sin(pi * z) * Gamma(1 - z)).
+  if(is_neg)
+  {
+    const double floor_z { std::floor(z) };
+
+    const bool is_integer { ((floor_z <= z) && (z <= floor_z)) };
+
+    if (is_integer) { return nan; } // Pole at negative integers
+
+    return pi_v<double> / (std::sin(pi_v<double> * z) * tgamma(1.0 - z));
+  }
+
+  // Overflow threshold for IEEE 754 binary64 (~171.624)
+  if(z > 171.6243769563027) { return inf; }
+
+  z -= 1.0;
+  double x = detail::lanczos_p[0];
+
+  for(std::uint8_t i = 1; i < detail::lanczos_p.size(); ++i)
+  {
+    x += detail::lanczos_p[i] / (z + static_cast<double>(i));
+  }
+
+  const double t = z + 7.5; // z + g + 0.5
+
+  // Prevent premature overflow in std::pow(t, z + 0.5) when 140 < z <= 171.624
+  if(z > 140.0)
+  {
+    const double half_pow = std::pow(t, 0.5 * z + 0.25);
+
+    return detail::sqrt_2pi * half_pow * std::exp(-t) * half_pow * x;
+  }
+
+  return detail::sqrt_2pi * std::pow(t, z + 0.5) * std::exp(-t) * x;
 }

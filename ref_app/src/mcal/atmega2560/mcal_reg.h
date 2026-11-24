@@ -30,6 +30,10 @@
       constexpr std::uint8_t mcusr  = 0x14U + sfr_offset;
       constexpr std::uint8_t prr    = 0x64U;
 
+      // Extended address registers (ATmega2560)
+      constexpr std::uint8_t rampz = 0x3BU + sfr_offset; // 0x5B
+      constexpr std::uint8_t eind  = 0x3CU + sfr_offset; // 0x5C
+
       // Port registers.
       constexpr std::uint8_t pinb   = 0x03U + sfr_offset;
       constexpr std::uint8_t ddrb   = 0x04U + sfr_offset;

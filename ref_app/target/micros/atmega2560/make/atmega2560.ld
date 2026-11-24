@@ -1,6 +1,5 @@
-
 /*
- Copyright Christopher Kormanyos 2007 - 2018.
+ Copyright Christopher Kormanyos 2007 - 2026.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,36 +12,45 @@ INPUT(libc.a libm.a libgcc.a)
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:6)
 
-/* The beginning and end of the program ROM area. */
-_rom_begin = 0x00000000;
-_rom_end   = 0x0000FFFC;
-
 /* The beginning and end (i.e., top) of the stack */
-/* Set up a stack with a size of 2K */
-_stack_begin = 0x801800;
-_stack_end   = 0x802000;
+/* Set up a stack with a size of 0x200=(1/2)K */
+_stack_begin = 0x00801F00;
+_stack_end   = 0x00802100;
 
 /* The initial stack pointer (top of stack) is at the top of the 8K RAM */
-__initial_stack_pointer = 0x802000;
+__initial_stack_pointer = _stack_end - 1;
+
+/*
+avr-gcc links RAM at 0x00800100, initially based on where the physical
+SRAM actually begins on the ATmega328P. When generating the final binary
+or .hex file, however, avr-objcopy strips the 0x00800000 offset away.
+So the actual machine instructions use 16-bit data addresses starting
+at 0x0100. The low 256 bytes (0x0000 to 0x00FF) are occupied by registers.
+So the first usable physical SRAM address is 0x0100.
+*/
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0, LENGTH = 64K - 4
-  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 0x1700
+  VEC(rx)  : ORIGIN = 0x00000000, LENGTH = 0x00000100
+  ROM(rx)  : ORIGIN = 0x00000100, LENGTH = 256K - 0x00000100
+  RAM(rwx) : ORIGIN = 0x00800100, LENGTH = 0x1E00
 }
 
 SECTIONS
 {
-  . = 0x0;
+  . = 0x00000000;
   . = ALIGN(2);
 
   /* ISR vectors */
   .isr_vector :
   {
     *(.isr_vector)
-    . = ALIGN(0x80);
+    . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
+  } > VEC = 0x5555
+
+  . = 0x00000100;
+  . = ALIGN(4);
 
   /* Startup code */
   .startup :
@@ -52,39 +60,30 @@ SECTIONS
     KEEP(*(.startup))
   } > ROM = 0xAAAA
 
-  /* ISR handlers */
-  .isr_handlers :
-  {
-    *(.isr_handlers)
-    . = ALIGN(0x10);
-    KEEP(*(.isr_handlers))
-  } > ROM = 0xAAAA
-
   /* Program code (text), read-only data and static ctors */
   .text :
   {
     _ctors_begin = .;
     *(.ctors)
-    . = ALIGN(2);
+    . = ALIGN(4);
     KEEP (*(SORT(.ctors)))
     _ctors_end = .;
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.progmem*)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.trampolines*)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.text)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.text*)
-    . = ALIGN(2);
+    . = ALIGN(4);
+    *(.jumptables.*)
+    . = ALIGN(4);
+    *(.trampolines*)
+    . = ALIGN(4);
   } > ROM
 
-  .text :
-  {
-    . = ALIGN(0x10);
-  } > ROM = 0xAAAA
-
-  . = 0x800100;
+  . = 0x00800100;
   . = ALIGN(2);
 
   /* The ROM-to-RAM initialized data section */
@@ -97,7 +96,7 @@ SECTIONS
     *(.data*)
     . = ALIGN(2);
     KEEP (*(.data*))
-    *(.rodata)  /* Do *NOT* move this! Include .rodata here if gcc is used with -fdata-sections. */
+    *(.rodata)  /* Use special handling of rodata (i.e., as part of data since _const_ variables are stored in RAM for AVR arch). */
     . = ALIGN(2);
     KEEP (*(.rodata))
     *(.rodata*)
