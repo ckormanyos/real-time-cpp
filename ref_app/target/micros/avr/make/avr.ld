@@ -21,10 +21,10 @@ _stack_end   = 0x00800900;
 __initial_stack_pointer = _stack_end - 1;
 
 /*
-avr-gcc links RAM at 0x00800100, initially based on where the physical
-SRAM actually begins on the ATmega328P. When generating the final binary
-or .hex file, however, avr-objcopy strips the 0x00800000 offset away.
-So the actual machine instructions use 16-bit data addresses starting
+For this target, avr-gcc links RAM at 0x00800100. THis is initially based
+on where the physical SRAM actually begins on the ATmega328P. When generating
+the final binary or .hex file, however, avr-objcopy strips the 0x00800000 offset
+away. So the actual machine instructions use 16-bit data addresses starting
 at 0x0100. The low 256 bytes (0x0000 to 0x00FF) are occupied by registers.
 So the first usable physical SRAM address is 0x0100.
 */
@@ -48,6 +48,9 @@ SECTIONS
     . = ALIGN(0x10);
     KEEP(*(.isr_vector))
   } > VEC = 0x5555
+
+  . = 0x00000080;
+  . = ALIGN(2);
 
   /* Startup code */
   .startup :

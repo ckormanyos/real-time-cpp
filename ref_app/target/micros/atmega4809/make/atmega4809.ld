@@ -1,5 +1,5 @@
 /*
- Copyright Christopher Kormanyos 2021 - 2023.
+ Copyright Christopher Kormanyos 2021 - 2026.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,10 +15,10 @@ OUTPUT_ARCH(avr:103)
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 0x200=(1/2)K */
 _stack_begin = 0x00803E00;
-_stack_end   = 0x00803FFE;
+_stack_end   = 0x00804000;
 
 /* The initial stack pointer (top of stack) is at the top of the 6K RAM */
-__initial_stack_pointer = 0x00803FFE;
+__initial_stack_pointer = _stack_end - 1;
 
 MEMORY
 {
@@ -39,6 +39,9 @@ SECTIONS
     . = ALIGN(0x10);
     KEEP(*(.isr_vector))
   } > VEC = 0x5555
+
+  . = 0x00000100;
+  . = ALIGN(2);
 
   /* Startup code */
   .startup :
@@ -64,6 +67,10 @@ SECTIONS
     *(.text)
     . = ALIGN(2);
     *(.text*)
+    . = ALIGN(2);
+    *(.jumptables.*)
+    . = ALIGN(2);
+    *(.trampolines*)
     . = ALIGN(2);
   } > ROM
 
