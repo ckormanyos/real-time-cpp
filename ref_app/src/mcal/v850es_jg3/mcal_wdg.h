@@ -1,21 +1,26 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_OSC_2011_10_20_H_
-  #define MCAL_OSC_2011_10_20_H_
+#ifndef MCAL_WDG_2026_11_26_H
+  #define MCAL_WDG_2026_11_26_H
 
   namespace mcal
   {
-    namespace osc
+    namespace wdg
     {
       typedef void config_type;
 
       void init(const config_type*);
+
+      struct secure final
+      {
+        static void trigger();
+      };
     }
   }
 
-#endif // MCAL_OSC_2011_10_20_H_
+#endif // MCAL_WDG_2026_11_26_H

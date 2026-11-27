@@ -260,7 +260,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ v850es_fx2 ]
+        suite: [ v850es_jg3 ]
     steps:
       - uses: actions/checkout@v7
         with:
