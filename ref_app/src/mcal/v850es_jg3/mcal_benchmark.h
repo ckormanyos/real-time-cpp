@@ -15,10 +15,7 @@
   {
     namespace benchmark
     {
-      using benchmark_port_type = mcal::port::port_pin<std::uint32_t,
-                                                       std::uint8_t,
-                                                       mcal::reg::pdll,
-                                                       1U>;
+      using benchmark_port_type = mcal::port::port_pin;
     }
   }
 

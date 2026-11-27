@@ -90,7 +90,7 @@ The reference application supports the following targets (in alpha-numeric order
 | `stm32l100c`                           | STMicroelectronics(R) STM32L100 ARM(R) Cortex(R)-M3         | X             |
 | `stm32l152`                            | STMicroelectronics(R) STM32L152 ARM(R) Cortex(R)-M3         |               |
 | `stm32l432`                            | STMicroelectronics(R) STM32L432 ARM(R) Cortex(R)-M4F        | X             |
-| `v850es_fx2`                           | Renesas(R) Electronics V850es/Fx2 upd703231                 |               |
+| `v850es_jg3`                           | Renesas(R) Electronics V850ES/JG3-L uPD70F3793              |               |
 | `wch_ch32v307`                         | WCH CH32v307 RISC-V board                                   |               |
 | `wch_ch32v307_llvm`                    | WCH CH32v307 RISC-V board (but using an LLVM toolchain)     |               |
 | `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |               |
@@ -485,9 +485,12 @@ The third ARM(R) Cortex(R)-M3 configuration (called `target stm32l152`)
 runs on the STM32L152C-DISCOVERY board commercially available from
 ST Microelectronics(R). The program toggles the blue LED on `portb.6`.
 
-The `target v850es_fx2` implementation uses a classic Renesas(R) V850es/Fx2 core.
-The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
-starter kit is used.
+The `target v850es_jg3` implementation uses a classic Renesas(R) V850ES/JG3-L core.
+The uPD70F3793 microcontroller derivative on a USB plug-and-play starter kit is used.
+The low-level boot and startup for this project originates from
+[`github.com/Chalandi`](https://github.com/Chalandi)
+in the repo
+[`Chalandi/Baremetal_v850es_nosdk`](https://github.com/Chalandi/Baremetal_v850es_nosdk).
 
 The adaption for `wch_ch32v307` runs on the WCH CH32v307 board.
 It uses the RISC-V CH32v307 microcontroller from

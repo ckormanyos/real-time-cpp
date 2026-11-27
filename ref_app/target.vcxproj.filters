@@ -172,15 +172,6 @@
     <Filter Include="micros\stm32f429\make\single">
       <UniqueIdentifier>{1ccfe424-3b8a-4499-be2b-cf8f9dc332cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\v850es_fx2">
-      <UniqueIdentifier>{95548fcd-4508-40bb-849e-c14ad226a802}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\v850es_fx2\make">
-      <UniqueIdentifier>{6815bbfa-b7a8-482a-a91d-872b191ceaba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\v850es_fx2\startup">
-      <UniqueIdentifier>{9e52b1bf-fd57-474f-91d6-677c425f54e9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\stm32h7a3">
       <UniqueIdentifier>{d8403855-6ae4-419d-a00f-c5a20006bb76}</UniqueIdentifier>
     </Filter>
@@ -366,6 +357,15 @@
     </Filter>
     <Filter Include="micros\esp32p4_riscv_soc\startup\Code\SBL\Output">
       <UniqueIdentifier>{154f1c39-5085-471e-a5c9-444517255025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\v850es_jg3">
+      <UniqueIdentifier>{95548fcd-4508-40bb-849e-c14ad226a802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\v850es_jg3\make">
+      <UniqueIdentifier>{6815bbfa-b7a8-482a-a91d-872b191ceaba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\v850es_jg3\startup">
+      <UniqueIdentifier>{9e52b1bf-fd57-474f-91d6-677c425f54e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -597,24 +597,6 @@
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_with_stdlib.ld">
       <Filter>micros\bcm2835_raspi_b\make</Filter>
     </None>
-    <None Include="target\micros\v850es_fx2\make\v850es_fx2_files.gmk">
-      <Filter>micros\v850es_fx2\make</Filter>
-    </None>
-    <None Include="target\micros\v850es_fx2\make\v850es_fx2_flags.gmk">
-      <Filter>micros\v850es_fx2\make</Filter>
-    </None>
-    <None Include="target\micros\v850es_fx2\make\v850es_fx2.ld">
-      <Filter>micros\v850es_fx2\make</Filter>
-    </None>
-    <None Include="target\micros\v850es_fx2\startup\crt0.cpp">
-      <Filter>micros\v850es_fx2\startup</Filter>
-    </None>
-    <None Include="target\micros\v850es_fx2\startup\stack.s">
-      <Filter>micros\v850es_fx2\startup</Filter>
-    </None>
-    <None Include="target\micros\v850es_fx2\startup\errno.s">
-      <Filter>micros\v850es_fx2\startup</Filter>
-    </None>
     <None Include="target\micros\stm32h7a3\make\stm32h7a3_files.gmk">
       <Filter>micros\stm32h7a3\make</Filter>
     </None>
@@ -831,6 +813,21 @@
     <None Include="target\micros\esp32p4_riscv_soc\startup\Code\SBL\Output\SBL.readelf">
       <Filter>micros\esp32p4_riscv_soc\startup\Code\SBL\Output</Filter>
     </None>
+    <None Include="target\micros\v850es_jg3\make\v850es_jg3.ld">
+      <Filter>micros\v850es_jg3\make</Filter>
+    </None>
+    <None Include="target\micros\v850es_jg3\make\v850es_jg3_files.gmk">
+      <Filter>micros\v850es_jg3\make</Filter>
+    </None>
+    <None Include="target\micros\v850es_jg3\make\v850es_jg3_flags.gmk">
+      <Filter>micros\v850es_jg3\make</Filter>
+    </None>
+    <None Include="target\micros\v850es_jg3\startup\boot.s">
+      <Filter>micros\v850es_jg3\startup</Filter>
+    </None>
+    <None Include="target\micros\v850es_jg3\startup\intvect.s">
+      <Filter>micros\v850es_jg3\startup</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -997,18 +994,6 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32f429\make\single\crt.cpp">
       <Filter>micros\stm32f429\make\single</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\v850es_fx2\startup\int_vect.s">
-      <Filter>micros\v850es_fx2\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\v850es_fx2\startup\crt1.cpp">
-      <Filter>micros\v850es_fx2\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\v850es_fx2\startup\unhandled_exception.cpp">
-      <Filter>micros\v850es_fx2\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\v850es_fx2\startup\crt0_init_ram.cpp">
-      <Filter>micros\v850es_fx2\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\stm32h7a3\startup\crt1.cpp">
       <Filter>micros\stm32h7a3\startup</Filter>
@@ -1201,6 +1186,9 @@
     </ClCompile>
     <ClCompile Include="target\micros\esp32p4_riscv_soc\startup\Code\StdLib\StdLib.cpp">
       <Filter>micros\esp32p4_riscv_soc\startup\Code\StdLib</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\v850es_jg3\startup\Startup.c">
+      <Filter>micros\v850es_jg3\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
