@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2026.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,27 +10,27 @@
 
 #include <cstdint>
 
-#define PM3L (*(volatile uint8_t*)(0xFFFFF426ul))
-#define P3L  (*(volatile uint8_t*)(0xFFFFF406ul))
-
 class led_v850es_jg3_starter : public mcal::led::led_boolean_state_base
 {
 private:
   using base_class_type = mcal::led::led_boolean_state_base;
+
+  static constexpr std::uintptr_t PM3L { 0xFFFFF426ul };
+  static constexpr std::uintptr_t P3L  { 0xFFFFF406ul };
 
 public:
   led_v850es_jg3_starter() noexcept
   {
     // Initialize the LED port pin
     // to output high (LED off).
-    P3L  |= (uint8_t)(1u << 6);
-    PM3L &= (uint8_t)~(1u << 6);
+    *(volatile uint8_t*) P3L  |= (uint8_t)(1u << 6);
+    *(volatile uint8_t*) PM3L &= (uint8_t)~(1u << 6);
   }
 
   auto toggle() noexcept -> void override
   {
     // Toggle the LED port pin.
-    P3L  ^= (uint8_t)(1u << 6);
+    *(volatile uint8_t*) P3L  ^= (uint8_t)(1u << 6);
 
     base_class_type::toggle();
   }

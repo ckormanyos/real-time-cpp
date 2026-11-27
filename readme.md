@@ -486,8 +486,9 @@ runs on the STM32L152C-DISCOVERY board commercially available from
 ST Microelectronics(R). The program toggles the blue LED on `portb.6`.
 
 The `target v850es_jg3` implementation uses a classic Renesas(R) V850ES/JG3-L core.
-The uPD70F3793 microcontroller derivative on a USB plug-and-play starter kit is used.
-The low-level boot and startup for this project originates from
+The uPD70F3793 microcontroller derivative on a blue, plastic-housed USB plug-and-play
+starter kit is used.
+The low-level boot and startup for this project comes directly from
 [`github.com/Chalandi`](https://github.com/Chalandi)
 in the repo
 [`Chalandi/Baremetal_v850es_nosdk`](https://github.com/Chalandi/Baremetal_v850es_nosdk).

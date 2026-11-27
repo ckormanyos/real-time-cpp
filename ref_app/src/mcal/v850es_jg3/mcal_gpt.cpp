@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2026.
+//  Copyright Christopher Kormanyos 2007 - 2026.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -32,10 +32,10 @@ namespace
 auto mcal::gpt::init(const config_type*) -> void
 {
   /* configure the TMM0 timer */
-  TM0CTL0 = 0;
-  TM0CMP0 = 5120 - 1; // (256/1000)ms interrupt
+  TM0CTL0  = 0;
+  TM0CMP0  = 5120 - 1; // (256/1000)ms interrupt
   TM0EQIC0 = 7;
-  TM0CTL0 = 0x80;
+  TM0CTL0  = 0x80;
 
   // Set the is-initialized indication flag.
   gpt_is_initialized() = true;
