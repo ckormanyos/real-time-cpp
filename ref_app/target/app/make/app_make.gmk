@@ -261,10 +261,10 @@ WARN_FLAGS =  -Wall                             \
 
 endif
 
-GCCFLAGS    = -g                                \
+GCCFLAGS    = -gdwarf-4                         \
+              -ggdb                             \
               $(WARN_FLAGS)                     \
               -Wno-comment                      \
-              -gdwarf-4                         \
               -fno-exceptions                   \
               -fdata-sections                   \
               -ffunction-sections

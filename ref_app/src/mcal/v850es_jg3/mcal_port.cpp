@@ -9,7 +9,13 @@
 
 auto mcal::port::init(const config_type*) -> void
 {
-  /* set P36 as output low (LED ON) */
-  // P3L  &= (uint8_t)~(1u << 6);
-  // PM3L &= (uint8_t)~(1u << 6);
+}
+
+extern "C"
+auto port_init(void) -> void;
+
+extern "C"
+auto port_init(void) -> void
+{
+  mcal::port::init(nullptr);
 }
