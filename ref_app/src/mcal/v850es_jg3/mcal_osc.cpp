@@ -5,22 +5,27 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_cpu.h>
 #include <mcal_osc.h>
 
 #include <cstdint>
 
-#define PLLCTL   (*(volatile uint8_t*)0xFFFFF82Cul)
-#define PLLLOCKR (*(volatile uint8_t*)0xFFFFF824ul)
-#define PCC      (*(volatile uint8_t*)0xFFFFF828ul)
-#define PRCMD    (*(volatile uint8_t*)0xFFFFF1FCul)
-
 auto mcal::osc::init(const config_type*) -> void
 {
+  constexpr std::uintptr_t PLLCTL   { 0xFFFFF82CUL };
+  constexpr std::uintptr_t PLLLOCKR { 0xFFFFF824UL };
+  constexpr std::uintptr_t PCC      { 0xFFFFF828UL };
+  constexpr std::uintptr_t PRCMD    { 0xFFFFF1FCUL };
+
   /* enable the PLL (20MHz) */
-  PRCMD  = 0;
-  PCC    = 0;
-  PLLCTL = 3;
-  while(PLLLOCKR);
+  *(volatile uint8_t*) PRCMD  = 0;
+  *(volatile uint8_t*) PCC    = 0;
+  *(volatile uint8_t*) PLLCTL = 3;
+
+  while(*(volatile uint8_t*) PLLLOCKR != std::uint8_t { UINT8_C(0) })
+  {
+    mcal::cpu::nop();
+  }
 }
 
 extern "C"

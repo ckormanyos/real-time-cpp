@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2014 - 2026.
+#  Copyright Christopher Kormanyos 2007 - 2026.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,13 +15,14 @@ GCC_PREFIX    = v850-unknown-elf
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                            \
-                -mv850e1                                       \
-                -mlong-calls                                   \
-                -mgcc-abi                                      \
+TGT_ALLFLAGS  = -O2                                            \
+                -mv850es                                       \
                 -mtda=0                                        \
-                -mzda=0                                        \
                 -msda=0                                        \
+                -Wl,--defsym=__gp=0                            \
+                -Wl,--defsym=__ep=0                            \
+                -falign-functions=4                            \
+                -fomit-frame-pointer                           \
                 -finline-functions                             \
                 -finline-limit=32
 

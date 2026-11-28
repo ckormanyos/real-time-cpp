@@ -29,6 +29,10 @@
 .globl _start
 
 _start:
+
+    # initialize I/O ports
+    jarl _port_init, lp
+
     # enable the PLL (20MHz)
     jarl _pll_init, lp
 
@@ -47,6 +51,5 @@ _start:
 
     # call C/C++ runtime initialization
     jr _Startup_Init
-
 
 .size _start, .-_start
